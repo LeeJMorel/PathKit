@@ -21,6 +21,7 @@
 
 - Living Document: [Google Docs](https://docs.google.com/document/d/1WK1cAGtM_IcsL0fqFX05EE8GP4QyOnaMVphTQxTgCx4/edit?usp=sharing) - A collaborative document space for project communications
 - GitHub Repository: [PathKit](https://github.com/LeeJMorel/PathKit) - An all-in-one GM Screen application for running Pathfinder2e.
+- GitHub Documentation: [Wiki](https://github.com/LeeJMorel/PathKit/wiki) - Contains a User and Developer Guide to help you to navigate PathKit
 
 ## Communication Channels/Tools and Policies
 
