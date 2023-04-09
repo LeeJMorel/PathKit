@@ -12,6 +12,7 @@
 - UX Design: Responsible to the applications appearance and user experience
 - Front-End Dev: React and Typescript development for Visual aspect of program
 - Back-End Dev: Works on database management and API integration for the program
+- Game Dev: Works on the visuals and physics of the dice roller feature
 - Tester: Works with front and backend to create robust testing system and scenarios
 - Manager: Reviews project timelines and documentation to ensure team collaboration
 - Floater: Willing to work any of the above roles on an as needed basis. If not currently busy with a task will review project issues for unassigned ones or ones that might need help.
