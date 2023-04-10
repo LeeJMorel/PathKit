@@ -1,13 +1,13 @@
 ---
 name: Test report
-about: This feature is related to product testing
+about: This is related to product testing
 title: ''
 labels: 'testers'
 assignees: ''
 
 ---
 
-**What test request work on?**
+**What feature are you testing?**
 - [ ] Physics based dice roller
 - [ ] GM customization options to all input
 - [ ] Create Exploration or Encounter modes
