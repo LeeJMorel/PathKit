@@ -1,19 +1,20 @@
 ---
-name: MVP Deliverable
-about: This feature is related to building our Minimum Viable Product
+name: Test report
+about: This feature is related to product testing
 title: ''
-labels: ''
+labels: 'testers'
 assignees: ''
 
 ---
 
-**What MVP does your issue request work on?**
+**What test request work on?**
 - [ ] Physics based dice roller
 - [ ] GM customization options to all input
 - [ ] Create Exploration or Encounter modes
 - [ ] Add players/NPCS/Beasts/Shops
 - [ ] Integrated search engine
 - [ ] Notes Feature
+- [ ] Documentation & Automation Tools
 
 
 **Describe the solution you'd like**
