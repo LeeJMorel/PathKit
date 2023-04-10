@@ -1,0 +1,14 @@
+# Each line is a file pattern followed by one or more owners.
+# you can learn more about CODEOWNERS [here](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
+
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# @LeeJMorel will be requested for
+# review when someone opens a pull request.
+*       @LeeJMorel
+
+# In this example, @doctocat owns any files in the build/logs
+# directory at the root of the repository and any of its
+# subdirectories.
+/root/backend/ @neonsigh
+/root/frontend/ @LeeJMorel
