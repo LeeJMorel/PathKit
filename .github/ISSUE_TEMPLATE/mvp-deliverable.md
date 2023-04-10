@@ -14,6 +14,8 @@ assignees: ''
 - [ ] Add players/NPCS/Beasts/Shops
 - [ ] Integrated search engine
 - [ ] Notes Feature
+- [ ] Documentation & Automation Tools
+- [ ] Testing
 
 
 **Describe the solution you'd like**
