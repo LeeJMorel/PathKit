@@ -1,0 +1,9 @@
+front-end dev:
+  - root/frontend*
+
+back-end dev:
+  - root/backend*
+
+documentation:
+  - README.md
+  - ./*.md
