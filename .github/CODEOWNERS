@@ -10,5 +10,5 @@
 # In this example, @doctocat owns any files in the build/logs
 # directory at the root of the repository and any of its
 # subdirectories.
-/root/backend/ @neonsigh
-/root/frontend/ @LeeJMorel
+backend/ @neonsigh
+frontend/ @LeeJMorel

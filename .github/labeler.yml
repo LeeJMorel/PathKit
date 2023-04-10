@@ -1,8 +1,8 @@
 front-end dev:
-  - root/frontend*
+  - frontend*
 
 back-end dev:
-  - root/backend*
+  - backend*
 
 documentation:
   - README.md
