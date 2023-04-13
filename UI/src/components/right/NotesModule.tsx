@@ -2,12 +2,12 @@ import NotesObject from "../center/NoteObject";
 import styles from "./Modules.module.scss";
 import NoteObject from "../center/NoteObject";
 
-function DiceModule() {
+function NotesModule() {
   return (
     <div className={styles.moduleContainer}>
-      <h1>No Dice available</h1>
+      <NoteObject />
     </div>
   );
 }
 
-export default DiceModule;
+export default NotesModule;
