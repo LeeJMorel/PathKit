@@ -39,7 +39,7 @@ function App() {
     };
   // Replace with your actual search results data
 
-  const customFeatures = ""; // Replace with your actual custom features data
+  const customFeatures = "DCModule,DiceModule"; // Replace with your actual custom features data
 
   const entityInfo =
     // Placeholder entity info data
@@ -79,7 +79,7 @@ function App() {
         {/* Header component for the third column holds modular features customized by GM*/}
         <Header column="column3" customFeatures={customFeatures}></Header>
         {/* Content component for the third column will change based on header values*/}
-        <Right></Right>
+        <Right visibleModules={customFeatures}></Right>
       </div>
     </div>
   );
