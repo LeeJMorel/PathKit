@@ -39,7 +39,7 @@ function App() {
     };
   // Replace with your actual search results data
 
-  const customFeatures = "DCModule,DiceModule"; // Replace with your actual custom features data
+  const customFeatures = "DCModule,NotesModule,DiceModule"; // Replace with your actual custom features data
 
   const entityInfo =
     // Placeholder entity info data
