@@ -13,7 +13,7 @@ function Header(props: {
   // Conditionally render the header content based on the column
   let headerContent = "";
   if (column === "column1") {
-    headerContent = mode === "exploration" ? "Exploration" : "Encounter";
+    headerContent = mode === "Encounter" ? "Encounter" : "Exploration";
   } else if (column === "column2") {
     headerContent = "Search";
   } else if (column === "column3") {

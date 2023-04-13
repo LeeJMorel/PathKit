@@ -1,54 +1,67 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  height: 100%; /* Set height of App to take up the full height of the screen */
+  width: 100%; /* Set width of App to take up the full height of the screen */
   text-align: center;
 }
 
 .App {
   display: flex;
   flex-direction: row;
-  justify-items: center;
-  align-content: center;
+  justify-content: center;
+  align-items: center;
   flex-wrap: nowrap;
+  height: 100vh; /* Set height of App to take up the full height of the screen */
+  width: 100vw; /* Set width of App to take up the full height of the screen */
+  background-color: antiquewhite;
 }
 
 .Column {
   flex: 1;
+  display: flex;
   flex-direction: column;
-  justify-items: center;
-  align-content: center;
+  justify-content: flex-start;
+  align-items: stretch;
   flex-wrap: nowrap;
+  height: 100vh; /* Set height of App to take up the full height of the screen */
+  width: 33%;
 }
 
 .Header {
-  flex: 1;
-  flex-direction: column;
-  justify-items: center;
-  align-content: center;
-  flex-wrap: nowrap;
+  height: 2.5em; /* Set height of Header to 10em */
+  width: 100%; /* Set width of Header to 100% to take up the full width of its column */
+  padding: .5em;
+  background-color: dimgray;
+  color: black;
+  box-sizing: border-box; /* Add box-sizing property to include padding within the width */
 }
 
 .Left {
-  flex: 1;
+  flex: 3;
+  display: flex;
   flex-direction: column;
-  justify-items: center;
-  align-content: center;
+  justify-content: flex-start;
+  align-items: center;
   flex-wrap: nowrap;
+  max-width: 100%; /* Set maximum width of Left to 100% to take up the maximum width of its column */
 }
 
+
 .Right {
-  flex: 1;
+  flex: 3;
+  display: flex;
   flex-direction: column;
-  justify-items: center;
-  align-content: center;
+  justify-content: flex-start;
+  align-items: center;
   flex-wrap: nowrap;
+  max-width: 100%; /* Set maximum width of Right to 100% to take up the maximum width of its column */
 }
 
 .Center {
-  flex: 1;
+  flex: 3;
+  display: flex;
   flex-direction: column;
-  justify-items: center;
-  align-content: center;
+  justify-content: flex-start;
+  align-items: center;
   flex-wrap: nowrap;
+  max-width: 100%; /* Set maximum width of Center to 100% to take up the maximum width of its column */
 }
