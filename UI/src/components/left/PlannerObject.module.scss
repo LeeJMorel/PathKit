@@ -26,22 +26,27 @@
 
   .exclamation {
     position: absolute;
-    top: 1em;
-    right: 1em;
+    top: 0.5em;
+    right: 0.5em;
     transform: translate(
       50%,
       -50%
     ); // Add this line to center the exclamation mark inside the plannerObject container
+    color: red;
+    font-size: 2em; // Add this line to increase the font size
+    font-weight: bold; // Add this line to make the font bold
   }
 
   .fourPlus {
     position: absolute;
-    bottom: 1em;
-    right: 1em;
+    bottom: 0.5em;
+    right: 0.5em;
     transform: translate(
       50%,
       50%
     ); // Add this line to center the plus sign inside the plannerObject container
+    font-size: 2em; // Add this line to increase the font size
+    font-weight: bold; // Add this line to make the font bold
   }
 
   .additionalObject {

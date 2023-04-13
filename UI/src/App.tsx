@@ -1,9 +1,14 @@
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 // Import the necessary CSS and component files
 import "./App.css";
 import Center from "./Center";
 import Header from "./Header";
 import Left from "./Left";
 import Right from "./Right";
+
+// Load FontAwesome icons
+library.add(fas);
 
 function App() {
   // Define the props for the Header component
