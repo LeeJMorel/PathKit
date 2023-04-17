@@ -33,15 +33,7 @@ PathKit is built using the MVC (Model-View-Controller) architecture system, with
 
 ## Installation
 
-To install and run PathKit locally, follow these steps:
-
-1. Clone the PathKit repository from GitHub.
-2. Install Docker on your local machine, if not already installed.
-3. Build the Docker container using the provided Dockerfile.
-4. Run the Docker container, which will start the PathKit application.
-5. Access the PathKit application from your web browser and start using its features.
-
-Alternatively, a wrapper for a packaged installation may be provided, depending on further research.
+To install and run PathKit locally please look over our Wiki guide for users or developers.
 
 ## Contributing
 
