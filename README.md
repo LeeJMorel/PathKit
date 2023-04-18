@@ -3,6 +3,9 @@
 PathKit is a virtual GM (Game Master) screen for the tabletop role-playing game Pathfinder 2e. It provides a set of tools and features to assist GMs in running their game sessions smoothly and efficiently. This GitHub repository contains the source code for PathKit, and this README serves as a guide to help users understand its features and installation process.
 
 ![Screenshot](docs/assets/PathKit_Screenshot.png)
+## Project Demo Video
+[View an example gameplay usage of prototype](https://www.youtube.com/watch?v=01wgcb1VR4I)
+
 ## Major Features
 
 PathKit comes with the following major features:
