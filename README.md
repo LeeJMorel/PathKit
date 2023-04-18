@@ -3,6 +3,9 @@
 PathKit is a virtual GM (Game Master) screen for the tabletop role-playing game Pathfinder 2e. It provides a set of tools and features to assist GMs in running their game sessions smoothly and efficiently. This GitHub repository contains the source code for PathKit, and this README serves as a guide to help users understand its features and installation process.
 
 ![Screenshot](docs/assets/PathKit_Screenshot.png)
+## Project Demo Video
+[View an example gameplay usage of prototype](https://www.youtube.com/watch?v=01wgcb1VR4I)
+
 ## Major Features
 
 PathKit comes with the following major features:
@@ -29,18 +32,20 @@ PathKit is built using the MVC (Model-View-Controller) architecture system, with
 - **Front-end:** React.js is used for the front-end development of PathKit. React.js was chosen for its familiarity and flexibility to be used across local devices, such as laptops and tablets.
 - **Back-end:** Node.js is used for server-side communication with the React.js front-end.
 - **Database:** MariaDB, an open-source database system with faster caching compared to MySQL, is used for data storage in PathKit.
-- **Containerization:** Docker is used to package the entire application into a container for easy installation and deployment.
+- **Containerization:** Tauri is used to package the entire application into a container for easy installation and deployment.
 
 ## Installation
 
-To install and run PathKit locally please look over our Wiki guide for users or developers.
+To install and run PathKit locally please look over our helpful Wiki [user guide](https://github.com/LeeJMorel/PathKit/wiki/User-Manual) which we update with each release as needed.
 
 ## Contributing
 
-Contributions to PathKit are welcome! If you would like to contribute to the development of PathKit, please follow the guidelines outlined in the CONTRIBUTING.md file in the repository.
+Contributions to PathKit are welcome! If you would like to contribute to the development of PathKit, please follow the guidelines outlined in the [developers guide](https://github.com/LeeJMorel/PathKit/wiki/Developer-Guidelines) in the wiki.
 
 ## License
 
 PathKit is released under the [MIT License](LICENSE), which allows for free use, modification, and distribution of the software. Please refer to the LICENSE file for more details.
 
 ## Acknowledgements
+
+We want to thank our amazing professor for helping lead us through a complete production process and make our vision a reality! Thank you [Nigini](https://github.com/nigini)! We also want to thank our TA, Apollo, for all the work they put into reviewing our project to make it have more compleate communication and well defined project goals.
