@@ -40,7 +40,7 @@ To install and run PathKit locally please look over our Wiki guide for users or 
 
 ## Contributing
 
-Contributions to PathKit are welcome! If you would like to contribute to the development of PathKit, please follow the guidelines outlined in the CONTRIBUTING.md file in the repository.
+Contributions to PathKit are welcome! If you would like to contribute to the development of PathKit, please follow the guidelines outlined in the developers guide in the wiki.
 
 ## License
 
