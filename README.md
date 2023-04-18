@@ -47,3 +47,5 @@ Contributions to PathKit are welcome! If you would like to contribute to the dev
 PathKit is released under the [MIT License](LICENSE), which allows for free use, modification, and distribution of the software. Please refer to the LICENSE file for more details.
 
 ## Acknowledgements
+
+We want to thank our amazing professor for helping lead us through a complete production process and make our vision a reality! Thank you [Nigini](https://github.com/nigini)! We also want to thank you TA, Apollo, for all the work they put into reviewing our project to make it have more compleate communication and well defined project goals.
