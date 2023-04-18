@@ -36,7 +36,7 @@ PathKit is built using the MVC (Model-View-Controller) architecture system, with
 
 ## Installation
 
-To install and run PathKit locally please look over our Wiki guide for users or developers.
+To install and run PathKit locally please look over our helpful Wiki [user guide](https://github.com/LeeJMorel/PathKit/wiki/User-Manual) which we update with each release as needed.
 
 ## Contributing
 
