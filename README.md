@@ -29,7 +29,7 @@ PathKit is built using the MVC (Model-View-Controller) architecture system, with
 - **Front-end:** React.js is used for the front-end development of PathKit. React.js was chosen for its familiarity and flexibility to be used across local devices, such as laptops and tablets.
 - **Back-end:** Node.js is used for server-side communication with the React.js front-end.
 - **Database:** MariaDB, an open-source database system with faster caching compared to MySQL, is used for data storage in PathKit.
-- **Containerization:** Docker is used to package the entire application into a container for easy installation and deployment.
+- **Containerization:** Tauri is used to package the entire application into a container for easy installation and deployment.
 
 ## Installation
 
