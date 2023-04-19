@@ -8,6 +8,7 @@ import CardView from "./CardView";
 import ModuleView from "./ModuleView";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MainMenu from "./components/menus/MainMenu";
+import PlannerMenu, { IEntity } from "./components/menus/PlannerMenu";
 
 // Load FontAwesome icons
 library.add(fas);
@@ -33,10 +34,23 @@ function App() {
   // Define the props for the Header component
   const [mode, setMode] = useState<AppMode>(AppMode.exploration);
   const [menu, setMenu] = useState(false);
+  const [plannerMenu, setPlannerMenu] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleToggleMenu = () => {
     setMenu(!menu);
+  };
+
+  const handleTogglePlannerMenu = () => {
+    setPlannerMenu(!plannerMenu);
+  };
+
+  const handleSave = (planName: string, entities: IEntity[]) => {
+    const plan = {
+      name: planName,
+      entities: entities,
+    };
+    // Do something with the plan data, such as saving it to a database
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,8 +94,15 @@ function App() {
         <div className={styles.headerSection}>
           {/* Header over cards view, plus button pulls up plan menu*/}
           <button className={styles.headerButton}>
-            <FontAwesomeIcon icon="plus" />
+            <FontAwesomeIcon icon="plus" onClick={handleTogglePlannerMenu} />
           </button>
+          {/* Render MainMenu component */}
+          {plannerMenu && (
+            <PlannerMenu
+              onClose={() => setPlannerMenu(false)}
+              onSave={(entities) => handleSave("Plan 1", entities)}
+            />
+          )}
           <h2 className={styles.headerTitle}>
             {mode.slice(0, 1).toUpperCase() + mode.slice(1)}
           </h2>
