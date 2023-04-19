@@ -1,7 +1,5 @@
 import React from "react";
 import "./App.css";
-import HeaderButton from "./components/header/HeaderButton";
-import MenuButton from "./components/header/MenuButton";
 
 function Header(props: {
   customFeatures?: string;
@@ -29,21 +27,12 @@ function Header(props: {
     if (mode === "Encounter") {
       headerContent = (
         <>
-          <HeaderButton
-            type="addEntity"
-            onClick={() => setAddEntityMenuOpen(true)}
-          />
           <div className="Title">Encounter</div>
-          <HeaderButton type="close" onClick={() => handleButtonClick(false)} />
         </>
       );
     } else {
       headerContent = (
         <>
-          <HeaderButton
-            type="addPlan"
-            onClick={() => setAddPlanMenuOpen(true)}
-          />
           <div className="Title">Exploration</div>
         </>
       );
@@ -60,7 +49,6 @@ function Header(props: {
               .filter((feature) => feature !== "Dice")
               .join(" + ")
           : ""}
-        <MenuButton />
       </>
     );
   }

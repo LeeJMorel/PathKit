@@ -1,21 +1,21 @@
 import React from "react";
-import SearchSheet from "./components/center/SearchSheet";
-import EntitySheet from "./components/center/EntitySheet";
-import NotesSheet from "./components/center/NotesSheet";
-import "./App.css";
+import SearchSheet from "./components/sheets/SearchSheet";
+import EntitySheet from "./components/sheets/EntitySheet";
+import NotesSheet from "./components/sheets/NotesSheet";
+import styles from "./App.module.scss";
 import { ObjectProps } from "./App";
 
-export interface CenterProps {
+export interface SheetViewProps {
   selectedHeaderItem?: string;
   searchInfo?: ObjectProps;
   entityInfo?: ObjectProps;
 }
 
-function Center({
+function SheetView({
   selectedHeaderItem = "",
   searchInfo,
   entityInfo,
-}: CenterProps) {
+}: SheetViewProps) {
   let content;
 
   // Render different sheets based on the selectedHeaderItem prop
@@ -27,7 +27,7 @@ function Center({
     content = <NotesSheet />;
   }
 
-  return <div className="Center">{content}</div>;
+  return <div className={styles.sheetView}>{content}</div>;
 }
 
-export default Center;
+export default SheetView;

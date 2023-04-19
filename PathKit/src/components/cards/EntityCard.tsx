@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import { EntityObjectProps } from "../../Left";
+import { EntityObjectProps } from "../../CardView";
 import styles from "./EntityCard.module.scss";
 
 interface EntityCardProps {

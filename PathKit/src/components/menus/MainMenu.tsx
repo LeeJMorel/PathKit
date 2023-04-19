@@ -15,47 +15,51 @@ const MainMenu: React.FC = () => {
   };
 
   return (
-    <div className={styles.mainMenu}>
-      {/* Tabs */}
-      <div className={styles.tabs}>
-        <div
-          className={`${styles.tab} ${
-            currentTab === Tab.Campaign ? styles.active : ""
-          }`}
-          onClick={() => handleTabClick(Tab.Campaign)}
-        >
-          Campaign
+    <div className={styles.menuOverlay}>
+      <div className={styles.mainMenu}>
+        <h2>Here i am</h2>
+        <div className={styles.close}>&times;</div>
+        {/* Tabs */}
+        <div className={styles.tabs}>
+          <div
+            className={`${styles.tab} ${
+              currentTab === Tab.Campaign ? styles.active : ""
+            }`}
+            onClick={() => handleTabClick(Tab.Campaign)}
+          >
+            Campaign
+          </div>
+          <div
+            className={`${styles.tab} ${
+              currentTab === Tab.View ? styles.active : ""
+            }`}
+            onClick={() => handleTabClick(Tab.View)}
+          >
+            View
+          </div>
+          <div
+            className={`${styles.tab} ${
+              currentTab === Tab.Options ? styles.active : ""
+            }`}
+            onClick={() => handleTabClick(Tab.Options)}
+          >
+            Options
+          </div>
         </div>
-        <div
-          className={`${styles.tab} ${
-            currentTab === Tab.View ? styles.active : ""
-          }`}
-          onClick={() => handleTabClick(Tab.View)}
-        >
-          View
-        </div>
-        <div
-          className={`${styles.tab} ${
-            currentTab === Tab.Options ? styles.active : ""
-          }`}
-          onClick={() => handleTabClick(Tab.Options)}
-        >
-          Options
-        </div>
-      </div>
 
-      {/* Content */}
-      <div className={styles.content}>
-        {/* Render content based on current tab */}
-        {currentTab === Tab.Campaign && (
-          <div className={styles.tabContent}>Campaign tab content</div>
-        )}
-        {currentTab === Tab.View && (
-          <div className={styles.tabContent}>View tab content</div>
-        )}
-        {currentTab === Tab.Options && (
-          <div className={styles.tabContent}>Options tab content</div>
-        )}
+        {/* Content */}
+        <div className={styles.content}>
+          {/* Render content based on current tab */}
+          {currentTab === Tab.Campaign && (
+            <div className={styles.tabContent}>Campaign tab content</div>
+          )}
+          {currentTab === Tab.View && (
+            <div className={styles.tabContent}>View tab content</div>
+          )}
+          {currentTab === Tab.Options && (
+            <div className={styles.tabContent}>Options tab content</div>
+          )}
+        </div>
       </div>
     </div>
   );
