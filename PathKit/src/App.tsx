@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 // Import the necessary CSS and component files
-import "./App.css";
-import Center from "./Center";
-import Header from "./Header";
-import Left from "./Left";
-import Right from "./Right";
+import styles from "./App.module.scss";
+import SheetView from "./SheetView";
+import CardView from "./CardView";
+import ModuleView from "./ModuleView";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import MainMenu from "./components/menus/MainMenu";
 
 // Load FontAwesome icons
 library.add(fas);
@@ -22,9 +24,26 @@ export interface ObjectProps {
   };
 }
 
+export enum AppMode {
+  exploration = "exploration",
+  encounter = "encounter",
+}
+
 function App() {
   // Define the props for the Header component
-  const mode = "exploration"; // Replace with your actual mode data
+  const [mode, setMode] = useState<AppMode>(AppMode.exploration);
+  const [menu, setMenu] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleToggleMenu = () => {
+    setMenu(!menu);
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+  };
+
   const searchResults =
     // Placeholder entity info data
     {
@@ -56,31 +75,54 @@ function App() {
 
   return (
     // Main container for the app
-    <div className="App">
-      <div className="Column">
-        {/* Header component for the first column indicates Exploration or Encounter */}
-        <Header column="column1" mode={mode}></Header>
+    <div className={styles.app}>
+      <header className={styles.header}>
+        <div>
+          <button className={styles.headerButton}>
+            <FontAwesomeIcon icon="plus" />
+          </button>
+          <h2 className={styles.headerTitle}>
+            {mode.slice(0, 1).toUpperCase() + mode.slice(1)}
+          </h2>
+          {mode === AppMode.encounter && (
+            <button className={styles.headerButton}>
+              <FontAwesomeIcon icon="close" />
+            </button>
+          )}
+        </div>
+        <div>
+          <input
+            type="text"
+            placeholder={"Search"}
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+        </div>
+        <div>
+          {/* Hamburger menu icon */}
+          <FontAwesomeIcon
+            icon="bars"
+            style={{ color: "#000", cursor: "pointer" }}
+            onClick={handleToggleMenu}
+          />
+          {/* Render MainMenu component */}
+          {menu && <MainMenu />}
+        </div>
+      </header>
+      <main className={styles.content}>
         {/* Content component for the first column holds planner 
             which then tells the header what mode we are in. */}
-        <Left></Left>
-      </div>
-      <div className="Column">
-        {/* Header component for the second column is always search*/}
-        <Header column="column2" searchResults={searchResults}></Header>
+        <CardView></CardView>
         {/* Content component for the second column will change if 
             header search component is used to show results*/}
-        <Center
+        <SheetView
           selectedHeaderItem=""
           searchInfo={searchResults} // Pass search results as searchInfo
           entityInfo={entityInfo}
-        ></Center>
-      </div>
-      <div className="Column">
-        {/* Header component for the third column holds modular features customized by GM*/}
-        <Header column="column3" customFeatures={customFeatures}></Header>
+        ></SheetView>
         {/* Content component for the third column will change based on header values*/}
-        <Right visibleModules={customFeatures}></Right>
-      </div>
+        <ModuleView visibleModules={customFeatures}></ModuleView>
+      </main>
     </div>
   );
 }

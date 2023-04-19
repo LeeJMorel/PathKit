@@ -1,16 +1,16 @@
 import React from "react";
-import "./App.css";
+import styles from "./App.module.scss";
 
 // Import the module components
-import DCModule from "./components/right/DCModule";
-import DiceModule from "./components/right/DiceModule";
-import NotesModule from "./components/right/NotesModule";
+import DCModule from "./components/modules/DCModule";
+import DiceModule from "./components/modules/DiceModule";
+import NotesModule from "./components/modules/NotesModule";
 
-interface RightProps {
+interface ModuleViewProps {
   visibleModules: string; // Update the type to accept a string
 }
 
-function Right({ visibleModules }: RightProps) {
+function ModuleView({ visibleModules }: ModuleViewProps) {
   // Create a mapping of module names to corresponding component references
   const moduleComponents: { [key: string]: React.FunctionComponent } = {
     DCModule,
@@ -30,14 +30,14 @@ function Right({ visibleModules }: RightProps) {
       if (moduleComponents.hasOwnProperty(moduleName)) {
         const ModuleComponent = moduleComponents[moduleName];
         return (
-          <div key={moduleName} className="RightModule">
+          <div key={moduleName} className={styles.moduleViewObject}>
             <ModuleComponent />
           </div>
         );
       } else {
         // Render a default message or fallback UI if module name is not available
         return (
-          <div key={moduleName} className="RightModule">
+          <div key={moduleName} className={styles.moduleViewObject}>
             No module found for {moduleName}
           </div>
         );
@@ -45,7 +45,9 @@ function Right({ visibleModules }: RightProps) {
     });
   };
 
-  return <div className="Right">{renderModules(visibleModules)}</div>;
+  return (
+    <div className={styles.moduleView}>{renderModules(visibleModules)}</div>
+  );
 }
 
-export default Right;
+export default ModuleView;

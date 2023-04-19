@@ -1,10 +1,10 @@
-import "./App.css";
+import styles from "./App.module.scss";
 import React from "react";
-import PlannerCard from "./components/left/PlannerCard";
-import PlannerObject from "./components/left/PlannerObject";
+import PlannerCard from "./components/cards/PlannerCard";
+import PlannerObject from "./components/cards/PlannerObject";
 import monster from "./assets/monster.png";
 import player from "./assets/knight.png";
-import EntityCard from "./components/left/EntityCard";
+import EntityCard from "./components/cards/EntityCard";
 
 //this is a placeholder until the store is set up
 export interface EntityObjectProps {
@@ -15,7 +15,7 @@ export interface EntityObjectProps {
   isEncounter: boolean; //indicate combat
 }
 
-function Left() {
+function CardView() {
   // Generate entity objects placeholders
   const entityObject1 = [
     {
@@ -104,7 +104,7 @@ function Left() {
   ];
 
   return (
-    <div className="Left">
+    <div className={styles.cardView}>
       <PlannerCard plannerObjects={plannerObjects} />
       <EntityCard entityObjects={entityObject1} />
       <EntityCard entityObjects={entityObject2} />
@@ -114,4 +114,4 @@ function Left() {
   );
 }
 
-export default Left;
+export default CardView;
