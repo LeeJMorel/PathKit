@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./MainMenu.module.scss"; // Import your CSS/SCSS file for styling
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 enum Tab {
   Campaign = "Campaign",
@@ -51,7 +52,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
             Options
           </div>
           <div className={styles.close} onClick={handleClose}>
-            &times;
+            <FontAwesomeIcon icon="close" />
           </div>
         </div>
 

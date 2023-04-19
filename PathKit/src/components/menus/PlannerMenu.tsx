@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./PlannerMenu.module.scss"; // Import your CSS/SCSS file for styling
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //placeholder until store exists
 export interface IEntity {
@@ -126,7 +127,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
       <div className={styles.mainMenu}>
         <h2>Create Plan</h2>
         <div className={styles.close} onClick={handleClose}>
-          &times;
+          <FontAwesomeIcon icon="close" />
         </div>
         <div className={styles.entityList}>
           {entities.map((entity) => (

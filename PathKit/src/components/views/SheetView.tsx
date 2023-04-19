@@ -1,9 +1,9 @@
 import React from "react";
-import SearchSheet from "./components/sheets/SearchSheet";
-import EntitySheet from "./components/sheets/EntitySheet";
-import NotesSheet from "./components/sheets/NotesSheet";
-import styles from "./App.module.scss";
-import { ObjectProps } from "./App";
+import SearchSheet from "../sheets/SearchSheet";
+import EntitySheet from "../sheets/EntitySheet";
+import NotesSheet from "../sheets/NotesSheet";
+import styles from "./View.module.scss";
+import { ObjectProps } from "../../App";
 
 export interface SheetViewProps {
   selectedHeaderItem?: string;

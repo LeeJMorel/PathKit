@@ -1,0 +1,25 @@
+/* in content is 3 columns components that make up our app*/
+.cardView,
+.sheetView,
+.moduleView {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+  height: calc(
+    100vh - 2.5em
+  ); /* Set height of App to take up the full height of the screen */
+  width: 33%;
+  overflow-y: auto; /* Add this property to enable vertical scrolling if content exceeds height */
+}
+
+/* This container holds modules for the Right Column so they load to a dynamic size */
+.moduleViewObject {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-height: 50%;
+  width: 100%; /* Add this property to set width to 100% */
+}

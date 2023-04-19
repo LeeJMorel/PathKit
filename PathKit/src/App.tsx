@@ -3,9 +3,9 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 // Import the necessary CSS and component files
 import styles from "./App.module.scss";
-import SheetView from "./SheetView";
-import CardView from "./CardView";
-import ModuleView from "./ModuleView";
+import SheetView from "./components/views/SheetView";
+import CardView from "./components/views/CardView";
+import ModuleView from "./components/views/ModuleView";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MainMenu from "./components/menus/MainMenu";
 import PlannerMenu, { IEntity } from "./components/menus/PlannerMenu";
@@ -119,6 +119,7 @@ function App() {
         <div className={styles.headerSection}>
           {/* Header over sheets view, runs our search*/}
           <input
+            className={styles.searchBar}
             type="text"
             placeholder={"Search"}
             value={searchTerm}

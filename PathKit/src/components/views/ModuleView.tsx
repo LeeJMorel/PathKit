@@ -1,10 +1,10 @@
 import React from "react";
-import styles from "./App.module.scss";
+import styles from "./View.module.scss";
 
 // Import the module components
-import DCModule from "./components/modules/DCModule";
-import DiceModule from "./components/modules/DiceModule";
-import NotesModule from "./components/modules/NotesModule";
+import DCModule from "../modules/DCModule";
+import DiceModule from "../modules/DiceModule";
+import NotesModule from "../modules/NotesModule";
 
 interface ModuleViewProps {
   visibleModules: string; // Update the type to accept a string
