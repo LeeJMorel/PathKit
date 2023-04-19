@@ -1,10 +1,10 @@
-import styles from "./App.module.scss";
+import styles from "./View.module.scss";
 import React from "react";
-import PlannerCard from "./components/cards/PlannerCard";
-import PlannerObject from "./components/cards/PlannerObject";
-import monster from "./assets/monster.png";
-import player from "./assets/knight.png";
-import EntityCard from "./components/cards/EntityCard";
+import PlannerCard from "../cards/PlannerCard";
+import PlannerObject from "../cards/PlannerObject";
+import monster from "../../assets/monster.png";
+import player from "../../assets/knight.png";
+import EntityCard from "../cards/EntityCard";
 
 //this is a placeholder until the store is set up
 export interface EntityObjectProps {

@@ -25,7 +25,7 @@ This consists of two main objects, the header and the content*/
   flex-direction: row;
   display: flex;
 
-  // TODO Make class
+  /* The header consists of 3 sections, one for each of our Views*/
   .headerSection {
     padding: 0.5em;
     flex: 1 1 33%;
@@ -34,69 +34,44 @@ This consists of two main objects, the header and the content*/
     justify-content: stretch;
     width: 100%;
 
+    .headerTitle {
+      font-weight: bold;
+      color: white;
+      font-size: medium;
+      margin: 0 auto;
+    }
+
+    .headerButton {
+      all: unset;
+      background: darkred;
+      font-size: 1em;
+      font-weight: bold;
+      padding: 0;
+      border-radius: 100%;
+      margin-right: 0.25em;
+      width: $headerButtonWidth;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* If a button exists to one side, we place a spacer to ensure the title is centered*/
     .spacer {
       width: $headerButtonWidth;
     }
+
+    .searchBar {
+      width: 100%;
+    }
   }
-
-  input {
-    width: 100%;
-  }
 }
 
-.headerTitle {
-  font-weight: bold;
-  color: white;
-  font-size: medium;
-  margin: 0 auto;
-}
-
-.headerButton {
-  all: unset;
-  background: darkred;
-  font-size: 1em;
-  font-weight: bold;
-  padding: 0;
-  border-radius: 100%;
-  margin-right: 0.25em;
-  width: $headerButtonWidth;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* The app content shown underneath the header */
+/* The app content is shown underneath the header */
 .content {
   flex: 1;
   display: flex;
   flex-direction: row;
   align-items: stretch;
   flex-wrap: nowrap;
-}
-
-/* in content is 3 columns components that make up our app*/
-.cardView,
-.sheetView,
-.moduleView {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  flex-wrap: nowrap;
-  height: calc(
-    100vh - 2.5em
-  ); /* Set height of App to take up the full height of the screen */
-  width: 33%;
-  overflow-y: auto; /* Add this property to enable vertical scrolling if content exceeds height */
-}
-
-/* This container holds modules for the Right Column so they load to a dynamic size */
-.moduleViewObject {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  max-height: 50%;
-  width: 100%; /* Add this property to set width to 100% */
 }
