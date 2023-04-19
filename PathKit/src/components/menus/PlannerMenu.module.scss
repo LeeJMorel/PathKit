@@ -1,4 +1,4 @@
-// MainMenu.module.scss
+// PlannerMenu.module.scss
 .menuOverlay {
   position: fixed;
   top: 0;
@@ -36,32 +36,5 @@
     &:hover {
       color: #06d85f;
     }
-  }
-
-  .content {
-    max-height: 30%;
-    overflow: auto;
-  }
-
-  .tabs {
-    display: flex;
-  }
-
-  .tab {
-    padding: 10px;
-    cursor: pointer;
-
-    &:not(:last-child) {
-      margin-right: 10px;
-    }
-
-    &.active {
-      font-weight: bold;
-      // Apply styles for the active tab
-    }
-  }
-
-  .tabContent {
-    // Apply styles for the tab's content
   }
 }
