@@ -4,6 +4,8 @@
   text-align: center;
 }
 
+$headerButtonWidth: 20px;
+
 /* Our main component, this takes up the full screen .
 This consists of two main objects, the header and the content*/
 .app {
@@ -24,13 +26,17 @@ This consists of two main objects, the header and the content*/
   display: flex;
 
   // TODO Make class
-  div {
+  .headerSection {
     padding: 0.5em;
     flex: 1 1 33%;
     display: flex;
     align-items: center;
     justify-content: stretch;
     width: 100%;
+
+    .spacer {
+      width: $headerButtonWidth;
+    }
   }
 
   input {
@@ -42,7 +48,7 @@ This consists of two main objects, the header and the content*/
   font-weight: bold;
   color: white;
   font-size: medium;
-  margin: 0;
+  margin: 0 auto;
 }
 
 .headerButton {
@@ -53,7 +59,7 @@ This consists of two main objects, the header and the content*/
   padding: 0;
   border-radius: 100%;
   margin-right: 0.25em;
-  width: 20px;
+  width: $headerButtonWidth;
   height: 20px;
   display: flex;
   align-items: center;

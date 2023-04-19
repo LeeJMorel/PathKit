@@ -77,20 +77,26 @@ function App() {
     // Main container for the app
     <div className={styles.app}>
       <header className={styles.header}>
-        <div>
+        <div className={styles.headerSection}>
+          {/* Header over cards view, plus button pulls up plan menu*/}
           <button className={styles.headerButton}>
             <FontAwesomeIcon icon="plus" />
           </button>
           <h2 className={styles.headerTitle}>
             {mode.slice(0, 1).toUpperCase() + mode.slice(1)}
           </h2>
-          {mode === AppMode.encounter && (
+          {/* if in encounter mode, show a close button to exit it*/}
+          {mode === AppMode.encounter ? (
             <button className={styles.headerButton}>
               <FontAwesomeIcon icon="close" />
             </button>
+          ) : (
+            // Empty div for layout
+            <div className={styles.spacer} />
           )}
         </div>
-        <div>
+        <div className={styles.headerSection}>
+          {/* Header over sheets view, runs our search*/}
           <input
             type="text"
             placeholder={"Search"}
@@ -98,7 +104,10 @@ function App() {
             onChange={handleSearch}
           />
         </div>
-        <div>
+        <div className={styles.headerSection}>
+          <div className={styles.spacer}></div>
+          {/* Header over module view, dynamic title with menu button*/}
+          <h2 className={styles.headerTitle}>Modules</h2>
           {/* Hamburger menu icon */}
           <FontAwesomeIcon
             icon="bars"
@@ -106,7 +115,7 @@ function App() {
             onClick={handleToggleMenu}
           />
           {/* Render MainMenu component */}
-          {menu && <MainMenu />}
+          {menu && <MainMenu onClose={() => setMenu(false)} />}
         </div>
       </header>
       <main className={styles.content}>
