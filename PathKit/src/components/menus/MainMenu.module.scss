@@ -7,13 +7,6 @@
   right: 0;
   background: rgba(0, 0, 0, 0.7);
   transition: opacity 500ms;
-  visibility: hidden;
-  opacity: 0;
-
-  &:target {
-    visibility: visible;
-    opacity: 1;
-  }
 }
 
 .mainMenu {
@@ -23,7 +16,7 @@
   border-radius: 5px;
   width: 30%;
   position: relative;
-  transition: all 5s ease-in-out;
+  transition: all 0.2s ease-in-out;
 
   h2 {
     margin-top: 0;

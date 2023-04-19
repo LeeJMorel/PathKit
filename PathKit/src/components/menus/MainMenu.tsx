@@ -7,18 +7,23 @@ enum Tab {
   Options = "Options",
 }
 
-const MainMenu: React.FC = () => {
+interface IMainMenuProps {
+  onClose: () => void;
+}
+const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   const [currentTab, setCurrentTab] = useState(Tab.Campaign);
 
   const handleTabClick = (tab: Tab) => {
     setCurrentTab(tab);
   };
 
+  const handleClose = () => {
+    onClose();
+  };
+
   return (
     <div className={styles.menuOverlay}>
       <div className={styles.mainMenu}>
-        <h2>Here i am</h2>
-        <div className={styles.close}>&times;</div>
         {/* Tabs */}
         <div className={styles.tabs}>
           <div
@@ -44,6 +49,9 @@ const MainMenu: React.FC = () => {
             onClick={() => handleTabClick(Tab.Options)}
           >
             Options
+          </div>
+          <div className={styles.close} onClick={handleClose}>
+            &times;
           </div>
         </div>
 
