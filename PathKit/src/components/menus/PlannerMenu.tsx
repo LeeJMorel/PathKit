@@ -1,131 +1,124 @@
 import React, { useState } from "react";
 import styles from "./PlannerMenu.module.scss"; // Import your CSS/SCSS file for styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-//placeholder until store exists
-export interface IEntity {
-  id: string;
-  name: string;
-  stats: {
-    [key: string]: number;
-  };
-}
+import MenuButton from "./MenuButton";
+import MenuInput from "./MenuInput";
+import AddEntityForm, { EntityType, IEntity } from "../forms/AddEntityForm";
+import { AppMode } from "../../App";
 
 interface IPlannerMenuProps {
   onClose: () => void;
-  onSave: (entities: IEntity[]) => void;
+  onSave: (entities: IEntity[], appMode: AppMode) => void;
+  planId?: string;
+  appModeUsed: AppMode;
 }
 
 const PlannerMenu: React.FC<IPlannerMenuProps> = ({
   onClose,
   onSave,
+  planId,
+  appModeUsed,
 }: IPlannerMenuProps) => {
   const [entities, setEntities] = useState<IEntity[]>([]);
+
   const [showAddEntity, setShowAddEntity] = useState(false);
-  const [newEntityName, setNewEntityName] = useState("");
-  const [newEntityStats, setNewEntityStats] = useState<{
-    [key: string]: number;
-  }>({});
+  const [selectedEntityType, setSelectedEntityType] = useState<EntityType>(
+    EntityType.Shop
+  );
 
   const handleClose = () => {
     onClose();
+  };
+
+  const handleEntityTypeChange = (selectedEntityType: EntityType) => {
+    setSelectedEntityType(selectedEntityType);
   };
 
   const handleAddEntityClick = () => {
     setShowAddEntity(true);
   };
 
+  const handleAddEntity = (entity: IEntity) => {
+    const newEntity: IEntity = {
+      ...entity,
+    };
+    setEntities([...entities, newEntity]);
+    setShowAddEntity(false);
+  };
+
   const handleAddEntityCancel = () => {
     setShowAddEntity(false);
-    setNewEntityName("");
-    setNewEntityStats({});
   };
 
   const handleSaveClick = () => {
-    onSave(entities);
+    onSave(entities, appModeUsed);
     handleClose();
   };
-
-  const handleEntityNameChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setNewEntityName(event.target.value);
+  const renderEncounterPlan = () => {
+    return (
+      <>
+        <div className={styles.entityTypeSelection}>
+          <MenuInput
+            label="Monster"
+            type={"radio"}
+            name="entityType"
+            onChange={() => handleEntityTypeChange(EntityType.Monster)}
+          />
+        </div>
+        {/* Render the add entity form based on the selected entity type */}
+        <AddEntityForm
+          type={selectedEntityType}
+          onAddEntity={(entity) => handleAddEntity(entity)}
+        ></AddEntityForm>
+      </>
+    );
   };
 
-  const handleEntityStatChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    statKey: string
-  ) => {
-    setNewEntityStats({
-      ...newEntityStats,
-      [statKey]: parseInt(event.target.value, 10),
-    });
-  };
-
-  const handleAddEntitySubmit = () => {
-    if (newEntityName.trim() !== "") {
-      const newEntity: IEntity = {
-        id: Date.now().toString(),
-        name: newEntityName.trim(),
-        stats: newEntityStats,
-      };
-      setEntities([...entities, newEntity]);
-      handleAddEntityCancel();
-    }
+  const renderExplorationPlan = () => {
+    return (
+      <>
+        <div className={styles.entityTypeSelection}>
+          <MenuInput
+            label="Shop"
+            type={"radio"}
+            name="entityType"
+            onChange={() => handleEntityTypeChange(EntityType.Shop)}
+          />
+          <MenuInput
+            label="NPC"
+            type={"radio"}
+            name="entityType"
+            onChange={() => handleEntityTypeChange(EntityType.NPC)}
+          />
+        </div>
+        {/* Render the add entity form based on the selected entity type */}
+        <AddEntityForm
+          type={selectedEntityType}
+          onAddEntity={(entity) => handleAddEntity(entity)}
+        ></AddEntityForm>
+      </>
+    );
   };
 
   const renderAddEntity = () => {
     if (showAddEntity) {
-      return (
-        <div className={styles.addEntity}>
-          <input
-            type="text"
-            value={newEntityName}
-            onChange={handleEntityNameChange}
-            placeholder="Entity Name"
-          />
-          <div className={styles.entityStats}>
-            <h3>Add Custom Stats</h3>
-            <div className={styles.entityStatsList}>
-              <div className={styles.entityStat}>
-                <label htmlFor="stat1">Stat 1:</label>
-                <input
-                  type="number"
-                  id="stat1"
-                  onChange={(event) => handleEntityStatChange(event, "stat1")}
-                />
-              </div>
-              <div className={styles.entityStat}>
-                <label htmlFor="stat2">Stat 2:</label>
-                <input
-                  type="number"
-                  id="stat2"
-                  onChange={(event) => handleEntityStatChange(event, "stat2")}
-                />
-              </div>
-              <div className={styles.entityStat}>
-                <label htmlFor="stat3">Stat 3:</label>
-                <input
-                  type="number"
-                  id="stat3"
-                  onChange={(event) => handleEntityStatChange(event, "stat3")}
-                />
-              </div>
-            </div>
-          </div>
-          <div className={styles.addEntityButtons}>
-            <button onClick={handleAddEntityCancel}>Cancel</button>
-            <button onClick={handleAddEntitySubmit}>Add Entity</button>
-          </div>
-        </div>
-      );
+      return appModeUsed === AppMode.encounter
+        ? renderEncounterPlan()
+        : renderExplorationPlan();
     }
     return null;
   };
+
+  const renderTitle = () => {
+    return appModeUsed === AppMode.encounter
+      ? "Create Encounter Plan"
+      : "Create Exploration Plan";
+  };
+
   return (
     <div className={styles.menuOverlay}>
       <div className={styles.mainMenu}>
-        <h2>Create Plan</h2>
+        <h2>{renderTitle()}</h2>
         <div className={styles.close} onClick={handleClose}>
           <FontAwesomeIcon icon="close" />
         </div>
@@ -146,20 +139,16 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
           ))}
           <div className={styles.entity}>
             {!showAddEntity && (
-              <div
-                className={styles.addEntityButton}
+              <MenuButton
+                label="Add Entity"
                 onClick={handleAddEntityClick}
-              >
-                + Add Entity
-              </div>
+              ></MenuButton>
             )}
             {renderAddEntity()}
           </div>
         </div>
         <div className={styles.menuButtons}>
-          <button className={styles.saveButton} onClick={handleSaveClick}>
-            Save Plan
-          </button>
+          <MenuButton label="Save Plan" onClick={handleSaveClick}></MenuButton>
         </div>
       </div>
     </div>

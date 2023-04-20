@@ -8,7 +8,9 @@ import CardView from "./components/views/CardView";
 import ModuleView from "./components/views/ModuleView";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MainMenu from "./components/menus/MainMenu";
-import PlannerMenu, { IEntity } from "./components/menus/PlannerMenu";
+import PlannerMenu from "./components/menus/PlannerMenu";
+import { IEntity } from "./components/forms/AddEntityForm";
+import EditPlannerMenu from "./components/menus/EditPlannerMenu";
 
 // Load FontAwesome icons
 library.add(fas);
@@ -45,10 +47,15 @@ function App() {
     setPlannerMenu(!plannerMenu);
   };
 
-  const handleSave = (planName: string, entities: IEntity[]) => {
+  const handleSave = (
+    planName: string,
+    entities: IEntity[],
+    isEncounter: boolean
+  ) => {
     const plan = {
       name: planName,
       entities: entities,
+      isEncounter: isEncounter,
     };
     // Do something with the plan data, such as saving it to a database
   };
@@ -92,17 +99,8 @@ function App() {
     <div className={styles.app}>
       <header className={styles.header}>
         <div className={styles.headerSection}>
-          {/* Header over cards view, plus button pulls up plan menu*/}
-          <button className={styles.headerButton}>
-            <FontAwesomeIcon icon="plus" onClick={handleTogglePlannerMenu} />
-          </button>
-          {/* Render MainMenu component */}
-          {plannerMenu && (
-            <PlannerMenu
-              onClose={() => setPlannerMenu(false)}
-              onSave={(entities) => handleSave("Plan 1", entities)}
-            />
-          )}
+          {/* Header over cards view, button pulls up plan menu*/}
+          <EditPlannerMenu appMode={AppMode.exploration}></EditPlannerMenu>
           <h2 className={styles.headerTitle}>
             {mode.slice(0, 1).toUpperCase() + mode.slice(1)}
           </h2>
