@@ -5,6 +5,7 @@ import PlannerObject from "../cards/PlannerObject";
 import monster from "../../assets/monster.png";
 import player from "../../assets/knight.png";
 import EntityCard from "../cards/EntityCard";
+import AddPlayerCard from "../cards/AddPlayerCard";
 
 //this is a placeholder until the store is set up
 export interface EntityObjectProps {
@@ -110,6 +111,7 @@ function CardView() {
       <EntityCard entityObjects={entityObject2} />
       <EntityCard entityObjects={entityObject3} />
       <EntityCard entityObjects={entityObject4} />
+      <AddPlayerCard></AddPlayerCard>
     </div>
   );
 }

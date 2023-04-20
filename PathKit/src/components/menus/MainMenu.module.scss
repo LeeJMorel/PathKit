@@ -64,5 +64,28 @@
 
   .tabContent {
     // Apply styles for the tab's content
+    .tabHeader {
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .tabHorizontalLine {
+      background: black;
+      border-color: black;
+      height: "3px";
+    }
+
+    .tabCheckboxContainer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .tabSubtext {
+      font-style: italic;
+      font-size: small;
+      text-align: center;
+    }
   }
 }
