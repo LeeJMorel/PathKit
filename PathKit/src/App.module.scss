@@ -1,3 +1,5 @@
+@import "./styles/variables.scss";
+
 #root {
   height: 100%; /* Set height of App to take up the full height of the screen */
   width: 100%; /* Set width of App to take up the full height of the screen */
@@ -15,11 +17,13 @@ This consists of two main objects, the header and the content*/
   height: 100vh; /* Set height of App to take up the full height of the screen */
   width: 100vw; /* Set width of App to take up the full height of the screen */
   background-color: antiquewhite;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 /* At the top of the app is a header */
 .header {
-  height: 2.5em; /* Set height of Header to 10em */
+  height: $headerHeight; /* Set height of Header to 10em */
   width: 100%; /* Set width of Header to 100% to take up the full width of its column */
   background-color: dimgray;
   flex-direction: row;

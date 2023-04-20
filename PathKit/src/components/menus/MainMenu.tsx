@@ -3,6 +3,8 @@ import styles from "./MainMenu.module.scss"; // Import your CSS/SCSS file for st
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuInput from "./MenuInput";
 import MenuButton from "./MenuButton";
+import useTheme from "../../hooks/useTheme";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 enum Tab {
   Campaign = "Campaign",
@@ -16,10 +18,23 @@ interface IMainMenuProps {
 const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   const [currentTab, setCurrentTab] = useState(Tab.Campaign);
   const [isTutorial, setIsTutorial] = useState<boolean>(false);
+  const [selectedTheme, setSelectedTheme] = useLocalStorage<string>(
+    "theme",
+    "parchment"
+  );
   const [isPlaceholder, setIsPlaceholder] = useState(false);
 
-  const handleTutorialBoxChange = (checked: boolean) => {
+  const handleTutorialBoxChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { checked } = event.target;
     setIsTutorial(checked);
+  };
+
+  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value: theme } = event.target;
+    console.log("radio change", theme);
+    setSelectedTheme(theme);
   };
 
   const handlePlaceholder = () => {
@@ -154,10 +169,11 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                 />
                 <MenuInput
                   label="Colorblind Theme"
-                  checked={isTutorial}
-                  type={"checkbox"}
-                  name="PLACEHOLDER"
-                  onChange={handleTutorialBoxChange}
+                  checked={selectedTheme === "colorblind"}
+                  type={"radio"}
+                  name="theme"
+                  value="colorblind"
+                  onChange={handleThemeChange}
                 />
               </div>
               <h2 className={styles.tabHeader}>Color Themes</h2>
@@ -165,17 +181,19 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
               <div className={styles.tabCheckboxContainer}>
                 <MenuInput
                   label="Parchment"
-                  checked={isTutorial}
-                  type={"checkbox"}
-                  name="PLACEHOLDER"
-                  onChange={handleTutorialBoxChange}
+                  checked={selectedTheme === "parchment"}
+                  type={"radio"}
+                  name="theme"
+                  value="parchment"
+                  onChange={handleThemeChange}
                 />
                 <MenuInput
                   label="Dark"
-                  checked={isTutorial}
-                  type={"checkbox"}
-                  name="PLACEHOLDER"
-                  onChange={handleTutorialBoxChange}
+                  checked={selectedTheme === "dark"}
+                  type={"radio"}
+                  name="theme"
+                  value="dark"
+                  onChange={handleThemeChange}
                 />
               </div>
               <hr className={styles.tabHorizontalLine} />
