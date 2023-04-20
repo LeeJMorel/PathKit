@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 
 interface InputProps {
   label: string;
   checked?: boolean;
   type: "checkbox" | "radio";
   name: string;
-  onChange: (checked: boolean) => void;
+  value?: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const MenuInput: React.FC<InputProps> = ({
@@ -13,23 +14,17 @@ const MenuInput: React.FC<InputProps> = ({
   checked,
   type,
   name,
+  value,
   onChange,
 }) => {
-  const [isChecked, setIsChecked] = useState(checked);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { checked } = event.target;
-    setIsChecked(checked);
-    onChange(checked);
-  };
-
   return (
     <label style={{ margin: "0.5em" }}>
       <input
         type={type}
-        checked={isChecked}
+        checked={checked}
         name={name}
-        onChange={handleChange}
+        value={value}
+        onChange={onChange}
       />
       {label}
     </label>

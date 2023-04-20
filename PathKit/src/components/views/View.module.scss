@@ -1,4 +1,6 @@
 /* in content is 3 columns components that make up our app*/
+@import "../../styles/variables.scss";
+
 .cardView,
 .sheetView,
 .moduleView {
@@ -9,7 +11,7 @@
   align-items: center;
   flex-wrap: nowrap;
   height: calc(
-    100vh - 2.5em
+    100vh - $headerHeight
   ); /* Set height of App to take up the full height of the screen */
   width: 33%;
   overflow-y: auto; /* Add this property to enable vertical scrolling if content exceeds height */
