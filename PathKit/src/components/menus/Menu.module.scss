@@ -29,7 +29,7 @@
     top: 20px;
     right: 30px;
     transition: all 200ms;
-    font-size: 30px;
+    font-size: 2em;
     font-weight: bold;
     text-decoration: none;
     cursor: "pointer";
@@ -99,20 +99,32 @@
   }
 }
 
-.menuButtonContainer {
+.menuRowContainer {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   flex: 1;
   flex-direction: row;
+  width: 100%;
 }
 
-.entityButtonContainer {
+.menuColumnContainer {
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex: 1;
   flex-direction: column;
+}
+
+.menuScrollContainer {
+  overflow: auto;
+  max-height: 8em;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex: 1;
+  flex-direction: column;
+  padding-top: 0.5em;
 }
 
 .menuRoundButtonContainer {
@@ -147,6 +159,57 @@
 
   &:hover {
     background-color: var(--primaryBackground);
+  }
+
+  &:disabled {
+    background-color: var(--primaryBackground);
+    color: var(--errorBackground);
+  }
+}
+
+.tipsMenu {
+  position: fixed;
+  z-index: 9999; /* Set a high z-index to ensure it appears on top */
+  margin: 70px auto;
+  padding: 20px;
+  background: var(--secondaryBackground);
+  color: var(--secondaryText);
+  border-radius: 5px;
+  width: 30%;
+  transition: all 0.2s ease-in-out;
+
+  h2 {
+    margin-top: 0;
+  }
+
+  .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 2em;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: "pointer";
+
+    &:hover {
+      color: var(--errorBackground);
+    }
+  }
+  .tipArrowContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .tipBody {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   }
 }
 

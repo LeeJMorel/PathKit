@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import monster from "../../assets/monster.png";
 import player from "../../assets/knight.png";
 import defaultImage from "../../assets/fighter.png";
-import styles from "./AddEntityForm.module.scss";
+import styles from "./Form.module.scss";
 import { IEntity, EntityType } from "../../api/model";
 
 interface Props {
