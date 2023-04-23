@@ -204,6 +204,14 @@
   display: flex;
 }
 
+.plannerCardPlaceholder {
+  font-size: 0.8em;
+  width: 100%;
+  white-space: break-spaces;
+  line-height: 1.1;
+  text-align: center;
+}
+
 .plannerObject {
   display: flex;
   align-items: flex-start;

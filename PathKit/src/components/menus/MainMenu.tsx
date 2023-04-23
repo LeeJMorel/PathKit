@@ -11,6 +11,12 @@ enum Tab {
   Options = "Options",
 }
 
+enum visibleModules {
+  DCModule = "DC",
+  DiceModule = "Dice",
+  NotesModule = "Notes",
+}
+
 interface IMainMenuProps {
   onClose: () => void;
 }
@@ -40,6 +46,14 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     setPreferences({
       ...preferences,
       theme,
+    });
+  };
+
+  const handleModuleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value: visibleModules } = event.target;
+    setPreferences({
+      ...preferences,
+      visibleModules,
     });
   };
 
@@ -140,24 +154,24 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
               <div className={styles.tabCheckboxContainer}>
                 <MenuInput
                   label="DC Adjustments Table"
-                  checked={isTutorial}
+                  checked={preferences.visibleModules === "DC"}
                   type={"checkbox"}
-                  name="PLACEHOLDER"
-                  onChange={handleTutorialBoxChange}
+                  name="visibleModule"
+                  onChange={handleModuleChange}
                 />
                 <MenuInput
                   label="Notes Module"
-                  checked={isTutorial}
+                  checked={preferences.visibleModules === "Notes"}
                   type={"checkbox"}
-                  name="PLACEHOLDER"
-                  onChange={handleTutorialBoxChange}
+                  name="visibleModule"
+                  onChange={handleModuleChange}
                 />
                 <MenuInput
                   label="Dice Roller"
-                  checked={isTutorial}
+                  checked={preferences.visibleModules === "Dice"}
                   type={"checkbox"}
-                  name="PLACEHOLDER"
-                  onChange={handleTutorialBoxChange}
+                  name="visibleModule"
+                  onChange={handleModuleChange}
                 />
               </div>
             </div>
@@ -172,7 +186,8 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                   label="Large Font"
                   checked={preferences.largeFont}
                   type={"checkbox"}
-                  name="PLACEHOLDER"
+                  name="largeFont"
+                  value="Large Font"
                   onChange={handleLargeFontChange}
                 />
                 <MenuInput

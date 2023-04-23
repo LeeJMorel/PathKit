@@ -1,18 +1,13 @@
 import styles from "./Sheets.module.scss";
-import { ObjectProps } from "../../App";
 
 interface SearchSheetProps {
-  searchInfo?: ObjectProps;
+  searchInfo?: string;
 }
 
 function SearchSheet({ searchInfo }: SearchSheetProps) {
   return (
     <div className={styles.sheetsContainer}>
-      {searchInfo ? (
-        <h1>{searchInfo.name}</h1>
-      ) : (
-        <h1>No search info available</h1>
-      )}
+      {searchInfo ? <h1>idk</h1> : <h1>No search info available</h1>}
     </div>
   );
 }
