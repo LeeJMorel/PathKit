@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import styles from "./PlannerCard.module.scss";
+import styles from "./Card.module.scss";
 import PlannerObject, { PlannerObjectProps } from "./PlannerObject";
 
 interface PlannerCardProps {
@@ -36,7 +36,7 @@ function PlannerCard({ plannerObjects }: PlannerCardProps) {
   };
 
   return (
-    <div className={styles.plannerCard}>
+    <div className={styles.card}>
       <div className={styles.plannerCardScrollLeft} onClick={handleScrollLeft}>
         {/* Placeholder for left arrow icon */}
         &lt;

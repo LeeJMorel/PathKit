@@ -7,6 +7,7 @@
   padding: 1rem;
   width: 100%;
   margin: 0 auto;
+  color: var(--secondaryText);
 
   .formRow {
     display: flex;
@@ -22,21 +23,24 @@
 
     .formInput {
       padding: 0.2rem;
-      border: 1px solid #ccc;
+      border: 1px solid var(--secondaryText);
       border-radius: 0.25rem;
       width: 100%;
       font-size: 0.8rem;
       margin-bottom: 0.5rem;
+      background: var(--primaryBackground);
+      color: var(--primaryText);
     }
 
     .formSelect {
       padding: 0.2rem;
-      border: 1px solid #ccc;
+      border: 1px solid var(--secondaryText);
       border-radius: 0.25rem;
       width: 100%;
       font-size: 0.8rem;
       margin-bottom: 0.5rem;
-      background: #442912;
+      background: var(--primaryBackground);
+      color: var(--primaryText);
     }
   }
 
@@ -44,19 +48,19 @@
     padding: 0.2rem 0.5rem;
     border: none;
     border-radius: 0.25rem;
-    background-color: #442912;
-    color: #fff;
+    background-color: var(--accentBackground);
+    color: var(--accentText);
     font-size: 1rem;
     align-items: center;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
 
     &:hover {
-      background-color: #25170a;
+      background-color: var(--primaryBackground);
     }
 
     &:disabled {
-      background-color: #ccc;
+      background-color: var(--accentText);
       cursor: not-allowed;
     }
   }

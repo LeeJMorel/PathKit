@@ -1,4 +1,5 @@
 @import "./styles/variables.scss";
+@import "./styles/themeHelpers.scss";
 
 #root {
   height: 100%; /* Set height of App to take up the full height of the screen */
@@ -16,16 +17,39 @@ This consists of two main objects, the header and the content*/
   flex-wrap: nowrap;
   height: 100vh; /* Set height of App to take up the full height of the screen */
   width: 100vw; /* Set width of App to take up the full height of the screen */
-  background-color: antiquewhite;
+  background-color: var(--bodyBackground);
   overflow-x: hidden;
   overflow-y: hidden;
+  font-size: 16px;
+
+  &.largeFont {
+    font-size: 18px;
+  }
+
+  &.parchment {
+    @each $name, $value in $parchmentTheme {
+      @include define-custom-property($name, $value);
+    }
+  }
+
+  &.dark {
+    @each $name, $value in $darkTheme {
+      @include define-custom-property($name, $value);
+    }
+  }
+
+  &.highContrast {
+    @each $name, $value in $highContrastTheme {
+      @include define-custom-property($name, $value);
+    }
+  }
 }
 
 /* At the top of the app is a header */
 .header {
   height: $headerHeight; /* Set height of Header to 10em */
   width: 100%; /* Set width of Header to 100% to take up the full width of its column */
-  background-color: dimgray;
+  background-color: var(--accentBackground);
   flex-direction: row;
   display: flex;
 
@@ -40,24 +64,9 @@ This consists of two main objects, the header and the content*/
 
     .headerTitle {
       font-weight: bold;
-      color: white;
-      font-size: medium;
+      color: var(--accentText);
+      font-size: 1.4em;
       margin: 0 auto;
-    }
-
-    .headerButton {
-      all: unset;
-      background: darkred;
-      font-size: 1em;
-      font-weight: bold;
-      padding: 0;
-      border-radius: 100%;
-      margin-right: 0.25em;
-      width: $headerButtonWidth;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     /* If a button exists to one side, we place a spacer to ensure the title is centered*/
@@ -67,6 +76,12 @@ This consists of two main objects, the header and the content*/
 
     .searchBar {
       width: 100%;
+      height: 100%;
+      background-color: var(--secondaryBackground);
+
+      &::placeholder {
+        color: var(--secondaryText);
+      }
     }
   }
 }

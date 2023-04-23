@@ -1,0 +1,267 @@
+.card {
+  width: 100%;
+  height: 5em;
+  margin-bottom: 1em;
+  position: relative;
+  overflow: hidden;
+  flex-direction: row;
+  background-color: var(--primaryBackground);
+  color: var(--primaryText);
+  // background: linear-gradient(
+  //   to right,
+  //   burlywood 0%,
+  //   burlywood 77%,
+  //   #9e603f 100%
+  // );
+}
+
+.cardContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  padding: 0.5em;
+  flex: 1;
+}
+
+.entityContent {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  flex-wrap: wrap;
+  flex: 1;
+  margin-left: 1em;
+  justify-content: space-between; /* Add this property to push stats to the bottom */
+}
+
+.cardImage {
+  width: 4em;
+  height: 4em;
+  padding: 0.2em;
+  background: var(--accentBackground);
+  border-width: 0.1rem;
+  border-style: solid;
+  border-color: var(--accentText);
+
+  img {
+    width: 100%;
+  }
+
+  .deadIcon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2em;
+    color: var(--errorBackground);
+  }
+}
+
+.entityDeadImage {
+  border-width: 0.3em;
+  border-color: var(--errorBackground);
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+  }
+  //   &:after,
+  //   &:before {
+  //     content: "";
+  //     position: absolute;
+  //     background: red;
+  //     display: block;
+  //     width: 4em;
+  //     height: 0.3rem;
+  //     top: 50%;
+  //     left: 50%;
+  //   }
+
+  //   &:before {
+  //     transform: translate(-50%, -50%) rotate(45deg);
+  //   }
+
+  //   &:after {
+  //     transform: translate(-50%, -50%) rotate(135deg);
+  //   }
+}
+
+.entityName {
+  display: flex;
+  flex: 1;
+  margin-left: 0.2em;
+}
+
+.entityStats {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Add this property to center stats horizontally */
+  margin-top: auto; /* Add this property to push stats to the bottom */
+  color: var(--secondaryText);
+}
+
+.entityStat {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  background-color: var(--secondaryBackground);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.2em;
+}
+
+.statCircle {
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.entityHP {
+  display: flex;
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+}
+
+.entityHPButton {
+  all: unset;
+  background: var(--secondaryBackground);
+  color: var(--secondaryText);
+  font-size: 1em;
+  font-weight: bold;
+  padding: 0;
+  border-radius: 100%;
+  margin-right: 0.25em;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.entityHPNumbers {
+  font-size: 0.8em;
+}
+
+.cardAddButton {
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  font-size: 1.5rem; // Increase font size
+  border: none;
+
+  .fa-plus {
+    font-size: 1.5rem; // Increase icon size
+  }
+}
+
+.plannerCardScrollLeft,
+.plannerCardScrollRight {
+  position: absolute;
+  cursor: pointer;
+  font-size: 1.5em;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.plannerCardScrollLeft {
+  left: 0;
+  padding-left: 0.2em;
+}
+
+.plannerCardScrollRight {
+  right: 0;
+  padding-right: 0.2em;
+}
+
+.plannerCardScrollContainer {
+  overflow: hidden;
+  height: 100%;
+  width: calc(
+    100% - 4em
+  ); /* Subtract the width of the arrows from the container width */
+  margin-left: 2em; /* Add margin to the left of the container to make space for the left arrow */
+  margin-right: 2em; /* Add margin to the right of the container to make space for the right arrow */
+  padding: 0.2em;
+  display: flex;
+  align-items: center;
+  white-space: nowrap; /* Prevent line wrapping of planner objects */
+}
+
+.plannerCardScrollCard {
+  display: flex;
+}
+
+.plannerObject {
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+  margin: 0.5em;
+  border-width: 0.1rem;
+  border-style: solid;
+  border-color: var(--accentText);
+  position: relative;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0.2em;
+  background: var(--accentBackground);
+  width: 4em;
+  height: 4em;
+
+  img {
+    // flex: 1;
+    width: calc(100% - 0.2em);
+    margin: 0.1em;
+
+    &.grid {
+      width: calc(50% - 0.2em);
+    }
+  }
+
+  .exclamation {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    transform: translate(
+      50%,
+      -50%
+    ); // Add this line to center the exclamation mark inside the plannerObject container
+    color: var(--errorBackground);
+    font-size: 2em; // Add this line to increase the font size
+    font-weight: bold; // Add this line to make the font bold
+  }
+
+  .fourPlus {
+    position: absolute;
+    bottom: 0.5em;
+    right: 0.5em;
+    color: var(--errorText);
+    transform: translate(
+      50%,
+      50%
+    ); // Add this line to center the plus sign inside the plannerObject container
+    font-size: 2em; // Add this line to increase the font size
+    font-weight: bold; // Add this line to make the font bold
+  }
+
+  .additionalObject {
+    flex: 1;
+  }
+
+  .row {
+    flex: 1;
+    flex-direction: row;
+  }
+}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./EditPlannerMenu.module.scss"; // Import your CSS/SCSS file for styling
+import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for styling
 import PlannerMenu from "./PlannerMenu";
 import { AppMode } from "../../App";
 import { IEntity } from "../forms/AddEntityForm";
@@ -69,12 +69,12 @@ const EditPlannerMenu: React.FC<IMenuProps> = ({
     }
 
     return (
-      <div className={styles.menuButtonContainer}>
+      <div className={styles.menuRoundButtonContainer}>
         <div className={styles.menuDropdown}>
           <button
             type="button"
             title="Add Plan"
-            className={styles.menuButton}
+            className={styles.menuRoundButton}
             onClick={handleMenuClick}
           >
             <FontAwesomeIcon icon="file-circle-plus" />
