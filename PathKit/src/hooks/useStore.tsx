@@ -100,7 +100,7 @@ export const useStore = create(
       setEntities: (entities) => set({ entities }),
       setEntitiesLoading: (loading) => set({ entitiesLoading: loading }),
 
-      plans: examplePlans,
+      plans: [],
       plansLoading: false,
       setPlans: (plans) => set({ plans }),
       setPlansLoading: (loading) => set({ plansLoading: loading }),

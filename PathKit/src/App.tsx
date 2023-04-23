@@ -12,22 +12,10 @@ import PlannerMenu from "./components/menus/PlannerMenu";
 import { IEntity } from "./api/model";
 import EditPlannerMenu from "./components/menus/EditPlannerMenu";
 import classNames from "classnames";
-import { usePreferenceStore } from "./hooks";
+import { usePreferenceStore, useSelectEntity } from "./hooks";
 
 // Load FontAwesome icons
 library.add(fas);
-
-//this is a placeholder until the store is set up
-export interface ObjectProps {
-  title: string;
-  description: string;
-  name: string;
-  data: {
-    field1: string;
-    field2: string;
-    field3: string;
-  };
-}
 
 export enum AppMode {
   exploration = "exploration",
@@ -53,52 +41,10 @@ function App() {
     setPlannerMenu(!plannerMenu);
   };
 
-  const handleSave = (
-    planName: string,
-    entities: IEntity[],
-    isEncounter: boolean
-  ) => {
-    const plan = {
-      name: planName,
-      entities: entities,
-      isEncounter: isEncounter,
-    };
-    // Do something with the plan data, such as saving it to a database
-  };
-
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchTerm(value);
   };
-
-  const searchResults =
-    // Placeholder entity info data
-    {
-      title: "Search Sheet",
-      description: "This is a placeholder search sheet",
-      name: "Search Name",
-      data: {
-        field1: "Value 1",
-        field2: "Value 2",
-        field3: "Value 3",
-      },
-    };
-  // Replace with your actual search results data
-
-  const customFeatures = "DCModule,DiceModule"; // Replace with your actual custom features data
-
-  const entityInfo =
-    // Placeholder entity info data
-    {
-      title: "Entity Sheet",
-      description: "This is a placeholder entity sheet",
-      name: "Entity Name",
-      data: {
-        field1: "Value 1",
-        field2: "Value 2",
-        field3: "Value 3",
-      },
-    };
 
   return (
     // Main container for the app
@@ -112,7 +58,7 @@ function App() {
       <header className={styles.header}>
         <div className={styles.headerSection}>
           {/* Header over cards view, button pulls up plan menu*/}
-          <EditPlannerMenu appMode={AppMode.exploration}></EditPlannerMenu>
+          <EditPlannerMenu />
           <h2 className={styles.headerTitle}>
             {mode.slice(0, 1).toUpperCase() + mode.slice(1)}
           </h2>
@@ -156,13 +102,9 @@ function App() {
         <CardView></CardView>
         {/* Content component for the second column will change if 
             header search component is used to show results*/}
-        <SheetView
-          selectedHeaderItem=""
-          searchInfo={searchResults} // Pass search results as searchInfo
-          entityInfo={entityInfo}
-        ></SheetView>
+        <SheetView></SheetView>
         {/* Content component for the third column will change based on header values*/}
-        <ModuleView visibleModules={customFeatures}></ModuleView>
+        <ModuleView visibleModules={preferences.visibleModules}></ModuleView>
       </main>
     </div>
   );

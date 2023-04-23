@@ -89,6 +89,14 @@
       text-align: center;
     }
   }
+
+  .entityTitle {
+    display: flex;
+    align-items: center;
+    > * {
+      margin-right: 1em;
+    }
+  }
 }
 
 .menuButtonContainer {
@@ -131,8 +139,8 @@
 
 .menuButton {
   cursor: pointer;
-  padding: 0.2rem;
-  margin: 0.1em;
+  padding: 0.2rem 0.4rem;
+  margin: 0.25em;
   color: var(--accentText);
   background-color: var(--accentBackground);
   transition: background-color 0.2s ease;
@@ -172,4 +180,18 @@
 
 .menuDropdown:hover .menuDropdownContent {
   display: block;
+}
+
+.iconButton {
+  all: unset;
+  cursor: pointer;
+  background: var(--accentBackground);
+  padding: 0.2em 0.4em;
+  border-radius: 0.4em;
+  transition: background-color 0.2s ease;
+  color: var(--accentText);
+
+  &:hover {
+    background-color: var(--primaryBackground);
+  }
 }

@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./Card.module.scss";
 import PlannerObject, { PlannerObjectProps } from "./PlannerObject";
 import { useStore } from "../../hooks";
@@ -7,7 +8,6 @@ function PlannerCard() {
   const plans = useStore((store) => store.plans);
   const containerRef = useRef<HTMLDivElement | null>(null); // Provide type assertion for containerRef
 
-  console.log({ plans });
   const handleScrollLeft = () => {
     const containerElement = containerRef.current;
     if (containerElement) {
@@ -37,26 +37,30 @@ function PlannerCard() {
   return (
     <div className={styles.card}>
       <div className={styles.plannerCardScrollLeft} onClick={handleScrollLeft}>
-        {/* Placeholder for left arrow icon */}
-        &lt;
+        <FontAwesomeIcon icon="arrow-left" />
       </div>
       <div
         className={styles.plannerCardScrollContainer}
         ref={containerRef}
         onWheel={handleScroll}
       >
-        <div className={styles.plannerCardScrollCard}>
-          {plans.map((plan) => (
-            <PlannerObject key={plan.id} plan={plan} />
-          ))}
-        </div>
+        {plans.length > 0 ? (
+          <div className={styles.plannerCardScrollCard}>
+            {plans.map((plan) => (
+              <PlannerObject key={plan.id} plan={plan} />
+            ))}
+          </div>
+        ) : (
+          <div className={styles.plannerCardPlaceholder}>
+            <h2>Create a plan with the button above.</h2>
+          </div>
+        )}
       </div>
       <div
         className={styles.plannerCardScrollRight}
         onClick={handleScrollRight}
       >
-        {/* Placeholder for right arrow icon */}
-        &gt;
+        <FontAwesomeIcon icon="arrow-right" />
       </div>
     </div>
   );

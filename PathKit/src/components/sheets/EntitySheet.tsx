@@ -1,18 +1,13 @@
 import styles from "./Sheets.module.scss";
-import { ObjectProps } from "../../App";
 
 interface EntitySheetProps {
-  entityInfo?: ObjectProps;
+  entityInfo?: string;
 }
 
 function EntitySheet({ entityInfo }: EntitySheetProps) {
   return (
     <div className={styles.sheetsContainer}>
-      {entityInfo ? (
-        <h1>{entityInfo.name}</h1>
-      ) : (
-        <h1>No entity info available</h1>
-      )}
+      {entityInfo ? <h1>idk</h1> : <h1>No entity info available</h1>}
     </div>
   );
 }

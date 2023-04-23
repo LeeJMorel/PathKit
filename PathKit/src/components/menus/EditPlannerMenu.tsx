@@ -2,22 +2,18 @@ import React, { useState } from "react";
 import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for styling
 import PlannerMenu from "./PlannerMenu";
 import { AppMode } from "../../App";
-import { IEntity } from "../../api/model";
+import { IEntity, PlanType } from "../../api/model";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface IMenuProps {
-  appMode: AppMode;
   planId?: string;
 }
 
-const EditPlannerMenu: React.FC<IMenuProps> = ({
-  appMode,
-  planId,
-}: IMenuProps) => {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(
-    appMode === AppMode.encounter // set initial state value based on appMode prop
+const EditPlannerMenu: React.FC<IMenuProps> = ({ planId }: IMenuProps) => {
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [menuPlanType, setMenuPlanType] = useState<PlanType>(
+    PlanType.encounter
   );
-  const [menuAppMode, setMenuAppMode] = useState<AppMode>(appMode);
 
   const handleMenuClick = () => {
     setIsMenuOpen(true);
@@ -28,12 +24,12 @@ const EditPlannerMenu: React.FC<IMenuProps> = ({
   };
 
   const handleCreateEncounterPlan = () => {
-    setMenuAppMode(AppMode.encounter);
+    setMenuPlanType(PlanType.encounter);
     setIsMenuOpen(true);
   };
 
   const handleCreateExplorationPlan = () => {
-    setMenuAppMode(AppMode.exploration);
+    setMenuPlanType(PlanType.exploration);
     setIsMenuOpen(true);
   };
 
@@ -59,11 +55,8 @@ const EditPlannerMenu: React.FC<IMenuProps> = ({
       return (
         <PlannerMenu
           onClose={handleCloseMenu}
-          onSave={(entities, appMode) =>
-            handleSave("Plan 1", entities, appMode)
-          }
           planId={planId}
-          appModeUsed={menuAppMode}
+          planType={menuPlanType}
         />
       );
     }

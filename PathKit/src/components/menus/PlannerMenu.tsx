@@ -5,24 +5,30 @@ import MenuButton from "./MenuButton";
 import MenuInput from "./MenuInput";
 import AddEntityForm from "../forms/AddEntityForm";
 import { AppMode } from "../../App";
-import { EntityType, IEntity } from "../../api/model";
+import { EntityType, IEntity, IPlan, PlanType } from "../../api/model";
+import { usePlans } from "../../hooks";
 
 interface IPlannerMenuProps {
   onClose: () => void;
-  onSave: (entities: IEntity[], appMode: AppMode) => void;
   planId?: string;
-  appModeUsed: AppMode;
+  planType: PlanType;
 }
 
 const PlannerMenu: React.FC<IPlannerMenuProps> = ({
   onClose,
-  onSave,
   planId,
-  appModeUsed,
+  planType,
 }: IPlannerMenuProps) => {
-  const [entities, setEntities] = useState<IEntity[]>([]);
+  const { addPlan, getPlanById } = usePlans();
+  const [plan, setPlan] = useState<Omit<IPlan, "id" | "campaignId">>(
+    getPlanById(planId) || {
+      planType,
+      entities: [],
+    }
+  );
 
   const [showAddEntity, setShowAddEntity] = useState(false);
+  const [showType, setType] = useState(false);
   const [selectedEntityType, setSelectedEntityType] = useState<EntityType>(
     EntityType.Shop
   );
@@ -33,6 +39,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
 
   const handleEntityTypeChange = (selectedEntityType: EntityType) => {
     setSelectedEntityType(selectedEntityType);
+    setType(true);
   };
 
   const handleAddEntityClick = () => {
@@ -40,11 +47,18 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
   };
 
   const handleAddEntity = (entity: IEntity) => {
-    const newEntity: IEntity = {
-      ...entity,
-    };
-    setEntities([...entities, newEntity]);
+    setPlan({
+      ...plan,
+      entities: [...plan.entities, entity],
+    });
     setShowAddEntity(false);
+  };
+
+  const handleDeleteEntity = (entityId: string) => {
+    setPlan({
+      ...plan,
+      entities: plan.entities.filter((entity) => entity.id !== entityId),
+    });
   };
 
   const handleAddEntityCancel = () => {
@@ -52,7 +66,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
   };
 
   const handleSaveClick = () => {
-    onSave(entities, appModeUsed);
+    addPlan(plan);
     handleClose();
   };
   const renderEncounterPlan = () => {
@@ -67,10 +81,12 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
           />
         </div>
         {/* Render the add entity form based on the selected entity type */}
-        <AddEntityForm
-          type={selectedEntityType}
-          onAddEntity={(entity) => handleAddEntity(entity)}
-        ></AddEntityForm>
+        {showType && (
+          <AddEntityForm
+            type={selectedEntityType}
+            onAddEntity={(entity) => handleAddEntity(entity)}
+          />
+        )}
       </>
     );
   };
@@ -93,17 +109,19 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
           />
         </div>
         {/* Render the add entity form based on the selected entity type */}
-        <AddEntityForm
-          type={selectedEntityType}
-          onAddEntity={(entity) => handleAddEntity(entity)}
-        ></AddEntityForm>
+        {showType && (
+          <AddEntityForm
+            type={selectedEntityType}
+            onAddEntity={(entity) => handleAddEntity(entity)}
+          />
+        )}
       </>
     );
   };
 
   const renderAddEntity = () => {
     if (showAddEntity) {
-      return appModeUsed === AppMode.encounter
+      return planType === PlanType.encounter
         ? renderEncounterPlan()
         : renderExplorationPlan();
     }
@@ -111,7 +129,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
   };
 
   const renderTitle = () => {
-    return appModeUsed === AppMode.encounter
+    return planType === PlanType.encounter
       ? "Create Encounter Plan"
       : "Create Exploration Plan";
   };
@@ -124,17 +142,16 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
           <FontAwesomeIcon icon="close" />
         </div>
         <div className={styles.entityList}>
-          {entities.map((entity) => (
+          {plan.entities.map((entity) => (
             <div key={entity.id} className={styles.entity}>
               <div className={styles.entityTitle}>
-                <div>{entity.name}</div>
-                <div
-                  onClick={() =>
-                    setEntities(entities.filter((e) => e.id !== entity.id))
-                  }
+                <button
+                  className={styles.iconButton}
+                  onClick={() => handleDeleteEntity(entity.id)}
                 >
-                  &times;
-                </div>
+                  <FontAwesomeIcon icon="trash" />
+                </button>
+                <div>{entity.name}</div>
               </div>
             </div>
           ))}

@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import styles from "./Card.module.scss";
 import { IPlan, PlanType } from "../../api/model";
+import { useSelectPlan } from "../../hooks";
 
 export interface PlannerObjectProps {
   plan: IPlan;
@@ -8,8 +9,14 @@ export interface PlannerObjectProps {
 
 function PlannerObject({ plan }: PlannerObjectProps) {
   const { entities, planType } = plan;
+  const { setSelectedPlan } = useSelectPlan();
+
+  const handleClick = () => {
+    setSelectedPlan({ selectedPlanID: plan.id });
+  };
+
   return (
-    <div className={styles.plannerObject}>
+    <div className={styles.plannerObject} onClick={handleClick}>
       {entities.map((entity, i) => {
         if (i < 4) {
           return (

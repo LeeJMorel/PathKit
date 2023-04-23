@@ -94,21 +94,10 @@ const AddEntityForm: React.FC<Props> = ({ type, onAddEntity }) => {
     if (type === "Player") {
       onAddEntity(entity);
     }
-  }, [entity, onAddEntity, type]);
+  }, [entity, type]);
 
   return (
     <form className={styles.formContainer}>
-      <div className={styles.formRow}>
-        <label htmlFor="id" className={styles.formLabel}>
-          ID:
-        </label>
-        <input
-          type="text"
-          name="id"
-          onChange={handleInputChange}
-          className={styles.formInput}
-        />
-      </div>
       <div className={styles.formRow}>
         <label htmlFor="image" className={styles.formLabel}>
           Image:

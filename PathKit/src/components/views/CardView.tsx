@@ -10,10 +10,23 @@ import { EntityType, IEntity, IPlan, PlanType } from "../../api/model";
 function CardView() {
   //placeholder, SQL query for all type=player
   const generatePlayer = (): IEntity => {
+    const names = [
+      "Aaliyah",
+      "Hassan",
+      "Sofia",
+      "Khalil",
+      "Isabella",
+      "Muhammad",
+      "Chloe",
+      "Amir",
+      "Olivia",
+      "Ethan",
+    ];
+    const name = names[Math.floor(Math.random() * names.length)];
     const hp = Math.floor(Math.random() * 100) + 10;
     return {
       image: player,
-      name: uuid(),
+      name: name,
       id: uuid(),
       stats: {
         field1: Math.floor(Math.random() * 10) + 1,

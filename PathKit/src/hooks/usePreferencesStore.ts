@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 interface IPreferences {
   largeFont: boolean;
   theme: string;
+  visibleModules: string;
 }
 
 interface IPreferencesStore {
@@ -17,6 +18,7 @@ export const usePreferenceStore = create(
       preferences: {
         largeFont: false,
         theme: "parchment",
+        visibleModules: "DCModule,DiceModule",
       },
 
       setPreferences: (preferences: IPreferences): void => set({ preferences }),
