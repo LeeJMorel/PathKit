@@ -155,7 +155,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
               </div>
             </div>
           ))}
-          <div className={styles.entityButtonContainer}>
+          <div className={styles.menuColumnContainer}>
             {!showAddEntity && (
               <MenuButton
                 label="Add Entity"
@@ -165,7 +165,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
             {renderAddEntity()}
           </div>
         </div>
-        <div className={styles.menuButtonContainer}>
+        <div className={styles.menuColumnContainer}>
           <MenuButton label="Save Plan" onClick={handleSaveClick}></MenuButton>
         </div>
       </div>

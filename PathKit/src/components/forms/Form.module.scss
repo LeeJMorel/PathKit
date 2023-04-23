@@ -32,6 +32,17 @@
       color: var(--primaryText);
     }
 
+    .formTextarea {
+      padding: 0.2rem;
+      border: 1px solid var(--secondaryText);
+      border-radius: 0.25rem;
+      width: 100%;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+      background: var(--primaryBackground);
+      color: var(--primaryText);
+    }
+
     .formSelect {
       padding: 0.2rem;
       border: 1px solid var(--secondaryText);

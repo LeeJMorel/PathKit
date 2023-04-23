@@ -3,7 +3,9 @@ import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for stylin
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuInput from "./MenuInput";
 import MenuButton from "./MenuButton";
-import { usePreferenceStore } from "../../hooks";
+import { usePreferenceStore, useStore, useTipStore } from "../../hooks";
+import DeleteMenu from "./DeleteMenu";
+import CampaignMenu from "./CampaignMenu";
 
 enum Tab {
   Campaign = "Campaign",
@@ -21,16 +23,33 @@ interface IMainMenuProps {
   onClose: () => void;
 }
 const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
+  const plans = useStore((store) => store.plans);
+  const { setCurrentTipIndex } = useTipStore();
   const [currentTab, setCurrentTab] = useState(Tab.Campaign);
   const [isTutorial, setIsTutorial] = useState<boolean>(false);
   const [isPlaceholder, setIsPlaceholder] = useState(false);
   const { preferences, setPreferences } = usePreferenceStore();
+
+  //placeholder until store can delete
+  const [showDeleteMenu, setShowDeleteMenu] = useState<boolean>(false);
+  const [deleteType, setDeleteType] = useState<"entity" | "plan" | "campaign">(
+    "entity"
+  );
+  const [deleteId, setDeleteId] = useState<string>("");
+
+  const [showCampaignMenu, setShowCampaignMenu] = useState<boolean>(false);
+  const [campaignType, setCampaignType] = useState<"Load" | "New">("Load");
 
   const handleTutorialBoxChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { checked } = event.target;
     setIsTutorial(checked);
+
+    // Show tutorial tip
+    if (checked) {
+      setCurrentTipIndex(0);
+    }
   };
 
   const handleLargeFontChange = () => {
@@ -61,6 +80,25 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     setIsTutorial(false);
   };
 
+  const handleDelete = (type: "entity" | "plan" | "campaign", id: string) => {
+    setShowDeleteMenu(true);
+    setDeleteType(type);
+    setDeleteId(id);
+  };
+
+  const handleDeleteClose = () => {
+    setShowDeleteMenu(false);
+  };
+
+  const handleCampaignClose = () => {
+    setShowCampaignMenu(false);
+  };
+
+  const handleCampaign = (type: "Load" | "New") => {
+    setShowCampaignMenu(true);
+    setCampaignType(type);
+  };
+
   const handleTabClick = (tab: Tab) => {
     setCurrentTab(tab);
   };
@@ -69,9 +107,27 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     onClose();
   };
 
+  //im a placeholder!
+  const [players, setPlayers] = useState([
+    { id: "1", name: "Player 1" },
+    { id: "2", name: "Player 2" },
+    { id: "3", name: "Player 3" },
+    { id: "4", name: "Player 4" },
+  ]);
+
   return (
     <div className={styles.menuOverlay}>
       <div className={styles.mainMenu}>
+        {showDeleteMenu && (
+          <DeleteMenu
+            type={deleteType}
+            id={deleteId}
+            onClose={handleDeleteClose}
+          />
+        )}
+        {showCampaignMenu && (
+          <CampaignMenu type={campaignType} onClose={handleCampaignClose} />
+        )}
         {/* Tabs */}
         <div className={styles.tabs}>
           <div
@@ -116,19 +172,57 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                 A Campaign description provided by the user when they make a new
                 campaign
               </div>
+              <h2 className={styles.tabHeader}>Players</h2>
+              <hr className={styles.tabHorizontalLine} />
+
+              <div className={styles.menuScrollContainer}>
+                {players.map((player) => (
+                  <div key={player.id} className={styles.menuRowContainer}>
+                    <div className={styles.menuTitle}>{player.name}</div>
+                    <div
+                      className={styles.deleteButton}
+                      onClick={() => handleDelete("entity", "id")}
+                    >
+                      <FontAwesomeIcon icon="close" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <h2 className={styles.tabHeader}>Planned Events</h2>
+              <hr className={styles.tabHorizontalLine} />
+              <div className={styles.menuScrollContainer}>
+                {plans.map((plan) => (
+                  <div key={plan.id} className={styles.menuRowContainer}>
+                    <div className={styles.menuTitle}>
+                      {plan.entities.map((entity, index) => (
+                        <React.Fragment key={entity.id}>
+                          {entity.name}
+                          {index !== plan.entities.length - 1 ? ", " : ""}
+                        </React.Fragment>
+                      ))}
+                    </div>
+                    <div
+                      className={styles.deleteButton}
+                      onClick={() => handleDelete("plan", plan.id)}
+                    >
+                      <FontAwesomeIcon icon="close" />
+                    </div>
+                  </div>
+                ))}
+              </div>
               <br />
-              <div className={styles.menuButtonContainer}>
+              <div className={styles.menuRowContainer}>
                 <MenuButton
                   label="Delete Campaign"
-                  onClick={handlePlaceholder}
+                  onClick={() => handleDelete("campaign", "id")}
                 ></MenuButton>
                 <MenuButton
                   label="Load Campaign"
-                  onClick={handlePlaceholder}
+                  onClick={() => handleCampaign("Load")}
                 ></MenuButton>
                 <MenuButton
                   label="Start New Campaign"
-                  onClick={handlePlaceholder}
+                  onClick={() => handleCampaign("New")}
                 ></MenuButton>
               </div>
             </div>

@@ -13,6 +13,7 @@ import { IEntity } from "./api/model";
 import EditPlannerMenu from "./components/menus/EditPlannerMenu";
 import classNames from "classnames";
 import { usePreferenceStore, useSelectEntity } from "./hooks";
+import TipMenu from "./components/menus/TipMenu";
 
 // Load FontAwesome icons
 library.add(fas);
