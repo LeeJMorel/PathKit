@@ -3,8 +3,9 @@ import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for stylin
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuButton from "./MenuButton";
 import MenuInput from "./MenuInput";
-import AddEntityForm, { EntityType, IEntity } from "../forms/AddEntityForm";
+import AddEntityForm from "../forms/AddEntityForm";
 import { AppMode } from "../../App";
+import { EntityType, IEntity } from "../../api/model";
 
 interface IPlannerMenuProps {
   onClose: () => void;

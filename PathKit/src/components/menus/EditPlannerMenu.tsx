@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for styling
 import PlannerMenu from "./PlannerMenu";
 import { AppMode } from "../../App";
-import { IEntity } from "../forms/AddEntityForm";
+import { IEntity } from "../../api/model";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface IMenuProps {

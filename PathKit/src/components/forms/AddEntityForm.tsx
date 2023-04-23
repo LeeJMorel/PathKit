@@ -1,26 +1,10 @@
 import { useEffect, useState } from "react";
+import { v4 as uuid } from "uuid";
 import monster from "../../assets/monster.png";
 import player from "../../assets/knight.png";
 import defaultImage from "../../assets/fighter.png";
 import styles from "./AddEntityForm.module.scss";
-
-export interface IEntity {
-  id: number;
-  image: string; //an image for each object added
-  name: string;
-  stats?: {
-    [key: string]: number;
-  };
-  hp?: [number, number]; // current hp and total hp
-  equipment?: string[];
-}
-
-export enum EntityType {
-  Shop = "Shop",
-  Monster = "Monster",
-  Player = "Player",
-  NPC = "NPC",
-}
+import { IEntity, EntityType } from "../../api/model";
 
 interface Props {
   type: EntityType;
@@ -29,12 +13,13 @@ interface Props {
 
 const AddEntityForm: React.FC<Props> = ({ type, onAddEntity }) => {
   const [entity, setEntity] = useState<IEntity>({
-    id: 0,
+    id: uuid(),
     image: defaultImage,
     name: "",
     stats: {},
     hp: [0, 0],
     equipment: [],
+    entityType: EntityType.none,
   });
 
   const handleAddEntity = () => {

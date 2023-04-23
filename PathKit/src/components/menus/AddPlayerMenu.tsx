@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuButton from "./MenuButton";
-import AddEntityForm, { EntityType, IEntity } from "../forms/AddEntityForm";
+import AddEntityForm from "../forms/AddEntityForm";
+import { EntityType, IEntity } from "../../api/model";
 
 interface IAddPlayerMenuProps {
   onClose: () => void;

@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./Card.module.scss";
 import { useState } from "react";
-import { IEntity } from "../forms/AddEntityForm";
+import { IEntity } from "../../api/model";
 import AddPlayerMenu from "../menus/AddPlayerMenu";
 
 function AddPlayerCard() {

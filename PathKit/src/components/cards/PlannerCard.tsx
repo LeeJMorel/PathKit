@@ -1,14 +1,13 @@
 import { useRef } from "react";
 import styles from "./Card.module.scss";
 import PlannerObject, { PlannerObjectProps } from "./PlannerObject";
+import { useStore } from "../../hooks";
 
-interface PlannerCardProps {
-  plannerObjects: PlannerObjectProps[];
-}
-
-function PlannerCard({ plannerObjects }: PlannerCardProps) {
+function PlannerCard() {
+  const plans = useStore((store) => store.plans);
   const containerRef = useRef<HTMLDivElement | null>(null); // Provide type assertion for containerRef
 
+  console.log({ plans });
   const handleScrollLeft = () => {
     const containerElement = containerRef.current;
     if (containerElement) {
@@ -47,8 +46,8 @@ function PlannerCard({ plannerObjects }: PlannerCardProps) {
         onWheel={handleScroll}
       >
         <div className={styles.plannerCardScrollCard}>
-          {plannerObjects.map((plannerObject, index) => (
-            <PlannerObject key={index} {...plannerObject} />
+          {plans.map((plan, index) => (
+            <PlannerObject key={index} plan={plan} />
           ))}
         </div>
       </div>
