@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styles from "./AddPlayerCard.module.scss";
+import styles from "./Card.module.scss";
 import { useState } from "react";
 import { IEntity } from "../forms/AddEntityForm";
 import AddPlayerMenu from "../menus/AddPlayerMenu";
@@ -33,11 +33,11 @@ function AddPlayerCard() {
     }
 
     return (
-      <div className={styles.entityCard}>
-        <div className={styles.entityContainer}>
+      <div className={styles.card}>
+        <div className={styles.cardContainer}>
           <button
             title="Add a Player"
-            className={styles.entityAddButton}
+            className={styles.cardAddButton}
             onClick={handleMenuClick}
           >
             <FontAwesomeIcon icon="plus" />

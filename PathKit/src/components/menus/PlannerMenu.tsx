@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./PlannerMenu.module.scss"; // Import your CSS/SCSS file for styling
+import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuButton from "./MenuButton";
 import MenuInput from "./MenuInput";
@@ -137,7 +137,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
               </div>
             </div>
           ))}
-          <div className={styles.entity}>
+          <div className={styles.entityButtonContainer}>
             {!showAddEntity && (
               <MenuButton
                 label="Add Entity"
@@ -147,7 +147,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
             {renderAddEntity()}
           </div>
         </div>
-        <div className={styles.menuButtons}>
+        <div className={styles.menuButtonContainer}>
           <MenuButton label="Save Plan" onClick={handleSaveClick}></MenuButton>
         </div>
       </div>

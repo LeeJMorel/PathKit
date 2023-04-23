@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import styles from "./MainMenu.module.scss"; // Import your CSS/SCSS file for styling
+import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuInput from "./MenuInput";
 import MenuButton from "./MenuButton";
-import useTheme from "../../hooks/useTheme";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { usePreferenceStore } from "../../hooks/useStore";
 
 enum Tab {
   Campaign = "Campaign",
@@ -18,11 +17,8 @@ interface IMainMenuProps {
 const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   const [currentTab, setCurrentTab] = useState(Tab.Campaign);
   const [isTutorial, setIsTutorial] = useState<boolean>(false);
-  const [selectedTheme, setSelectedTheme] = useLocalStorage<string>(
-    "theme",
-    "parchment"
-  );
   const [isPlaceholder, setIsPlaceholder] = useState(false);
+  const { preferences, setPreferences } = usePreferenceStore();
 
   const handleTutorialBoxChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -31,10 +27,20 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     setIsTutorial(checked);
   };
 
+  const handleLargeFontChange = () => {
+    setPreferences({
+      ...preferences,
+      largeFont: !preferences.largeFont,
+    });
+  };
+
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value: theme } = event.target;
     console.log("radio change", theme);
-    setSelectedTheme(theme);
+    setPreferences({
+      ...preferences,
+      theme,
+    });
   };
 
   const handlePlaceholder = () => {
@@ -97,18 +103,20 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                 campaign
               </div>
               <br />
-              <MenuButton
-                label="Delete Campaign"
-                onClick={handlePlaceholder}
-              ></MenuButton>
-              <MenuButton
-                label="Load Campaign"
-                onClick={handlePlaceholder}
-              ></MenuButton>
-              <MenuButton
-                label="Start New Campaign"
-                onClick={handlePlaceholder}
-              ></MenuButton>
+              <div className={styles.menuButtonContainer}>
+                <MenuButton
+                  label="Delete Campaign"
+                  onClick={handlePlaceholder}
+                ></MenuButton>
+                <MenuButton
+                  label="Load Campaign"
+                  onClick={handlePlaceholder}
+                ></MenuButton>
+                <MenuButton
+                  label="Start New Campaign"
+                  onClick={handlePlaceholder}
+                ></MenuButton>
+              </div>
             </div>
           )}
           {currentTab === Tab.View && (
@@ -162,17 +170,17 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
               <div className={styles.tabCheckboxContainer}>
                 <MenuInput
                   label="Large Font"
-                  checked={isTutorial}
+                  checked={preferences.largeFont}
                   type={"checkbox"}
                   name="PLACEHOLDER"
-                  onChange={handleTutorialBoxChange}
+                  onChange={handleLargeFontChange}
                 />
                 <MenuInput
-                  label="Colorblind Theme"
-                  checked={selectedTheme === "colorblind"}
+                  label="High Contrast"
+                  checked={preferences.theme === "highContrast"}
                   type={"radio"}
                   name="theme"
-                  value="colorblind"
+                  value="highContrast"
                   onChange={handleThemeChange}
                 />
               </div>
@@ -181,7 +189,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
               <div className={styles.tabCheckboxContainer}>
                 <MenuInput
                   label="Parchment"
-                  checked={selectedTheme === "parchment"}
+                  checked={preferences.theme === "parchment"}
                   type={"radio"}
                   name="theme"
                   value="parchment"
@@ -189,7 +197,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                 />
                 <MenuInput
                   label="Dark"
-                  checked={selectedTheme === "dark"}
+                  checked={preferences.theme === "dark"}
                   type={"radio"}
                   name="theme"
                   value="dark"

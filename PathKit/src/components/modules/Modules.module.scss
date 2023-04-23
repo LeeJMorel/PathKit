@@ -18,15 +18,15 @@
   td {
     padding: 8px;
     text-align: left;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--primaryBackground);
   }
 
   th {
-    background-color: #f2f2f2;
+    background-color: var(--primaryBackground);
   }
 
   tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: var(--accentText);
   }
 
   tr:hover {

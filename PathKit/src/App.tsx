@@ -11,6 +11,8 @@ import MainMenu from "./components/menus/MainMenu";
 import PlannerMenu from "./components/menus/PlannerMenu";
 import { IEntity } from "./components/forms/AddEntityForm";
 import EditPlannerMenu from "./components/menus/EditPlannerMenu";
+import classNames from "classnames";
+import { usePreferenceStore } from "./hooks/useStore";
 
 // Load FontAwesome icons
 library.add(fas);
@@ -38,6 +40,10 @@ function App() {
   const [menu, setMenu] = useState(false);
   const [plannerMenu, setPlannerMenu] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const { preferences } = usePreferenceStore((store) => ({
+    preferences: store.preferences,
+  }));
 
   const handleToggleMenu = () => {
     setMenu(!menu);
@@ -96,7 +102,13 @@ function App() {
 
   return (
     // Main container for the app
-    <div className={styles.app}>
+    <div
+      className={classNames(
+        styles.app,
+        preferences.largeFont && styles.largeFont,
+        styles[preferences.theme]
+      )}
+    >
       <header className={styles.header}>
         <div className={styles.headerSection}>
           {/* Header over cards view, button pulls up plan menu*/}

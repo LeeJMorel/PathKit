@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage, StateStorage } from "zustand/middleware";
-//import { get, set, del } from 'idb-keyval' // can use anything: IndexedDB, Ionic Storage, etc.
+// import { get, set, del } from 'idb-keyval' // can use anything: IndexedDB, Ionic Storage, etc.
 
 // Custom storage object
 const storage: StateStorage = {
@@ -23,11 +23,37 @@ export const useStore = create(
   persist(
     (set, get) => ({
       bears: 0,
-      //addABear: () => set({ bears: get().bears + 1 }),
     }),
     {
-      name: "food-storage", // unique name
+      name: "PathKit-storage", // unique name
       storage: createJSONStorage(() => storage),
+    }
+  )
+);
+
+interface IPreferences {
+  largeFont: boolean;
+  theme: string;
+}
+
+interface IPreferencesStore {
+  preferences: IPreferences;
+  setPreferences: (preferences: IPreferences) => void;
+}
+
+export const usePreferenceStore = create(
+  persist<IPreferencesStore>(
+    (set, get) => ({
+      preferences: {
+        largeFont: false,
+        theme: "parchment",
+      },
+
+      setPreferences: (preferences: IPreferences): void => set({ preferences }),
+    }),
+    {
+      name: "PathKit-preferences", // unique name
+      // storage: createJSONStorage(() => localStorage),
     }
   )
 );

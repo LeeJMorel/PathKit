@@ -2,7 +2,7 @@
 @import "./palette.scss";
 @import "./fonts.scss";
 
-$colorblindTheme: (
+$highContrastTheme: (
   bodyBackground: map-get($colorPalette, white),
   bodyText: map-get($colorPalette, black),
   primaryBackground: map-get($colorPalette, brownDark),
@@ -15,10 +15,10 @@ $colorblindTheme: (
   errorText: map-get($colorPalette, white),
 );
 
-$theme: map-merge($fonts, $colorblindTheme);
+$theme: map-merge($fonts, $highContrastTheme);
 
 :export {
-  @each $color, $value in $colorblindTheme {
+  @each $color, $value in $highContrastTheme {
     #{$color}: $value;
   }
 }

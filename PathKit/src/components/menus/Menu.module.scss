@@ -1,0 +1,175 @@
+// MainMenu.module.scss
+.menuOverlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  z-index: 9999; /* Set a high z-index to ensure it appears on top */
+}
+
+.mainMenu {
+  margin: 70px auto;
+  padding: 20px;
+  background: var(--secondaryBackground);
+  color: var(--secondaryText);
+  border-radius: 5px;
+  width: 30%;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+
+  h2 {
+    margin-top: 0;
+  }
+
+  .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: "pointer";
+
+    &:hover {
+      color: var(--errorBackground);
+    }
+  }
+
+  .content {
+    max-height: 30%;
+    overflow: auto;
+  }
+
+  .tabs {
+    display: flex;
+  }
+
+  .tab {
+    padding: 10px;
+    cursor: pointer;
+
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+
+    &.active {
+      font-weight: bold;
+      // Apply styles for the active tab
+    }
+  }
+
+  .tabContent {
+    // Apply styles for the tab's content
+
+    .tabHeader {
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .tabHorizontalLine {
+      background: var(--secondaryText);
+      border-color: var(--secondaryText);
+      height: "3px";
+    }
+
+    .tabCheckboxContainer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .tabSubtext {
+      font-style: italic;
+      font-size: small;
+      text-align: center;
+    }
+  }
+}
+
+.menuButtonContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex: 1;
+  flex-direction: row;
+}
+
+.entityButtonContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex: 1;
+  flex-direction: column;
+}
+
+.menuRoundButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 999; /* Set a high z-index to ensure it appears on top */
+}
+
+.menuRoundButton {
+  cursor: pointer;
+  padding: 0.1rem;
+  color: var(--secondaryText);
+  background-color: var(--secondaryBackground);
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #444;
+  }
+}
+
+.menuButton {
+  cursor: pointer;
+  padding: 0.2rem;
+  margin: 0.1em;
+  color: var(--accentText);
+  background-color: var(--accentBackground);
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--primaryBackground);
+  }
+}
+
+.menuDropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.menuDropdownContent {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 8rem;
+  background-color: var(--accentBackground);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+
+  & > div {
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--accentText);
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #444;
+    }
+  }
+}
+
+.menuDropdown:hover .menuDropdownContent {
+  display: block;
+}

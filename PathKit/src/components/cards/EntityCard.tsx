@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { EntityObjectProps } from "../views/CardView";
-import styles from "./EntityCard.module.scss";
+import styles from "./Card.module.scss";
 
 interface EntityCardProps {
   entityObjects: EntityObjectProps[];
@@ -9,14 +9,14 @@ interface EntityCardProps {
 
 function EntityCard({ entityObjects }: EntityCardProps) {
   return (
-    <div className={styles.entityCard}>
+    <div className={styles.card}>
       {entityObjects.map((entityObject) => {
         const isHPZero = entityObject.hp[0] === 0;
         return (
-          <div key={entityObject.name} className={styles.entityContainer}>
+          <div key={entityObject.name} className={styles.cardContainer}>
             <div
               className={classNames(
-                styles.entityImage,
+                styles.cardImage,
                 isHPZero && styles.entityDeadImage
               )}
             >

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import styles from "./PlannerObject.module.scss";
+import styles from "./Card.module.scss";
 
 export interface PlannerObjectProps {
   title: string; //The name given to the planned encounter or exploration
