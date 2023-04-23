@@ -9,10 +9,10 @@ import ModuleView from "./components/views/ModuleView";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MainMenu from "./components/menus/MainMenu";
 import PlannerMenu from "./components/menus/PlannerMenu";
-import { IEntity } from "./components/forms/AddEntityForm";
+import { IEntity } from "./api/model";
 import EditPlannerMenu from "./components/menus/EditPlannerMenu";
 import classNames from "classnames";
-import { usePreferenceStore } from "./hooks/useStore";
+import { usePreferenceStore } from "./hooks";
 
 // Load FontAwesome icons
 library.add(fas);

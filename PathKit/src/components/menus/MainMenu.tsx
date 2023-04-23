@@ -3,7 +3,7 @@ import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for stylin
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuInput from "./MenuInput";
 import MenuButton from "./MenuButton";
-import { usePreferenceStore } from "../../hooks/useStore";
+import { usePreferenceStore } from "../../hooks";
 
 enum Tab {
   Campaign = "Campaign",

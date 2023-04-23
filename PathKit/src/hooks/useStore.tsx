@@ -1,5 +1,8 @@
+import { v4 as uuid } from "uuid";
+import { IEntity, EntityType, IPlan, PlanType } from "../api/model";
 import { create } from "zustand";
 import { persist, createJSONStorage, StateStorage } from "zustand/middleware";
+import monster from "../assets/monster.png";
 // import { get, set, del } from 'idb-keyval' // can use anything: IndexedDB, Ionic Storage, etc.
 
 // Custom storage object
@@ -19,41 +22,112 @@ const storage: StateStorage = {
   },
 };
 
+export interface IStore {
+  entities: IEntity[];
+  entitiesLoading: boolean;
+  setEntities: (entities: IEntity[]) => void;
+  setEntitiesLoading: (loading: boolean) => void;
+
+  plans: IPlan[];
+  plansLoading: boolean;
+  setPlans: (plans: IPlan[]) => void;
+  setPlansLoading: (loading: boolean) => void;
+
+  refreshEntities: () => void;
+
+  refreshPlans: () => void;
+}
+
+const generateMonster = (): IEntity => {
+  const hp = Math.floor(Math.random() * 100) + 10;
+  return {
+    image: monster,
+    name: uuid(),
+    id: uuid(),
+    stats: {},
+    hp: [hp, hp],
+    entityType: EntityType.Monster,
+  };
+};
+const examplePlans: IPlan[] = [
+  {
+    entities: [generateMonster(), generateMonster()],
+    id: uuid(),
+    planType: PlanType.encounter,
+  },
+  {
+    entities: [generateMonster()],
+    id: uuid(),
+    planType: PlanType.encounter,
+  },
+  {
+    entities: [
+      generateMonster(),
+      generateMonster(),
+      generateMonster(),
+      generateMonster(),
+      generateMonster(),
+    ],
+    id: uuid(),
+    planType: PlanType.exploration,
+  },
+  {
+    entities: [generateMonster(), generateMonster(), generateMonster()],
+    id: uuid(),
+    planType: PlanType.encounter,
+  },
+  {
+    entities: [generateMonster(), generateMonster(), generateMonster()],
+    id: uuid(),
+    planType: PlanType.encounter,
+  },
+  {
+    entities: [generateMonster(), generateMonster()],
+    id: uuid(),
+    planType: PlanType.encounter,
+  },
+  // Add more objects as needed
+  //this is a placeholder, this should change based on user input
+];
+
 export const useStore = create(
-  persist(
+  persist<IStore>(
     (set, get) => ({
-      bears: 0,
+      entities: [],
+      entitiesLoading: false,
+      setEntities: (entities) => set({ entities }),
+      setEntitiesLoading: (loading) => set({ entitiesLoading: loading }),
+
+      plans: examplePlans,
+      plansLoading: false,
+      setPlans: (plans) => set({ plans }),
+      setPlansLoading: (loading) => set({ plansLoading: loading }),
+
+      refreshEntities: () => {
+        const { setEntities, setEntitiesLoading } = get();
+        setEntitiesLoading(true);
+
+        // fetch from database?
+        // const response = await fetch(db)... yada
+        // const json = await response.json();
+        // setEntities(json)
+        setEntitiesLoading(false);
+      },
+
+      refreshPlans: async () => {
+        const { setPlans, setPlansLoading } = get();
+        setPlansLoading(true);
+
+        // fetch from database?
+        // const response = await fetch(db)... yada
+        // const json = await response.json();
+        // setPlans(json)
+        setPlansLoading(false);
+      },
     }),
     {
       name: "PathKit-storage", // unique name
-      storage: createJSONStorage(() => storage),
-    }
-  )
-);
-
-interface IPreferences {
-  largeFont: boolean;
-  theme: string;
-}
-
-interface IPreferencesStore {
-  preferences: IPreferences;
-  setPreferences: (preferences: IPreferences) => void;
-}
-
-export const usePreferenceStore = create(
-  persist<IPreferencesStore>(
-    (set, get) => ({
-      preferences: {
-        largeFont: false,
-        theme: "parchment",
-      },
-
-      setPreferences: (preferences: IPreferences): void => set({ preferences }),
-    }),
-    {
-      name: "PathKit-preferences", // unique name
-      // storage: createJSONStorage(() => localStorage),
+      // storage: createJSONStorage(() => storage), // TODO store in database, otherwise localStorage by default
     }
   )
 );
