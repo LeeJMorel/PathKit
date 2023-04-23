@@ -3,10 +3,6 @@ import styles from "./Card.module.scss";
 import { IPlan, PlanType } from "../../api/model";
 
 export interface PlannerObjectProps {
-  // title: string; //The name given to the planned encounter or exploration
-  // images: string[]; //an image for each object added
-  // names: string[]; //a name for each object added (we can use this to search for card data, i.e. Cow)
-  // isEncounter: boolean; //indicate combat
   plan: IPlan;
 }
 

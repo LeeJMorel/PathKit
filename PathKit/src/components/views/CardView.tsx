@@ -1,67 +1,42 @@
 import styles from "./View.module.scss";
 import React from "react";
 import PlannerCard from "../cards/PlannerCard";
-import PlannerObject from "../cards/PlannerObject";
+import { v4 as uuid } from "uuid";
 import player from "../../assets/knight.png";
 import EntityCard from "../cards/EntityCard";
 import AddPlayerCard from "../cards/AddPlayerCard";
-import { EntityType, IEntity, IPlan, PlanType } from "src/api/model";
+import { EntityType, IEntity, IPlan, PlanType } from "../../api/model";
 
 function CardView() {
-  // Generate entity objects placeholders
-  // const entityObject1: IEntity = [
-  //   {
-  //     image: player,
-  //     name: "Name 1",
-  //     stats: [0],
-  //     hp: [3, 3],
-  //     entityType: EntityType.Player,
-  //   },
-  //   //this is a placeholder, this should change based on user input
-  // ];
+  //placeholder, SQL query for all type=player
+  const generatePlayer = (): IEntity => {
+    const hp = Math.floor(Math.random() * 100) + 10;
+    return {
+      image: player,
+      name: uuid(),
+      id: uuid(),
+      stats: {
+        field1: Math.floor(Math.random() * 10) + 1,
+        field2: Math.floor(Math.random() * 10) + 1,
+        field3: Math.floor(Math.random() * 10) + 1,
+        field4: Math.floor(Math.random() * 10) + 1,
+        field5: Math.floor(Math.random() * 10) + 1,
+      },
+      hp: [hp, hp],
+      entityType: EntityType.Player,
+    };
+  };
 
-  // const entityObject2: IEntity = [
-  //   {
-  //     image: player,
-  //     name: "Name 2",
-  //     stats: [0],
-  //     hp: [3, 3],
-  //     entityType: EntityType.Player,
-  //   },
-  //   //this is a placeholder, this should change based on user input
-  // ];
-
-  // const entityObject3: IEntity = [
-  //   {
-  //     image: player,
-  //     name: "Name 3",
-  //     stats: [13, 3, 5, 7, 8],
-  //     hp: [3, 3],
-  //     isEncounter: true,
-  //   },
-  //   //this is a placeholder, this should change based on user input
-  // ];
-
-  // const entityObject4: IEntity = [
-  //   {
-  //     image: player,
-  //     name: "Name 4",
-  //     stats: [13, 3, 5, 7, 8],
-  //     hp: [0, 3],
-  //     isEncounter: true,
-  //   },
-  //   //this is a placeholder, this should change based on user input
-  // ];
-
-  // Generate an array of PlannerObjectProps objects
+  const entityCards = [];
+  for (let i = 0; i < 4; i++) {
+    const player = generatePlayer();
+    entityCards.push(<EntityCard key={player.id} entities={[player]} />);
+  }
 
   return (
     <div className={styles.cardView}>
       <PlannerCard />
-      {/* <EntityCard entityObjects={entityObject1} />
-      <EntityCard entityObjects={entityObject2} />
-      <EntityCard entityObjects={entityObject3} />
-      <EntityCard entityObjects={entityObject4} /> */}
+      {entityCards}
       <AddPlayerCard></AddPlayerCard>
     </div>
   );

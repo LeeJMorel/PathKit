@@ -46,8 +46,8 @@ function PlannerCard() {
         onWheel={handleScroll}
       >
         <div className={styles.plannerCardScrollCard}>
-          {plans.map((plan, index) => (
-            <PlannerObject key={index} plan={plan} />
+          {plans.map((plan) => (
+            <PlannerObject key={plan.id} plan={plan} />
           ))}
         </div>
       </div>
