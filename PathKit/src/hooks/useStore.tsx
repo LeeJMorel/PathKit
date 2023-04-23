@@ -3,6 +3,7 @@ import { IEntity, EntityType, IPlan, PlanType } from "../api/model";
 import { create } from "zustand";
 import { persist, createJSONStorage, StateStorage } from "zustand/middleware";
 import monster from "../assets/monster.png";
+import player from "../assets/knight.png";
 // import { get, set, del } from 'idb-keyval' // can use anything: IndexedDB, Ionic Storage, etc.
 
 // Custom storage object
@@ -49,6 +50,7 @@ const generateMonster = (): IEntity => {
     entityType: EntityType.Monster,
   };
 };
+
 const examplePlans: IPlan[] = [
   {
     entities: [generateMonster(), generateMonster()],
