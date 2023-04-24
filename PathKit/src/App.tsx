@@ -12,7 +12,7 @@ import PlannerMenu from "./components/menus/PlannerMenu";
 import { IEntity } from "./api/model";
 import EditPlannerMenu from "./components/menus/EditPlannerMenu";
 import classNames from "classnames";
-import { usePreferenceStore, useSelectEntity } from "./hooks";
+import { usePreferencesStore, useCampaigns, useStore } from "./hooks";
 import TipMenu from "./components/menus/TipMenu";
 
 // Load FontAwesome icons
@@ -24,6 +24,23 @@ export enum AppMode {
 }
 
 function App() {
+  //control at a high level the campaign that we load
+  const {
+    campaigns,
+    currentCampaignId,
+    addCampaign,
+    deleteCampaign,
+    loadCampaign,
+    unloadCampaign,
+  } = useCampaigns();
+
+  const handleDeleteCampaign = (campaignId: string) => {
+    deleteCampaign(campaignId);
+    // Also reset the current campaign if it is the one being deleted
+    if (currentCampaignId === campaignId) {
+      unloadCampaign();
+    }
+  };
   // Define the props for the Header component
   const [mode, setMode] = useState<AppMode>(AppMode.exploration);
   const [menu, setMenu] = useState(false);

@@ -5,3 +5,4 @@ export * from "./useSelectPlan";
 export * from "./useSelectEntity";
 export * from "./useSearch";
 export * from "./useTipStore";
+export * from "./useCampaign";

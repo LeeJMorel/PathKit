@@ -30,3 +30,9 @@ export interface IPlan {
   campaignId?: string;
   entities: IEntity[];
 }
+
+export interface ICampaign {
+  id: string;
+  name: string;
+  desc: string;
+}
