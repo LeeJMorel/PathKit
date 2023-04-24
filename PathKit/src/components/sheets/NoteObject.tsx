@@ -19,27 +19,13 @@ function NotesObject() {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        height: "100%",
-      }}
-    >
+    <div className={styles.notes}>
       <Button onClick={() => setEditMode(!editMode)}>
         {editMode ? "Preview" : "Edit"} Markdown
       </Button>
       {editMode ? (
         <textarea
-          style={{
-            flex: 1,
-            resize: "none",
-            width: "100%",
-            padding: 5,
-            color: "black",
-            backgroundColor: "white",
-          }}
+        className={styles.notesEdit}
           value={notes}
           onChange={handleInputChange}
           placeholder="Type your notes here..."
