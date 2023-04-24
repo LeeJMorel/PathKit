@@ -1,4 +1,4 @@
-import NoteObject from "../sheets/NoteObject";
+import NoteObject from "../objects/NoteObject";
 
 function NotesModule() {
   return (

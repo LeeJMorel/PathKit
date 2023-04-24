@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Markdown from "markdown-to-jsx";
 import { Button } from "../buttons";
-import styles from "./Sheets.module.scss";
+import styles from "./Objects.module.scss";
 
 function NotesObject() {
   const [notes, setNotes] = useState(""); // State to store notes

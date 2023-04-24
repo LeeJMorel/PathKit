@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import styles from "./Card.module.scss";
+import styles from "./Objects.module.scss";
 import { IPlan, PlanType } from "../../api/model";
 import { usePreferencesStore } from "../../hooks";
 
@@ -16,7 +16,7 @@ function PlannerObject({ plan }: PlannerObjectProps) {
   };
 
   return (
-    <div className={styles.plannerObject} onClick={handleClick}>
+    <div className={styles.plan} onClick={handleClick}>
       {entities.map((entity, i) => {
         if (i < 4) {
           return (

@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./Card.module.scss";
-import PlannerObject, { PlannerObjectProps } from "./PlannerObject";
+import PlannerObject, { PlannerObjectProps } from "../objects/PlannerObject";
 import { useStore } from "../../hooks";
 
 function PlannerCard() {

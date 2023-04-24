@@ -1,0 +1,83 @@
+.notes{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    .notesContainer {
+      padding: 0.5em;
+    
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      p {
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+    }
+  
+    .notesEdit {
+      flex: 1;
+      resize: none;
+      width: 100%;
+      padding: 5;
+      color: var(--primaryText);
+      background-color: var(--primaryBackground);
+    }
+  }
+
+  .plan {
+    display: flex;
+    align-items: flex-start;
+    flex: 1;
+    margin: 0.5em;
+    border-width: 0.1rem;
+    border-style: solid;
+    border-color: var(--accentText);
+    position: relative;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0.2em;
+    background: var(--accentBackground);
+    width: 4em;
+    height: 4em;
+  
+    img {
+      // flex: 1;
+      width: calc(100% - 0.2em);
+      margin: 0.1em;
+  
+      &.grid {
+        width: calc(50% - 0.2em);
+      }
+    }
+  
+    .exclamation {
+      position: absolute;
+      top: 0.5em;
+      right: 0.5em;
+      transform: translate(
+        50%,
+        -50%
+      ); // Add this line to center the exclamation mark inside the plannerObject container
+      color: var(--errorBackground);
+      font-size: 2em; // Add this line to increase the font size
+      font-weight: bold; // Add this line to make the font bold
+    }
+  
+    .fourPlus {
+      position: absolute;
+      bottom: 0.5em;
+      right: 0.5em;
+      color: var(--errorText);
+      transform: translate(
+        50%,
+        50%
+      ); // Add this line to center the plus sign inside the plannerObject container
+      font-size: 2em; // Add this line to increase the font size
+      font-weight: bold; // Add this line to make the font bold
+    }
+}
