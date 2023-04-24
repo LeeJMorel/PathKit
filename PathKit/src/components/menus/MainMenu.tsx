@@ -3,20 +3,15 @@ import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for stylin
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuInput from "./MenuInput";
 import MenuButton from "./MenuButton";
-import { usePreferenceStore, useStore, useTipStore } from "../../hooks";
+import { usePreferencesStore, useStore, useTipStore } from "../../hooks";
 import DeleteMenu from "./DeleteMenu";
 import CampaignMenu from "./CampaignMenu";
+import { Module, Modules } from "../modules";
 
 enum Tab {
   Campaign = "Campaign",
   View = "View",
   Options = "Options",
-}
-
-enum visibleModules {
-  DCModule = "DC",
-  DiceModule = "Dice",
-  NotesModule = "Notes",
 }
 
 interface IMainMenuProps {
@@ -28,7 +23,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   const [currentTab, setCurrentTab] = useState(Tab.Campaign);
   const [isTutorial, setIsTutorial] = useState<boolean>(false);
   const [isPlaceholder, setIsPlaceholder] = useState(false);
-  const { preferences, setPreferences } = usePreferenceStore();
+  const { preferences, setPreferences } = usePreferencesStore();
 
   //placeholder until store can delete
   const [showDeleteMenu, setShowDeleteMenu] = useState<boolean>(false);
@@ -54,24 +49,30 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
 
   const handleLargeFontChange = () => {
     setPreferences({
-      ...preferences,
       largeFont: !preferences.largeFont,
     });
   };
 
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value: theme } = event.target;
-    console.log("radio change", theme);
+
     setPreferences({
       ...preferences,
       theme,
     });
   };
 
-  const handleModuleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value: visibleModules } = event.target;
+  const handleModuleChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    module: Module
+  ) => {
+    const { checked } = event.target;
+    const visibleModules = {
+      ...preferences.visibleModules,
+      [module]: checked,
+    };
+
     setPreferences({
-      ...preferences,
       visibleModules,
     });
   };
@@ -114,6 +115,19 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     { id: "3", name: "Player 3" },
     { id: "4", name: "Player 4" },
   ]);
+
+  const renderModuleCheckboxes = () => {
+    return Object.values(Modules).map((module) => (
+      <MenuInput
+        key={module.id}
+        label={module.label}
+        checked={preferences.visibleModules[module.id]}
+        type={"checkbox"}
+        name="visibleModule"
+        onChange={(ev): void => handleModuleChange(ev, module.id)}
+      />
+    ));
+  };
 
   return (
     <div className={styles.menuOverlay}>
@@ -246,27 +260,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
               <h2 className={styles.tabHeader}>Visible Modules</h2>
               <hr className={styles.tabHorizontalLine} />
               <div className={styles.tabCheckboxContainer}>
-                <MenuInput
-                  label="DC Adjustments Table"
-                  checked={preferences.visibleModules === "DC"}
-                  type={"checkbox"}
-                  name="visibleModule"
-                  onChange={handleModuleChange}
-                />
-                <MenuInput
-                  label="Notes Module"
-                  checked={preferences.visibleModules === "Notes"}
-                  type={"checkbox"}
-                  name="visibleModule"
-                  onChange={handleModuleChange}
-                />
-                <MenuInput
-                  label="Dice Roller"
-                  checked={preferences.visibleModules === "Dice"}
-                  type={"checkbox"}
-                  name="visibleModule"
-                  onChange={handleModuleChange}
-                />
+                {renderModuleCheckboxes()}
               </div>
             </div>
           )}

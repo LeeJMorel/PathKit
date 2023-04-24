@@ -30,7 +30,7 @@ function App() {
   const [plannerMenu, setPlannerMenu] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { preferences } = usePreferenceStore((store) => ({
+  const { preferences } = usePreferencesStore((store) => ({
     preferences: store.preferences,
   }));
 
@@ -100,12 +100,12 @@ function App() {
       <main className={styles.content}>
         {/* Content component for the first column holds planner 
             which then tells the header what mode we are in. */}
-        <CardView></CardView>
+        <CardView />
         {/* Content component for the second column will change if 
             header search component is used to show results*/}
-        <SheetView></SheetView>
+        <SheetView />
         {/* Content component for the third column will change based on header values*/}
-        <ModuleView visibleModules={preferences.visibleModules}></ModuleView>
+        <ModuleView />
       </main>
     </div>
   );

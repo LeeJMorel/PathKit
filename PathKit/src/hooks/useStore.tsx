@@ -39,59 +39,6 @@ export interface IStore {
   refreshPlans: () => void;
 }
 
-const generateMonster = (): IEntity => {
-  const hp = Math.floor(Math.random() * 100) + 10;
-  return {
-    image: monster,
-    name: uuid(),
-    id: uuid(),
-    stats: {},
-    hp: [hp, hp],
-    entityType: EntityType.Monster,
-  };
-};
-
-const examplePlans: IPlan[] = [
-  {
-    entities: [generateMonster(), generateMonster()],
-    id: uuid(),
-    planType: PlanType.encounter,
-  },
-  {
-    entities: [generateMonster()],
-    id: uuid(),
-    planType: PlanType.encounter,
-  },
-  {
-    entities: [
-      generateMonster(),
-      generateMonster(),
-      generateMonster(),
-      generateMonster(),
-      generateMonster(),
-    ],
-    id: uuid(),
-    planType: PlanType.exploration,
-  },
-  {
-    entities: [generateMonster(), generateMonster(), generateMonster()],
-    id: uuid(),
-    planType: PlanType.encounter,
-  },
-  {
-    entities: [generateMonster(), generateMonster(), generateMonster()],
-    id: uuid(),
-    planType: PlanType.encounter,
-  },
-  {
-    entities: [generateMonster(), generateMonster()],
-    id: uuid(),
-    planType: PlanType.encounter,
-  },
-  // Add more objects as needed
-  //this is a placeholder, this should change based on user input
-];
-
 export const useStore = create(
   persist<IStore>(
     (set, get) => ({

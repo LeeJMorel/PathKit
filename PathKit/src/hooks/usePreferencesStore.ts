@@ -1,31 +1,46 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { Module } from "../components/modules";
 
 interface IPreferences {
   largeFont: boolean;
   theme: string;
-  visibleModules: string;
+  visibleModules: Record<Module, boolean>;
+  currentCampaignId: string | null;
 }
 
 interface IPreferencesStore {
   preferences: IPreferences;
-  setPreferences: (preferences: IPreferences) => void;
+  setPreferences: (preferences: Partial<IPreferences>) => void;
 }
 
-export const usePreferenceStore = create(
+export const usePreferencesStore = create(
   persist<IPreferencesStore>(
     (set, get) => ({
       preferences: {
         largeFont: false,
         theme: "parchment",
-        visibleModules: "DCModule,DiceModule",
+        visibleModules: {
+          DCModule: true,
+          DiceModule: true,
+          NotesModule: false,
+          Foo: false,
+        },
+        currentCampaignId: null,
       },
 
-      setPreferences: (preferences: IPreferences): void => set({ preferences }),
+      setPreferences: (newPreferences: Partial<IPreferences>): void => {
+        const { preferences } = get();
+        set({
+          preferences: {
+            ...preferences,
+            ...newPreferences,
+          },
+        });
+      },
     }),
     {
       name: "PathKit-preferences", // unique name
-      // storage: createJSONStorage(() => localStorage),
     }
   )
 );
