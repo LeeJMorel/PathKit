@@ -21,18 +21,9 @@ const AddPlayerMenu: React.FC<IAddPlayerMenuProps> = ({
   };
 
   const handleAddEntity = (entity: Partial<IEntity>) => {
-    // setNewEntity((prev) => ({
-    //   ...prev,
-    //   ...entity,
-    // }));
     addEntity(entity as IEntity);
     handleClose();
   };
-
-  // const handleSaveClick = () => {
-  //   addEntity(newEntity as IEntity);
-  //   handleClose();
-  // };
 
   return (
     <div className={styles.menuOverlay}>
@@ -47,12 +38,6 @@ const AddPlayerMenu: React.FC<IAddPlayerMenuProps> = ({
             onAddEntity={handleAddEntity}
           ></AddEntityForm>
         </div>
-        {/* <div className={styles.menuButtons}>
-          <MenuButton
-            label="Save Player"
-            onClick={handleSaveClick}
-          ></MenuButton>
-        </div> */}
       </div>
     </div>
   );
