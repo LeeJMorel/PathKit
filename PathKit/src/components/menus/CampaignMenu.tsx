@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styles from "./Menu.module.scss";
-import MenuButton from "./MenuButton";
+import MenuButton from "../buttons/Button";
 import NewCampaignForm from "../forms/NewCampaignForm";
-//import { useCampaignStore } from "./CampaignStore";
+import { useCampaigns, usePreferencesStore } from "../../hooks";
 
 interface ICampaignMenuProps {
   type: "Load" | "New";
@@ -10,24 +10,23 @@ interface ICampaignMenuProps {
 }
 
 const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
-  //const campaignStore = useCampaignStore();
+  const {
+    campaigns,
+    currentCampaignId,
+    addCampaign,
+    deleteCampaign,
+    loadCampaign,
+    unloadCampaign,
+  } = useCampaigns();
+
   const [selectedCampaign, setSelectedCampaign] = useState<string>("");
 
-  const handleCampaignSelect = (campaignName: string) => {
-    setSelectedCampaign(campaignName);
+  const handleCampaignSelect = (campaignId: string) => {
+    setSelectedCampaign(campaignId);
   };
 
   const handleLoadClick = () => {
-    //campaignStore.loadCampaign(selectedCampaign);
-    handleClose();
-  };
-
-  const handleNewSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = event.target as HTMLFormElement;
-    const title = form.title.valueOf;
-    const description = form.description.value;
-    //campaignStore.startNewCampaign(title, description);
+    loadCampaign(selectedCampaign);
     handleClose();
   };
 
@@ -40,25 +39,26 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
       <>
         <h2>Select Campaign</h2>
         <div className={styles.content}>
-          {/* {campaignStore.campaigns.map((campaign) => (
-            <div
-              key={campaign.id}
-              className={`${styles.campaignItem} ${
-                selectedCampaign === campaign.name ? styles.selectedCampaign : ""
-              }`}
-              onClick={() => handleCampaignSelect(campaign.name)}
-            >
-              {campaign.name}
+          {campaigns.map((campaign) => (
+            <div key={campaign.id} className={styles.menuRowContainer}>
+              <div
+                className={`${styles.menuTitle} ${
+                  selectedCampaign === campaign.name
+                    ? styles.selectedCampaign
+                    : ""
+                }`}
+                onClick={() => handleCampaignSelect(campaign.id)}
+              >
+                {campaign.name}
+              </div>
             </div>
-          ))} */}
+          ))}
         </div>
         <div className={styles.menuRowContainer}>
-          <MenuButton
-            label="Load"
-            disabled={!selectedCampaign}
-            onClick={handleClose}
-          ></MenuButton>
-          <MenuButton label="Cancel" onClick={handleClose}></MenuButton>
+          <MenuButton disabled={!selectedCampaign} onClick={handleLoadClick}>
+            Load
+          </MenuButton>
+          <MenuButton onClick={handleClose}>Cancel</MenuButton>
         </div>
       </>
     );
@@ -68,11 +68,7 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
     return (
       <>
         <h2>Start a new campaign</h2>
-        <NewCampaignForm
-          onFormSubmit={function (name: string, description: string): void {
-            throw new Error("Function not implemented.");
-          }}
-        ></NewCampaignForm>
+        <NewCampaignForm />
       </>
     );
   };

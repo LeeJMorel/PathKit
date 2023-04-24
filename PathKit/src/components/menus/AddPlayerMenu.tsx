@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import MenuButton from "./MenuButton";
+import MenuButton from "../buttons/Button";
 import AddEntityForm from "../forms/AddEntityForm";
 import { EntityType, IEntity } from "../../api/model";
 import { useEntities } from "../../hooks";

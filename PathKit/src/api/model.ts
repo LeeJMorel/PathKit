@@ -36,3 +36,10 @@ export interface ICampaign {
   name: string;
   desc: string;
 }
+
+export interface INote {
+  id: string;
+  campaignId: string;
+  title: string;
+  body: string;
+}

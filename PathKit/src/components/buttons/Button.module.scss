@@ -1,0 +1,17 @@
+.button {
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  margin: 0.25em;
+  color: var(--accentText);
+  background-color: var(--accentBackground);
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--primaryBackground);
+  }
+
+  &:disabled {
+    background-color: var(--primaryBackground);
+    color: var(--errorBackground);
+  }
+}

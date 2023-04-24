@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Menu.module.scss";
-import MenuButton from "./MenuButton";
+import MenuButton from "../buttons/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTipStore } from "../../hooks";
 

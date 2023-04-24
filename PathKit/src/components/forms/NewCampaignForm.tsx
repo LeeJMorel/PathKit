@@ -1,13 +1,18 @@
 import { useState } from "react";
 import styles from "./Form.module.scss";
+import { useCampaigns } from "../../hooks";
 
-interface Props {
-  onFormSubmit: (name: string, description: string) => void;
-}
-
-const NewCampaignForm: React.FC<Props> = ({ onFormSubmit }) => {
+const NewCampaignForm = () => {
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [desc, setDesc] = useState("");
+  const {
+    campaigns,
+    currentCampaignId,
+    addCampaign,
+    deleteCampaign,
+    loadCampaign,
+    unloadCampaign,
+  } = useCampaigns();
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -16,12 +21,12 @@ const NewCampaignForm: React.FC<Props> = ({ onFormSubmit }) => {
   const handleDescriptionChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setDescription(e.target.value);
+    setDesc(e.target.value);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onFormSubmit(name, description);
+    addCampaign({ name, desc });
   };
 
   return (
@@ -44,7 +49,7 @@ const NewCampaignForm: React.FC<Props> = ({ onFormSubmit }) => {
         </label>
         <textarea
           name="description"
-          value={description}
+          value={desc}
           onChange={handleDescriptionChange}
           maxLength={240}
           className={styles.formTextarea}
