@@ -13,7 +13,7 @@ function SheetView() {
   // Render different sheets based on the selectedHeaderItem prop
   if (selectedSheet) {
     // If an entity is selected, show the entity sheet for the selected ID
-    content = <EntitySheet entityInfo={selectedSheet} />;
+    content = <EntitySheet />;
     // } else if (searchID) {
     //   // If a search is selected, show the search sheet for the selected ID
     //   content = <SearchSheet searchInfo={searchID} />;
