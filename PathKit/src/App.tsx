@@ -12,7 +12,7 @@ import PlannerMenu from "./components/menus/PlannerMenu";
 import { IEntity } from "./api/model";
 import EditPlannerMenu from "./components/menus/EditPlannerMenu";
 import classNames from "classnames";
-import { usePreferenceStore, useSelectEntity } from "./hooks";
+import { usePreferencesStore, useCampaigns, useStore } from "./hooks";
 import TipMenu from "./components/menus/TipMenu";
 
 // Load FontAwesome icons
@@ -24,13 +24,30 @@ export enum AppMode {
 }
 
 function App() {
+  //control at a high level the campaign that we load
+  const {
+    campaigns,
+    currentCampaignId,
+    addCampaign,
+    deleteCampaign,
+    loadCampaign,
+    unloadCampaign,
+  } = useCampaigns();
+
+  const handleDeleteCampaign = (campaignId: string) => {
+    deleteCampaign(campaignId);
+    // Also reset the current campaign if it is the one being deleted
+    if (currentCampaignId === campaignId) {
+      unloadCampaign();
+    }
+  };
   // Define the props for the Header component
   const [mode, setMode] = useState<AppMode>(AppMode.exploration);
   const [menu, setMenu] = useState(false);
   const [plannerMenu, setPlannerMenu] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { preferences } = usePreferenceStore((store) => ({
+  const { preferences } = usePreferencesStore((store) => ({
     preferences: store.preferences,
   }));
 
@@ -100,12 +117,12 @@ function App() {
       <main className={styles.content}>
         {/* Content component for the first column holds planner 
             which then tells the header what mode we are in. */}
-        <CardView></CardView>
+        <CardView />
         {/* Content component for the second column will change if 
             header search component is used to show results*/}
-        <SheetView></SheetView>
+        <SheetView />
         {/* Content component for the third column will change based on header values*/}
-        <ModuleView visibleModules={preferences.visibleModules}></ModuleView>
+        <ModuleView />
       </main>
     </div>
   );

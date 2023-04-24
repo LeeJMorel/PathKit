@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { v4 as uuid } from "uuid";
 import monster from "../../assets/monster.png";
 import player from "../../assets/knight.png";
 import defaultImage from "../../assets/fighter.png";
@@ -11,19 +10,21 @@ interface Props {
   onAddEntity: (entity: IEntity) => void;
 }
 
-const AddEntityForm: React.FC<Props> = ({ type, onAddEntity }) => {
-  const [entity, setEntity] = useState<IEntity>({
-    id: uuid(),
+const AddEntityForm: React.FC<Props> = ({
+  type = EntityType.none,
+  onAddEntity,
+}) => {
+  const [entity, setEntity] = useState<Omit<IEntity, "id">>({
     image: defaultImage,
     name: "",
     stats: {},
     hp: [0, 0],
     equipment: [],
-    entityType: EntityType.none,
+    entityType: type,
   });
 
   const handleAddEntity = () => {
-    onAddEntity(entity);
+    onAddEntity(entity as IEntity);
   };
 
   const handleInputChange = (
@@ -39,9 +40,16 @@ const AddEntityForm: React.FC<Props> = ({ type, onAddEntity }) => {
     });
   };
 
+  const handleHPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setEntity({
+      ...entity,
+      hp: [Number(value), Number(value)],
+    });
+  };
+
   let statsField;
   let hpField;
-  let addButton;
 
   if (type === "Monster" || type === "Player") {
     statsField = (
@@ -68,33 +76,13 @@ const AddEntityForm: React.FC<Props> = ({ type, onAddEntity }) => {
           <input
             type="text"
             name="hp"
-            onChange={handleInputChange}
+            onChange={handleHPChange}
             className={styles.formInput}
           />
         </div>
       </>
     );
   }
-
-  if (type === "Player") {
-    addButton = <p>Select save player when you are finished.</p>;
-  } else {
-    addButton = (
-      <button
-        type="button"
-        onClick={handleAddEntity}
-        className={styles.formButton}
-      >
-        Add Entity
-      </button>
-    );
-  }
-
-  useEffect(() => {
-    if (type === "Player") {
-      onAddEntity(entity);
-    }
-  }, [entity, type]);
 
   return (
     <form className={styles.formContainer}>
@@ -136,7 +124,13 @@ const AddEntityForm: React.FC<Props> = ({ type, onAddEntity }) => {
           onChange={handleInputChange}
         />
       </div>
-      {addButton}
+      <button
+        type="button"
+        onClick={handleAddEntity}
+        className={styles.formButton}
+      >
+        Add {type}
+      </button>
     </form>
   );
 };

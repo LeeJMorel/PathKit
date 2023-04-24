@@ -2,52 +2,45 @@ import React from "react";
 import styles from "./View.module.scss";
 
 // Import the module components
-import DCModule from "../modules/DCModule";
-import DiceModule from "../modules/DiceModule";
-import NotesModule from "../modules/NotesModule";
+// import DCModule from "../modules/DCModule";
+// import DiceModule from "../modules/DiceModule";
+// import NotesModule from "../modules/NotesModule";
+// import { Module } from "../../api/model";
+import { Modules, Module } from "../modules";
+import { usePreferencesStore } from "../../hooks";
 
-interface ModuleViewProps {
-  visibleModules: string; // Update the type to accept a string
-}
-
-function ModuleView({ visibleModules }: ModuleViewProps) {
-  // Create a mapping of module names to corresponding component references
-  const moduleComponents: { [key: string]: React.FunctionComponent } = {
-    DCModule,
-    DiceModule,
-    NotesModule,
-    // Add more module components and their corresponding names as needed
-  };
+function ModuleView() {
+  const { visibleModules } = usePreferencesStore((store) => store.preferences);
 
   // Render the corresponding module component based on the module names passed down
-  const renderModules = (moduleNames: string) => {
-    // Split the comma-separated string to get an array of module names
-    const modules = moduleNames.split(",");
-
+  const renderModules = () => {
     // Render each module component in a div container
-    return modules.map((moduleName) => {
+    if (Object.values(visibleModules).every((visible) => !visible)) {
+      return <h3>No modules selected.</h3>;
+    }
+    return Object.entries(visibleModules).map(([moduleName, moduleVisible]) => {
       // Check if the module name is available in the mapping
-      if (moduleComponents.hasOwnProperty(moduleName)) {
-        const ModuleComponent = moduleComponents[moduleName];
-        return (
-          <div key={moduleName} className={styles.moduleViewObject}>
-            <ModuleComponent />
-          </div>
-        );
-      } else {
-        // Render a default message or fallback UI if module name is not available
-        return (
-          <div key={moduleName} className={styles.moduleViewObject}>
-            No module found for {moduleName}
-          </div>
-        );
+      if (moduleVisible) {
+        const { ModuleComponent } = Modules[moduleName as Module];
+        if (ModuleComponent) {
+          return (
+            <div key={moduleName} className={styles.moduleViewObject}>
+              <ModuleComponent />
+            </div>
+          );
+        } else {
+          // Render a default message or fallback UI if module name is not available
+          return (
+            <div key={moduleName} className={styles.moduleViewObject}>
+              No module found for {moduleName}
+            </div>
+          );
+        }
       }
     });
   };
 
-  return (
-    <div className={styles.moduleView}>{renderModules(visibleModules)}</div>
-  );
+  return <div className={styles.moduleView}>{renderModules()}</div>;
 }
 
 export default ModuleView;

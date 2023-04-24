@@ -2,26 +2,48 @@ import React from "react";
 import styles from "./Menu.module.scss";
 import MenuButton from "./MenuButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { usePlans, useEntities, useCampaigns } from "../../hooks";
 
 interface IDeleteMenuProps {
   type: "entity" | "plan" | "campaign";
   id: string;
   onClose: () => void;
-  onConfirm?: () => void;
 }
 
 const DeleteMenu: React.FC<IDeleteMenuProps> = ({
   type,
   id,
   onClose,
-  onConfirm,
 }: IDeleteMenuProps) => {
+  const plans = usePlans();
+  const { deleteEntity } = useEntities();
+  const { deleteCampaign } = useCampaigns();
+
   const handleYesClick = () => {
-    onConfirm?.();
-    //Do something with the stores
+    switch (type) {
+      case "plan":
+        deletePlan(id);
+        break;
+      case "entity":
+        deleteEntity(id);
+        break;
+      case "campaign":
+        deleteCampaign(id);
+        break;
+
+      default:
+        break;
+    }
+
+    onClose();
   };
 
   const handleClose = () => {
+    onClose();
+  };
+
+  const deletePlan = (id: string) => {
+    plans.deletePlan(id);
     onClose();
   };
 

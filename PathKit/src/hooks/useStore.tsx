@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
-import { IEntity, EntityType, IPlan, PlanType } from "../api/model";
 import { create } from "zustand";
 import { persist, createJSONStorage, StateStorage } from "zustand/middleware";
+import { IEntity, IPlan, ICampaign } from "../api/model";
 import monster from "../assets/monster.png";
 import player from "../assets/knight.png";
 // import { get, set, del } from 'idb-keyval' // can use anything: IndexedDB, Ionic Storage, etc.
@@ -24,6 +24,11 @@ const storage: StateStorage = {
 };
 
 export interface IStore {
+  campaigns: ICampaign[];
+  campaignsLoading: boolean;
+  setCampaigns: (campaigns: ICampaign[]) => void;
+  setCampaignsLoading: (loading: boolean) => void;
+
   entities: IEntity[];
   entitiesLoading: boolean;
   setEntities: (entities: IEntity[]) => void;
@@ -34,67 +39,21 @@ export interface IStore {
   setPlans: (plans: IPlan[]) => void;
   setPlansLoading: (loading: boolean) => void;
 
+  refreshCampaigns: () => void;
+
   refreshEntities: () => void;
 
   refreshPlans: () => void;
 }
 
-const generateMonster = (): IEntity => {
-  const hp = Math.floor(Math.random() * 100) + 10;
-  return {
-    image: monster,
-    name: uuid(),
-    id: uuid(),
-    stats: {},
-    hp: [hp, hp],
-    entityType: EntityType.Monster,
-  };
-};
-
-const examplePlans: IPlan[] = [
-  {
-    entities: [generateMonster(), generateMonster()],
-    id: uuid(),
-    planType: PlanType.encounter,
-  },
-  {
-    entities: [generateMonster()],
-    id: uuid(),
-    planType: PlanType.encounter,
-  },
-  {
-    entities: [
-      generateMonster(),
-      generateMonster(),
-      generateMonster(),
-      generateMonster(),
-      generateMonster(),
-    ],
-    id: uuid(),
-    planType: PlanType.exploration,
-  },
-  {
-    entities: [generateMonster(), generateMonster(), generateMonster()],
-    id: uuid(),
-    planType: PlanType.encounter,
-  },
-  {
-    entities: [generateMonster(), generateMonster(), generateMonster()],
-    id: uuid(),
-    planType: PlanType.encounter,
-  },
-  {
-    entities: [generateMonster(), generateMonster()],
-    id: uuid(),
-    planType: PlanType.encounter,
-  },
-  // Add more objects as needed
-  //this is a placeholder, this should change based on user input
-];
-
 export const useStore = create(
   persist<IStore>(
     (set, get) => ({
+      campaigns: [],
+      campaignsLoading: false,
+      setCampaigns: (campaigns) => set({ campaigns }),
+      setCampaignsLoading: (loading) => set({ campaignsLoading: loading }),
+
       entities: [],
       entitiesLoading: false,
       setEntities: (entities) => set({ entities }),
@@ -104,6 +63,17 @@ export const useStore = create(
       plansLoading: false,
       setPlans: (plans) => set({ plans }),
       setPlansLoading: (loading) => set({ plansLoading: loading }),
+
+      refreshCampaigns: () => {
+        const { setCampaigns, setCampaignsLoading } = get();
+        setCampaignsLoading(true);
+
+        // fetch from database?
+        // const response = await fetch(db)... yada
+        // const json = await response.json();
+        // setCampaigns(json)
+        setCampaignsLoading(false);
+      },
 
       refreshEntities: () => {
         const { setEntities, setEntitiesLoading } = get();
