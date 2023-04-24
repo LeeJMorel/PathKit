@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 import { create } from "zustand";
 import { persist, createJSONStorage, StateStorage } from "zustand/middleware";
-import { IEntity, IPlan, ICampaign } from "../api/model";
+import { IEntity, IPlan, ICampaign, INote } from "../api/model";
 import monster from "../assets/monster.png";
 import player from "../assets/knight.png";
 // import { get, set, del } from 'idb-keyval' // can use anything: IndexedDB, Ionic Storage, etc.
@@ -39,11 +39,18 @@ export interface IStore {
   setPlans: (plans: IPlan[]) => void;
   setPlansLoading: (loading: boolean) => void;
 
+  notes: INote[];
+  notesLoading: boolean;
+  setNotes: (notes: INote[]) => void;
+  setNotesLoading: (loading: boolean) => void;
+
   refreshCampaigns: () => void;
 
   refreshEntities: () => void;
 
   refreshPlans: () => void;
+
+  refreshNotes: () => void;
 }
 
 export const useStore = create(
@@ -63,6 +70,11 @@ export const useStore = create(
       plansLoading: false,
       setPlans: (plans) => set({ plans }),
       setPlansLoading: (loading) => set({ plansLoading: loading }),
+
+      notes: [],
+      notesLoading: false,
+      setNotes: (notes) => set({ notes }),
+      setNotesLoading: (loading) => set({ notesLoading: loading }),
 
       refreshCampaigns: () => {
         const { setCampaigns, setCampaignsLoading } = get();
@@ -95,6 +107,17 @@ export const useStore = create(
         // const json = await response.json();
         // setPlans(json)
         setPlansLoading(false);
+      },
+
+      refreshNotes: async () => {
+        const { setNotes, setNotesLoading } = get();
+        setNotesLoading(true);
+
+        // fetch from database?
+        // const response = await fetch(db)... yada
+        // const json = await response.json();
+        // setNotes(json)
+        setNotesLoading(false);
       },
     }),
     {

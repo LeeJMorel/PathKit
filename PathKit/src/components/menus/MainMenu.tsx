@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuInput from "./MenuInput";
-import MenuButton from "./MenuButton";
+import MenuButton from "../buttons/Button";
 import {
   usePreferencesStore,
   useStore,
   useTipStore,
   useEntities,
+  useCampaigns,
 } from "../../hooks";
 import DeleteMenu from "./DeleteMenu";
 import CampaignMenu from "./CampaignMenu";
@@ -23,6 +24,15 @@ interface IMainMenuProps {
   onClose: () => void;
 }
 const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
+  const {
+    campaigns,
+    currentCampaignId,
+    addCampaign,
+    deleteCampaign,
+    loadCampaign,
+    unloadCampaign,
+  } = useCampaigns();
+
   const plans = useStore((store) => store.plans);
   const { setCurrentTipIndex } = useTipStore();
   const [currentTab, setCurrentTab] = useState(Tab.Campaign);
@@ -225,18 +235,15 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
               </div>
               <br />
               <div className={styles.menuRowContainer}>
-                <MenuButton
-                  label="Delete Campaign"
-                  onClick={() => handleDelete("campaign", "id")}
-                ></MenuButton>
-                <MenuButton
-                  label="Load Campaign"
-                  onClick={() => handleCampaign("Load")}
-                ></MenuButton>
-                <MenuButton
-                  label="Start New Campaign"
-                  onClick={() => handleCampaign("New")}
-                ></MenuButton>
+                <MenuButton onClick={() => handleDelete("campaign", "id")}>
+                  Delete Campaign
+                </MenuButton>
+                <MenuButton onClick={() => handleCampaign("Load")}>
+                  Load Campaign
+                </MenuButton>
+                <MenuButton onClick={() => handleCampaign("New")}>
+                  Start New Campaign
+                </MenuButton>
               </div>
             </div>
           )}

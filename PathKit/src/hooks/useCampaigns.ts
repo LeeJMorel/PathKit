@@ -7,7 +7,7 @@ import { ICampaign, IEntity, IPlan } from "../api/model";
 interface IUseCampaigns {
   campaigns: ICampaign[];
   currentCampaignId: string | null;
-  addCampaign: (campaign: ICampaign) => void;
+  addCampaign: (campaign: Omit<ICampaign, "id">) => void;
   deleteCampaign: (campaignId: string) => void;
   loadCampaign: (campaignId: string) => void;
   unloadCampaign: () => void;
@@ -26,51 +26,18 @@ export const useCampaigns = (): IUseCampaigns => {
   );
   const setPreferences = usePreferencesStore((store) => store.setPreferences);
 
-  // Tripwire to prevent infinite loop when call the useEffect below
-  const [isCampaignSetup, setIsCampaignSetup] = useState<boolean>(false);
-
   useEffect(() => {
-    if (currentCampaignId && !isCampaignSetup) {
-      // Set the campaignId property for new entities and plans
-      setEntities(
-        entities.map((entity) =>
-          entity.campaignId
-            ? entity
-            : {
-                ...entity,
-                campaignId: currentCampaignId,
-              }
-        )
-      );
-      setPlans(
-        plans.map((plan) =>
-          plan.campaignId
-            ? plan
-            : {
-                ...plan,
-                campaignId: currentCampaignId,
-              }
-        )
-      );
-      setIsCampaignSetup(true);
-    } else if (!currentCampaignId && isCampaignSetup) {
-      setIsCampaignSetup(false);
-    }
-  }, [
-    currentCampaignId,
-    entities,
-    setEntities,
-    plans,
-    setPlans,
-    isCampaignSetup,
-  ]);
+    refreshCampaigns();
+  }, []);
 
-  const addCampaign = (newCampaign: ICampaign): void => {
+  const addCampaign = (newCampaign: Omit<ICampaign, "id">): void => {
+    const id = uuid();
     const campaign: ICampaign = {
       ...newCampaign,
-      id: uuid(),
+      id,
     };
     setCampaigns([...campaigns, campaign]);
+    setPreferences({ currentCampaignId: id });
   };
 
   const deleteCampaign = useCallback(

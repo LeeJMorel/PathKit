@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import MenuButton from "./MenuButton";
+import MenuButton from "../buttons/Button";
 import MenuInput from "./MenuInput";
 import AddEntityForm from "../forms/AddEntityForm";
 import { AppMode } from "../../App";
@@ -157,10 +157,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
           ))}
           <div className={styles.menuColumnContainer}>
             {!showAddEntity && (
-              <MenuButton
-                label="Add Entity"
-                onClick={handleAddEntityClick}
-              ></MenuButton>
+              <MenuButton onClick={handleAddEntityClick}>Add Entity</MenuButton>
             )}
             {renderAddEntity()}
           </div>

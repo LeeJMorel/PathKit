@@ -14,6 +14,7 @@ import EditPlannerMenu from "./components/menus/EditPlannerMenu";
 import classNames from "classnames";
 import { usePreferencesStore, useCampaigns, useStore } from "./hooks";
 import TipMenu from "./components/menus/TipMenu";
+import { WelcomeMenu } from "./components/menus/WelcomeMenu";
 
 // Load FontAwesome icons
 library.add(fas);
@@ -73,6 +74,7 @@ function App() {
         styles[preferences.theme]
       )}
     >
+      {!currentCampaignId && <WelcomeMenu />}
       <header className={styles.header}>
         <div className={styles.headerSection}>
           {/* Header over cards view, button pulls up plan menu*/}

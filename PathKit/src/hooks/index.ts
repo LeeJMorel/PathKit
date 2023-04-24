@@ -5,3 +5,4 @@ export * from "./useTipStore";
 export * from "./useConditions";
 export * from "./useEntities";
 export * from "./useCampaigns";
+export * from "./useNotes";

@@ -10,6 +10,7 @@ interface IPreferences {
 
   selectedSheet: string | null;
   selectedPlan: string | null;
+  selectedNote: string | null;
 }
 
 interface IPreferencesStore {
@@ -32,6 +33,7 @@ export const usePreferencesStore = create(
         currentCampaignId: null,
         selectedPlan: null,
         selectedSheet: null,
+        selectedNote: null,
       },
 
       setPreferences: (newPreferences: Partial<IPreferences>): void => {

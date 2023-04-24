@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Menu.module.scss";
-import MenuButton from "./MenuButton";
+import MenuButton from "../buttons/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePlans, useEntities, useCampaigns } from "../../hooks";
 
@@ -57,8 +57,8 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
             yes, this cannot be undone.
           </p>
           <div className={styles.menuRowContainer}>
-            <MenuButton label="No" onClick={handleClose}></MenuButton>
-            <MenuButton label="Yes" onClick={handleYesClick}></MenuButton>
+            <MenuButton onClick={handleClose}>No</MenuButton>
+            <MenuButton onClick={handleYesClick}>Yes</MenuButton>
           </div>
         </div>
         <div className={styles.close} onClick={handleClose}>
