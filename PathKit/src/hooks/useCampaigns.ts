@@ -47,8 +47,9 @@ export const useCampaigns = (): IUseCampaigns => {
         entities.filter((entity) => entity.campaignId !== campaignId)
       );
       setPlans(plans.filter((plan) => plan.campaignId !== campaignId));
+      setPreferences({ currentCampaignId: null });
     },
-    [campaigns, setCampaigns, entities, setEntities, plans, setPlans]
+    [campaigns, setCampaigns, entities, setEntities, plans, setPlans, setPreferences]
   );
 
   const loadCampaign = useCallback(

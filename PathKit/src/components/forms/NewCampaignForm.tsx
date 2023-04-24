@@ -27,6 +27,7 @@ const NewCampaignForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     addCampaign({ name, desc });
+    window.location.reload();
   };
 
   return (

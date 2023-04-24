@@ -235,7 +235,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
               </div>
               <br />
               <div className={styles.menuRowContainer}>
-                <MenuButton onClick={() => handleDelete("campaign", "id")}>
+                <MenuButton onClick={() => preferences.currentCampaignId && handleDelete("campaign", preferences.currentCampaignId)}>
                   Delete Campaign
                 </MenuButton>
                 <MenuButton onClick={() => handleCampaign("Load")}>

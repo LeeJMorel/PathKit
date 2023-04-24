@@ -163,7 +163,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
           </div>
         </div>
         <div className={styles.menuColumnContainer}>
-          <MenuButton label="Save Plan" onClick={handleSaveClick}></MenuButton>
+          <MenuButton onClick={handleSaveClick}>Save Plan</MenuButton>
         </div>
       </div>
     </div>
