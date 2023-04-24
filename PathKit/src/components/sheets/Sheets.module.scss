@@ -3,19 +3,3 @@
   width: 100%;
   height: 100%;
 }
-
-.notesContainer {
-  padding: 0.5em;
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p {
-    &:first-child {
-      margin-top: 0;
-    }
-  }
-}

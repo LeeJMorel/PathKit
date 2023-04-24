@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Markdown from "markdown-to-jsx";
 import { Button } from "../buttons";
-import styles from "./Sheets.module.scss";
+import styles from "./Objects.module.scss";
 
 function NotesObject() {
   const [notes, setNotes] = useState(""); // State to store notes
@@ -19,27 +19,13 @@ function NotesObject() {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        height: "100%",
-      }}
-    >
+    <div className={styles.notes}>
       <Button onClick={() => setEditMode(!editMode)}>
         {editMode ? "Preview" : "Edit"} Markdown
       </Button>
       {editMode ? (
         <textarea
-          style={{
-            flex: 1,
-            resize: "none",
-            width: "100%",
-            padding: 5,
-            color: "black",
-            backgroundColor: "white",
-          }}
+        className={styles.notesEdit}
           value={notes}
           onChange={handleInputChange}
           placeholder="Type your notes here..."

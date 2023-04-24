@@ -1,11 +1,8 @@
-import styles from "./Modules.module.scss";
-import NoteObject from "../sheets/NoteObject";
+import NoteObject from "../objects/NoteObject";
 
 function NotesModule() {
   return (
-    <div className={styles.moduleContainer}>
-      <NoteObject />
-    </div>
+    <NoteObject />
   );
 }
 
