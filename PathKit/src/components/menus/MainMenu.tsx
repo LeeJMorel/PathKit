@@ -3,7 +3,12 @@ import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for stylin
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuInput from "./MenuInput";
 import MenuButton from "./MenuButton";
-import { usePreferencesStore, useStore, useTipStore } from "../../hooks";
+import {
+  usePreferencesStore,
+  useStore,
+  useTipStore,
+  useEntities,
+} from "../../hooks";
 import DeleteMenu from "./DeleteMenu";
 import CampaignMenu from "./CampaignMenu";
 import { Module, Modules } from "../modules";
@@ -24,6 +29,8 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   const [isTutorial, setIsTutorial] = useState<boolean>(false);
   const [isPlaceholder, setIsPlaceholder] = useState(false);
   const { preferences, setPreferences } = usePreferencesStore();
+  const { getPlayerEntities } = useEntities();
+  const players = getPlayerEntities();
 
   //placeholder until store can delete
   const [showDeleteMenu, setShowDeleteMenu] = useState<boolean>(false);
@@ -108,14 +115,6 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     onClose();
   };
 
-  //im a placeholder!
-  const [players, setPlayers] = useState([
-    { id: "1", name: "Player 1" },
-    { id: "2", name: "Player 2" },
-    { id: "3", name: "Player 3" },
-    { id: "4", name: "Player 4" },
-  ]);
-
   const renderModuleCheckboxes = () => {
     return Object.values(Modules).map((module) => (
       <MenuInput
@@ -195,7 +194,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                     <div className={styles.menuTitle}>{player.name}</div>
                     <div
                       className={styles.deleteButton}
-                      onClick={() => handleDelete("entity", "id")}
+                      onClick={() => handleDelete("entity", player.id)}
                     >
                       <FontAwesomeIcon icon="close" />
                     </div>

@@ -6,51 +6,22 @@ import player from "../../assets/knight.png";
 import EntityCard from "../cards/EntityCard";
 import AddPlayerCard from "../cards/AddPlayerCard";
 import { EntityType, IEntity, IPlan, PlanType } from "../../api/model";
+import { useEntities } from "../../hooks";
 
 function CardView() {
-  //placeholder, SQL query for all type=player
-  const generatePlayer = (): IEntity => {
-    const names = [
-      "Aaliyah",
-      "Hassan",
-      "Sofia",
-      "Khalil",
-      "Isabella",
-      "Muhammad",
-      "Chloe",
-      "Amir",
-      "Olivia",
-      "Ethan",
-    ];
-    const name = names[Math.floor(Math.random() * names.length)];
-    const hp = Math.floor(Math.random() * 100) + 10;
-    return {
-      image: player,
-      name: name,
-      id: uuid(),
-      stats: {
-        field1: Math.floor(Math.random() * 10) + 1,
-        field2: Math.floor(Math.random() * 10) + 1,
-        field3: Math.floor(Math.random() * 10) + 1,
-        field4: Math.floor(Math.random() * 10) + 1,
-        field5: Math.floor(Math.random() * 10) + 1,
-      },
-      hp: [hp, hp],
-      entityType: EntityType.Player,
-    };
-  };
+  const { getPlayerEntities } = useEntities();
 
-  const entityCards = [];
-  for (let i = 0; i < 4; i++) {
-    const player = generatePlayer();
-    entityCards.push(<EntityCard key={player.id} entities={[player]} />);
-  }
+  const playerEntities = getPlayerEntities();
+
+  const entityCards = playerEntities.map((entity: IEntity) => (
+    <EntityCard key={entity.id} entities={[entity]} />
+  ));
 
   return (
     <div className={styles.cardView}>
       <PlannerCard />
       {entityCards}
-      <AddPlayerCard></AddPlayerCard>
+      <AddPlayerCard />
     </div>
   );
 }

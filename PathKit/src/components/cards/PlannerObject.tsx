@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import styles from "./Card.module.scss";
 import { IPlan, PlanType } from "../../api/model";
-import { useSelectPlan } from "../../hooks";
+import { usePreferencesStore } from "../../hooks";
 
 export interface PlannerObjectProps {
   plan: IPlan;
@@ -9,10 +9,10 @@ export interface PlannerObjectProps {
 
 function PlannerObject({ plan }: PlannerObjectProps) {
   const { entities, planType } = plan;
-  const { setSelectedPlan } = useSelectPlan();
+  const { setPreferences } = usePreferencesStore();
 
   const handleClick = () => {
-    setSelectedPlan({ selectedPlanID: plan.id });
+    setPreferences({ selectedPlan: plan.id });
   };
 
   return (

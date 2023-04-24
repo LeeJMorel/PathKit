@@ -7,6 +7,9 @@ interface IPreferences {
   theme: string;
   visibleModules: Record<Module, boolean>;
   currentCampaignId: string | null;
+
+  selectedSheet: string | null;
+  selectedPlan: string | null;
 }
 
 interface IPreferencesStore {
@@ -27,6 +30,8 @@ export const usePreferencesStore = create(
           Foo: false,
         },
         currentCampaignId: null,
+        selectedPlan: null,
+        selectedSheet: null,
       },
 
       setPreferences: (newPreferences: Partial<IPreferences>): void => {

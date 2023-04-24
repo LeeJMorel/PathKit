@@ -4,44 +4,35 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuButton from "./MenuButton";
 import AddEntityForm from "../forms/AddEntityForm";
 import { EntityType, IEntity } from "../../api/model";
+import { useEntities } from "../../hooks";
 
 interface IAddPlayerMenuProps {
   onClose: () => void;
-  onSave: (entities: IEntity[]) => void;
 }
 
 const AddPlayerMenu: React.FC<IAddPlayerMenuProps> = ({
   onClose,
-  onSave,
 }: IAddPlayerMenuProps) => {
-  const [entities, setEntities] = useState<IEntity[]>([]);
-
-  const [showAddEntity, setShowAddEntity] = useState(false);
+  const { addEntity } = useEntities();
+  const [newEntity, setNewEntity] = useState<Partial<IEntity>>({});
 
   const handleClose = () => {
     onClose();
   };
 
-  const handleAddEntityClick = () => {
-    setShowAddEntity(true);
-  };
-
-  const handleAddEntity = (entity: IEntity) => {
-    const newEntity: IEntity = {
-      ...entity,
-    };
-    setEntities([...entities, newEntity]);
-    setShowAddEntity(false);
-  };
-
-  const handleAddEntityCancel = () => {
-    setShowAddEntity(false);
-  };
-
-  const handleSaveClick = () => {
-    onSave(entities);
+  const handleAddEntity = (entity: Partial<IEntity>) => {
+    // setNewEntity((prev) => ({
+    //   ...prev,
+    //   ...entity,
+    // }));
+    addEntity(entity as IEntity);
     handleClose();
   };
+
+  // const handleSaveClick = () => {
+  //   addEntity(newEntity as IEntity);
+  //   handleClose();
+  // };
 
   return (
     <div className={styles.menuOverlay}>
@@ -53,15 +44,15 @@ const AddPlayerMenu: React.FC<IAddPlayerMenuProps> = ({
         <div className={styles.entityList}>
           <AddEntityForm
             type={EntityType.Player}
-            onAddEntity={(entity) => handleAddEntity(entity)}
+            onAddEntity={handleAddEntity}
           ></AddEntityForm>
         </div>
-        <div className={styles.menuButtons}>
+        {/* <div className={styles.menuButtons}>
           <MenuButton
             label="Save Player"
             onClick={handleSaveClick}
           ></MenuButton>
-        </div>
+        </div> */}
       </div>
     </div>
   );
