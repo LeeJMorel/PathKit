@@ -8,9 +8,10 @@ interface IPreferences {
   visibleModules: Record<Module, boolean>;
   currentCampaignId: string | null;
 
-  selectedSheet: string | null;
+  selectedEntity: string | null;
   selectedPlan: string | null;
   selectedNote: string | null;
+  selectedSearch: string | null;
 }
 
 interface IPreferencesStore {
@@ -32,8 +33,9 @@ export const usePreferencesStore = create(
         },
         currentCampaignId: null,
         selectedPlan: null,
-        selectedSheet: null,
+        selectedEntity: null,
         selectedNote: null,
+        selectedSearch: null,
       },
 
       setPreferences: (newPreferences: Partial<IPreferences>): void => {

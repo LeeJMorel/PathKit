@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import styles from "./Card.module.scss";
 import { IEntity } from "../../api/model";
-import { useConditions } from "../../hooks";
+import { useConditions, usePreferencesStore } from "../../hooks";
 import { useState } from "react";
 
 interface EntityCardProps {
@@ -20,9 +20,19 @@ const exampleStats = {
 function EntityCard({ entities }: EntityCardProps) {
   const { conditions } = useConditions();
   const [showConditionsMenu, setShowConditionsMenu] = useState(false);
+  const { preferences, setPreferences } = usePreferencesStore();
 
   const handleConditionsClick = () => {
     setShowConditionsMenu(true);
+  };
+
+  const handleEntityClick = (id: string) => {
+    const selectedSearch = null;
+    setPreferences({
+      ...preferences,
+      selectedEntity: id,
+      selectedSearch,
+    });
   };
 
   return (
@@ -33,7 +43,11 @@ function EntityCard({ entities }: EntityCardProps) {
 
         const statKeys = Object.keys(exampleStats);
         return (
-          <div key={entity.id} className={styles.cardContainer}>
+          <div
+            key={entity.id}
+            className={styles.cardContainer}
+            onClick={() => handleEntityClick(entity.id)}
+          >
             <div
               className={classNames(
                 styles.cardImage,
