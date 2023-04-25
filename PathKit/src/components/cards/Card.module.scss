@@ -55,13 +55,13 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 2em;
-    color: var(--errorBackground);
+    color: var(--close);
   }
 }
 
 .entityDeadImage {
   border-width: 0.3em;
-  border-color: var(--errorBackground);
+  border-color: var(--close);
   position: relative;
   &:before {
     content: "";

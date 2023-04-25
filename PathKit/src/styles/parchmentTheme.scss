@@ -13,9 +13,12 @@ $parchmentTheme: (
   tertiaryText: map-get($colorPalette, black),
   accentBackground: map-get($colorPalette, greenLight),
   accentText: map-get($colorPalette, white),
-  errorBackground: map-get($colorPalette, redDark),
-  errorText: map-get($colorPalette, white),
+  secondaryAccentBackground: map-get($colorPalette, cream),
+  tertiaryAccentBackground: map-get($colorPalette, greenDark),
+  errorBackground: map-get($colorPalette, grayDarker),
+  errorText: map-get($colorPalette, grayLight),
   linkText: map-get($colorPalette, redDark),
+  close: map-get($colorPalette, redLight),
 );
 
 $theme: map-merge($fonts, $parchmentTheme);

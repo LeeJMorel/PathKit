@@ -13,9 +13,12 @@ $darkTheme: (
   tertiaryText: map-get($colorPalette, cream),
   accentBackground: map-get($colorPalette, redDarker),
   accentText: map-get($colorPalette, cream),
-  errorBackground: map-get($colorPalette, redDark),
-  errorText: map-get($colorPalette, white),
+  secondaryAccentBackground: map-get($colorPalette, tealDarker),
+  tertiaryAccentBackground: map-get($colorPalette, black),
+  errorBackground: map-get($colorPalette, grayDarker),
+  errorText: map-get($colorPalette, grayLight),
   linkText: map-get($colorPalette, purpleLight),
+  close: map-get($colorPalette, redLight),
 );
 
 $theme: map-merge($fonts, $darkTheme);
