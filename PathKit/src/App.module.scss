@@ -18,9 +18,14 @@ This consists of two main objects, the header and the content*/
   height: 100vh; /* Set height of App to take up the full height of the screen */
   width: 100vw; /* Set width of App to take up the full height of the screen */
   background-color: var(--bodyBackground);
+  color: var(--bodyText);
   overflow-x: hidden;
   overflow-y: hidden;
   font-size: 16px;
+
+  a {
+    color: var(--linkText);
+  }
 
   &.largeFont {
     font-size: 18px;
@@ -50,8 +55,13 @@ This consists of two main objects, the header and the content*/
   height: $headerHeight; /* Set height of Header to 10em */
   width: 100%; /* Set width of Header to 100% to take up the full width of its column */
   background-color: var(--accentBackground);
+  color: var(--accentText);
   flex-direction: row;
   display: flex;
+
+  .hamburgerMenu {
+    cursor: pointer;
+  }
 
   /* The header consists of 3 sections, one for each of our Views*/
   .headerSection {
@@ -64,7 +74,6 @@ This consists of two main objects, the header and the content*/
 
     .headerTitle {
       font-weight: bold;
-      color: var(--accentText);
       font-size: 1.4em;
       margin: 0 auto;
     }

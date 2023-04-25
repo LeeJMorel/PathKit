@@ -8,11 +8,14 @@
   align-items: center;
   flex-direction: column;
   height: 100%;
+  background-color: var(--bodyBackground);
+  color: var(--bodyText);
 }
 
 .dcTable {
   width: 100%;
   border-collapse: collapse;
+  color: var(--primaryText);
 
   th,
   td {
@@ -26,7 +29,8 @@
   }
 
   tr:nth-child(even) {
-    background-color: var(--accentText);
+    background-color: var(--accentBackground);
+    color: var(--accentText);
   }
 
   tr:hover {

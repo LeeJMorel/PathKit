@@ -109,7 +109,7 @@ function App() {
           {/* Hamburger menu icon */}
           <FontAwesomeIcon
             icon="bars"
-            style={{ color: "#000", cursor: "pointer" }}
+            className={styles.hamburgerMenu}
             onClick={handleToggleMenu}
           />
           {/* Render MainMenu component */}
