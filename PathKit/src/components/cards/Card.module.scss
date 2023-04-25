@@ -13,263 +13,202 @@
   //   burlywood 77%,
   //   #9e603f 100%
   // );
-}
 
-.cardContainer {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: flex-start;
-  padding: 0.5em;
-  flex: 1;
-}
-
-.entityContent {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  flex-wrap: wrap;
-  flex: 1;
-  margin-left: 1em;
-  justify-content: space-between; /* Add this property to push stats to the bottom */
-}
-
-.cardImage {
-  width: 4em;
-  height: 4em;
-  padding: 0.2em;
-  background: var(--accentBackground);
-  border-width: 0.1rem;
-  border-style: solid;
-  border-color: var(--accentText);
-
-  img {
+  .cardContainer {
     width: 100%;
-  }
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    padding: 0.5em;
+    flex: 1;
 
-  .deadIcon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 2em;
-    color: var(--close);
-  }
-}
+    .entityContent {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      flex-wrap: wrap;
+      flex: 1;
+      margin-left: 1em;
+      justify-content: space-between; /* Add this property to push stats to the bottom */
+    }
 
-.entityDeadImage {
-  border-width: 0.3em;
-  border-color: var(--close);
-  position: relative;
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.75);
-  }
-  //   &:after,
-  //   &:before {
-  //     content: "";
-  //     position: absolute;
-  //     background: red;
-  //     display: block;
-  //     width: 4em;
-  //     height: 0.3rem;
-  //     top: 50%;
-  //     left: 50%;
-  //   }
+    .cardImage {
+      width: 4em;
+      height: 4em;
+      padding: 0.2em;
+      background: var(--accentBackground);
+      border-width: 0.1rem;
+      border-style: solid;
+      border-color: var(--accentText);
 
-  //   &:before {
-  //     transform: translate(-50%, -50%) rotate(45deg);
-  //   }
+      img {
+        width: 100%;
+      }
 
-  //   &:after {
-  //     transform: translate(-50%, -50%) rotate(135deg);
-  //   }
-}
+      .deadIcon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2em;
+        color: var(--close);
+      }
+    }
 
-.entityName {
-  display: flex;
-  flex: 1;
-  margin-left: 0.2em;
-}
+    .entityDeadImage {
+      border-width: 0.3em;
+      border-color: var(--close);
+      position: relative;
+      &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.75);
+      }
+      //   &:after,
+      //   &:before {
+      //     content: "";
+      //     position: absolute;
+      //     background: red;
+      //     display: block;
+      //     width: 4em;
+      //     height: 0.3rem;
+      //     top: 50%;
+      //     left: 50%;
+      //   }
 
-.entityStats {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between; /* Add this property to center stats horizontally */
-  margin-top: auto; /* Add this property to push stats to the bottom */
-  color: var(--secondaryText);
-}
+      //   &:before {
+      //     transform: translate(-50%, -50%) rotate(45deg);
+      //   }
 
-.entityStat {
-  width: 2em;
-  height: 2em;
-  border-radius: 50%;
-  background-color: var(--secondaryBackground);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0.2em;
-}
+      //   &:after {
+      //     transform: translate(-50%, -50%) rotate(135deg);
+      //   }
+    }
 
-.statCircle {
-  font-size: 0.8em;
-  font-weight: bold;
-}
+    .entityName {
+      display: flex;
+      flex: 1;
+      margin-left: 0.2em;
+    }
 
-.entityHP {
-  display: flex;
-  position: absolute;
-  top: 0.5em;
-  right: 0.5em;
-}
+    .entityStats {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between; /* Add this property to center stats horizontally */
+      margin-top: auto; /* Add this property to push stats to the bottom */
+      color: var(--secondaryText);
+    }
 
-.entityHPButton {
-  all: unset;
-  background: var(--secondaryBackground);
-  color: var(--secondaryText);
-  font-size: 1em;
-  font-weight: bold;
-  padding: 0;
-  border-radius: 100%;
-  margin-right: 0.25em;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    .entityStat {
+      width: 2em;
+      height: 2em;
+      border-radius: 50%;
+      background-color: var(--secondaryBackground);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0.2em;
+    }
 
-.entityHPNumbers {
-  font-size: 0.8em;
-}
+    .statCircle {
+      font-size: 0.8em;
+      font-weight: bold;
+    }
 
-.cardAddButton {
-  background-color: transparent;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  font-size: 1.5rem; // Increase font size
-  border: none;
+    .entityHP {
+      display: flex;
+      position: absolute;
+      top: 0.5em;
+      right: 0.5em;
+    }
 
-  .fa-plus {
-    font-size: 1.5rem; // Increase icon size
-  }
-}
+    .entityHPButton {
+      all: unset;
+      background: var(--secondaryBackground);
+      color: var(--secondaryText);
+      font-size: 1em;
+      font-weight: bold;
+      padding: 0;
+      border-radius: 100%;
+      margin-right: 0.25em;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.plannerCardScrollLeft,
-.plannerCardScrollRight {
-  position: absolute;
-  cursor: pointer;
-  font-size: 1.5em;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    .entityHPNumbers {
+      font-size: 0.8em;
+    }
 
-.plannerCardScrollLeft {
-  left: 0;
-  padding-left: 0.2em;
-}
+    .cardAddButton {
+      background-color: transparent;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      font-size: 1.5rem; // Increase font size
+      border: none;
+      color: var(--primaryText);
 
-.plannerCardScrollRight {
-  right: 0;
-  padding-right: 0.2em;
-}
-
-.plannerCardScrollContainer {
-  overflow: hidden;
-  height: 100%;
-  width: calc(
-    100% - 4em
-  ); /* Subtract the width of the arrows from the container width */
-  margin-left: 2em; /* Add margin to the left of the container to make space for the left arrow */
-  margin-right: 2em; /* Add margin to the right of the container to make space for the right arrow */
-  padding: 0.2em;
-  display: flex;
-  align-items: center;
-  white-space: nowrap; /* Prevent line wrapping of planner objects */
-}
-
-.plannerCardScrollCard {
-  display: flex;
-}
-
-.plannerCardPlaceholder {
-  font-size: 0.8em;
-  width: 100%;
-  white-space: break-spaces;
-  line-height: 1.1;
-  text-align: center;
-}
-
-.plannerObject {
-  display: flex;
-  align-items: flex-start;
-  flex: 1;
-  margin: 0.5em;
-  border-width: 0.1rem;
-  border-style: solid;
-  border-color: var(--accentText);
-  position: relative;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding: 0.2em;
-  background: var(--accentBackground);
-  width: 4em;
-  height: 4em;
-
-  img {
-    // flex: 1;
-    width: calc(100% - 0.2em);
-    margin: 0.1em;
-
-    &.grid {
-      width: calc(50% - 0.2em);
+      .fa-plus {
+        font-size: 1.5rem; // Increase icon size
+      }
     }
   }
 
-  .exclamation {
+  .plannerCardScrollLeft,
+  .plannerCardScrollRight {
     position: absolute;
-    top: 0.5em;
-    right: 0.5em;
-    transform: translate(
-      50%,
-      -50%
-    ); // Add this line to center the exclamation mark inside the plannerObject container
-    color: var(--errorBackground);
-    font-size: 2em; // Add this line to increase the font size
-    font-weight: bold; // Add this line to make the font bold
+    cursor: pointer;
+    font-size: 1.5em;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  .fourPlus {
-    position: absolute;
-    bottom: 0.5em;
-    right: 0.5em;
-    color: var(--errorText);
-    transform: translate(
-      50%,
-      50%
-    ); // Add this line to center the plus sign inside the plannerObject container
-    font-size: 2em; // Add this line to increase the font size
-    font-weight: bold; // Add this line to make the font bold
+  .plannerCardScrollLeft {
+    left: 0;
+    padding-left: 0.2em;
   }
 
-  .additionalObject {
-    flex: 1;
+  .plannerCardScrollRight {
+    right: 0;
+    padding-right: 0.2em;
   }
 
-  .row {
-    flex: 1;
-    flex-direction: row;
+  .plannerCardScrollContainer {
+    overflow: hidden;
+    height: 100%;
+    width: calc(
+      100% - 4em
+    ); /* Subtract the width of the arrows from the container width */
+    margin-left: 2em; /* Add margin to the left of the container to make space for the left arrow */
+    margin-right: 2em; /* Add margin to the right of the container to make space for the right arrow */
+    padding: 0.2em;
+    display: flex;
+    align-items: center;
+    white-space: nowrap; /* Prevent line wrapping of planner objects */
+  }
+
+  .plannerCardScrollCard {
+    display: flex;
+  }
+
+  .plannerCardPlaceholder {
+    font-size: 0.8em;
+    width: 100%;
+    white-space: break-spaces;
+    line-height: 1.1;
+    text-align: center;
   }
 }

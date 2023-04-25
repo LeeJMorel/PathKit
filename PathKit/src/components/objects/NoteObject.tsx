@@ -25,10 +25,12 @@ function NotesObject() {
       </Button>
       {editMode ? (
         <textarea
-        className={styles.notesEdit}
+          className={styles.notesEdit}
           value={notes}
           onChange={handleInputChange}
           placeholder="Type your notes here..."
+          rows={10000}
+          cols={50}
         />
       ) : (
         <div className={styles.notesContainer}>

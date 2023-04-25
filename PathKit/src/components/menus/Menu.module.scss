@@ -107,6 +107,11 @@
   flex-direction: row;
   width: 100%;
 }
+.menuEndContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 
 .menuColumnContainer {
   display: flex;
@@ -218,7 +223,7 @@
     transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: var(--tertiaryAccentBackground);;
+      background-color: var(--tertiaryAccentBackground);
     }
   }
 }
