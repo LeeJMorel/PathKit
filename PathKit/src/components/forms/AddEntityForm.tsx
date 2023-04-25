@@ -4,6 +4,7 @@ import player from "../../assets/knight.png";
 import defaultImage from "../../assets/fighter.png";
 import styles from "./Form.module.scss";
 import { IEntity, EntityType } from "../../api/model";
+import { useEntities } from "../../hooks";
 
 interface Props {
   type: EntityType;
@@ -14,6 +15,7 @@ const AddEntityForm: React.FC<Props> = ({
   type = EntityType.none,
   onAddEntity,
 }) => {
+  const { addEntity } = useEntities();
   const [entity, setEntity] = useState<Omit<IEntity, "id">>({
     image: defaultImage,
     name: "",
@@ -24,7 +26,8 @@ const AddEntityForm: React.FC<Props> = ({
   });
 
   const handleAddEntity = () => {
-    onAddEntity(entity as IEntity);
+    const newEntity = addEntity(entity);
+    onAddEntity(newEntity);
   };
 
   const handleInputChange = (

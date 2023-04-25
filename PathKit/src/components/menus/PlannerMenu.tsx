@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import MenuButton from "../buttons/Button";
+import Button from "../buttons/Button";
 import MenuInput from "./MenuInput";
 import AddEntityForm from "../forms/AddEntityForm";
 import { AppMode } from "../../App";
 import { EntityType, IEntity, IPlan, PlanType } from "../../api/model";
 import { usePlans } from "../../hooks";
+import { render } from "@testing-library/react";
 
 interface IPlannerMenuProps {
   onClose: () => void;
@@ -121,9 +122,12 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
 
   const renderAddEntity = () => {
     if (showAddEntity) {
-      return planType === PlanType.encounter
-        ? renderEncounterPlan()
-        : renderExplorationPlan();
+      render(
+        <AddEntityForm
+          type={selectedEntityType}
+          onAddEntity={(entity) => handleAddEntity(entity)}
+        />
+      );
     }
     return null;
   };
@@ -157,13 +161,18 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
           ))}
           <div className={styles.menuColumnContainer}>
             {!showAddEntity && (
-              <MenuButton onClick={handleAddEntityClick}>Add Entity</MenuButton>
+              <div className={styles.addButtons}>
+                <Button onClick={handleAddEntityClick}>Add Shop</Button>
+                <Button onClick={handleAddEntityClick}>Add NPC</Button>
+                <Button onClick={handleAddEntityClick}>Add Monster</Button>
+                <Button onClick={handleAddEntityClick}>Add Custom</Button>
+              </div>
             )}
             {renderAddEntity()}
           </div>
         </div>
         <div className={styles.menuColumnContainer}>
-          <MenuButton onClick={handleSaveClick}>Save Plan</MenuButton>
+          <Button onClick={handleSaveClick}>Save Plan</Button>
         </div>
       </div>
     </div>

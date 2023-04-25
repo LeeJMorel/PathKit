@@ -11,8 +11,8 @@ function CardView() {
 
   //get all the player entities, they should always be visible
   const playerEntities = getPlayerEntities();
-  const playerCards = playerEntities.map((entity: IEntity) => (
-    <EntityCard key={entity.id} entities={[entity]} />
+  const playerCards = playerEntities.map((entity) => (
+    <EntityCard key={entity.id} entity={entity} />
   ));
 
   //if a current plan is selected, spawn entity cards for it
@@ -23,8 +23,9 @@ function CardView() {
     () => setCurrentPlan(getPlanById(preferences.selectedPlan || undefined)),
     [preferences.selectedPlan, getPlanById]
   );
+
   const planCards = currentPlan?.entities.map((entity) => (
-    <EntityCard key={entity.id} entities={[entity]} />
+    <EntityCard key={entity.id} entity={entity} />
   ));
 
   return (
