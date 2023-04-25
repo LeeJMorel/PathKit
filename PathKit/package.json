@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "lint": "eslint --fix main.js",
     "format": "prettier -w .",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "test": "vitest"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
