@@ -35,7 +35,7 @@
     cursor: "pointer";
 
     &:hover {
-      color: var(--errorBackground);
+      color: var(--close);
     }
   }
 
@@ -175,7 +175,7 @@
     cursor: "pointer";
 
     &:hover {
-      color: var(--errorBackground);
+      color: var(--close);
     }
   }
   .tipArrowContainer {
@@ -218,7 +218,7 @@
     transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: #444;
+      background-color: var(--tertiaryAccentBackground);;
     }
   }
 }
