@@ -22,18 +22,15 @@
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid var(--primaryBackground);
+    color: var(--bodyText);
   }
 
   th {
     background-color: var(--primaryBackground);
+    color: var(--primaryText);
   }
 
   tr:nth-child(even) {
-    background-color: var(--accentBackground);
-    color: var(--accentText);
-  }
-
-  tr:hover {
-    background-color: #e5e5e5;
+    background-color: var(--secondaryAccentBackground);
   }
 }

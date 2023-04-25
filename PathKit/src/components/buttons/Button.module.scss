@@ -7,11 +7,11 @@
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: var(--primaryBackground);
+    background-color: var(--tertiaryAccentBackground);
   }
 
   &:disabled {
-    background-color: var(--primaryBackground);
-    color: var(--errorBackground);
+    background-color: var(--errorBackground);
+    color: var(--errorText);
   }
 }
