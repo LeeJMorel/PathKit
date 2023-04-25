@@ -11,6 +11,8 @@ interface IUseCampaigns {
   deleteCampaign: (campaignId: string) => void;
   loadCampaign: (campaignId: string) => void;
   unloadCampaign: () => void;
+  getCurrentCampaign: () => ICampaign | null;
+  currentCampaign: ICampaign | null;
 }
 
 export const useCampaigns = (): IUseCampaigns => {
@@ -25,10 +27,25 @@ export const useCampaigns = (): IUseCampaigns => {
     (store) => store.preferences
   );
   const setPreferences = usePreferencesStore((store) => store.setPreferences);
+  const [currentCampaign, setCurrentCampaign] = useState<ICampaign | null>(
+    null
+  );
 
   useEffect(() => {
     refreshCampaigns();
   }, []);
+
+  const getCurrentCampaign = useCallback((): ICampaign | null => {
+    const matches = campaigns.filter((e) => e.id === currentCampaignId);
+    if (matches.length) {
+      return matches[0];
+    }
+    return null;
+  }, [campaigns, currentCampaignId]);
+
+  useEffect(() => {
+    setCurrentCampaign(getCurrentCampaign());
+  }, [currentCampaignId]);
 
   const addCampaign = (newCampaign: Omit<ICampaign, "id">): void => {
     const id = uuid();
@@ -49,7 +66,15 @@ export const useCampaigns = (): IUseCampaigns => {
       setPlans(plans.filter((plan) => plan.campaignId !== campaignId));
       setPreferences({ currentCampaignId: null });
     },
-    [campaigns, setCampaigns, entities, setEntities, plans, setPlans, setPreferences]
+    [
+      campaigns,
+      setCampaigns,
+      entities,
+      setEntities,
+      plans,
+      setPlans,
+      setPreferences,
+    ]
   );
 
   const loadCampaign = useCallback(
@@ -71,5 +96,7 @@ export const useCampaigns = (): IUseCampaigns => {
     deleteCampaign,
     loadCampaign,
     unloadCampaign,
+    getCurrentCampaign,
+    currentCampaign,
   };
 };

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuInput from "./MenuInput";
-import MenuButton from "../buttons/Button";
+import Button from "../buttons/Button";
 import {
   usePreferencesStore,
   useStore,
@@ -24,15 +24,6 @@ interface IMainMenuProps {
   onClose: () => void;
 }
 const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
-  const {
-    campaigns,
-    currentCampaignId,
-    addCampaign,
-    deleteCampaign,
-    loadCampaign,
-    unloadCampaign,
-  } = useCampaigns();
-
   const plans = useStore((store) => store.plans);
   const { setCurrentTipIndex } = useTipStore();
   const [currentTab, setCurrentTab] = useState(Tab.Campaign);
@@ -41,6 +32,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   const { preferences, setPreferences } = usePreferencesStore();
   const { getPlayerEntities } = useEntities();
   const players = getPlayerEntities();
+  const { currentCampaign } = useCampaigns();
 
   //placeholder until store can delete
   const [showDeleteMenu, setShowDeleteMenu] = useState<boolean>(false);
@@ -189,11 +181,14 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
             /*Campaign tab content, here we will do stuff like show the name of
               your campaign, start a new campaign, or load a campaign*/
             <div className={styles.tabContent}>
-              <h2 className={styles.tabHeader}>Campaign Name</h2>
+              <h2 className={styles.tabHeader}>
+                {currentCampaign ? currentCampaign.name : "Campaign Name"}
+              </h2>
               <hr className={styles.tabHorizontalLine} />
               <div className={styles.tabSubtext}>
-                A Campaign description provided by the user when they make a new
-                campaign
+                {currentCampaign
+                  ? currentCampaign.desc
+                  : "A Campaign description provided by the user when they make a new campaign"}
               </div>
               <h2 className={styles.tabHeader}>Players</h2>
               <hr className={styles.tabHorizontalLine} />
@@ -202,11 +197,14 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                 {players.map((player) => (
                   <div key={player.id} className={styles.menuRowContainer}>
                     <div className={styles.menuTitle}>{player.name}</div>
-                    <div
-                      className={styles.deleteButton}
-                      onClick={() => handleDelete("entity", player.id)}
-                    >
-                      <FontAwesomeIcon icon="close" />
+                    <div className={styles.menuEndContainer}>
+                      <Button>Edit Player</Button>
+                      <div
+                        className={styles.deleteButton}
+                        onClick={() => handleDelete("entity", player.id)}
+                      >
+                        <FontAwesomeIcon icon="close" />
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -224,26 +222,34 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                         </React.Fragment>
                       ))}
                     </div>
-                    <div
-                      className={styles.deleteButton}
-                      onClick={() => handleDelete("plan", plan.id)}
-                    >
-                      <FontAwesomeIcon icon="close" />
+                    <div className={styles.menuEndContainer}>
+                      <Button>Edit Plan</Button>
+                      <div
+                        className={styles.deleteButton}
+                        onClick={() => handleDelete("plan", plan.id)}
+                      >
+                        <FontAwesomeIcon icon="close" />
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
               <br />
               <div className={styles.menuRowContainer}>
-                <MenuButton onClick={() => preferences.currentCampaignId && handleDelete("campaign", preferences.currentCampaignId)}>
+                <Button
+                  onClick={() =>
+                    preferences.currentCampaignId &&
+                    handleDelete("campaign", preferences.currentCampaignId)
+                  }
+                >
                   Delete Campaign
-                </MenuButton>
-                <MenuButton onClick={() => handleCampaign("Load")}>
+                </Button>
+                <Button onClick={() => handleCampaign("Load")}>
                   Load Campaign
-                </MenuButton>
-                <MenuButton onClick={() => handleCampaign("New")}>
+                </Button>
+                <Button onClick={() => handleCampaign("New")}>
                   Start New Campaign
-                </MenuButton>
+                </Button>
               </div>
             </div>
           )}
@@ -259,7 +265,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                   label="Show Tutorial Tips"
                   checked={isTutorial}
                   type={"checkbox"}
-                  name="PLACEHOLDER"
+                  name="Tutorial Tips"
                   onChange={handleTutorialBoxChange}
                 />
               </div>
