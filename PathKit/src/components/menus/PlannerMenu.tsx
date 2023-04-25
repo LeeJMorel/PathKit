@@ -38,20 +38,17 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
     onClose();
   };
 
-  const handleEntityTypeChange = (selectedEntityType: EntityType) => {
+  const handleAddEntityClick = (selectedEntityType: EntityType) => {
+    setShowAddEntity(true);
     setSelectedEntityType(selectedEntityType);
     setType(true);
   };
 
-  const handleAddEntityClick = () => {
-    setShowAddEntity(true);
-  };
-
   const handleAddEntity = (entity: IEntity) => {
-    setPlan({
-      ...plan,
-      entities: [...plan.entities, entity],
-    });
+    setPlan((prevPlan) => ({
+      ...prevPlan,
+      entities: [...prevPlan.entities, entity],
+    }));
     setShowAddEntity(false);
   };
 
@@ -70,59 +67,10 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
     addPlan(plan);
     handleClose();
   };
-  const renderEncounterPlan = () => {
-    return (
-      <>
-        <div className={styles.entityTypeSelection}>
-          <MenuInput
-            label="Monster"
-            type={"radio"}
-            name="entityType"
-            onChange={() => handleEntityTypeChange(EntityType.Monster)}
-          />
-        </div>
-        {/* Render the add entity form based on the selected entity type */}
-        {showType && (
-          <AddEntityForm
-            type={selectedEntityType}
-            onAddEntity={(entity) => handleAddEntity(entity)}
-          />
-        )}
-      </>
-    );
-  };
-
-  const renderExplorationPlan = () => {
-    return (
-      <>
-        <div className={styles.entityTypeSelection}>
-          <MenuInput
-            label="Shop"
-            type={"radio"}
-            name="entityType"
-            onChange={() => handleEntityTypeChange(EntityType.Shop)}
-          />
-          <MenuInput
-            label="NPC"
-            type={"radio"}
-            name="entityType"
-            onChange={() => handleEntityTypeChange(EntityType.NPC)}
-          />
-        </div>
-        {/* Render the add entity form based on the selected entity type */}
-        {showType && (
-          <AddEntityForm
-            type={selectedEntityType}
-            onAddEntity={(entity) => handleAddEntity(entity)}
-          />
-        )}
-      </>
-    );
-  };
 
   const renderAddEntity = () => {
     if (showAddEntity) {
-      render(
+      return (
         <AddEntityForm
           type={selectedEntityType}
           onAddEntity={(entity) => handleAddEntity(entity)}
@@ -162,10 +110,17 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
           <div className={styles.menuColumnContainer}>
             {!showAddEntity && (
               <div className={styles.addButtons}>
-                <Button onClick={handleAddEntityClick}>Add Shop</Button>
-                <Button onClick={handleAddEntityClick}>Add NPC</Button>
-                <Button onClick={handleAddEntityClick}>Add Monster</Button>
-                <Button onClick={handleAddEntityClick}>Add Custom</Button>
+                <Button onClick={() => handleAddEntityClick(EntityType.Shop)}>
+                  Add Shop
+                </Button>
+                <Button onClick={() => handleAddEntityClick(EntityType.NPC)}>
+                  Add NPC
+                </Button>
+                <Button
+                  onClick={() => handleAddEntityClick(EntityType.Monster)}
+                >
+                  Add Monster
+                </Button>
               </div>
             )}
             {renderAddEntity()}
