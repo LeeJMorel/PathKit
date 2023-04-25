@@ -6,13 +6,16 @@ $parchmentTheme: (
   bodyBackground: map-get($colorPalette, parchmentLight),
   bodyText: map-get($colorPalette, black),
   primaryBackground: map-get($colorPalette, parchmentDark),
-  primaryText: map-get($colorPalette, brownLight),
+  primaryText: map-get($colorPalette, brownDark),
   secondaryBackground: map-get($colorPalette, brownLight),
-  secondaryText: map-get($colorPalette, parchmentDark),
+  secondaryText: map-get($colorPalette, white),
+  tertiaryBackground: map-get($colorPalette, white),
+  tertiaryText: map-get($colorPalette, black),
   accentBackground: map-get($colorPalette, greenLight),
   accentText: map-get($colorPalette, white),
   errorBackground: map-get($colorPalette, redDark),
   errorText: map-get($colorPalette, white),
+  linkText: map-get($colorPalette, redDark),
 );
 
 $theme: map-merge($fonts, $parchmentTheme);
