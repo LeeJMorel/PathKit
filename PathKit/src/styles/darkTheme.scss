@@ -3,16 +3,19 @@
 @import "./fonts.scss";
 
 $darkTheme: (
-  bodyBackground: map-get($colorPalette, brownDark),
-  bodyText: map-get($colorPalette, parchmentLight),
-  primaryBackground: map-get($colorPalette, parchmentDark),
-  primaryText: map-get($colorPalette, greenLight),
-  secondaryBackground: map-get($colorPalette, greenDark),
-  secondaryText: map-get($colorPalette, parchmentDark),
-  accentBackground: map-get($colorPalette, redDark),
-  accentText: map-get($colorPalette, white),
+  bodyBackground: map-get($colorPalette, tealDark),
+  bodyText: map-get($colorPalette, white),
+  primaryBackground: map-get($colorPalette, tealLight),
+  primaryText: map-get($colorPalette, white),
+  secondaryBackground: map-get($colorPalette, brownDark),
+  secondaryText: map-get($colorPalette, cream),
+  tertiaryBackground: map-get($colorPalette, blackLight),
+  tertiaryText: map-get($colorPalette, cream),
+  accentBackground: map-get($colorPalette, redDarker),
+  accentText: map-get($colorPalette, cream),
   errorBackground: map-get($colorPalette, redDark),
   errorText: map-get($colorPalette, white),
+  linkText: map-get($colorPalette, purpleLight),
 );
 
 $theme: map-merge($fonts, $darkTheme);
