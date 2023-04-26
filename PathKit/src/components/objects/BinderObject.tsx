@@ -4,6 +4,8 @@ import { Button } from "../buttons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useStore } from "../../hooks";
 import DeleteMenu from "../menus/DeleteMenu";
+import PlannerMenu from "../menus/PlannerMenu";
+import { PlanType } from "../../api/model";
 
 const BinderObject = () => {
   const plans = useStore((store) => store.plans);
@@ -12,7 +14,6 @@ const BinderObject = () => {
 
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
-    setShowMenu(false);
   };
 
   const handleToggleClick = () => {
@@ -36,8 +37,16 @@ const BinderObject = () => {
     setShowDeleteMenu(false);
   };
 
+  const [planId, setPlanId] = useState<string | null>(null);
+  const handleEdit = (id: string) => {
+    setPlanId(id);
+  };
+
   return (
     <div className={styles.binderObject}>
+      {planId && (
+        <PlannerMenu onClose={() => setPlanId(null)} planId={planId} />
+      )}
       {showDeleteMenu && (
         <DeleteMenu
           type={deleteType}
@@ -103,7 +112,7 @@ const BinderObject = () => {
               {plans.map((plan) => (
                 <tr key={plan.id} className={styles.plansTableRow}>
                   <td className={styles.plansTableAction}>
-                    <Button>
+                    <Button onClick={() => handleEdit(plan.id)}>
                       <FontAwesomeIcon icon="pencil" />
                     </Button>
                   </td>

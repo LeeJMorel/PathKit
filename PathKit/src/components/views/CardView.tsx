@@ -28,6 +28,13 @@ function CardView() {
     <EntityCard key={entity.id} entity={entity} />
   ));
 
+  const initiativeOrder = [
+    {
+      entity: {},
+      roll: 23,
+    },
+  ].sort((a, z) => a.roll - z.roll);
+
   return (
     <div className={styles.cardView}>
       <PlannerCard />

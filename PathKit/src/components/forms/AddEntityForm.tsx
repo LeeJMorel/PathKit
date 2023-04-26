@@ -6,14 +6,17 @@ import store from "../../assets/store.png";
 import styles from "./Form.module.scss";
 import { IEntity, EntityType } from "../../api/model";
 import { useEntities } from "../../hooks";
+import { Button } from "../buttons";
 
 interface Props {
   type: EntityType;
+  entityData?: IEntity;
   onAddEntity: (entity: IEntity) => void;
 }
 
 const AddEntityForm: React.FC<Props> = ({
   type = EntityType.none,
+  entityData,
   onAddEntity,
 }) => {
   const { addEntity } = useEntities();
@@ -24,6 +27,7 @@ const AddEntityForm: React.FC<Props> = ({
     hp: [0, 0],
     equipment: [],
     entityType: type,
+    ...entityData,
   });
 
   const handleAddEntity = () => {
@@ -65,6 +69,7 @@ const AddEntityForm: React.FC<Props> = ({
           <input
             type="text"
             name="stats"
+            defaultValue={entity.stats?.toString()}
             onChange={handleInputChange}
             className={styles.formInput}
           />
@@ -80,6 +85,7 @@ const AddEntityForm: React.FC<Props> = ({
           <input
             type="text"
             name="hp"
+            defaultValue={entity.hp ? entity.hp[1] : ""}
             onChange={handleHPChange}
             className={styles.formInput}
           />
@@ -98,6 +104,7 @@ const AddEntityForm: React.FC<Props> = ({
           name="image"
           onChange={handleInputChange}
           className={styles.formSelect}
+          defaultValue={entity.image}
         >
           <option value={defaultImage}>Fighter</option>
           <option value={monster}>Monster</option>
@@ -112,6 +119,7 @@ const AddEntityForm: React.FC<Props> = ({
         <input
           type="text"
           name="name"
+          defaultValue={entity.name}
           onChange={handleInputChange}
           className={styles.formInput}
         />
@@ -126,16 +134,11 @@ const AddEntityForm: React.FC<Props> = ({
           className={styles.formInput}
           type="text"
           name="equipment"
+          defaultValue={entity.equipment}
           onChange={handleInputChange}
         />
       </div>
-      <button
-        type="button"
-        onClick={handleAddEntity}
-        className={styles.formButton}
-      >
-        Add {type}
-      </button>
+      <Button onClick={handleAddEntity}>Save {type}</Button>
     </form>
   );
 };

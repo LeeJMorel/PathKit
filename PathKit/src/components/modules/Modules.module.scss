@@ -10,6 +10,24 @@
   height: 100%;
   background-color: var(--bodyBackground);
   color: var(--bodyText);
+  border-bottom: 1px solid var(--accentBackground);
+
+  .moduleHeader {
+    border-bottom: 1px solid var(--accentBackground);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin: 0.2em;
+    }
+  }
 }
 
 .dcTable {

@@ -3,14 +3,18 @@ import { v4 as uuid } from "uuid";
 import { useStore } from "./useStore";
 import { usePreferencesStore } from "./usePreferencesStore";
 import { IEntity, EntityType } from "../api/model";
+import { PartialBy } from "../utilities";
+
+export type PartialEntity = PartialBy<IEntity, "id" | "campaignId">;
 
 interface IUseEntities {
   entities: IEntity[];
   setEntities: (entities: IEntity[]) => void;
-  addEntity: (entity: Omit<IEntity, "id" | "campaignId">) => IEntity;
+  addEntity: (entity: PartialEntity) => IEntity;
   getEntityById: (entityId?: string) => IEntity | undefined;
   deleteEntity: (entityId: string) => void;
   getPlayerEntities: () => IEntity[];
+  updateEntity: (entity: PartialEntity) => void;
 }
 
 export const useEntities = (): IUseEntities => {
@@ -29,11 +33,11 @@ export const useEntities = (): IUseEntities => {
   }, []);
 
   const addEntity = useCallback(
-    (newEntity: Omit<IEntity, "id" | "campaignId">): IEntity => {
+    (newEntity: PartialEntity): IEntity => {
       const entity: IEntity = {
         ...newEntity,
-        id: uuid(),
-        campaignId: currentCampaignId,
+        id: newEntity.id || uuid(),
+        campaignId: newEntity.campaignId || currentCampaignId,
       } as IEntity;
 
       setEntities([...entities, entity]);
@@ -63,6 +67,18 @@ export const useEntities = (): IUseEntities => {
     return entities.filter((e) => e.entityType === EntityType.Player);
   }, [entities]);
 
+  const updateEntity = useCallback(
+    (newEntity: PartialEntity): void => {
+      const newEntities: IEntity[] = entities.map((entity) =>
+        entity.id === newEntity.id
+          ? Object.assign({}, entity, newEntity)
+          : entity
+      );
+      setEntities(newEntities);
+    },
+    [entities]
+  );
+
   return {
     entities,
     setEntities,
@@ -70,5 +86,6 @@ export const useEntities = (): IUseEntities => {
     getEntityById,
     deleteEntity,
     getPlayerEntities,
+    updateEntity,
   };
 };

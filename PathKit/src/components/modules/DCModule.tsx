@@ -3,7 +3,9 @@ import styles from "./Modules.module.scss";
 function DCModule() {
   return (
     <div className={styles.moduleContainer}>
-      <h4>DC Adjustments</h4>
+      <div className={styles.moduleHeader}>
+        <h4>DC Adjustments</h4>
+      </div>
       <table className={styles.dcTable}>
         <thead>
           <tr>
