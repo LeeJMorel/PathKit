@@ -2,9 +2,12 @@ import React from "react";
 import styles from "./Button.module.scss";
 import classNames from "classnames";
 
-interface Props extends React.HTMLProps<HTMLButtonElement> {}
+interface Props extends React.HTMLProps<HTMLButtonElement> {
+  primary?: boolean;
+}
 
 const Button: React.FC<Props> = ({
+  primary,
   onClick,
   type,
   className,
@@ -14,7 +17,11 @@ const Button: React.FC<Props> = ({
   return (
     <button
       type="button"
-      className={classNames(styles.button, className)}
+      className={classNames(
+        styles.button,
+        primary && styles.primaryButton,
+        className
+      )}
       onClick={onClick}
       {...rest}
     >

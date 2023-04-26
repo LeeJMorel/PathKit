@@ -47,6 +47,12 @@ export const usePreferencesStore = create(
           },
         });
       },
+
+      setCampaignId: (campaignId: string): void => {
+        const { setPreferences } = get();
+        // clearInitiative(currentCampaignId);
+        setPreferences({ currentCampaignId: campaignId });
+      },
     }),
     {
       name: "PathKit-preferences", // unique name

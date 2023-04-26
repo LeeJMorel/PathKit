@@ -3,13 +3,18 @@ import { v4 as uuid } from "uuid";
 import { useStore } from "./useStore";
 import { IPlan } from "../api/model";
 import { usePreferencesStore } from "./usePreferencesStore";
+import { PartialBy } from "../utilities";
+
+export type PartialPlan = PartialBy<IPlan, "id" | "campaignId">;
 
 interface IUsePlans {
   plans: IPlan[];
   setPlans: (plans: IPlan[]) => void;
-  addPlan: (plan: Omit<IPlan, "id" | "campaignId">) => void;
+  addPlan: (plan: PartialPlan) => void;
   getPlanById: (planId?: string) => IPlan | undefined;
   deletePlan: (planId: string) => void;
+  updatePlan: (plan: PartialPlan) => void;
+  updateOrAddPlan: (plan: PartialPlan) => void;
 }
 export const usePlans = (): IUsePlans => {
   const { plans, setPlans, refreshPlans } = useStore((store) => ({
@@ -27,7 +32,7 @@ export const usePlans = (): IUsePlans => {
   }, []);
 
   const addPlan = useCallback(
-    (newPlan: Omit<IPlan, "id" | "campaignId">): void => {
+    (newPlan: PartialPlan): void => {
       const plan: IPlan = {
         ...newPlan,
         id: uuid(),
@@ -56,11 +61,34 @@ export const usePlans = (): IUsePlans => {
     [plans]
   );
 
+  const updatePlan = useCallback(
+    (newPlan: PartialPlan): void => {
+      const newPlans: IPlan[] = plans.map((plan) =>
+        plan.id === newPlan.id ? Object.assign({}, plan, newPlan) : plan
+      );
+      setPlans(newPlans);
+    },
+    [plans]
+  );
+
+  const updateOrAddPlan = useCallback(
+    (newPlan: PartialPlan): void => {
+      const planExists = getPlanById(newPlan.id);
+      if (planExists) {
+        return updatePlan(newPlan);
+      }
+      return addPlan(newPlan);
+    },
+    [plans]
+  );
+
   return {
     plans,
     setPlans,
     addPlan,
     getPlanById,
     deletePlan,
+    updatePlan,
+    updateOrAddPlan,
   };
 };

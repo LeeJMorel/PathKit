@@ -24,11 +24,17 @@ export enum PlanType {
   encounter = "encounter",
 }
 
+export interface IInitiative {
+  entityId: string;
+  roll: number;
+}
+
 export interface IPlan {
   id: string;
   planType: PlanType;
   campaignId?: string;
   entities: IEntity[];
+  initiativeOrder?: IInitiative[];
 }
 
 export interface ICampaign {

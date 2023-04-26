@@ -3,8 +3,14 @@
   padding: 0.2rem 0.4rem;
   margin: 0.25em;
   color: var(--accentText);
-  background-color: var(--accentBackground);
+  background-color: var(
+    --accentBackground
+  ); // TODO make default buttons less important than primary with a more subtle color
   transition: background-color 0.2s ease;
+
+  &.primaryButton {
+    background-color: var(--accentBackground);
+  }
 
   &:hover {
     background-color: var(--tertiaryAccentBackground);

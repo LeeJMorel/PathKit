@@ -15,6 +15,8 @@
   ); /* Set height of App to take up the full height of the screen */
   width: 33%;
   overflow-y: auto; /* Add this property to enable vertical scrolling if content exceeds height */
+
+  border-left: 2px solid var(--primaryBackground);
 }
 
 /* This container holds modules for the Right Column so they load to a dynamic size */
