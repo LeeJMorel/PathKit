@@ -13,9 +13,11 @@ import {
 import DeleteMenu from "./DeleteMenu";
 import CampaignMenu from "./CampaignMenu";
 import { Module, Modules } from "../modules";
+import BinderObject from "../objects/BinderObject";
 
 enum Tab {
   Campaign = "Campaign",
+  Binder = "Binder",
   View = "View",
   Options = "Options",
 }
@@ -155,6 +157,14 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
           </div>
           <div
             className={`${styles.tab} ${
+              currentTab === Tab.Binder ? styles.active : ""
+            }`}
+            onClick={() => handleTabClick(Tab.Binder)}
+          >
+            Binder
+          </div>
+          <div
+            className={`${styles.tab} ${
               currentTab === Tab.View ? styles.active : ""
             }`}
             onClick={() => handleTabClick(Tab.View)}
@@ -190,50 +200,6 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                   ? currentCampaign.desc
                   : "A Campaign description provided by the user when they make a new campaign"}
               </div>
-              <h2 className={styles.tabHeader}>Players</h2>
-              <hr className={styles.tabHorizontalLine} />
-
-              <div className={styles.menuScrollContainer}>
-                {players.map((player) => (
-                  <div key={player.id} className={styles.menuRowContainer}>
-                    <div className={styles.menuTitle}>{player.name}</div>
-                    <div className={styles.menuEndContainer}>
-                      <Button>Edit Player</Button>
-                      <div
-                        className={styles.deleteButton}
-                        onClick={() => handleDelete("entity", player.id)}
-                      >
-                        <FontAwesomeIcon icon="close" />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <h2 className={styles.tabHeader}>Planned Events</h2>
-              <hr className={styles.tabHorizontalLine} />
-              <div className={styles.menuScrollContainer}>
-                {plans.map((plan) => (
-                  <div key={plan.id} className={styles.menuRowContainer}>
-                    <div className={styles.menuTitle}>
-                      {plan.entities.map((entity, index) => (
-                        <React.Fragment key={entity.id}>
-                          {entity.name}
-                          {index !== plan.entities.length - 1 ? ", " : ""}
-                        </React.Fragment>
-                      ))}
-                    </div>
-                    <div className={styles.menuEndContainer}>
-                      <Button>Edit Plan</Button>
-                      <div
-                        className={styles.deleteButton}
-                        onClick={() => handleDelete("plan", plan.id)}
-                      >
-                        <FontAwesomeIcon icon="close" />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
               <br />
               <div className={styles.menuRowContainer}>
                 <Button
@@ -251,6 +217,36 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                   Start New Campaign
                 </Button>
               </div>
+              <br />
+              <h2 className={styles.tabHeader}>Players</h2>
+              <hr className={styles.tabHorizontalLine} />
+
+              <div className={styles.menuScrollContainer}>
+                {players.map((player) => (
+                  <div key={player.id} className={styles.menuRowContainer}>
+                    <div className={styles.menuEndContainer}>
+                      <Button>
+                        <FontAwesomeIcon icon="pencil" />
+                      </Button>
+
+                      <div className={styles.menuTitle}>{player.name}</div>
+                    </div>
+                    <div
+                      className={styles.deleteButton}
+                      onClick={() => handleDelete("entity", player.id)}
+                    >
+                      <FontAwesomeIcon icon="close" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {currentTab === Tab.Binder && (
+            /*Campaign tab content, here we will do stuff like show the name of
+              your campaign, start a new campaign, or load a campaign*/
+            <div className={styles.tabContent}>
+              <BinderObject />
             </div>
           )}
           {currentTab === Tab.View && (

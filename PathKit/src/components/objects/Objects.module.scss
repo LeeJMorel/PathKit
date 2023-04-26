@@ -1,3 +1,4 @@
+///For the Notes object
 .notes {
   display: flex;
   flex-direction: column;
@@ -40,6 +41,7 @@
   }
 }
 
+//FOr the Planner Object
 .plan {
   display: flex;
   align-items: flex-start;
@@ -90,5 +92,93 @@
     ); // Add this line to center the plus sign inside the plannerObject container
     font-size: 2em; // Add this line to increase the font size
     font-weight: bold; // Add this line to make the font bold
+  }
+}
+
+//For the Binder Object
+.binderObject {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  transition: all 0.3s ease-in-out;
+
+  .menuToggle {
+    top: 0;
+    padding: 0.2em;
+    cursor: pointer;
+  }
+
+  .tabContainer {
+    //this is our menu that we select from
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .tab {
+      padding: 0.2em;
+      cursor: pointer;
+
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+
+      &.active {
+        font-weight: bold;
+        // Apply styles for the active tab
+      }
+    }
+  }
+
+  .content {
+    //whatever spawns from the menu
+    width: 100%;
+
+    //tables
+    .plansTable {
+      border-collapse: collapse;
+      width: 100%;
+
+      .plansTableRow {
+        border-bottom: 1px solid var(--primaryBackground);
+
+        &:nth-child(even) {
+          background-color: var(--secondaryAccentBackground);
+          color: var(--primaryText);
+        }
+      }
+
+      .plansTableAction,
+      .plansTablePlanType,
+      .plansTableEntities {
+        padding: 0.3em;
+        text-align: left;
+      }
+
+      .plansTableAction {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .plansTablePlanType {
+        width: 30%;
+      }
+
+      .plansTableEntities {
+        width: 50%;
+      }
+
+      .deleteButton {
+        cursor: pointer;
+      }
+
+      @media screen and (max-width: 600px) {
+        .plansTableAction,
+        .plansTablePlanType,
+        .plansTableEntities {
+          padding: 8px;
+        }
+      }
+    }
   }
 }
