@@ -48,6 +48,12 @@ This consists of two main objects, the header and the content*/
       @include define-custom-property($name, $value);
     }
   }
+
+  &.highContrastDark {
+    @each $name, $value in $highContrastDarkTheme {
+      @include define-custom-property($name, $value);
+    }
+  }
 }
 
 /* At the top of the app is a header */

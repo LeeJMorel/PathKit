@@ -2,17 +2,17 @@
 @import "./palette.scss";
 @import "./fonts.scss";
 
-$highContrastTheme: (
-  bodyBackground: map-get($colorPalette, parchmentLight),
-  bodyText: map-get($colorPalette, black),
+$highContrastDarkTheme: (
+  bodyBackground: map-get($colorPalette, black),
+  bodyText: map-get($colorPalette, parchmentLight),
   primaryBackground: map-get($colorPalette, brownDark),
   primaryText: map-get($colorPalette, white),
   secondaryBackground: map-get($colorPalette, parchmentDark),
   secondaryText: map-get($colorPalette, black),
   tertiaryBackground: map-get($colorPalette, white),
   tertiaryText: map-get($colorPalette, blackLight),
-  accentBackground: map-get($colorPalette, black),
-  accentText: map-get($colorPalette, parchmentLight),
+  accentBackground: map-get($colorPalette, parchmentLight),
+  accentText: map-get($colorPalette, black),
   secondaryAccentBackground: map-get($colorPalette, greenLight),
   tertiaryAccentBackground: map-get($colorPalette, blueDark),
   errorBackground: map-get($colorPalette, grayDarker),
@@ -21,10 +21,10 @@ $highContrastTheme: (
   close: map-get($colorPalette, redLight),
 );
 
-$theme: map-merge($fonts, $highContrastTheme);
+$theme: map-merge($fonts, $highContrastDarkTheme);
 
 :export {
-  @each $color, $value in $highContrastTheme {
+  @each $color, $value in $highContrastDarkTheme {
     #{$color}: $value;
   }
 }

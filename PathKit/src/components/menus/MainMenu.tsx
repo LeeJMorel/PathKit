@@ -287,11 +287,19 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                   onChange={handleLargeFontChange}
                 />
                 <MenuInput
-                  label="High Contrast"
+                  label="High Contrast Parchment"
                   checked={preferences.theme === "highContrast"}
                   type={"radio"}
                   name="theme"
                   value="highContrast"
+                  onChange={handleThemeChange}
+                />
+                <MenuInput
+                  label="High Contrast Dark"
+                  checked={preferences.theme === "highContrastDark"}
+                  type={"radio"}
+                  name="theme"
+                  value="highContrastDark"
                   onChange={handleThemeChange}
                 />
               </div>
