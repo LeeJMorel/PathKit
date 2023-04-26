@@ -1,11 +1,13 @@
 import DCModule from "./DCModule";
 import DiceModule from "./DiceModule";
 import NotesModule from "./NotesModule";
+import BinderModule from "./BinderModule";
 
 export enum Module {
   DCModule = "DCModule",
   DiceModule = "DiceModule",
   NotesModule = "NotesModule",
+  BinderModule = "BinderModule",
 }
 
 export interface IModule {
@@ -31,6 +33,11 @@ const Modules: Record<Module, IModule> = {
     label: "Notes Module",
     ModuleComponent: NotesModule,
   },
+  BinderModule: {
+    id: Module.BinderModule,
+    label: "Binder Module",
+    ModuleComponent: BinderModule,
+  },
 };
 
-export { DCModule, DiceModule, NotesModule, Modules };
+export { DCModule, DiceModule, NotesModule, BinderModule, Modules };

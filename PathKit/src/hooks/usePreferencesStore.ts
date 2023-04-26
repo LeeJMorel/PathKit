@@ -29,7 +29,7 @@ export const usePreferencesStore = create(
           DCModule: true,
           DiceModule: true,
           NotesModule: false,
-          Foo: false,
+          BinderModule: false,
         },
         currentCampaignId: null,
         selectedPlan: null,
