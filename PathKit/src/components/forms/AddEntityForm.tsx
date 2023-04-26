@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import monster from "../../assets/monster.png";
 import player from "../../assets/knight.png";
 import defaultImage from "../../assets/fighter.png";
+import store from "../../assets/store.png";
 import styles from "./Form.module.scss";
 import { IEntity, EntityType } from "../../api/model";
 import { useEntities } from "../../hooks";
@@ -101,6 +102,7 @@ const AddEntityForm: React.FC<Props> = ({
           <option value={defaultImage}>Fighter</option>
           <option value={monster}>Monster</option>
           <option value={player}>Player</option>
+          <option value={store}>Store</option>
         </select>
       </div>
       <div className={styles.formRow}>
