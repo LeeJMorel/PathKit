@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../buttons/Button";
-import MenuInput from "./MenuInput";
 import AddEntityForm from "../forms/AddEntityForm";
-import { AppMode } from "../../App";
 import { EntityType, IEntity, IPlan, PlanType } from "../../api/model";
-import { PartialPlan, usePlans, useEntities } from "../../hooks";
-import DeleteMenu from "./DeleteMenu";
+import {
+  PartialPlan,
+  usePlans,
+  useEntities,
+  usePreferencesStore,
+} from "../../hooks";
+import RemoveFromPlanMenu from "./RemoveFromPlanMenu";
+import BinderObject from "../objects/BinderObject";
 
 interface IPlannerMenuProps {
   onClose: () => void;
@@ -60,8 +64,10 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
     });
   };
 
-  const handleAddEntityCancel = () => {
-    setShowAddEntity(false);
+  //We want to show the load menu
+  const [showLoad, setShowLoad] = useState(false);
+  const handleLoadClick = () => {
+    setShowLoad(true);
   };
 
   const [showEntityForm, setShowEntityForm] = useState<IEntity | null>(null);
@@ -71,6 +77,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
   const handleEditClose = () => {
     setShowEntityForm(null);
   };
+
   const renderEntityForm = () => {
     if (showEntityForm) {
       return (
@@ -92,25 +99,46 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
     }
   };
 
-  const [showDeleteMenu, setShowDeleteMenu] = useState<boolean>(false);
-  const [deleteType, setDeleteType] = useState<"entity" | "plan" | "campaign">(
-    "entity"
-  );
-  const [deleteId, setDeleteId] = useState<string>("");
-  const handleDelete = (type: "entity" | "plan" | "campaign", id: string) => {
-    setShowDeleteMenu(true);
-    setDeleteType(type);
-    setDeleteId(id);
+  const [showRemoveMenu, setShowRemoveMenu] = useState<boolean>(false);
+  const [removeId, setRemoveId] = useState<string>("");
+  const handleRemove = (id: string) => {
+    setShowRemoveMenu(true);
+    setRemoveId(id);
   };
 
   const handleDeleteClose = () => {
-    setShowDeleteMenu(false);
+    setShowRemoveMenu(false);
   };
 
   const handleSaveClick = () => {
     // addPlan(plan);
     updateOrAddPlan(plan);
     handleClose();
+  };
+
+  //if an entitiy is selected, set that to load it
+  const { preferences, setPreferences } = usePreferencesStore();
+  const { getEntityById } = useEntities();
+  const [entity, setEntity] = useState<IEntity>();
+
+  useEffect(() => {
+    if (preferences.selectedEntity) {
+      const entity = getEntityById(preferences.selectedEntity);
+      setEntity(entity);
+    } else {
+      setEntity(undefined);
+    }
+  }, [preferences.selectedEntity, getEntityById]);
+
+  const handleLoadMenuClick = () => {
+    //loadCampaign(selectedCampaign);
+    setPreferences({ selectedEntity: null });
+  };
+
+  const handleCloseBinder = () => {
+    //loadCampaign(selectedCampaign);
+    setPreferences({ selectedEntity: null });
+    setShowLoad(false);
   };
 
   const renderAddEntity = () => {
@@ -136,14 +164,23 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
       <div className={styles.mainMenu}>
         {showEntityForm ? (
           renderEntityForm()
+        ) : showLoad ? (
+          <>
+            <BinderObject load={true} />
+            <div className={styles.menuRowContainer}>
+              <Button
+                disabled={!preferences.selectedEntity}
+                onClick={handleLoadMenuClick}
+              >
+                Load
+              </Button>
+              <Button onClick={handleCloseBinder}>Cancel</Button>
+            </div>
+          </>
         ) : (
           <>
-            {showDeleteMenu && (
-              <DeleteMenu
-                type={deleteType}
-                id={deleteId}
-                onClose={handleDeleteClose}
-              />
+            {showRemoveMenu && (
+              <RemoveFromPlanMenu id={removeId} onClose={handleDeleteClose} />
             )}
             <h2>{renderTitle()}</h2>
             <div className={styles.close} onClick={handleClose}>
@@ -161,7 +198,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
                   </div>
                   <div
                     className={styles.deleteButton}
-                    onClick={() => handleDelete("entity", entity.id)}
+                    onClick={() => handleRemove(entity.id)}
                   >
                     <FontAwesomeIcon icon="close" />
                   </div>
@@ -185,6 +222,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
                     >
                       Add Monster
                     </Button>
+                    <Button onClick={() => handleLoadClick()}>Load</Button>
                   </div>
                 )}
                 {renderAddEntity()}

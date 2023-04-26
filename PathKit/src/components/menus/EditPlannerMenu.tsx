@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for styling
 import PlannerMenu from "./PlannerMenu";
-import { AppMode } from "../../App";
-import { IEntity, PlanType } from "../../api/model";
+import { IEntity, IPlan, PlanType } from "../../api/model";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { usePreferencesStore, usePlans } from "../../hooks";
 
-interface IMenuProps {
-  planId?: string;
-}
+const EditPlannerMenu = () => {
+  //check a plan is already running
+  const { preferences, setPreferences } = usePreferencesStore();
 
-const EditPlannerMenu: React.FC<IMenuProps> = ({ planId }: IMenuProps) => {
+  //if a plan is selected, pass that along for edits
+  const { getPlanById } = usePlans();
+  const [currentPlan, setCurrentPlan] = useState<IPlan | undefined>(undefined);
+  useEffect(
+    () => setCurrentPlan(getPlanById(preferences.selectedPlan || undefined)),
+    [preferences.selectedPlan, getPlanById]
+  );
+
+  const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [menuPlanType, setMenuPlanType] = useState<PlanType>(
     PlanType.encounter
@@ -24,40 +32,37 @@ const EditPlannerMenu: React.FC<IMenuProps> = ({ planId }: IMenuProps) => {
   };
 
   const handleCreateEncounterPlan = () => {
+    setIsEdit(false);
     setMenuPlanType(PlanType.encounter);
     setIsMenuOpen(true);
   };
 
   const handleCreateExplorationPlan = () => {
+    setIsEdit(false);
     setMenuPlanType(PlanType.exploration);
     setIsMenuOpen(true);
   };
 
   const handleEditPlan = () => {
+    setIsEdit(true);
     setIsMenuOpen(true);
-  };
-
-  const handleSave = (
-    planName: string,
-    entities: IEntity[],
-    appMode: AppMode
-  ) => {
-    const plan = {
-      name: planName,
-      entities: entities,
-      appMode: appMode,
-    };
-    // Do something with the plan data, such as saving it to a database
   };
 
   const renderMenu = () => {
     if (isMenuOpen) {
       return (
-        <PlannerMenu
-          onClose={handleCloseMenu}
-          planId={planId}
-          planType={menuPlanType}
-        />
+        <>
+          {isEdit && (
+            <PlannerMenu
+              onClose={handleCloseMenu}
+              planId={currentPlan?.id}
+              planType={currentPlan?.planType}
+            />
+          )}
+          {!isEdit && (
+            <PlannerMenu onClose={handleCloseMenu} planType={menuPlanType} />
+          )}
+        </>
       );
     }
 
@@ -73,7 +78,7 @@ const EditPlannerMenu: React.FC<IMenuProps> = ({ planId }: IMenuProps) => {
             <FontAwesomeIcon icon="file-circle-plus" />
           </button>
           <div className={styles.menuDropdownContent}>
-            {planId && (
+            {preferences.selectedPlan && (
               <>
                 <div
                   title="Create Encounter Plan"
@@ -92,7 +97,7 @@ const EditPlannerMenu: React.FC<IMenuProps> = ({ planId }: IMenuProps) => {
                 </div>
               </>
             )}
-            {!planId && (
+            {!preferences.selectedPlan && (
               <>
                 <div
                   title="Create Encounter Plan"

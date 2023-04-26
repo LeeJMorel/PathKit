@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import styles from "./Card.module.scss";
 import { IEntity } from "../../api/model";
-import { useConditions, usePreferencesStore } from "../../hooks";
+import { usePreferencesStore } from "../../hooks";
 import { useState } from "react";
 
 interface EntityCardProps {
@@ -18,7 +18,6 @@ const exampleStats = {
 };
 
 function EntityCard({ entity }: EntityCardProps) {
-  const { conditions } = useConditions();
   const [showConditionsMenu, setShowConditionsMenu] = useState(false);
   const { preferences, setPreferences } = usePreferencesStore();
 

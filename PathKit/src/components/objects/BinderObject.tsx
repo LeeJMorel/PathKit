@@ -1,16 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Objects.module.scss";
 import { Button } from "../buttons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useStore } from "../../hooks";
+import { usePreferencesStore, useStore } from "../../hooks";
 import DeleteMenu from "../menus/DeleteMenu";
 import PlannerMenu from "../menus/PlannerMenu";
-import { PlanType } from "../../api/model";
 
-const BinderObject = () => {
+interface IBinderProps {
+  load?: boolean;
+}
+
+const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
   const plans = useStore((store) => store.plans);
   const [showMenu, setShowMenu] = useState(true);
   const [activeTab, setActiveTab] = useState("Events");
+
+  useEffect(() => {
+    if (load) {
+      setActiveTab("NPCs");
+    }
+  }, [load]);
 
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
@@ -18,6 +27,17 @@ const BinderObject = () => {
 
   const handleToggleClick = () => {
     setShowMenu(!showMenu);
+  };
+
+  const { preferences, setPreferences } = usePreferencesStore();
+
+  const handleSelectClick = (id: string) => {
+    const selectedSearch = null;
+    setPreferences({
+      ...preferences,
+      selectedEntity: id,
+      selectedSearch,
+    });
   };
 
   //placeholder until store can delete
@@ -56,22 +76,26 @@ const BinderObject = () => {
       )}
       {showMenu && (
         <div className={styles.tabContainer}>
-          <div
-            className={`${styles.tab} ${
-              activeTab === "Events" ? styles.active : ""
-            }`}
-            onClick={() => handleTabClick("Events")}
-          >
-            Events
-          </div>
-          <div
-            className={`${styles.tab} ${
-              activeTab === "Notes" ? styles.active : ""
-            }`}
-            onClick={() => handleTabClick("Notes")}
-          >
-            Notes
-          </div>
+          {load != true && (
+            <>
+              <div
+                className={`${styles.tab} ${
+                  activeTab === "Events" ? styles.active : ""
+                }`}
+                onClick={() => handleTabClick("Events")}
+              >
+                Events
+              </div>
+              <div
+                className={`${styles.tab} ${
+                  activeTab === "Notes" ? styles.active : ""
+                }`}
+                onClick={() => handleTabClick("Notes")}
+              >
+                Notes
+              </div>
+            </>
+          )}
           <div
             className={`${styles.tab} ${
               activeTab === "NPCs" ? styles.active : ""

@@ -25,7 +25,6 @@ const AddEntityForm: React.FC<Props> = ({
     name: "",
     stats: {},
     hp: [0, 0],
-    equipment: [],
     entityType: type,
     ...entityData,
   });
@@ -126,18 +125,6 @@ const AddEntityForm: React.FC<Props> = ({
       </div>
       {statsField}
       {hpField}
-      <div className={styles.formRow}>
-        <label className={styles.formLabel} htmlFor="equipment">
-          Equipment:
-        </label>
-        <input
-          className={styles.formInput}
-          type="text"
-          name="equipment"
-          defaultValue={entity.equipment}
-          onChange={handleInputChange}
-        />
-      </div>
       <Button onClick={handleAddEntity}>Save {type}</Button>
     </form>
   );
