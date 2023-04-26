@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 // Import the necessary CSS and component files
@@ -9,12 +9,13 @@ import ModuleView from "./components/views/ModuleView";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MainMenu from "./components/menus/MainMenu";
 import PlannerMenu from "./components/menus/PlannerMenu";
-import { IEntity } from "./api/model";
+import { IEntity, IPlan } from "./api/model";
 import EditPlannerMenu from "./components/menus/EditPlannerMenu";
 import classNames from "classnames";
-import { usePreferencesStore, useCampaigns, useStore } from "./hooks";
+import { usePreferencesStore, useCampaigns, usePlans } from "./hooks";
 import TipMenu from "./components/menus/TipMenu";
 import { WelcomeMenu } from "./components/menus/WelcomeMenu";
+import { RoundButton } from "./components/buttons";
 
 // Load FontAwesome icons
 library.add(fas);
@@ -26,15 +27,7 @@ export enum AppMode {
 
 function App() {
   //control at a high level the campaign that we load
-  const {
-    campaigns,
-    currentCampaignId,
-    addCampaign,
-    deleteCampaign,
-    loadCampaign,
-    unloadCampaign,
-  } = useCampaigns();
-
+  const { currentCampaignId, deleteCampaign, unloadCampaign } = useCampaigns();
   const handleDeleteCampaign = (campaignId: string) => {
     deleteCampaign(campaignId);
     // Also reset the current campaign if it is the one being deleted
@@ -47,10 +40,15 @@ function App() {
   const [menu, setMenu] = useState(false);
   const [plannerMenu, setPlannerMenu] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const { preferences, setPreferences } = usePreferencesStore();
 
-  const { preferences } = usePreferencesStore((store) => ({
-    preferences: store.preferences,
-  }));
+  //generate the header section based on if a plan is selected
+  const { getPlanById } = usePlans();
+  const [currentPlan, setCurrentPlan] = useState<IPlan | undefined>(undefined);
+  useEffect(
+    () => setCurrentPlan(getPlanById(preferences.selectedPlan || undefined)),
+    [preferences.selectedPlan, getPlanById]
+  );
 
   const handleToggleMenu = () => {
     setMenu(!menu);
@@ -61,8 +59,21 @@ function App() {
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchTerm(value);
+    const selectedSearch = event.target.value;
+    const selectedEntity = null;
+    setPreferences({
+      ...preferences,
+      selectedSearch,
+      selectedEntity,
+    });
+  };
+
+  const cancelPlan = () => {
+    const selectedPlan = null;
+    setPreferences({
+      ...preferences,
+      selectedPlan,
+    });
   };
 
   return (
@@ -79,14 +90,19 @@ function App() {
         <div className={styles.headerSection}>
           {/* Header over cards view, button pulls up plan menu*/}
           <EditPlannerMenu />
-          <h2 className={styles.headerTitle}>
-            {mode.slice(0, 1).toUpperCase() + mode.slice(1)}
-          </h2>
           {/* if in encounter mode, show a close button to exit it*/}
-          {mode === AppMode.encounter ? (
-            <button className={styles.headerButton}>
-              <FontAwesomeIcon icon="close" />
-            </button>
+          {preferences.selectedPlan != undefined ? (
+            <>
+              <h2 className={styles.headerTitle}>
+                {/*capitalize the Header Title*/}
+                {currentPlan?.planType &&
+                  currentPlan.planType.charAt(0).toUpperCase() +
+                    currentPlan.planType.slice(1)}
+              </h2>
+              <RoundButton className={styles.headerButton} onClick={cancelPlan}>
+                <FontAwesomeIcon icon="close" />
+              </RoundButton>
+            </>
           ) : (
             // Empty div for layout
             <div className={styles.spacer} />

@@ -154,6 +154,12 @@
   }
 }
 
+.addButtons {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
 .tipsMenu {
   position: fixed;
   z-index: 9999; /* Set a high z-index to ensure it appears on top */

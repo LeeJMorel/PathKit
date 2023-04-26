@@ -7,16 +7,15 @@ import { usePreferencesStore } from "../../hooks";
 
 function SheetView() {
   const { preferences, setPreferences } = usePreferencesStore();
-  const { selectedSheet } = preferences;
   let content;
 
-  // Render different sheets based on the selectedHeaderItem prop
-  if (selectedSheet) {
+  // Render different sheets based on the selectedSheet prop
+  if (preferences.selectedEntity != null) {
     // If an entity is selected, show the entity sheet for the selected ID
     content = <EntitySheet />;
-    // } else if (searchID) {
-    //   // If a search is selected, show the search sheet for the selected ID
-    //   content = <SearchSheet searchInfo={searchID} />;
+  } else if (preferences.selectedSearch != null) {
+    // If a search is selected, show the search sheet for the selected ID
+    content = <SearchSheet />;
   } else {
     // If neither is selected, show the notes sheet
     content = <NotesSheet />;

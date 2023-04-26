@@ -7,7 +7,7 @@ import { IEntity, EntityType } from "../api/model";
 interface IUseEntities {
   entities: IEntity[];
   setEntities: (entities: IEntity[]) => void;
-  addEntity: (entity: Omit<IEntity, "id" | "campaignId">) => void;
+  addEntity: (entity: Omit<IEntity, "id" | "campaignId">) => IEntity;
   getEntityById: (entityId?: string) => IEntity | undefined;
   deleteEntity: (entityId: string) => void;
   getPlayerEntities: () => IEntity[];
@@ -29,14 +29,15 @@ export const useEntities = (): IUseEntities => {
   }, []);
 
   const addEntity = useCallback(
-    (newEntity: Omit<IEntity, "id" | "campaignId">): void => {
+    (newEntity: Omit<IEntity, "id" | "campaignId">): IEntity => {
       const entity: IEntity = {
         ...newEntity,
         id: uuid(),
-        campaignId: currentCampaignId, // TODO get campaignId from high level
+        campaignId: currentCampaignId,
       } as IEntity;
 
-      return setEntities([...entities, entity]);
+      setEntities([...entities, entity]);
+      return entity;
     },
     [setEntities, currentCampaignId]
   );
