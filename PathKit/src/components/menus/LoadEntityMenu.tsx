@@ -3,6 +3,7 @@ import styles from "./Menu.module.scss";
 import MenuButton from "../buttons/Button";
 import { useCampaigns, usePreferencesStore } from "../../hooks";
 import BinderObject from "../objects/BinderObject";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface ICampaignMenuProps {
   onClose: () => void;
@@ -44,9 +45,11 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ onClose }) => {
   return (
     <div className={styles.menuOverlay}>
       <div className={styles.mainMenu}>
-        {renderLoadContent()}
-        <div className={styles.close} onClick={handleClose}>
-          X
+        <div className={styles.header}>
+          {renderLoadContent()}
+          <div className={styles.close} onClick={handleClose}>
+            <FontAwesomeIcon icon="close" />
+          </div>
         </div>
       </div>
     </div>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import styles from "./Menu.module.scss";
-import MenuButton from "../buttons/Button";
+import Button from "../buttons/Button";
 import NewCampaignForm from "../forms/NewCampaignForm";
 import { useCampaigns, usePreferencesStore } from "../../hooks";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface ICampaignMenuProps {
   type: "Load" | "New";
@@ -34,10 +35,25 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
     onClose();
   };
 
+  const renderHeaderTitle = () => {
+    if (type === "Load") {
+      return (
+        <>
+          <h2>Select Campaign</h2>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <h2>Start a new campaign</h2>
+        </>
+      );
+    }
+  };
+
   const renderLoadContent = () => {
     return (
       <>
-        <h2>Select Campaign</h2>
         <div className={styles.content}>
           {campaigns.map((campaign) => (
             <div key={campaign.id} className={styles.menuRowContainer}>
@@ -55,10 +71,10 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
           ))}
         </div>
         <div className={styles.menuRowContainer}>
-          <MenuButton disabled={!selectedCampaign} onClick={handleLoadClick}>
+          <Button disabled={!selectedCampaign} onClick={handleLoadClick}>
             Load
-          </MenuButton>
-          <MenuButton onClick={handleClose}>Cancel</MenuButton>
+          </Button>
+          <Button onClick={handleClose}>Cancel</Button>
         </div>
       </>
     );
@@ -67,7 +83,6 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
   const renderNewContent = () => {
     return (
       <>
-        <h2>Start a new campaign</h2>
         <NewCampaignForm />
       </>
     );
@@ -76,10 +91,13 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
   return (
     <div className={styles.menuOverlay}>
       <div className={styles.mainMenu}>
-        {type === "Load" ? renderLoadContent() : renderNewContent()}
-        <div className={styles.close} onClick={handleClose}>
-          X
+        <div className={styles.header}>
+          {renderHeaderTitle()}
+          <div className={styles.close} onClick={handleClose}>
+            <FontAwesomeIcon icon="close" />
+          </div>
         </div>
+        {type === "Load" ? renderLoadContent() : renderNewContent()}
       </div>
     </div>
   );

@@ -10,12 +10,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MainMenu from "./components/menus/MainMenu";
 import PlannerMenu from "./components/menus/PlannerMenu";
 import { IEntity, IPlan } from "./api/model";
-import EditPlannerMenu from "./components/menus/EditPlannerMenu";
+import PlannerDropdown from "./components/dropdowns/PlannerDropdown";
 import classNames from "classnames";
 import { usePreferencesStore, useCampaigns, usePlans } from "./hooks";
 import TipMenu from "./components/menus/TipMenu";
 import { WelcomeMenu } from "./components/menus/WelcomeMenu";
 import { RoundButton } from "./components/buttons";
+import { InitiativeMenu } from "./components/menus/InitiativeMenu";
 
 // Load FontAwesome icons
 library.add(fas);
@@ -89,10 +90,11 @@ function App() {
       <header className={styles.header}>
         <div className={styles.headerSection}>
           {/* Header over cards view, button pulls up plan menu*/}
-          <EditPlannerMenu />
+          <PlannerDropdown />
           {/* if in encounter mode, show a close button to exit it*/}
           {preferences.selectedPlan != undefined ? (
             <>
+              {/*{currentPlan?.planType === "encounter" && <InitiativeMenu />}*/}
               <h2 className={styles.headerTitle}>
                 {/*capitalize the Header Title*/}
                 {currentPlan?.planType &&

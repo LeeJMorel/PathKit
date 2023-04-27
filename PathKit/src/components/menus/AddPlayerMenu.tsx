@@ -28,9 +28,11 @@ const AddPlayerMenu: React.FC<IAddPlayerMenuProps> = ({
   return (
     <div className={styles.menuOverlay}>
       <div className={styles.mainMenu}>
-        <h2>Add a new Player</h2>
-        <div className={styles.close} onClick={handleClose}>
-          <FontAwesomeIcon icon="close" />
+        <div className={styles.header}>
+          <h2>Add a new Player</h2>
+          <div className={styles.close} onClick={handleClose}>
+            <FontAwesomeIcon icon="close" />
+          </div>
         </div>
         <div className={styles.entityList}>
           <AddEntityForm

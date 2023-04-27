@@ -17,6 +17,7 @@ export interface IEntity {
   equipment?: string[];
   campaignId?: string;
   entityType: EntityType;
+  initiative?: number;
 }
 
 export enum PlanType {
@@ -24,17 +25,12 @@ export enum PlanType {
   encounter = "encounter",
 }
 
-export interface IInitiative {
-  entityId: string;
-  roll: number;
-}
-
 export interface IPlan {
   id: string;
   planType: PlanType;
   campaignId?: string;
   entities: IEntity[];
-  initiativeOrder?: IInitiative[];
+  order?: number;
 }
 
 export interface ICampaign {

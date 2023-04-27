@@ -185,38 +185,40 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
             )}
 
             {/* Tabs */}
-            <div className={styles.tabs}>
-              <div
-                className={`${styles.tab} ${
-                  currentTab === Tab.Campaign ? styles.active : ""
-                }`}
-                onClick={() => handleTabClick(Tab.Campaign)}
-              >
-                Campaign
-              </div>
-              <div
-                className={`${styles.tab} ${
-                  currentTab === Tab.Binder ? styles.active : ""
-                }`}
-                onClick={() => handleTabClick(Tab.Binder)}
-              >
-                Binder
-              </div>
-              <div
-                className={`${styles.tab} ${
-                  currentTab === Tab.View ? styles.active : ""
-                }`}
-                onClick={() => handleTabClick(Tab.View)}
-              >
-                View
-              </div>
-              <div
-                className={`${styles.tab} ${
-                  currentTab === Tab.Options ? styles.active : ""
-                }`}
-                onClick={() => handleTabClick(Tab.Options)}
-              >
-                Options
+            <div className={styles.header}>
+              <div className={styles.tabs}>
+                <div
+                  className={`${styles.tab} ${
+                    currentTab === Tab.Campaign ? styles.active : ""
+                  }`}
+                  onClick={() => handleTabClick(Tab.Campaign)}
+                >
+                  Campaign
+                </div>
+                <div
+                  className={`${styles.tab} ${
+                    currentTab === Tab.Binder ? styles.active : ""
+                  }`}
+                  onClick={() => handleTabClick(Tab.Binder)}
+                >
+                  Binder
+                </div>
+                <div
+                  className={`${styles.tab} ${
+                    currentTab === Tab.View ? styles.active : ""
+                  }`}
+                  onClick={() => handleTabClick(Tab.View)}
+                >
+                  View
+                </div>
+                <div
+                  className={`${styles.tab} ${
+                    currentTab === Tab.Options ? styles.active : ""
+                  }`}
+                  onClick={() => handleTabClick(Tab.Options)}
+                >
+                  Options
+                </div>
               </div>
               <div className={styles.close} onClick={handleClose}>
                 <FontAwesomeIcon icon="close" />

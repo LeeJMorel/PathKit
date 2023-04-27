@@ -1,0 +1,38 @@
+.dropdownContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 999; /* Set a high z-index to ensure it appears on top */
+
+  .menuDropdown {
+    position: relative;
+    display: inline-block;
+
+    .menuDropdownContent {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 8rem;
+      background-color: var(--accentBackground);
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+      box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+
+      & > div {
+        cursor: pointer;
+        padding: 0.5rem;
+        color: var(--accentText);
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: var(--tertiaryAccentBackground);
+        }
+      }
+    }
+  }
+
+  .menuDropdown:hover .menuDropdownContent {
+    display: block;
+  }
+}

@@ -2,7 +2,7 @@ import styles from "./Menu.module.scss";
 import MenuButton from "../buttons/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePlans, useEntities, useCampaigns } from "../../hooks";
-import {WelcomeMenu} from "./WelcomeMenu";
+import { WelcomeMenu } from "./WelcomeMenu";
 import { useState } from "react";
 
 interface IDeleteMenuProps {
@@ -58,7 +58,12 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
           <WelcomeMenu />
         ) : (
           <div className={styles.deleteMenu}>
-            <h2>Delete</h2>
+            <div className={styles.header}>
+              <h2>Delete</h2>
+              <div className={styles.close} onClick={handleClose}>
+                <FontAwesomeIcon icon="close" />
+              </div>
+            </div>
             <p>
               Are you sure you wish to permanently remove this? Once you press
               yes, this cannot be undone.
@@ -69,9 +74,6 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
             </div>
           </div>
         )}
-        <div className={styles.close} onClick={handleClose}>
-          <FontAwesomeIcon icon="close" />
-        </div>
       </div>
     </div>
   );

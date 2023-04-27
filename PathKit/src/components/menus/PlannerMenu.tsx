@@ -182,9 +182,11 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
             {showRemoveMenu && (
               <RemoveFromPlanMenu id={removeId} onClose={handleDeleteClose} />
             )}
-            <h2>{renderTitle()}</h2>
-            <div className={styles.close} onClick={handleClose}>
-              <FontAwesomeIcon icon="close" />
+            <div className={styles.header}>
+              <h2>{renderTitle()}</h2>
+              <div className={styles.close} onClick={handleClose}>
+                <FontAwesomeIcon icon="close" />
+              </div>
             </div>
             <div className={styles.entityList}>
               {plan.entities.map((entity) => (
@@ -206,7 +208,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
               ))}
               <div className={styles.menuColumnContainer}>
                 {!showAddEntity && (
-                  <div className={styles.addButtons}>
+                  <div className={styles.menuRowContainer}>
                     <Button
                       onClick={() => handleAddEntityClick(EntityType.Shop)}
                     >

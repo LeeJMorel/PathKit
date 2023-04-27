@@ -20,14 +20,21 @@
   position: relative;
   transition: all 0.2s ease-in-out;
 
+  .header {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
   h2 {
     margin-top: 0;
   }
 
   .close {
-    position: absolute;
-    top: 20px;
-    right: 30px;
+    margin-top: 0;
     transition: all 200ms;
     font-size: 2em;
     font-weight: bold;
@@ -107,6 +114,7 @@
   flex-direction: row;
   width: 100%;
 }
+
 .menuEndContainer {
   display: flex;
   justify-content: flex-end;
@@ -132,34 +140,6 @@
   padding-top: 0.5em;
 }
 
-.menuRoundButtonContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 999; /* Set a high z-index to ensure it appears on top */
-}
-
-.menuRoundButton {
-  cursor: pointer;
-  padding: 0.1rem;
-  color: var(--secondaryText);
-  background-color: var(--secondaryBackground);
-  width: 40px;
-  height: 40px;
-  border-radius: 40px;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: #444;
-  }
-}
-
-.addButtons {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-}
-
 .tipsMenu {
   position: fixed;
   z-index: 9999; /* Set a high z-index to ensure it appears on top */
@@ -175,20 +155,6 @@
     margin-top: 0;
   }
 
-  .close {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    transition: all 200ms;
-    font-size: 2em;
-    font-weight: bold;
-    text-decoration: none;
-    cursor: "pointer";
-
-    &:hover {
-      color: var(--close);
-    }
-  }
   .tipArrowContainer {
     display: flex;
     flex: 1;
@@ -203,51 +169,5 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-  }
-}
-
-.menuDropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.menuDropdownContent {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 8rem;
-  background-color: var(--accentBackground);
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
-
-  & > div {
-    cursor: pointer;
-    padding: 0.5rem;
-    color: var(--accentText);
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: var(--tertiaryAccentBackground);
-    }
-  }
-}
-
-.menuDropdown:hover .menuDropdownContent {
-  display: block;
-}
-
-.iconButton {
-  all: unset;
-  cursor: pointer;
-  background: var(--accentBackground);
-  padding: 0.2em 0.4em;
-  border-radius: 0.4em;
-  transition: background-color 0.2s ease;
-  color: var(--accentText);
-
-  &:hover {
-    background-color: var(--primaryBackground);
   }
 }

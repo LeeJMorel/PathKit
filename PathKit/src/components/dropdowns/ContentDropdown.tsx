@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import styles from "./Menu.module.scss"; // Import your CSS/SCSS file for styling
-import PlannerMenu from "./PlannerMenu";
+import styles from "./Dropdown.module.scss"; // Import your CSS/SCSS file for styling
+import PlannerMenu from "../menus/PlannerMenu";
 import { IEntity, IPlan, PlanType } from "../../api/model";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePreferencesStore, usePlans } from "../../hooks";
+import { RoundButton } from "../buttons";
 
-const EditPlannerMenu = () => {
+const ContentDropdown = () => {
   //check a plan is already running
   const { preferences, setPreferences } = usePreferencesStore();
 
@@ -67,16 +68,11 @@ const EditPlannerMenu = () => {
     }
 
     return (
-      <div className={styles.menuRoundButtonContainer}>
+      <div className={styles.dropdownContainer}>
         <div className={styles.menuDropdown}>
-          <button
-            type="button"
-            title="Add Plan"
-            className={styles.menuRoundButton}
-            onClick={handleMenuClick}
-          >
+          <RoundButton type="button" title="Add Plan" onClick={handleMenuClick}>
             <FontAwesomeIcon icon="file-circle-plus" />
-          </button>
+          </RoundButton>
           <div className={styles.menuDropdownContent}>
             {preferences.selectedPlan && (
               <>
@@ -122,4 +118,4 @@ const EditPlannerMenu = () => {
   return renderMenu();
 };
 
-export default EditPlannerMenu;
+export default ContentDropdown;

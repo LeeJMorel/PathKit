@@ -14,6 +14,7 @@
     flex-direction: row;
     flex: 1;
     width: 100%;
+    justify-content: space-between;
 
     .formLabel {
       font-size: 1rem;
@@ -44,6 +45,18 @@
     }
 
     .formSelect {
+      padding: 0.2rem;
+      border: 1px solid var(--secondaryText);
+      border-radius: 0.25rem;
+      width: 100%;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+      background: var(--primaryBackground);
+      color: var(--primaryText);
+    }
+
+    .formSmall {
+      max-width: 5em;
       padding: 0.2rem;
       border: 1px solid var(--secondaryText);
       border-radius: 0.25rem;

@@ -30,7 +30,12 @@ const RemoveMenu: React.FC<IRemoveMenuProps> = ({
     <div className={styles.menuOverlay}>
       <div className={styles.mainMenu}>
         <div className={styles.deleteMenu}>
-          <h2>Remove From Plan</h2>
+          <div className={styles.header}>
+            <h2>Remove From Plan</h2>
+            <div className={styles.close} onClick={handleClose}>
+              <FontAwesomeIcon icon="close" />
+            </div>
+          </div>
           <p>
             Are you sure you wish to permanently remove this from your plan? The
             NPC, Monster, or Shop will still exist so you can load them back on
@@ -40,9 +45,6 @@ const RemoveMenu: React.FC<IRemoveMenuProps> = ({
             <MenuButton onClick={handleClose}>No</MenuButton>
             <MenuButton onClick={handleYesClick}>Yes</MenuButton>
           </div>
-        </div>
-        <div className={styles.close} onClick={handleClose}>
-          <FontAwesomeIcon icon="close" />
         </div>
       </div>
     </div>

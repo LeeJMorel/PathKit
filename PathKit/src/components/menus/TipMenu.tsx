@@ -47,9 +47,11 @@ const TipMenu: React.FC = () => {
 
   return (
     <div className={styles.tipsMenu}>
-      <h2>{currentTip.header}</h2>
-      <div className={styles.close} onClick={() => setCurrentTipIndex(0)}>
-        <FontAwesomeIcon icon="close" />
+      <div className={styles.header}>
+        <h2>{currentTip.header}</h2>
+        <div className={styles.close} onClick={() => setCurrentTipIndex(0)}>
+          <FontAwesomeIcon icon="close" />
+        </div>
       </div>
 
       <div className={styles.tipBody}>{currentTip.description}</div>
