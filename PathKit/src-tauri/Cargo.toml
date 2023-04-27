@@ -5,7 +5,6 @@ description = "PathKit is a virtual GM (Game Master) screen for the tabletop rol
 authors = ["you"]
 license = ""
 repository = "https://github.com/LeeJMorel/PathKit"
-default-run = "app"
 edition = "2021"
 rust-version = "1.59"
 
