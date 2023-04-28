@@ -206,13 +206,15 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
 
                     <div className={styles.menuTitle}>{entity.name}</div>
                   </div>
-                  <Button
-                    subtle
-                    className={styles.deleteButton}
-                    onClick={() => handleRemove(entity.id)}
-                  >
-                    <FontAwesomeIcon icon="user-minus" />
-                  </Button>
+                  {entity.id && (
+                    <Button
+                      subtle
+                      className={styles.deleteButton}
+                      onClick={() => handleRemove(entity.id)}
+                    >
+                      <FontAwesomeIcon icon="user-minus" />
+                    </Button>
+                  )}
                 </div>
               ))}
               <div className={styles.menuColumnContainer}>
