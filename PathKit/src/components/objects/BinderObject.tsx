@@ -55,7 +55,7 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
     setShowEntityForm(null);
   };
   const renderEntityForm = () => {
-    if (showEntityForm) {
+    if (showEntityForm && showEntityForm.entityType) {
       return (
         <div className={styles.tabContent}>
           <h2>Edit {showEntityForm.entityType}</h2>

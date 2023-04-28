@@ -9,7 +9,7 @@ import { useEntities } from "../../hooks";
 import { Button } from "../buttons";
 
 interface Props {
-  type: EntityType;
+  type?: EntityType;
   entityData?: IEntity;
   onAddEntity: (entity: IEntity) => void;
 }
