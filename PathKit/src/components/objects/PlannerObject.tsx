@@ -17,6 +17,7 @@ function PlannerObject({ plan }: PlannerObjectProps) {
   const handleClick = () => {
     setPreferences({ selectedPlan: plan.id });
   };
+  const tooltipId = `tooltip-${plan.id}`;
 
   return (
     <div
@@ -24,14 +25,8 @@ function PlannerObject({ plan }: PlannerObjectProps) {
       onClick={handleClick}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
+      data-tooltip-id={tooltipId}
     >
-      {isHovering && (
-        <div className={styles.tooltip}>
-          {entities.map((entity) => (
-            <div key={entity.id}>{entity.name}</div>
-          ))}
-        </div>
-      )}
       {entities.map((entity, i) => {
         if (i < 4) {
           return (
@@ -50,6 +45,11 @@ function PlannerObject({ plan }: PlannerObjectProps) {
           <div className={styles.overlay}></div>
           <FontAwesomeIcon className={styles.sword} icon="dragon" />
         </>
+      )}
+      {isHovering && (
+        <div className={styles.tooltip}>
+          {entities.map((e) => e.name).join(",\n")}
+        </div>
       )}
     </div>
   );
