@@ -10,7 +10,12 @@ import MainMenu from "./components/menus/MainMenu";
 import { IEntity, IPlan } from "./api/model";
 import PlannerDropdown from "./components/dropdowns/PlannerDropdown";
 import classNames from "classnames";
-import { usePreferencesStore, useCampaigns, usePlans } from "./hooks";
+import {
+  usePreferencesStore,
+  useCampaigns,
+  usePlans,
+  defaultPreferences,
+} from "./hooks";
 import { WelcomeMenu } from "./components/menus/WelcomeMenu";
 import { RoundButton } from "./components/buttons";
 import { InitiativeMenu } from "./components/menus/InitiativeMenu";
@@ -39,6 +44,14 @@ function App() {
   const [plannerMenu, setPlannerMenu] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const { preferences, setPreferences } = usePreferencesStore();
+
+  //Initialize store with new keys
+  useEffect(() => {
+    setPreferences({
+      ...defaultPreferences,
+      ...preferences,
+    });
+  }, []);
 
   //generate the header section based on if a plan is selected
   const { getPlanById } = usePlans();

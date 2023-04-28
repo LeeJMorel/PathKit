@@ -20,25 +20,30 @@ interface IPreferencesStore {
   setPreferences: (preferences: Partial<IPreferences>) => void;
 }
 
+//default preferences state
+export const defaultPreferences = {
+  largeFont: false,
+  theme: "parchment",
+  visibleModules: {
+    TipModule: true,
+    DCModule: false,
+    DiceModule: true,
+    NotesModule: false,
+    BinderModule: false,
+  },
+  currentCampaignId: null,
+  selectedPlan: null,
+  selectedEntity: null,
+  selectedNote: null,
+  selectedSearch: null,
+  activePlayers: [],
+};
+
 export const usePreferencesStore = create(
   persist<IPreferencesStore>(
     (set, get) => ({
       preferences: {
-        largeFont: false,
-        theme: "parchment",
-        visibleModules: {
-          TipModule: true,
-          DCModule: false,
-          DiceModule: true,
-          NotesModule: false,
-          BinderModule: false,
-        },
-        currentCampaignId: null,
-        selectedPlan: null,
-        selectedEntity: null,
-        selectedNote: null,
-        selectedSearch: null,
-        activePlayers: [],
+        ...defaultPreferences,
       },
 
       setPreferences: (newPreferences: Partial<IPreferences>): void => {
