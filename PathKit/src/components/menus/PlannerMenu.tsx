@@ -60,6 +60,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
     }));
     setShowAddEntity(false);
   };
+
   const handleRemove = (id: string) => {
     setShowRemoveMenu(true);
     setRemoveId(id);
@@ -89,7 +90,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
   };
 
   const renderEntityForm = () => {
-    if (showEntityForm) {
+    if (showEntityForm && showEntityForm.entityType) {
       return (
         <div className={styles.tabContent}>
           <h2>Edit {showEntityForm.entityType}</h2>

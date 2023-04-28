@@ -14,6 +14,7 @@ interface IUseEntities {
   getEntityById: (entityId?: string) => IEntity | undefined;
   deleteEntity: (entityId: string) => void;
   getPlayerEntities: () => IEntity[];
+  getActivePlayerEntities: () => IEntity[];
   updateEntity: (entity: PartialEntity) => void;
 }
 
@@ -67,6 +68,12 @@ export const useEntities = (): IUseEntities => {
     return entities.filter((e) => e.entityType === EntityType.Player);
   }, [entities]);
 
+  const getActivePlayerEntities = useCallback((): IEntity[] => {
+    return entities.filter(
+      (e) => e.entityType === EntityType.Player && e.isActive
+    );
+  }, [entities]);
+
   const updateEntity = useCallback(
     (newEntity: PartialEntity): void => {
       const newEntities: IEntity[] = entities.map((entity) =>
@@ -86,6 +93,7 @@ export const useEntities = (): IUseEntities => {
     getEntityById,
     deleteEntity,
     getPlayerEntities,
+    getActivePlayerEntities,
     updateEntity,
   };
 };

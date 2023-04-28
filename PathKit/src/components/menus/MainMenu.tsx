@@ -105,9 +105,16 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
 
   //We don't want this player to be active this session
   const [isActive, setIsActive] = useState<boolean>(true);
-  const handleActive = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleActive = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    playerId: IEntity["id"]
+  ) => {
     const { checked } = event.target;
     setIsActive(checked);
+
+    // Update the isActive property of the entity
+    const partialEntity: PartialEntity = { id: playerId, isActive: checked };
+    updateEntity(partialEntity);
   };
 
   const handleEditClose = () => {
@@ -132,7 +139,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   };
 
   const renderEntityForm = () => {
-    if (showEntityForm) {
+    if (showEntityForm && showEntityForm.entityType) {
       return (
         <div className={styles.tabContent}>
           <h2>Edit {showEntityForm.entityType}</h2>
@@ -264,7 +271,9 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                             type={"checkbox"}
                             name="isActive"
                             value="isActive"
-                            onChange={handleActive}
+                            onChange={(
+                              event: React.ChangeEvent<HTMLInputElement>
+                            ) => handleActive(event, player.id)}
                           />
                         </div>
                       </div>

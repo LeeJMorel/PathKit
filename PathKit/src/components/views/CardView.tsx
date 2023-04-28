@@ -7,10 +7,10 @@ import { EntityType, IEntity, IPlan, PlanType } from "../../api/model";
 import { useEntities, usePlans, usePreferencesStore } from "../../hooks";
 
 function CardView() {
-  const { getPlayerEntities, getEntityById } = useEntities();
+  const { getActivePlayerEntities, getEntityById } = useEntities();
 
   //get all the player entities, they should always be visible
-  const playerEntities = getPlayerEntities();
+  const playerEntities = getActivePlayerEntities();
   const playerCards = playerEntities.map((entity) => (
     <EntityCard key={entity.id} entity={entity} />
   ));

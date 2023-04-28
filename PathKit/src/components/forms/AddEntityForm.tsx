@@ -26,6 +26,7 @@ const AddEntityForm: React.FC<Props> = ({
     stats: {},
     hp: [0, 0],
     entityType: type,
+    isActive: true,
     ...entityData,
   });
 

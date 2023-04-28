@@ -8,16 +8,17 @@ export enum EntityType {
 
 export interface IEntity {
   id: string;
-  image: string; //an image for each object added
-  name: string;
+  image?: string; //an image for each object added
+  name?: string;
   stats?: {
     [key: string]: number;
   };
   hp?: [number, number, number?]; // current hp, total hp, and temp hp
   equipment?: string[];
   campaignId?: string;
-  entityType: EntityType;
+  entityType?: EntityType;
   initiative?: number;
+  isActive?: boolean;
 }
 
 export enum PlanType {
