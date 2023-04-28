@@ -12,12 +12,14 @@ interface Props {
   type?: EntityType;
   entityData?: IEntity;
   onAddEntity: (entity: IEntity) => void;
+  onClose?: () => void;
 }
 
 const AddEntityForm: React.FC<Props> = ({
   type = EntityType.none,
   entityData,
   onAddEntity,
+  onClose,
 }) => {
   const { addEntity } = useEntities();
   const [entity, setEntity] = useState<Omit<IEntity, "id">>({
@@ -29,6 +31,10 @@ const AddEntityForm: React.FC<Props> = ({
     isActive: true,
     ...entityData,
   });
+
+  const handleClose = () => {
+    onClose?.();
+  };
 
   const handleAddEntity = () => {
     const newEntity = addEntity(entity);
@@ -126,7 +132,10 @@ const AddEntityForm: React.FC<Props> = ({
       </div>
       {statsField}
       {hpField}
-      <Button onClick={handleAddEntity}>Save {type}</Button>
+      <div className={styles.formRow}>
+        <Button onClick={handleAddEntity}>Save {type}</Button>
+        {onClose && <Button onClick={handleClose}>Cancel</Button>}
+      </div>
     </form>
   );
 };

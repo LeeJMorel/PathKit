@@ -94,12 +94,10 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
       return (
         <div className={styles.tabContent}>
           <h2>Edit {showEntityForm.entityType}</h2>
-          <div className={styles.close} onClick={handleEditClose}>
-            <FontAwesomeIcon icon="close" />
-          </div>
           <AddEntityForm
             entityData={showEntityForm}
             type={showEntityForm.entityType}
+            onClose={handleEditClose}
             onAddEntity={(entity) => {
               updateEntity(entity);
               setShowEntityForm(null);
@@ -144,12 +142,16 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
     setPreferences({ selectedEntity: null });
     setShowLoad(false);
   };
+  const handleCloseAdd = () => {
+    setShowAddEntity(false);
+  };
 
   const renderAddEntity = () => {
     if (showAddEntity) {
       return (
         <AddEntityForm
           type={selectedEntityType}
+          onClose={handleCloseAdd}
           onAddEntity={(entity) => handleAddEntity(entity)}
         />
       );
