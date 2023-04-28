@@ -303,6 +303,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                         <div
                           className={styles.largeCheck}
                           title={`${player.name}: ${
+                            preferences.activePlayers &&
                             preferences.activePlayers.includes(player.id)
                               ? "is Present"
                               : "is Not Present"
@@ -310,9 +311,10 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                         >
                           <MenuInput
                             key={player.id}
-                            checked={preferences.activePlayers.includes(
-                              player.id
-                            )}
+                            checked={
+                              preferences.activePlayers &&
+                              preferences.activePlayers.includes(player.id)
+                            }
                             type={"checkbox"}
                             name="isActive"
                             value="isActive"
