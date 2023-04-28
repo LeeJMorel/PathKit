@@ -132,6 +132,11 @@
   width: 100%;
 }
 
+.largeCheck {
+  min-height: 2em;
+  min-width: 2em;
+}
+
 .menuEndContainer {
   display: flex;
   justify-content: flex-end;

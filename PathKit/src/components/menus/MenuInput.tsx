@@ -3,6 +3,7 @@ import styles from "./Menu.module.scss";
 
 interface InputProps {
   label?: string;
+  title?: string;
   checked?: boolean;
   type: "checkbox" | "radio";
   name: string;
@@ -12,6 +13,7 @@ interface InputProps {
 
 const MenuInput: React.FC<InputProps> = ({
   label,
+  title,
   checked,
   type,
   name,
@@ -21,7 +23,7 @@ const MenuInput: React.FC<InputProps> = ({
   const labelClassName = label ? styles.input : styles.inputLarge;
 
   return (
-    <label className={labelClassName}>
+    <label title={title} className={labelClassName}>
       <input
         type={type}
         checked={checked}

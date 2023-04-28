@@ -117,6 +117,7 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
                 className={`${styles.tab} ${
                   activeTab === "Plans" ? styles.active : ""
                 }`}
+                title={"Plans"}
                 onClick={() => handleTabClick("Plans")}
               >
                 Plans
@@ -125,6 +126,7 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
                 className={`${styles.tab} ${
                   activeTab === "Notes" ? styles.active : ""
                 }`}
+                title={"Notes"}
                 onClick={() => handleTabClick("Notes")}
               >
                 Notes
@@ -135,6 +137,7 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
             className={`${styles.tab} ${
               activeTab === "NPCs" ? styles.active : ""
             }`}
+            title={"NPCs"}
             onClick={() => handleTabClick("NPCs")}
           >
             NPCs
@@ -143,6 +146,7 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
             className={`${styles.tab} ${
               activeTab === "Shops" ? styles.active : ""
             }`}
+            title={"Shops"}
             onClick={() => handleTabClick("Shops")}
           >
             Shops
@@ -151,6 +155,7 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
             className={`${styles.tab} ${
               activeTab === "Monsters" ? styles.active : ""
             }`}
+            title={"Monsters"}
             onClick={() => handleTabClick("Monsters")}
           >
             Monsters
@@ -159,13 +164,18 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
             className={`${styles.tab} ${
               activeTab === "Players" ? styles.active : ""
             }`}
+            title={"Players"}
             onClick={() => handleTabClick("Players")}
           >
             Players
           </div>
         </div>
       )}
-      <div className={styles.menuToggle} onClick={handleToggleClick}>
+      <div
+        className={styles.menuToggle}
+        title={"Toggle Binder Menu Visible"}
+        onClick={handleToggleClick}
+      >
         {showMenu ? (
           <FontAwesomeIcon icon="angle-double-left" />
         ) : (
@@ -179,12 +189,25 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
               {plans.map((plan) => (
                 <tr key={plan.id} className={styles.plansTableRow}>
                   <td className={styles.plansTableAction}>
-                    <Button onClick={() => handleEdit(plan.id)}>
+                    <Button
+                      title={"Edit Plan"}
+                      onClick={() => handleEdit(plan.id)}
+                    >
                       <FontAwesomeIcon icon="pencil" />
                     </Button>
                   </td>
-                  <td className={styles.plansTablePlanType}>{plan.planType}</td>
-                  <td className={styles.plansTableEntities}>
+                  <td
+                    className={styles.plansTablePlanType}
+                    title={plan.planType}
+                  >
+                    {plan.planType}
+                  </td>
+                  <td
+                    className={styles.plansTableEntities}
+                    title={`${plan.entities
+                      .map((entity) => entity.name)
+                      .join(", ")}`}
+                  >
                     {plan.entities.map((entity, index) => (
                       <React.Fragment key={entity.id}>
                         {entity.name}
@@ -192,9 +215,11 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
                       </React.Fragment>
                     ))}
                   </td>
+
                   <td className={styles.plansTableAction}>
                     <div
                       className={styles.deleteButton}
+                      title={"Delete Plan"}
                       onClick={() => handleDelete("plan", plan.id)}
                     >
                       <FontAwesomeIcon icon="trash" />
@@ -211,15 +236,24 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
               {players.map((player) => (
                 <tr key={player.id} className={styles.plansTableRow}>
                   <td className={styles.plansTableAction}>
-                    <Button onClick={() => handleEditEntity(player)}>
+                    <Button
+                      title={`Edit ${player.name}`}
+                      onClick={() => handleEditEntity(player)}
+                    >
                       <FontAwesomeIcon icon="pencil" />
                     </Button>
                   </td>
-                  <td className={styles.plansTablePlanType}>{player.name}</td>
+                  <td
+                    className={styles.plansTablePlanType}
+                    title={`${player.name}`}
+                  >
+                    {player.name}
+                  </td>
                   <td className={styles.plansTableEntities}></td>
                   <td className={styles.plansTableAction}>
                     <div
                       className={styles.deleteButton}
+                      title={`Delete ${player.name}`}
                       onClick={() => handleDelete("entity", player.id)}
                     >
                       <FontAwesomeIcon icon="trash" />

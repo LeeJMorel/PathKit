@@ -129,6 +129,10 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     return Object.values(Modules).map((module) => (
       <MenuInput
         key={module.id}
+        title={
+          module.label +
+          (preferences.visibleModules[module.id] ? " (visible)" : "")
+        }
         label={module.label}
         checked={preferences.visibleModules[module.id]}
         type={"checkbox"}
@@ -143,7 +147,11 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
       return (
         <div className={styles.tabContent}>
           <h2>Edit {showEntityForm.entityType}</h2>
-          <div className={styles.close} onClick={handleEditClose}>
+          <div
+            className={styles.close}
+            title={"Close Edit Form"}
+            onClick={handleEditClose}
+          >
             <FontAwesomeIcon icon="close" />
           </div>
           <AddEntityForm
@@ -185,6 +193,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                   className={`${styles.tab} ${
                     currentTab === Tab.Campaign ? styles.active : ""
                   }`}
+                  title={"Campaign"}
                   onClick={() => handleTabClick(Tab.Campaign)}
                 >
                   Campaign
@@ -193,6 +202,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                   className={`${styles.tab} ${
                     currentTab === Tab.Binder ? styles.active : ""
                   }`}
+                  title={"Binder"}
                   onClick={() => handleTabClick(Tab.Binder)}
                 >
                   Binder
@@ -201,6 +211,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                   className={`${styles.tab} ${
                     currentTab === Tab.View ? styles.active : ""
                   }`}
+                  title={"View"}
                   onClick={() => handleTabClick(Tab.View)}
                 >
                   View
@@ -209,12 +220,17 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                   className={`${styles.tab} ${
                     currentTab === Tab.Options ? styles.active : ""
                   }`}
+                  title={"Options"}
                   onClick={() => handleTabClick(Tab.Options)}
                 >
                   Options
                 </div>
               </div>
-              <div className={styles.close} onClick={handleClose}>
+              <div
+                className={styles.close}
+                title={"Close Menu"}
+                onClick={handleClose}
+              >
                 <FontAwesomeIcon icon="close" />
               </div>
             </div>
@@ -226,11 +242,17 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                 /*Campaign tab content, here we will do stuff like show the name of
               your campaign, start a new campaign, or load a campaign*/
                 <div className={styles.tabContent}>
-                  <h2 className={styles.tabHeader}>
+                  <h2
+                    className={styles.tabHeader}
+                    title={currentCampaign ? currentCampaign.name : ""}
+                  >
                     {currentCampaign ? currentCampaign.name : "Campaign Name"}
                   </h2>
                   <hr className={styles.tabHorizontalLine} />
-                  <div className={styles.tabSubtext}>
+                  <div
+                    className={styles.tabSubtext}
+                    title={currentCampaign ? currentCampaign.desc : ""}
+                  >
                     {currentCampaign
                       ? currentCampaign.desc
                       : "A Campaign description provided by the user when they make a new campaign"}
@@ -238,6 +260,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                   <br />
                   <div className={styles.menuRowContainer}>
                     <Button
+                      title={"Delete Campaign"}
                       onClick={() =>
                         preferences.currentCampaignId &&
                         handleDelete("campaign", preferences.currentCampaignId)
@@ -245,17 +268,27 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                     >
                       Delete Campaign
                     </Button>
-                    <Button onClick={() => handleCampaign("Load")}>
+                    <Button
+                      title={"Load Campaign"}
+                      onClick={() => handleCampaign("Load")}
+                    >
                       Load Campaign
                     </Button>
-                    <Button onClick={() => handleCampaign("New")}>
+                    <Button
+                      title={"Start New Campaign"}
+                      onClick={() => handleCampaign("New")}
+                    >
                       Start New Campaign
                     </Button>
                   </div>
                   <br />
                   <div className={styles.menuRowContainer}>
-                    <h2 className={styles.tabHeader}>Players</h2>
-                    <h4>is Active</h4>
+                    <h2 title={"Players"} className={styles.tabHeader}>
+                      Players
+                    </h2>
+                    <h4 title={"Indicate if a player is present"}>
+                      is Present
+                    </h4>
                   </div>
                   <hr className={styles.tabHorizontalLine} />
 
@@ -263,12 +296,20 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                     {players.map((player) => (
                       <div key={player.id} className={styles.menuRowContainer}>
                         <div className={styles.menuEndContainer}>
-                          <div className={styles.menuTitle}>{player.name}</div>
+                          <div className={styles.menuTitle} title={player.name}>
+                            {player.name}
+                          </div>
                         </div>
-                        <div className={styles.largeCheck}>
+                        <div
+                          className={styles.largeCheck}
+                          title={`${player.name}: ${
+                            preferences.activePlayers.includes(player.id)
+                              ? "is Present"
+                              : "is Not Present"
+                          }`}
+                        >
                           <MenuInput
                             key={player.id}
-                            label={player.name}
                             checked={preferences.activePlayers.includes(
                               player.id
                             )}
@@ -297,7 +338,9 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
               you can see the "tips" */
                 <div className={styles.tabContent}>
                   <div className={styles.menuRowContainer}>
-                    <h2 className={styles.tabHeader}>Visible Modules</h2>
+                    <h2 className={styles.tabHeader} title={"Visible Modules"}>
+                      Visible Modules
+                    </h2>
                   </div>
                   <hr className={styles.tabHorizontalLine} />
                   <div className={styles.tabCheckboxContainer}>
@@ -308,11 +351,14 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
               {currentTab === Tab.Options && (
                 /* Options tab content, this controls accessibility features and color themes */
                 <div className={styles.tabContent}>
-                  <h2 className={styles.tabHeader}>Accessibility</h2>
+                  <h2 className={styles.tabHeader} title={"Accessibility"}>
+                    Accessibility
+                  </h2>
                   <hr className={styles.tabHorizontalLine} />
                   <div className={styles.tabCheckboxContainer}>
                     <MenuInput
                       label="Large Font"
+                      title={"Large Font"}
                       checked={preferences.largeFont}
                       type={"checkbox"}
                       name="largeFont"
@@ -321,6 +367,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                     />
                     <MenuInput
                       label="High Contrast Parchment"
+                      title={"High Contrast Theme: Parchment"}
                       checked={preferences.theme === "highContrast"}
                       type={"radio"}
                       name="theme"
@@ -329,6 +376,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                     />
                     <MenuInput
                       label="High Contrast Dark"
+                      title={"High Contrast Theme: Dark"}
                       checked={preferences.theme === "highContrastDark"}
                       type={"radio"}
                       name="theme"
@@ -336,11 +384,14 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                       onChange={handleThemeChange}
                     />
                   </div>
-                  <h2 className={styles.tabHeader}>Color Themes</h2>
+                  <h2 className={styles.tabHeader} title={"Color Themes"}>
+                    Color Themes
+                  </h2>
                   <hr className={styles.tabHorizontalLine} />
                   <div className={styles.tabCheckboxContainer}>
                     <MenuInput
                       label="Parchment"
+                      title={"Parchment Color Theme"}
                       checked={preferences.theme === "parchment"}
                       type={"radio"}
                       name="theme"
@@ -349,6 +400,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                     />
                     <MenuInput
                       label="Dark"
+                      title={"Dark Color Theme"}
                       checked={preferences.theme === "dark"}
                       type={"radio"}
                       name="theme"
