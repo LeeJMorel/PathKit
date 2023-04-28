@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Modules.module.scss";
-import { RoundButton } from "../buttons";
+import { Button, RoundButton } from "../buttons";
 
 interface ITip {
   id: number;
@@ -42,9 +42,9 @@ function TipModule() {
   return (
     <div className={styles.moduleContainer}>
       <div className={styles.moduleHeader}>
-        <RoundButton icon="angle-left" onClick={handlePreviousTip} />
+        <RoundButton small icon="angle-left" onClick={handlePreviousTip} />
         <h2>{currentTip.header}</h2>
-        <RoundButton icon="angle-right" onClick={handleNextTip} />
+        <RoundButton small icon="angle-right" onClick={handleNextTip} />
       </div>
 
       <div className={styles.tipBody}>

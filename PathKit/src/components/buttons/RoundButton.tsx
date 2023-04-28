@@ -7,6 +7,8 @@ import { IconName } from "@fortawesome/fontawesome-svg-core";
 type ValidIconName = IconName;
 interface Props extends React.HTMLProps<HTMLButtonElement> {
   icon?: ValidIconName;
+  small?: boolean;
+  subtle?: boolean;
 }
 
 const RoundButton: React.FC<Props> = ({
@@ -15,6 +17,8 @@ const RoundButton: React.FC<Props> = ({
   className,
   children,
   icon,
+  small,
+  subtle,
   ...rest
 }) => {
   const validIcons: ValidIconName[] = [
@@ -36,7 +40,12 @@ const RoundButton: React.FC<Props> = ({
   return (
     <button
       type="button"
-      className={classNames(styles.roundButton, className)}
+      className={classNames(
+        styles.roundButton,
+        small && styles.small,
+        subtle && styles.subtle,
+        className
+      )}
       onClick={onClick}
       {...rest}
     >

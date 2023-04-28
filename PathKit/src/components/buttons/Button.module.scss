@@ -12,6 +12,10 @@
     background-color: var(--accentBackground);
   }
 
+  &.subtle {
+    background-color: transparent;
+  }
+
   &:hover {
     background-color: var(--tertiaryAccentBackground);
   }
@@ -24,13 +28,23 @@
 
 .roundButton {
   cursor: pointer;
-  padding: 0.3rem;
+  padding: 0.4rem;
   color: var(--secondaryText);
   background-color: var(--secondaryBackground);
-  width: 40px;
-  height: 40px;
-  border-radius: 40px;
+  width: 36px;
+  height: 36px;
+  border-radius: 36px;
   transition: background-color 0.2s ease;
+
+  &.small {
+    width: 28px;
+    height: 28px;
+    border-radius: 28px;
+  }
+
+  &.subtle {
+    background-color: transparent;
+  }
 
   .roundButtonIcon {
     display: flex;

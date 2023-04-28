@@ -1,28 +1,26 @@
 import styles from "./Menu.module.scss";
 import MenuButton from "../buttons/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { usePlans, useEntities, useCampaigns } from "../../hooks";
-import { WelcomeMenu } from "./WelcomeMenu";
-import { useState } from "react";
 
 interface IRemoveMenuProps {
-  id: string;
+  planId: string;
+  entityId: string;
+  onRemove: () => void;
   onClose: () => void;
 }
 
 const RemoveMenu: React.FC<IRemoveMenuProps> = ({
-  id,
+  planId,
+  entityId,
+  onRemove,
   onClose,
 }: IRemoveMenuProps) => {
-  const plans = usePlans();
-  const { deleteEntity } = useEntities();
-
-  const handleYesClick = () => {
-    deleteEntity(id);
+  const handleClose = () => {
     onClose();
   };
 
-  const handleClose = () => {
+  const handleRemove = () => {
+    onRemove();
     onClose();
   };
 
@@ -32,7 +30,7 @@ const RemoveMenu: React.FC<IRemoveMenuProps> = ({
         <div className={styles.deleteMenu}>
           <div className={styles.header}>
             <h2>Remove From Plan</h2>
-            <div className={styles.close} onClick={handleClose}>
+            <div className={styles.close} onClick={onClose}>
               <FontAwesomeIcon icon="close" />
             </div>
           </div>
@@ -43,7 +41,7 @@ const RemoveMenu: React.FC<IRemoveMenuProps> = ({
           </p>
           <div className={styles.menuRowContainer}>
             <MenuButton onClick={handleClose}>No</MenuButton>
-            <MenuButton onClick={handleYesClick}>Yes</MenuButton>
+            <MenuButton onClick={handleRemove}>Yes</MenuButton>
           </div>
         </div>
       </div>

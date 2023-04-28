@@ -12,6 +12,7 @@ import {
 } from "../../hooks";
 import RemoveFromPlanMenu from "./RemoveFromPlanMenu";
 import BinderObject from "../objects/BinderObject";
+import { RoundButton } from "../buttons";
 
 interface IPlannerMenuProps {
   onClose: () => void;
@@ -39,6 +40,9 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
     EntityType.Shop
   );
 
+  const [showRemoveMenu, setShowRemoveMenu] = useState<boolean>(false);
+  const [removeId, setRemoveId] = useState<string>("");
+
   const handleClose = () => {
     onClose();
   };
@@ -56,12 +60,18 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
     }));
     setShowAddEntity(false);
   };
+  const handleRemove = (id: string) => {
+    setShowRemoveMenu(true);
+    setRemoveId(id);
+  };
 
-  const handleDeleteEntity = (entityId: string) => {
-    setPlan({
+  const handleRemoveEntity = () => {
+    const newPlan = {
       ...plan,
-      entities: plan.entities.filter((entity) => entity.id !== entityId),
-    });
+      entities: plan.entities.filter((entity) => entity.id !== removeId),
+    };
+    setPlan(newPlan);
+    updateOrAddPlan(newPlan);
   };
 
   //We want to show the load menu
@@ -99,13 +109,6 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
     }
   };
 
-  const [showRemoveMenu, setShowRemoveMenu] = useState<boolean>(false);
-  const [removeId, setRemoveId] = useState<string>("");
-  const handleRemove = (id: string) => {
-    setShowRemoveMenu(true);
-    setRemoveId(id);
-  };
-
   const handleDeleteClose = () => {
     setShowRemoveMenu(false);
   };
@@ -116,7 +119,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
     handleClose();
   };
 
-  //if an entitiy is selected, set that to load it
+  //if an entity is selected, set that to load it
   const { preferences, setPreferences } = usePreferencesStore();
   const { getEntityById } = useEntities();
   const [entity, setEntity] = useState<IEntity>();
@@ -179,8 +182,13 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
           </>
         ) : (
           <>
-            {showRemoveMenu && (
-              <RemoveFromPlanMenu id={removeId} onClose={handleDeleteClose} />
+            {showRemoveMenu && planId && (
+              <RemoveFromPlanMenu
+                planId={planId}
+                entityId={removeId}
+                onClose={handleDeleteClose}
+                onRemove={handleRemoveEntity}
+              />
             )}
             <div className={styles.header}>
               <h2>{renderTitle()}</h2>
@@ -198,12 +206,13 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
 
                     <div className={styles.menuTitle}>{entity.name}</div>
                   </div>
-                  <div
+                  <Button
+                    subtle
                     className={styles.deleteButton}
                     onClick={() => handleRemove(entity.id)}
                   >
                     <FontAwesomeIcon icon="user-minus" />
-                  </div>
+                  </Button>
                 </div>
               ))}
               <div className={styles.menuColumnContainer}>
