@@ -104,17 +104,17 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   };
 
   //We don't want this player to be active this session
-  const [isActive, setIsActive] = useState<boolean>(true);
   const handleActive = (
     event: React.ChangeEvent<HTMLInputElement>,
-    playerId: IEntity["id"]
+    playerId: string
   ) => {
     const { checked } = event.target;
-    setIsActive(checked);
 
-    // Update the isActive property of the entity
-    const partialEntity: PartialEntity = { id: playerId, isActive: checked };
-    updateEntity(partialEntity);
+    setPreferences({
+      activePlayers: checked
+        ? [...preferences.activePlayers, playerId]
+        : preferences.activePlayers.filter((id) => id !== playerId),
+    });
   };
 
   const handleEditClose = () => {
@@ -267,7 +267,11 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                         </div>
                         <div className={styles.largeCheck}>
                           <MenuInput
-                            checked={isActive}
+                            key={player.id}
+                            label={player.name}
+                            checked={preferences.activePlayers.includes(
+                              player.id
+                            )}
                             type={"checkbox"}
                             name="isActive"
                             value="isActive"

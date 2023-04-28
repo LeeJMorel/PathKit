@@ -3,20 +3,20 @@ import React, { useEffect, useState } from "react";
 import PlannerCard from "../cards/PlannerCard";
 import EntityCard from "../cards/EntityCard";
 import AddPlayerCard from "../cards/AddPlayerCard";
-import { EntityType, IEntity, IPlan, PlanType } from "../../api/model";
+import { IPlan } from "../../api/model";
 import { useEntities, usePlans, usePreferencesStore } from "../../hooks";
 
 function CardView() {
-  const { getActivePlayerEntities, getEntityById } = useEntities();
+  const { getPlayerEntities } = useEntities();
+  const { preferences, setPreferences } = usePreferencesStore();
 
   //get all the player entities, they should always be visible
-  const playerEntities = getActivePlayerEntities();
-  const playerCards = playerEntities.map((entity) => (
-    <EntityCard key={entity.id} entity={entity} />
-  ));
+  const playerEntities = getPlayerEntities();
+  const playerCards = playerEntities
+    .filter((entity) => preferences.activePlayers.includes(entity.id))
+    .map((entity) => <EntityCard key={entity.id} entity={entity} />);
 
   //if a current plan is selected, spawn entity cards for it
-  const { preferences, setPreferences } = usePreferencesStore();
   const { getPlanById } = usePlans();
   const [currentPlan, setCurrentPlan] = useState<IPlan | undefined>(undefined);
   useEffect(
