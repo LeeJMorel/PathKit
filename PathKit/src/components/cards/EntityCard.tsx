@@ -4,6 +4,8 @@ import styles from "./Card.module.scss";
 import { IEntity } from "../../api/model";
 import { usePreferencesStore } from "../../hooks";
 import { useState } from "react";
+import StatObject from "../objects/StatObject";
+import { IconName } from "@fortawesome/fontawesome-svg-core";
 
 interface EntityCardProps {
   entity: IEntity;
@@ -11,10 +13,10 @@ interface EntityCardProps {
 
 const exampleStats = {
   ac: 18,
-  dc: 12,
   will: 13,
   reflex: 10,
   fortitude: 12,
+  dc: 12,
 };
 
 function EntityCard({ entity }: EntityCardProps) {
@@ -72,11 +74,42 @@ function EntityCard({ entity }: EntityCardProps) {
                 </div>
               </div>
               <div className={styles.entityStats}>
-                {Object.entries(exampleStats).map(([statKey, stat]) => (
-                  <div key={statKey} className={styles.entityStat}>
-                    <div className={styles.statCircle}>{stat}</div>
-                  </div>
-                ))}
+                {Object.entries(exampleStats).map(([statKey, stat]) => {
+                  let icon: IconName;
+                  switch (statKey) {
+                    case "ac":
+                      icon = "shield";
+                      break;
+                    case "dc":
+                      icon = "star";
+                      break;
+                    default:
+                      icon = "circle";
+                  }
+                  let label;
+                  switch (statKey) {
+                    case "will":
+                      label = "w";
+                      break;
+                    case "reflex":
+                      label = "r";
+                      break;
+                    case "fortitude":
+                      label = "f";
+                      break;
+                    default:
+                      break;
+                  }
+                  return (
+                    <div
+                      key={statKey}
+                      className={styles.entityStat}
+                      title={`${statKey}: ${stat}`}
+                    >
+                      <StatObject icon={icon} number={stat} label={label} />
+                    </div>
+                  );
+                })}
               </div>
             </>
           )}

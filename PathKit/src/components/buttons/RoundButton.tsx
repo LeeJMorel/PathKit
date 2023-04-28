@@ -21,12 +21,6 @@ const RoundButton: React.FC<Props> = ({
   subtle,
   ...rest
 }) => {
-  const validIcons: ValidIconName[] = [
-    "check-circle",
-    "times-circle",
-    "file-circle-plus",
-  ];
-
   const iconElement =
     typeof icon === "string" ? (
       <FontAwesomeIcon

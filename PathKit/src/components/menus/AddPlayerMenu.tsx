@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuButton from "../buttons/Button";
 import AddEntityForm from "../forms/AddEntityForm";
 import { EntityType, IEntity } from "../../api/model";
-import { useEntities } from "../../hooks";
+import { useEntities, usePreferencesStore } from "../../hooks";
 
 interface IAddPlayerMenuProps {
   onClose: () => void;
@@ -15,6 +15,7 @@ const AddPlayerMenu: React.FC<IAddPlayerMenuProps> = ({
 }: IAddPlayerMenuProps) => {
   const { addEntity } = useEntities();
   const [newEntity, setNewEntity] = useState<Partial<IEntity>>({});
+  const { preferences, setPreferences } = usePreferencesStore();
 
   const handleClose = () => {
     onClose();
@@ -22,6 +23,13 @@ const AddPlayerMenu: React.FC<IAddPlayerMenuProps> = ({
 
   const handleAddEntity = (entity: Partial<IEntity>) => {
     addEntity(entity as IEntity);
+    if (entity.id) {
+      // Check if entity.id exists
+      setPreferences({
+        ...preferences,
+        activePlayers: [...preferences.activePlayers, entity.id],
+      });
+    }
     handleClose();
   };
 
