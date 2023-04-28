@@ -6,7 +6,6 @@ import Button from "../buttons/Button";
 import {
   usePreferencesStore,
   useStore,
-  useTipStore,
   useEntities,
   useCampaigns,
   PartialEntity,
@@ -30,10 +29,7 @@ interface IMainMenuProps {
 }
 const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   const plans = useStore((store) => store.plans);
-  const { setCurrentTipIndex } = useTipStore();
   const [currentTab, setCurrentTab] = useState(Tab.Campaign);
-  const [isTutorial, setIsTutorial] = useState<boolean>(false);
-  const [isPlaceholder, setIsPlaceholder] = useState(false);
   const { preferences, setPreferences } = usePreferencesStore();
   const { getPlayerEntities, updateEntity } = useEntities();
   const players = getPlayerEntities();
@@ -49,18 +45,6 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   const [showCampaignMenu, setShowCampaignMenu] = useState<boolean>(false);
   const [campaignType, setCampaignType] = useState<"Load" | "New">("Load");
   const [showEntityForm, setShowEntityForm] = useState<IEntity | null>(null);
-
-  const handleTutorialBoxChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { checked } = event.target;
-    setIsTutorial(checked);
-
-    // Show tutorial tip
-    if (checked) {
-      setCurrentTipIndex(0);
-    }
-  };
 
   const handleLargeFontChange = () => {
     setPreferences({
@@ -92,10 +76,6 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     });
   };
 
-  const handlePlaceholder = () => {
-    setIsTutorial(false);
-  };
-
   const handleDelete = (type: "entity" | "plan" | "campaign", id: string) => {
     setShowDeleteMenu(true);
     setDeleteType(type);
@@ -121,6 +101,13 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
 
   const handleClose = () => {
     onClose();
+  };
+
+  //We don't want this player to be active this session
+  const [isActive, setIsActive] = useState<boolean>(true);
+  const handleActive = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target;
+    setIsActive(checked);
   };
 
   const handleEditClose = () => {
@@ -259,24 +246,26 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                     </Button>
                   </div>
                   <br />
-                  <h2 className={styles.tabHeader}>Players</h2>
+                  <div className={styles.menuRowContainer}>
+                    <h2 className={styles.tabHeader}>Players</h2>
+                    <h4>is Active</h4>
+                  </div>
                   <hr className={styles.tabHorizontalLine} />
 
                   <div className={styles.menuScrollContainer}>
                     {players.map((player) => (
                       <div key={player.id} className={styles.menuRowContainer}>
                         <div className={styles.menuEndContainer}>
-                          <Button onClick={() => handleEditEntity(player)}>
-                            <FontAwesomeIcon icon="pencil" />
-                          </Button>
-
                           <div className={styles.menuTitle}>{player.name}</div>
                         </div>
-                        <div
-                          className={styles.deleteButton}
-                          onClick={() => handleDelete("entity", player.id)}
-                        >
-                          <FontAwesomeIcon icon="close" />
+                        <div className={styles.largeCheck}>
+                          <MenuInput
+                            checked={isActive}
+                            type={"checkbox"}
+                            name="isActive"
+                            value="isActive"
+                            onChange={handleActive}
+                          />
                         </div>
                       </div>
                     ))}
@@ -294,19 +283,9 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                 /* View tab content, this controls the modules you view as well as if
               you can see the "tips" */
                 <div className={styles.tabContent}>
-                  <h2 className={styles.tabHeader}>Helpful Tips</h2>
-                  <hr className={styles.tabHorizontalLine} />
-                  {/* Checkboxes need to be in a flex container so the words don't split weird */}
-                  <div className={styles.tabCheckboxContainer}>
-                    <MenuInput
-                      label="Show Tutorial Tips"
-                      checked={isTutorial}
-                      type={"checkbox"}
-                      name="Tutorial Tips"
-                      onChange={handleTutorialBoxChange}
-                    />
+                  <div className={styles.menuRowContainer}>
+                    <h2 className={styles.tabHeader}>Visible Modules</h2>
                   </div>
-                  <h2 className={styles.tabHeader}>Visible Modules</h2>
                   <hr className={styles.tabHorizontalLine} />
                   <div className={styles.tabCheckboxContainer}>
                     {renderModuleCheckboxes()}

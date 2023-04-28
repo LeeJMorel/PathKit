@@ -1,7 +1,8 @@
 import React from "react";
+import styles from "./Menu.module.scss";
 
 interface InputProps {
-  label: string;
+  label?: string;
   checked?: boolean;
   type: "checkbox" | "radio";
   name: string;
@@ -17,8 +18,10 @@ const MenuInput: React.FC<InputProps> = ({
   value,
   onChange,
 }) => {
+  const labelClassName = label ? styles.input : styles.inputLarge;
+
   return (
-    <label style={{ margin: "0.5em" }}>
+    <label className={labelClassName}>
       <input
         type={type}
         checked={checked}

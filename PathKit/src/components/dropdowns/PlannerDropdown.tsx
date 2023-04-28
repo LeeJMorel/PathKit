@@ -70,9 +70,12 @@ const PlannerDropdown = () => {
     return (
       <div className={styles.dropdownContainer}>
         <div className={styles.menuDropdown}>
-          <RoundButton type="button" title="Add Plan" onClick={handleMenuClick}>
-            <FontAwesomeIcon icon="file-circle-plus" />
-          </RoundButton>
+          <RoundButton
+            type="button"
+            title="Add Plan"
+            icon="file-circle-plus"
+            onClick={handleMenuClick}
+          />
           <div className={styles.menuDropdownContent}>
             {preferences.selectedPlan && (
               <>

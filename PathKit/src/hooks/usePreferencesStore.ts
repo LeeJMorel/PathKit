@@ -26,7 +26,8 @@ export const usePreferencesStore = create(
         largeFont: false,
         theme: "parchment",
         visibleModules: {
-          DCModule: true,
+          TipModule: true,
+          DCModule: false,
           DiceModule: true,
           NotesModule: false,
           BinderModule: false,

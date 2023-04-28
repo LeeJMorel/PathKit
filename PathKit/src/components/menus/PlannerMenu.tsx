@@ -202,7 +202,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
                     className={styles.deleteButton}
                     onClick={() => handleRemove(entity.id)}
                   >
-                    <FontAwesomeIcon icon="close" />
+                    <FontAwesomeIcon icon="user-minus" />
                   </div>
                 </div>
               ))}

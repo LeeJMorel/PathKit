@@ -27,10 +27,33 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+
+      .tab {
+        padding: 10px;
+        cursor: pointer;
+
+        &:not(:last-child) {
+          margin-right: 10px;
+        }
+
+        &.active {
+          font-weight: bold;
+          // Apply styles for the active tab
+        }
+      }
+    }
   }
 
   h2 {
     margin-top: 0;
+  }
+
+  h4 {
+    margin-bottom: 0;
   }
 
   .close {
@@ -51,24 +74,6 @@
     overflow: auto;
   }
 
-  .tabs {
-    display: flex;
-  }
-
-  .tab {
-    padding: 10px;
-    cursor: pointer;
-
-    &:not(:last-child) {
-      margin-right: 10px;
-    }
-
-    &.active {
-      font-weight: bold;
-      // Apply styles for the active tab
-    }
-  }
-
   .tabContent {
     // Apply styles for the tab's content
 
@@ -86,7 +91,7 @@
     .tabCheckboxContainer {
       display: flex;
       flex-wrap: wrap;
-      justify-content: flex-start;
+      justify-content: space-evenly;
       align-items: center;
     }
 
@@ -103,6 +108,18 @@
     > * {
       margin-right: 1em;
     }
+  }
+
+  .input {
+    margin: 0.5em;
+  }
+  .inputLarge {
+    margin: 0.1em;
+    transform: scale(1.5);
+  }
+  .largeCheck {
+    min-height: 2em;
+    min-width: 2em;
   }
 }
 

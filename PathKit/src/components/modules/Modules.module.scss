@@ -52,3 +52,22 @@
     background-color: var(--secondaryAccentBackground);
   }
 }
+
+.tipBody {
+  padding: 1em;
+  justify-content: flex-start;
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin: 0.2em;
+  }
+}

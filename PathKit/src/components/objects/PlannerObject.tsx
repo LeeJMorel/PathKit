@@ -1,7 +1,9 @@
+import React, { useState } from "react";
 import classNames from "classnames";
 import styles from "./Objects.module.scss";
 import { IPlan, PlanType } from "../../api/model";
 import { usePreferencesStore } from "../../hooks";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export interface PlannerObjectProps {
   plan: IPlan;
@@ -10,13 +12,26 @@ export interface PlannerObjectProps {
 function PlannerObject({ plan }: PlannerObjectProps) {
   const { entities, planType } = plan;
   const { setPreferences } = usePreferencesStore();
+  const [isHovering, setIsHovering] = useState(false);
 
   const handleClick = () => {
     setPreferences({ selectedPlan: plan.id });
   };
 
   return (
-    <div className={styles.plan} onClick={handleClick}>
+    <div
+      className={styles.plan}
+      onClick={handleClick}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
+      {isHovering && (
+        <div className={styles.tooltip}>
+          {entities.map((entity) => (
+            <div key={entity.id}>{entity.name}</div>
+          ))}
+        </div>
+      )}
       {entities.map((entity, i) => {
         if (i < 4) {
           return (
@@ -31,7 +46,10 @@ function PlannerObject({ plan }: PlannerObjectProps) {
       })}
       {entities.length > 4 && <div className={styles.fourPlus}>+</div>}
       {planType === PlanType.encounter && (
-        <div className={styles.exclamation}>!</div>
+        <>
+          <div className={styles.overlay}></div>
+          <FontAwesomeIcon className={styles.sword} icon="dragon" />
+        </>
       )}
     </div>
   );

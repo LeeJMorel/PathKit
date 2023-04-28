@@ -2,8 +2,10 @@ import DCModule from "./DCModule";
 import DiceModule from "./DiceModule";
 import NotesModule from "./NotesModule";
 import BinderModule from "./BinderModule";
+import TipModule from "./TipModule";
 
 export enum Module {
+  TipModule = "TipModule",
   DCModule = "DCModule",
   DiceModule = "DiceModule",
   NotesModule = "NotesModule",
@@ -18,10 +20,10 @@ export interface IModule {
 
 // Create a mapping of module names to corresponding component references
 const Modules: Record<Module, IModule> = {
-  DCModule: {
-    id: Module.DCModule,
-    label: "DC Adjustments Table",
-    ModuleComponent: DCModule,
+  TipModule: {
+    id: Module.TipModule,
+    label: "Show Tutorial Tips",
+    ModuleComponent: TipModule,
   },
   DiceModule: {
     id: Module.DiceModule,
@@ -38,6 +40,11 @@ const Modules: Record<Module, IModule> = {
     label: "Binder Module",
     ModuleComponent: BinderModule,
   },
+  DCModule: {
+    id: Module.DCModule,
+    label: "DC Adjustments Table",
+    ModuleComponent: DCModule,
+  },
 };
 
-export { DCModule, DiceModule, NotesModule, BinderModule, Modules };
+export { TipModule, DCModule, DiceModule, NotesModule, BinderModule, Modules };

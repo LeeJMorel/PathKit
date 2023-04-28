@@ -101,9 +101,7 @@ function App() {
                   currentPlan.planType.charAt(0).toUpperCase() +
                     currentPlan.planType.slice(1)}
               </h2>
-              <RoundButton className={styles.headerButton} onClick={cancelPlan}>
-                <FontAwesomeIcon icon="close" />
-              </RoundButton>
+              <RoundButton icon="close" onClick={cancelPlan} />
             </>
           ) : (
             // Empty div for layout
@@ -125,11 +123,7 @@ function App() {
           {/* Header over module view, dynamic title with menu button*/}
           <h2 className={styles.headerTitle}>Modules</h2>
           {/* Hamburger menu icon */}
-          <FontAwesomeIcon
-            icon="bars"
-            className={styles.hamburgerMenu}
-            onClick={handleToggleMenu}
-          />
+          <RoundButton icon="bars" onClick={handleToggleMenu} />
           {/* Render MainMenu component */}
           {menu && <MainMenu onClose={() => setMenu(false)} />}
         </div>
