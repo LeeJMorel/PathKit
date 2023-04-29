@@ -41,7 +41,7 @@ const RemoveMenu: React.FC<IRemoveMenuProps> = ({
           </p>
           <div className={styles.menuRowContainer}>
             <MenuButton onClick={handleClose}>No</MenuButton>
-            <MenuButton onClick={handleRemove}>Yes</MenuButton>
+            <MenuButton onClick={handleRemove}>Remove</MenuButton>
           </div>
         </div>
       </div>

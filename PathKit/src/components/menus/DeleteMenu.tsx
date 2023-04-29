@@ -70,7 +70,7 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
             </p>
             <div className={styles.menuRowContainer}>
               <MenuButton onClick={handleClose}>No</MenuButton>
-              <MenuButton onClick={handleYesClick}>Yes</MenuButton>
+              <MenuButton onClick={handleYesClick}>Delete</MenuButton>
             </div>
           </div>
         )}
