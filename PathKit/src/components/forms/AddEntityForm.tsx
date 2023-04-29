@@ -8,14 +8,14 @@ import { IEntity, EntityType } from "../../api/model";
 import { useEntities } from "../../hooks";
 import { Button } from "../buttons";
 
-interface Props {
+export interface IEntityFormProps {
   type?: EntityType;
   entityData?: IEntity;
   onAddEntity: (entity: IEntity) => void;
   onClose?: () => void;
 }
 
-const AddEntityForm: React.FC<Props> = ({
+const AddEntityForm: React.FC<IEntityFormProps> = ({
   type = EntityType.none,
   entityData,
   onAddEntity,

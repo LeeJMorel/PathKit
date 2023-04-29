@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import deepMerge from "deepmerge";
 import { Module } from "../components/modules";
 
 interface IPreferences {
@@ -43,7 +44,21 @@ export const usePreferencesStore = create(
   persist<IPreferencesStore>(
     (set, get) => ({
       preferences: {
-        ...defaultPreferences,
+        largeFont: false,
+        theme: "parchment",
+        visibleModules: {
+          TipModule: true,
+          DCModule: false,
+          DiceModule: true,
+          NotesModule: false,
+          BinderModule: false,
+        },
+        currentCampaignId: null,
+        selectedPlan: null,
+        selectedEntity: null,
+        selectedNote: null,
+        selectedSearch: null,
+        activePlayers: [],
       },
 
       setPreferences: (newPreferences: Partial<IPreferences>): void => {
@@ -64,6 +79,8 @@ export const usePreferencesStore = create(
     }),
     {
       name: "PathKit-preferences", // unique name
+      merge: (persistedState, currentState) =>
+        deepMerge(currentState, persistedState as Partial<IPreferencesStore>),
     }
   )
 );

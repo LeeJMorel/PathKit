@@ -46,12 +46,12 @@ function App() {
   const { preferences, setPreferences } = usePreferencesStore();
 
   //Initialize store with new keys
-  useEffect(() => {
-    setPreferences({
-      ...defaultPreferences,
-      ...preferences,
-    });
-  }, []);
+  // useEffect(() => {
+  //   setPreferences({
+  //     ...defaultPreferences,
+  //     ...preferences,
+  //   });
+  // }, []);
 
   //generate the header section based on if a plan is selected
   const { getPlanById } = usePlans();
@@ -139,10 +139,10 @@ function App() {
         </div>
       </header>
       <main className={styles.content}>
-        {/* Content component for the first column holds planner 
+        {/* Content component for the first column holds planner
             which then tells the header what mode we are in. */}
         <CardView />
-        {/* Content component for the second column will change if 
+        {/* Content component for the second column will change if
             header search component is used to show results*/}
         <SheetView />
         {/* Content component for the third column will change based on header values*/}

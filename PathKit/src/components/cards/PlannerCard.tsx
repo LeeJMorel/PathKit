@@ -1,11 +1,14 @@
 import { useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styles from "./Card.module.scss";
+import classNames from "classnames";
 import PlannerObject, { PlannerObjectProps } from "../objects/PlannerObject";
-import { useStore } from "../../hooks";
+import { usePlans } from "../../hooks";
+import styles from "./Card.module.scss";
 
-function PlannerCard() {
-  const plans = useStore((store) => store.plans);
+interface IPlannerCardProps extends React.HTMLProps<HTMLDivElement> {}
+
+function PlannerCard({ className, ...rest }: IPlannerCardProps) {
+  const { plans } = usePlans();
   const containerRef = useRef<HTMLDivElement | null>(null); // Provide type assertion for containerRef
 
   const handleScrollLeft = () => {
@@ -35,7 +38,7 @@ function PlannerCard() {
   };
 
   return (
-    <div className={styles.card}>
+    <div className={classNames(styles.card, className)}>
       <div className={styles.plannerCardScrollLeft} onClick={handleScrollLeft}>
         <FontAwesomeIcon icon="arrow-left" />
       </div>

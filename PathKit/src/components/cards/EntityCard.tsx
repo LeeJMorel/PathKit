@@ -7,7 +7,7 @@ import { useState } from "react";
 import StatObject from "../objects/StatObject";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
 
-interface EntityCardProps {
+interface EntityCardProps extends React.HTMLProps<HTMLDivElement> {
   entity: IEntity;
 }
 
@@ -19,7 +19,7 @@ const exampleStats = {
   dc: 12,
 };
 
-function EntityCard({ entity }: EntityCardProps) {
+function EntityCard({ entity, className, ...rest }: EntityCardProps) {
   const [showConditionsMenu, setShowConditionsMenu] = useState(false);
   const { preferences, setPreferences } = usePreferencesStore();
 
@@ -41,7 +41,7 @@ function EntityCard({ entity }: EntityCardProps) {
   const statKeys = Object.keys(exampleStats);
 
   return (
-    <div className={styles.card}>
+    <div className={classNames(styles.card, className)} {...rest}>
       <div
         key={entity.id}
         className={styles.cardContainer}
