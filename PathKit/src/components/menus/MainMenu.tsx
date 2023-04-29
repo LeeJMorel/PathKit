@@ -282,6 +282,24 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                     </Button>
                   </div>
                   <br />
+                  {/* <div className={styles.menuRowContainer}>
+                    <Button
+                      onClick={() => handleAddEntityClick(EntityType.Shop)}
+                    >
+                      Add Shop
+                    </Button>
+                    <Button
+                      onClick={() => handleAddEntityClick(EntityType.NPC)}
+                    >
+                      Add NPC
+                    </Button>
+                    <Button
+                      onClick={() => handleAddEntityClick(EntityType.Monster)}
+                    >
+                      Add Monster
+                    </Button>
+                    <Button onClick={() => handleLoadClick()}>Load</Button>
+                  </div> */}
                   <div className={styles.menuRowContainer}>
                     <h2 title={"Players"} className={styles.tabHeader}>
                       Players

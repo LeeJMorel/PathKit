@@ -14,7 +14,8 @@ export interface DraggableItem extends Object {
 }
 
 export interface IDragAndDropListProps<T extends DraggableItem> {
-  as?: React.ElementType;
+  listAs?: React.ElementType;
+  listItemAs?: React.ElementType;
   id: string;
   items: T[];
   setItems: (items: T[]) => void;
@@ -25,7 +26,8 @@ export interface IDragAndDropListProps<T extends DraggableItem> {
 }
 
 export const DragAndDropList = <T extends DraggableItem>({
-  as = "ul",
+  listAs = "ul",
+  listItemAs = "li",
   id,
   items,
   setItems,
@@ -41,13 +43,14 @@ export const DragAndDropList = <T extends DraggableItem>({
     }
   };
 
-  const El = as;
+  const List = listAs;
+  const ListItem = listItemAs;
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId={id}>
         {(droppableProvided, droppableSnapshot) => (
-          <El
+          <List
             {...droppableProvided.droppableProps}
             ref={droppableProvided.innerRef}
             {...listProps}
@@ -56,7 +59,7 @@ export const DragAndDropList = <T extends DraggableItem>({
             {items.map((item, index) => (
               <Draggable key={item.id} draggableId={item.id} index={index}>
                 {(draggableProvided, draggableSnapshot) => (
-                  <li
+                  <ListItem
                     ref={draggableProvided.innerRef}
                     {...draggableProvided.draggableProps}
                     {...draggableProvided.dragHandleProps}
@@ -72,12 +75,12 @@ export const DragAndDropList = <T extends DraggableItem>({
                     )}
                   >
                     {onRenderItem(item)}
-                  </li>
+                  </ListItem>
                 )}
               </Draggable>
             ))}
             {droppableProvided.placeholder}
-          </El>
+          </List>
         )}
       </Droppable>
     </DragDropContext>
