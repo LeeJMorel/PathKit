@@ -8,6 +8,30 @@
     position: relative;
     display: inline-block;
 
+    .optionsContainer {
+      min-width: 8rem;
+      max-height: 8em;
+      overflow: auto;
+      background-color: var(--accentBackground);
+      padding: 0.1em;
+      border-radius: 0.25rem;
+      box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+      
+
+      & > div {
+        cursor: pointer;
+        padding: 0.1em;
+        font-size: 0.8em;
+        color: var(--accentText);
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: var(--tertiaryAccentBackground);
+        }
+      }
+    }
+
+
     .menuDropdownContent {
       display: none;
       position: absolute;

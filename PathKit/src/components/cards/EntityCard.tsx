@@ -6,6 +6,7 @@ import { usePreferencesStore } from "../../hooks";
 import { useState } from "react";
 import StatObject from "../objects/StatObject";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
+import ConditionsDropdown from "../dropdowns/ConditionsDropdown";
 
 interface EntityCardProps extends React.HTMLProps<HTMLDivElement> {
   entity: IEntity;
@@ -24,7 +25,7 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
   const { preferences, setPreferences } = usePreferencesStore();
 
   const handleConditionsClick = () => {
-    setShowConditionsMenu(true);
+    setShowConditionsMenu((prevValue) => !prevValue);
   };
 
   const handleEntityClick = (id: string) => {
@@ -63,6 +64,14 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
           {entity.hp && (
             <>
               <div className={styles.entityHP}>
+                {showConditionsMenu && (
+                  <ConditionsDropdown
+                    onConditionSelect={(condition) => {
+                      console.log(condition);
+                      handleConditionsClick(); // call handleConditionsClick to hide the menu
+                    }}
+                  />
+                )}
                 <button
                   className={styles.entityHPButton}
                   onClick={handleConditionsClick}
