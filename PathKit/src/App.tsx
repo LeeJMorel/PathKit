@@ -19,6 +19,7 @@ import {
 import { WelcomeMenu } from "./components/menus/WelcomeMenu";
 import { RoundButton } from "./components/buttons";
 import { InitiativeMenu } from "./components/menus/InitiativeMenu";
+import Search from "./components/search/Search";
 
 // Load FontAwesome icons
 library.add(fas);
@@ -120,6 +121,8 @@ function App() {
         </div>
         <div className={styles.headerSection}>
           {/* Header over sheets view, runs our search*/}
+          {/* When you want to use meilisearch use this component instead of the input below
+          <Search></Search> */}
           <input
             className={styles.searchBar}
             type="text"
