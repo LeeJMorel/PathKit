@@ -8,7 +8,6 @@ import {
   useStore,
   useEntities,
   useCampaigns,
-  PartialEntity,
 } from "../../hooks";
 import DeleteMenu from "./DeleteMenu";
 import CampaignMenu from "./CampaignMenu";
@@ -385,6 +384,30 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                       value="Large Font"
                       onChange={handleLargeFontChange}
                     />
+                  </div>
+                  <h2 className={styles.tabHeader} title={"Color Themes"}>
+                    Color Themes
+                  </h2>
+                  <hr className={styles.tabHorizontalLine} />
+                  <div className={styles.tabCheckboxContainer}>
+                    <MenuInput
+                      label="Parchment (Light)"
+                      title={"Parchment Color Theme"}
+                      checked={preferences.theme === "parchment"}
+                      type={"radio"}
+                      name="theme"
+                      value="parchment"
+                      onChange={handleThemeChange}
+                    />
+                    <MenuInput
+                      label="Dark"
+                      title={"Dark Color Theme"}
+                      checked={preferences.theme === "dark"}
+                      type={"radio"}
+                      name="theme"
+                      value="dark"
+                      onChange={handleThemeChange}
+                    />
                     <MenuInput
                       label="High Contrast Parchment"
                       title={"High Contrast Theme: Parchment"}
@@ -401,30 +424,6 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                       type={"radio"}
                       name="theme"
                       value="highContrastDark"
-                      onChange={handleThemeChange}
-                    />
-                  </div>
-                  <h2 className={styles.tabHeader} title={"Color Themes"}>
-                    Color Themes
-                  </h2>
-                  <hr className={styles.tabHorizontalLine} />
-                  <div className={styles.tabCheckboxContainer}>
-                    <MenuInput
-                      label="Parchment"
-                      title={"Parchment Color Theme"}
-                      checked={preferences.theme === "parchment"}
-                      type={"radio"}
-                      name="theme"
-                      value="parchment"
-                      onChange={handleThemeChange}
-                    />
-                    <MenuInput
-                      label="Dark"
-                      title={"Dark Color Theme"}
-                      checked={preferences.theme === "dark"}
-                      type={"radio"}
-                      name="theme"
-                      value="dark"
                       onChange={handleThemeChange}
                     />
                   </div>

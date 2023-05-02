@@ -1,28 +1,60 @@
-.button {
+.button,
+.roundButton {
   cursor: pointer;
   padding: 0.2rem 0.4rem;
-  margin: 0.25em;
-  color: var(--accentText);
-  background-color: var(--accentBackground);
+  // margin: 0.25em;
+  color: var(--secondaryAccentText);
+  background-color: var(--secondaryAccentBackground);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  // TODO make default buttons less important than primary with a more subtle color
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 
-  &.primaryButton {
+  &.primary {
+    color: var(--accentText);
     background-color: var(--accentBackground);
+
+    &:hover {
+      background-color: var(--tertiaryAccentBackground);
+    }
   }
 
   &.subtle {
     background-color: transparent;
+    border-color: currentColor;
+
+    &:hover {
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12), 0 1px 8px rgba(0, 0, 0, 0.24);
+    }
+  }
+
+  &.destructive {
+    background-color: var(--redDark);
+    color: var(--white);
+    &:hover {
+      background-color: var(--redLight);
+    }
+  }
+
+  &.text {
+    background-color: transparent;
+    color: inherit;
+    box-shadow: none;
+    &:hover {
+      background-color: transparent;
+      border: 1px solid currentColor;
+    }
   }
 
   &:hover {
-    background-color: var(--tertiaryAccentBackground);
+    background-color: var(--bodyBackground);
   }
 
   &:disabled {
     background-color: var(--errorBackground);
     color: var(--errorText);
+  }
+
+  .buttonIcon {
+    margin: 0 0.25em;
   }
 }
 
@@ -34,8 +66,6 @@
   width: 36px;
   height: 36px;
   border-radius: 36px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: background-color 0.2s ease;
 
   &.small {
     width: 28px;
@@ -43,16 +73,13 @@
     border-radius: 28px;
   }
 
-  &.subtle {
-    background-color: transparent;
-  }
-
-  .roundButtonIcon {
+  .buttonIcon {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
     width: 100%;
+    margin: 0;
   }
 
   &:hover {

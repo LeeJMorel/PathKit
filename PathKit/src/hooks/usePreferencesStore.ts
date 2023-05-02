@@ -9,7 +9,6 @@ interface IPreferences {
   visibleModules: Record<Module, boolean>;
   currentCampaignId: string | null;
 
-  selectedEntity: string | null;
   selectedPlan: string | null;
   selectedNote: string | null;
   selectedSearch: string | null;
@@ -34,7 +33,6 @@ export const defaultPreferences = {
   },
   currentCampaignId: null,
   selectedPlan: null,
-  selectedEntity: null,
   selectedNote: null,
   selectedSearch: null,
   activePlayers: [],
@@ -55,7 +53,6 @@ export const usePreferencesStore = create(
         },
         currentCampaignId: null,
         selectedPlan: null,
-        selectedEntity: null,
         selectedNote: null,
         selectedSearch: null,
         activePlayers: [],

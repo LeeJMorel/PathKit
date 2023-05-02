@@ -7,7 +7,7 @@
   padding: 1rem;
   width: 100%;
   margin: 0 auto;
-  color: var(--secondaryText);
+  color: var(--primaryText);
 
   .formRow {
     display: flex;
@@ -22,33 +22,15 @@
       margin-right: 0.5rem;
     }
 
-    .formInput {
+    .formInput,
+    .formTextarea,
+    .formSelect,
+    .formSmall {
       padding: 0.2rem;
-      border: 1px solid var(--secondaryText);
+      border: 1px solid var(--primaryText);
       border-radius: 0.25rem;
       width: 100%;
-      font-size: 0.8rem;
-      margin-bottom: 0.5rem;
-      background: var(--primaryBackground);
-      color: var(--primaryText);
-    }
-
-    .formTextarea {
-      padding: 0.2rem;
-      border: 1px solid var(--secondaryText);
-      border-radius: 0.25rem;
-      width: 100%;
-      font-size: 0.8rem;
-      margin-bottom: 0.5rem;
-      background: var(--primaryBackground);
-      color: var(--primaryText);
-    }
-
-    .formSelect {
-      padding: 0.2rem;
-      border: 1px solid var(--secondaryText);
-      border-radius: 0.25rem;
-      width: 100%;
+      max-width: 360px;
       font-size: 0.8rem;
       margin-bottom: 0.5rem;
       background: var(--primaryBackground);
@@ -57,14 +39,10 @@
 
     .formSmall {
       max-width: 5em;
-      padding: 0.2rem;
-      border: 1px solid var(--secondaryText);
-      border-radius: 0.25rem;
-      width: 100%;
-      font-size: 0.8rem;
-      margin-bottom: 0.5rem;
-      background: var(--primaryBackground);
-      color: var(--primaryText);
+    }
+
+    &.actionRow {
+      justify-content: flex-end;
     }
   }
 

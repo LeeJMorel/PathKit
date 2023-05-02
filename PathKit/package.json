@@ -29,6 +29,7 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-instantsearch-dom": "^6.39.1",
+    "react-router-dom": "^6.11.0",
     "tauri-plugin-sql-api": "github:tauri-apps/tauri-plugin-sql",
     "uuid": "^9.0.0",
     "zustand": "^4.3.7"

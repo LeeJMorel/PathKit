@@ -1,13 +1,7 @@
 import React from "react";
-import styles from "./View.module.scss";
-
-// Import the module components
-// import DCModule from "../modules/DCModule";
-// import DiceModule from "../modules/DiceModule";
-// import NotesModule from "../modules/NotesModule";
-// import { Module } from "../../api/model";
 import { Modules, Module } from "../modules";
 import { usePreferencesStore } from "../../hooks";
+import styles from "./View.module.scss";
 
 function ModuleView() {
   const { visibleModules } = usePreferencesStore((store) => store.preferences);

@@ -1,5 +1,5 @@
 import styles from "./Menu.module.scss";
-import MenuButton from "../buttons/Button";
+import Button from "../buttons/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePlans, useEntities, useCampaigns } from "../../hooks";
 import { WelcomeMenu } from "./WelcomeMenu";
@@ -59,18 +59,22 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
         ) : (
           <div className={styles.deleteMenu}>
             <div className={styles.header}>
-              <h2>Delete</h2>
+              <h2>Delete {type}</h2>
               <div className={styles.close} onClick={handleClose}>
                 <FontAwesomeIcon icon="close" />
               </div>
             </div>
             <p>
               Are you sure you wish to permanently remove this? Once you press
-              yes, this cannot be undone.
+              "Delete {type}", this cannot be undone.
             </p>
             <div className={styles.menuRowContainer}>
-              <MenuButton onClick={handleClose}>No</MenuButton>
-              <MenuButton onClick={handleYesClick}>Delete</MenuButton>
+              <Button variant="primary" onClick={handleClose}>
+                No
+              </Button>
+              <Button variant="destructive" onClick={handleYesClick}>
+                Delete {type}
+              </Button>
             </div>
           </div>
         )}

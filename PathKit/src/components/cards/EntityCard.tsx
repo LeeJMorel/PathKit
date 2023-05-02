@@ -1,9 +1,10 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import styles from "./Card.module.scss";
 import { IEntity } from "../../api/model";
 import { usePreferencesStore } from "../../hooks";
-import { useState } from "react";
 import StatObject from "../objects/StatObject";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
 import ConditionsDropdown from "../dropdowns/ConditionsDropdown";
@@ -23,6 +24,7 @@ const exampleStats = {
 function EntityCard({ entity, className, ...rest }: EntityCardProps) {
   const [showConditionsMenu, setShowConditionsMenu] = useState(false);
   const { preferences, setPreferences } = usePreferencesStore();
+  const navigate = useNavigate();
 
   const handleConditionsClick = () => {
     setShowConditionsMenu((prevValue) => !prevValue);
@@ -31,10 +33,9 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
   const handleEntityClick = (id: string) => {
     const selectedSearch = null;
     setPreferences({
-      ...preferences,
-      selectedEntity: id,
       selectedSearch,
     });
+    navigate(`/entity/${entity.id}`);
   };
   const isHPZero = entity.hp && entity.hp[0] === 0;
   const stats = entity.stats || {};

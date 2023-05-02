@@ -1,4 +1,4 @@
-///For the Notes object
+//For the Notes object
 .notes {
   display: flex;
   flex-direction: column;
@@ -46,9 +46,14 @@
       outline: none;
     }
   }
+
+  .caption {
+    font-size: 0.6em;
+    text-align: center;
+  }
 }
 
-//FOr the Planner Object
+//For the Planner Object
 .plan {
   display: flex;
   align-items: flex-start;
@@ -206,7 +211,6 @@
   }
 }
 
-//Stat Object
 //Stat Object
 .statObject {
   display: flex;
