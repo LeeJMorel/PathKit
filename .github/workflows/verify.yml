@@ -36,5 +36,5 @@ jobs:
       uses: brndnmtthws/rust-action-rustup@v1
     - name: run tests
       run: |
-        cd src-tauri
+        cd PathKit/src-tauri
         cargo test
