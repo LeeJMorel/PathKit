@@ -1,0 +1,24 @@
+on:
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  test_frontend:
+    name: Testing frontend on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: install node
+      uses: actions/setup-node@v3
+    
+    - name: npm install, build and test
+      run: |
+        cd PathKit
+        npm install
+        npm run build
+        npm run test run
