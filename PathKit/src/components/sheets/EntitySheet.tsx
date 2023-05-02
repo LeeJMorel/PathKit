@@ -1,25 +1,23 @@
-import { usePreferencesStore, useEntities } from "../../hooks";
+import { useParams, useNavigate } from "react-router-dom";
+import { useEntities } from "../../hooks";
 import styles from "./Sheets.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { IEntity } from "../../api/model";
+import { Button } from "../buttons";
+import classNames from "classnames";
 
 function EntitySheet() {
-  const { preferences, setPreferences } = usePreferencesStore();
+  const { id } = useParams();
+  const navigate = useNavigate();
   const { getEntityById } = useEntities();
-  const [entity, setEntity] = useState<IEntity>();
-
-  useEffect(() => {
-    if (preferences.selectedEntity) {
-      const entity = getEntityById(preferences.selectedEntity);
-      setEntity(entity);
-    } else {
-      setEntity(undefined);
-    }
-  }, [preferences.selectedEntity, getEntityById]);
+  const entity = getEntityById(id);
 
   const handleCancelClick = () => {
-    setPreferences({ selectedEntity: null });
+    navigate("/");
+  };
+  const handleEditClick = () => {
+    navigate(`/entity/${entity?.id}/edit`);
   };
 
   return (
@@ -31,9 +29,23 @@ function EntitySheet() {
       )}
       <div className={styles.header}>
         <h2>{entity?.name}</h2>
-        <button onClick={handleCancelClick}>
-          <FontAwesomeIcon icon="close" />
-        </button>
+        <div className={styles.headerButtons}>
+          <Button
+            className={styles.headerButton}
+            variant="text"
+            onClick={handleEditClick}
+            icon="pencil"
+          >
+            Edit
+          </Button>
+          <Button
+            className={classNames(styles.headerButton, styles.closeButton)}
+            variant="text"
+            onClick={handleCancelClick}
+            icon="close"
+            title="Close entity"
+          />
+        </div>
       </div>
       <hr />
       <ul>

@@ -113,7 +113,6 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
   };
 
   const handleSaveClick = () => {
-    // addPlan(plan);
     updateOrAddPlan(plan);
     handleClose();
   };
@@ -121,25 +120,25 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
   //if an entity is selected, set that to load it
   const { preferences, setPreferences } = usePreferencesStore();
   const { getEntityById } = useEntities();
-  const [entity, setEntity] = useState<IEntity>();
+  // const [entity, setEntity] = useState<IEntity>();
 
-  useEffect(() => {
-    if (preferences.selectedEntity) {
-      const entity = getEntityById(preferences.selectedEntity);
-      setEntity(entity);
-    } else {
-      setEntity(undefined);
-    }
-  }, [preferences.selectedEntity, getEntityById]);
+  // useEffect(() => {
+  //   if (preferences.selectedEntity) {
+  //     const entity = getEntityById(preferences.selectedEntity);
+  //     // setEntity(entity);
+  //   } else {
+  //     // setEntity(undefined);
+  //   }
+  // }, [preferences.selectedEntity, getEntityById]);
 
   const handleLoadMenuClick = () => {
     //loadCampaign(selectedCampaign);
-    setPreferences({ selectedEntity: null });
+    // setPreferences({ selectedEntity: null });
   };
 
   const handleCloseBinder = () => {
     //loadCampaign(selectedCampaign);
-    setPreferences({ selectedEntity: null });
+    // setPreferences({ selectedEntity: null });
     setShowLoad(false);
   };
   const handleCloseAdd = () => {
@@ -175,7 +174,7 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
             <BinderObject load={true} />
             <div className={styles.menuRowContainer}>
               <Button
-                disabled={!preferences.selectedEntity}
+                // disabled={!preferences.selectedEntity}
                 onClick={handleLoadMenuClick}
               >
                 Load
@@ -203,20 +202,23 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
               {plan.entities.map((entity) => (
                 <div key={entity.id} className={styles.menuRowContainer}>
                   <div className={styles.menuEndContainer}>
-                    <Button onClick={() => handleEditEntity(entity)}>
-                      <FontAwesomeIcon icon="pencil" />
-                    </Button>
+                    <Button
+                      variant="text"
+                      onClick={() => handleEditEntity(entity)}
+                      icon="pencil"
+                      title={`Edit ${entity.entityType || "entity"}`}
+                    />
 
                     <div className={styles.menuTitle}>{entity.name}</div>
                   </div>
                   {entity.id && (
                     <Button
-                      subtle
+                      variant="text"
                       className={styles.deleteButton}
                       onClick={() => handleRemove(entity.id)}
-                    >
-                      <FontAwesomeIcon icon="user-minus" />
-                    </Button>
+                      icon="user-minus"
+                      title="Remove from plan"
+                    />
                   )}
                 </div>
               ))}
@@ -245,7 +247,9 @@ const PlannerMenu: React.FC<IPlannerMenuProps> = ({
               </div>
             </div>
             <div className={styles.menuColumnContainer}>
-              <Button onClick={handleSaveClick}>Save Plan</Button>
+              <Button variant="primary" onClick={handleSaveClick}>
+                Save Plan
+              </Button>
             </div>
           </>
         )}

@@ -7,14 +7,15 @@ $colorPalette: (
   brownLight: #a16a38,
   brownDark: #4d342f,
   brownAlt: #6b4334,
-  greenLight: #567b65, //old value = 689775
+  //old value = 689775
+  greenLight: #567b65,
   greenDark: #3c5a3d,
   redLight: #d22b2b,
   redDark: #7a0226,
   redDarker: #270d0a,
   black: #000,
   blackLight: #111111,
-  white: #fff,
+  white: #ffffff,
   yellowLight: #ffd966,
   yellowDark: #cca300,
   orangeLight: #ffac33,
@@ -30,3 +31,9 @@ $colorPalette: (
   grayDark: #737373,
   grayDarker: #505050,
 );
+
+:export {
+  @each $color, $value in $colorPalette {
+    #{"" + $color}: $value;
+  }
+}

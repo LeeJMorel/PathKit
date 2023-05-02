@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./Objects.module.scss";
 import { Button } from "../buttons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,6 +17,7 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
   const plans = useStore((store) => store.plans);
   const [showMenu, setShowMenu] = useState(true);
   const [activeTab, setActiveTab] = useState("Plans");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (load) {
@@ -37,42 +39,17 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
     const selectedSearch = null;
     setPreferences({
       ...preferences,
-      selectedEntity: id,
+      // selectedEntity: id,
       selectedSearch,
     });
   };
 
   //load players
-  const { getPlayerEntities, updateEntity } = useEntities();
+  const { getPlayerEntities } = useEntities();
   const players = getPlayerEntities();
 
-  //edit an entity
-  const [showEntityForm, setShowEntityForm] = useState<IEntity | null>(null);
   const handleEditEntity = (entity: IEntity) => {
-    setShowEntityForm(entity);
-  };
-  const handleEditClose = () => {
-    setShowEntityForm(null);
-  };
-  const renderEntityForm = () => {
-    if (showEntityForm && showEntityForm.entityType) {
-      return (
-        <div className={styles.tabContent}>
-          <h2>Edit {showEntityForm.entityType}</h2>
-          <div className={styles.close} onClick={handleEditClose}>
-            <FontAwesomeIcon icon="close" />
-          </div>
-          <AddEntityForm
-            entityData={showEntityForm}
-            type={showEntityForm.entityType}
-            onAddEntity={(entity) => {
-              updateEntity(entity);
-              setShowEntityForm(null);
-            }}
-          />
-        </div>
-      );
-    }
+    navigate(`/entity/${entity.id}/edit`);
   };
 
   //placeholder until store can delete
@@ -176,11 +153,9 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
         title={"Toggle Binder Menu Visible"}
         onClick={handleToggleClick}
       >
-        {showMenu ? (
-          <FontAwesomeIcon icon="angle-double-left" />
-        ) : (
-          <FontAwesomeIcon icon="angle-double-right" />
-        )}
+        <FontAwesomeIcon
+          icon={showMenu ? "angle-double-left" : "angle-double-right"}
+        />
       </div>
       <div className={styles.content}>
         {activeTab === "Plans" && (
@@ -190,6 +165,7 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
                 <tr key={plan.id} className={styles.plansTableRow}>
                   <td className={styles.plansTableAction}>
                     <Button
+                      variant="text"
                       title={"Edit Plan"}
                       onClick={() => handleEdit(plan.id)}
                     >
@@ -217,13 +193,12 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
                   </td>
 
                   <td className={styles.plansTableAction}>
-                    <div
-                      className={styles.deleteButton}
+                    <Button
                       title={"Delete Plan"}
                       onClick={() => handleDelete("plan", plan.id)}
-                    >
-                      <FontAwesomeIcon icon="trash" />
-                    </div>
+                      icon="trash"
+                      variant="text"
+                    />
                   </td>
                 </tr>
               ))}
@@ -251,13 +226,12 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
                   </td>
                   <td className={styles.plansTableEntities}></td>
                   <td className={styles.plansTableAction}>
-                    <div
-                      className={styles.deleteButton}
+                    <Button
                       title={`Delete ${player.name}`}
                       onClick={() => handleDelete("entity", player.id)}
-                    >
-                      <FontAwesomeIcon icon="trash" />
-                    </div>
+                      icon="trash"
+                      variant="text"
+                    />
                   </td>
                 </tr>
               ))}

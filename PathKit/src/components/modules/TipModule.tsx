@@ -30,12 +30,16 @@ function TipModule() {
   const handlePreviousTip = () => {
     if (currentTipIndex > 0) {
       setCurrentTipIndex(currentTipIndex - 1);
+    } else {
+      setCurrentTipIndex(TIPS.length - 1);
     }
   };
 
   const handleNextTip = () => {
     if (currentTipIndex < TIPS.length - 1) {
       setCurrentTipIndex(currentTipIndex + 1);
+    } else {
+      setCurrentTipIndex(0);
     }
   };
 

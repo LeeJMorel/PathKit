@@ -21,22 +21,29 @@ function NotesObject() {
   return (
     <div className={styles.notes}>
       <Button onClick={() => setEditMode(!editMode)}>
-        {editMode ? "Preview" : "Edit"} Markdown
+        {editMode ? "Preview" : "Edit"} Note
       </Button>
       {editMode ? (
         <textarea
           className={styles.notesEdit}
           value={notes}
           onChange={handleInputChange}
-          placeholder="Type your notes here..."
-          rows={10000}
-          cols={50}
+          placeholder="Type your notes here. I support Markdown syntax."
         />
       ) : (
         <div className={styles.notesContainer}>
           <Markdown>{notes}</Markdown>
         </div>
       )}
+      <span className={styles.caption}>
+        <a
+          href="https://www.markdownguide.org/cheat-sheet/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          What is Markdown?
+        </a>
+      </span>
     </div>
   );
 }

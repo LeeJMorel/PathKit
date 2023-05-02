@@ -1,6 +1,13 @@
 @import "./styles/variables.scss";
 @import "./styles/themeHelpers.scss";
 
+:root {
+  /* Allow access to color palette variables directly. */
+  @each $name, $value in $colorPalette {
+    @include define-custom-property($name, $value);
+  }
+}
+
 #root {
   height: 100%; /* Set height of App to take up the full height of the screen */
   width: 100%; /* Set width of App to take up the full height of the screen */

@@ -3,28 +3,27 @@ import styles from "./Button.module.scss";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
+import Button, { IButtonProps } from "./Button";
 
-type ValidIconName = IconName;
-interface Props extends React.HTMLProps<HTMLButtonElement> {
-  icon?: ValidIconName;
+interface IRoundButtonProps extends IButtonProps {
   small?: boolean;
-  subtle?: boolean;
 }
 
-const RoundButton: React.FC<Props> = ({
-  onClick,
-  type,
+const RoundButton: React.FC<IRoundButtonProps> = ({
+  // onClick,
+  // type,
   className,
   children,
   icon,
   small,
-  subtle,
+  // subtle,
+  variant = "default",
   ...rest
 }) => {
   const iconElement =
     typeof icon === "string" ? (
       <FontAwesomeIcon
-        className={styles.roundButtonIcon}
+        className={styles.buttonIcon}
         icon={["fas", icon as IconName]}
       />
     ) : (
@@ -32,20 +31,19 @@ const RoundButton: React.FC<Props> = ({
     );
 
   return (
-    <button
+    <Button
       type="button"
       className={classNames(
         styles.roundButton,
         small && styles.small,
-        subtle && styles.subtle,
+        styles[variant],
         className
       )}
-      onClick={onClick}
       {...rest}
     >
       {iconElement}
       {children}
-    </button>
+    </Button>
   );
 };
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 // Import the necessary CSS and component files
@@ -21,6 +22,9 @@ import { WelcomeMenu } from "./components/menus/WelcomeMenu";
 import { RoundButton } from "./components/buttons";
 import { InitiativeMenu } from "./components/menus/InitiativeMenu";
 import Search from "./components/search/Search";
+import EntitySheet from "./components/sheets/EntitySheet";
+import EditEntitySheet from "./components/sheets/EditEntitySheet";
+import NotesSheet from "./components/sheets/NotesSheet";
 
 // Load FontAwesome icons
 library.add(fas);
@@ -47,14 +51,6 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const { preferences, setPreferences } = usePreferencesStore();
 
-  //Initialize store with new keys
-  // useEffect(() => {
-  //   setPreferences({
-  //     ...defaultPreferences,
-  //     ...preferences,
-  //   });
-  // }, []);
-
   //generate the header section based on if a plan is selected
   const { getPlanById } = usePlans();
   const [currentPlan, setCurrentPlan] = useState<IPlan | undefined>(undefined);
@@ -73,11 +69,9 @@ function App() {
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedSearch = event.target.value;
-    const selectedEntity = null;
     setPreferences({
       ...preferences,
       selectedSearch,
-      selectedEntity,
     });
   };
 
@@ -166,7 +160,17 @@ function App() {
         <CardView />
         {/* Content component for the second column will change if
             header search component is used to show results*/}
-        <SheetView />
+        {/* <SheetView /> */}
+        <Routes>
+          <Route path="/" element={<SheetView />}>
+            <Route index element={<NotesSheet />} />
+            <Route path="entity/:id" element={<EntitySheet />} />
+            <Route path="entity/:id/edit" element={<EditEntitySheet />} />
+            <Route path="plan/new" element={<div />} />
+            <Route path="plan/:id/edit" element={<div />} />
+            <Route path="*" element={<NotesSheet />} />
+          </Route>
+        </Routes>
         {/* Content component for the third column will change based on header values*/}
         <ModuleView />
       </main>

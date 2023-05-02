@@ -7,6 +7,7 @@ import styles from "./Form.module.scss";
 import { IEntity, EntityType } from "../../api/model";
 import { useEntities } from "../../hooks";
 import { Button } from "../buttons";
+import classNames from "classnames";
 
 export interface IEntityFormProps {
   type?: EntityType;
@@ -32,11 +33,19 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
     ...entityData,
   });
 
+  useEffect(() => {
+    setEntity((prev) => ({
+      ...prev,
+      ...entityData,
+    }));
+  }, [entityData]);
+
   const handleClose = () => {
     onClose?.();
   };
 
-  const handleAddEntity = () => {
+  const handleAddEntity = (e: React.FormEvent) => {
+    e.preventDefault();
     const newEntity = addEntity(entity);
     onAddEntity(newEntity);
   };
@@ -75,7 +84,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
           <input
             type="text"
             name="stats"
-            defaultValue={entity.stats?.toString()}
+            value={entity.stats?.toString()}
             onChange={handleInputChange}
             className={styles.formInput}
           />
@@ -91,7 +100,8 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
           <input
             type="text"
             name="hp"
-            defaultValue={entity.hp ? entity.hp[1] : ""}
+            min={0}
+            value={entity.hp ? entity.hp[1] : ""}
             onChange={handleHPChange}
             className={styles.formInput}
           />
@@ -101,7 +111,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
   }
 
   return (
-    <form className={styles.formContainer}>
+    <form className={styles.formContainer} onSubmit={handleAddEntity}>
       <div className={styles.formRow}>
         <label htmlFor="image" className={styles.formLabel}>
           Image:
@@ -110,7 +120,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
           name="image"
           onChange={handleInputChange}
           className={styles.formSelect}
-          defaultValue={entity.image}
+          value={entity.image}
         >
           <option value={defaultImage}>Fighter</option>
           <option value={monster}>Monster</option>
@@ -125,15 +135,17 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
         <input
           type="text"
           name="name"
-          defaultValue={entity.name}
+          value={entity.name}
           onChange={handleInputChange}
           className={styles.formInput}
         />
       </div>
       {statsField}
       {hpField}
-      <div className={styles.formRow}>
-        <Button onClick={handleAddEntity}>Save {type}</Button>
+      <div className={classNames(styles.formRow, styles.actionRow)}>
+        <Button type="submit" variant="primary">
+          Save {type}
+        </Button>
         {onClose && <Button onClick={handleClose}>Cancel</Button>}
       </div>
     </form>

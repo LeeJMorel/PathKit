@@ -5,41 +5,33 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
 
-type ValidIconName = IconName;
-interface Props extends React.HTMLProps<HTMLButtonElement> {
-  icon?: ValidIconName;
+export interface IButtonProps extends React.HTMLProps<HTMLButtonElement> {
+  icon?: IconName | JSX.Element;
   primary?: boolean;
   subtle?: boolean;
+  variant?: "default" | "primary" | "subtle" | "destructive" | "text";
 }
 
-const Button: React.FC<Props> = ({
+const Button: React.FC<IButtonProps> = ({
   primary,
   onClick,
-  type,
+  type = "button",
   className,
   children,
-  subtle,
+  variant = "default",
   icon,
   ...rest
 }) => {
   const iconElement =
     typeof icon === "string" ? (
-      <FontAwesomeIcon
-        className={styles.roundButtonIcon}
-        icon={["fas", icon as IconName]}
-      />
+      <FontAwesomeIcon className={styles.buttonIcon} icon={["fas", icon]} />
     ) : (
       icon
     );
+
   return (
     <button
-      type="button"
-      className={classNames(
-        styles.button,
-        primary && styles.primaryButton,
-        subtle && styles.subtle,
-        className
-      )}
+      className={classNames(styles.button, styles[variant], className)}
       onClick={onClick}
       {...rest}
     >
