@@ -14,6 +14,7 @@ import {
   usePreferencesStore,
   useCampaigns,
   usePlans,
+  useEntities,
   defaultPreferences,
 } from "./hooks";
 import { WelcomeMenu } from "./components/menus/WelcomeMenu";
@@ -80,12 +81,28 @@ function App() {
     });
   };
 
+  const { resetEntities } = useEntities();
   const cancelPlan = () => {
     const selectedPlan = null;
     setPreferences({
       ...preferences,
       selectedPlan,
     });
+    resetEntities();
+  };
+
+  //open and close intitiative menu
+  const [showInitiativeMenu, setShowInitiativeMenu] = useState(false);
+  useEffect(() => {
+    if (
+      preferences.selectedPlan !== undefined &&
+      currentPlan?.planType === "encounter"
+    ) {
+      setShowInitiativeMenu(true);
+    }
+  }, [preferences.selectedPlan, currentPlan]);
+  const handleInitiativeMenu = () => {
+    setShowInitiativeMenu((prevState) => !prevState);
   };
 
   return (
@@ -105,7 +122,9 @@ function App() {
           {/* if in encounter mode, show a close button to exit it*/}
           {preferences.selectedPlan != undefined ? (
             <>
-              {/*{currentPlan?.planType === "encounter" && <InitiativeMenu />}*/}
+              {showInitiativeMenu && currentPlan?.planType === "encounter" && (
+                <InitiativeMenu onClose={handleInitiativeMenu} />
+              )}
               <h2 className={styles.headerTitle}>
                 {/*capitalize the Header Title*/}
                 {currentPlan?.planType &&

@@ -1,5 +1,6 @@
 import styles from "./View.module.scss";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
+import isEqual from "lodash.isequal";
 import PlannerCard from "../cards/PlannerCard";
 import EntityCard from "../cards/EntityCard";
 import AddPlayerCard from "../cards/AddPlayerCard";
@@ -10,7 +11,6 @@ import DragAndDropList from "../dragAndDropList/DragAndDropList";
 function CardView() {
   const preferences = usePreferencesStore((store) => store.preferences);
   const { getPlayerEntities } = useEntities();
-  //get all the player entities, they should always be visible
   const playerEntities = getPlayerEntities();
   const activePlayersEntities = playerEntities.filter(
     (entity) =>
@@ -20,7 +20,6 @@ function CardView() {
     activePlayersEntities
   );
 
-  // if a current plan is selected, spawn entity cards for it
   const { getPlanById } = usePlans();
   const [currentPlan, setCurrentPlan] = useState<IPlan | undefined>(
     getPlanById(preferences.selectedPlan || undefined)
@@ -36,18 +35,13 @@ function CardView() {
   }, [preferences.selectedPlan, getPlanById]);
 
   useEffect(() => {
-    const newEntities = [...activePlayersEntities, ...planEntities];
-    if (currentEntities.length !== newEntities.length) {
+    const newEntities = [...activePlayersEntities, ...planEntities].sort(
+      (a, z) => (z.initiative || 0) - (a.initiative || 0)
+    );
+    if (!isEqual(currentEntities, newEntities)) {
       setCurrentEntities(newEntities);
     }
-  }, [activePlayersEntities, planEntities]);
-
-  // const initiativeOrder = [
-  //   {
-  //     entity: {},
-  //     roll: 23,
-  //   },
-  // ].sort((a, z) => a.roll - z.roll);
+  }, [activePlayersEntities, planEntities, currentEntities]);
 
   return (
     <div className={styles.cardView}>
@@ -63,7 +57,6 @@ function CardView() {
         listItemProps={{
           className: styles.entityListItem,
         }}
-        // onDragEnd={(result) => console.log(result)}
       />
       <AddPlayerCard />
     </div>

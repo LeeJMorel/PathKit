@@ -16,6 +16,7 @@ interface IUseEntities {
   getPlayerEntities: () => IEntity[];
   getActivePlayerEntities: () => IEntity[];
   updateEntity: (entity: PartialEntity) => void;
+  resetEntities: () => void;
 }
 
 export const useEntities = (): IUseEntities => {
@@ -86,6 +87,13 @@ export const useEntities = (): IUseEntities => {
     [entities]
   );
 
+  const resetEntities = useCallback((): void => {
+    const resetEntities: IEntity[] = entities.map((entity) =>
+      Object.assign({}, entity, { initiative: 0 })
+    );
+    setEntities(resetEntities);
+  }, [entities]);
+
   return {
     entities,
     setEntities,
@@ -95,5 +103,6 @@ export const useEntities = (): IUseEntities => {
     getPlayerEntities,
     getActivePlayerEntities,
     updateEntity,
+    resetEntities,
   };
 };

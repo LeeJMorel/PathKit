@@ -3,12 +3,23 @@ import styles from "./Form.module.scss";
 import { useEntities, usePlans, usePreferencesStore } from "../../hooks";
 import { IPlan } from "src/api/model";
 
-const InitiativeForm = () => {
+export interface InitiativeMenuProps {
+  onClose: () => void;
+}
+
+const InitiativeForm = ({ onClose }: InitiativeMenuProps) => {
   const { preferences, setPreferences } = usePreferencesStore();
 
-  const [initiative, setInitiative] = useState("");
-  const handleInitiativeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInitiative(e.target.value);
+  const [entityInitiatives, setEntityInitiatives] = useState<{
+    [key: string]: number;
+  }>({});
+
+  const handleInitiativeChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    entityId: string
+  ) => {
+    const newInitiative = parseInt(e.target.value, 10) || 0;
+    setEntityInitiatives({ ...entityInitiatives, [entityId]: newInitiative });
   };
 
   //generate menu based on selected plan
@@ -18,48 +29,43 @@ const InitiativeForm = () => {
     () => setCurrentPlan(getPlanById(preferences.selectedPlan || undefined)),
     [preferences.selectedPlan, getPlanById]
   );
-  const planCards = currentPlan?.entities.map((entity) => (
-    <div key={entity.id} className={styles.formRow}>
-      <label htmlFor="name" className={styles.formLabel}>
-        {entity.name}:
-      </label>
-      <input
-        type="number"
-        name="name"
-        value={initiative}
-        onChange={handleInitiativeChange}
-        className={styles.formSmall}
-      />
-    </div>
-  ));
 
   //get all the player entities, they should always be visible
-  const { getPlayerEntities } = useEntities();
+  const { getPlayerEntities, updateEntity } = useEntities();
   const playerEntities = getPlayerEntities();
-  const playerCards = playerEntities.map((entity) => (
-    <div key={entity.id} className={styles.formRow}>
-      <label htmlFor="name" className={styles.formLabel}>
-        {entity.name}:
-      </label>
-      <input
-        type="number"
-        name="name"
-        value={initiative}
-        onChange={handleInitiativeChange}
-        className={styles.formSmall}
-      />
-    </div>
-  ));
+  const formFields = [...(currentPlan?.entities ?? []), ...playerEntities].map(
+    (entity) => (
+      <div key={entity.id} className={styles.formRow}>
+        <label
+          htmlFor={`${entity.id}-initiativeForm`}
+          className={styles.formLabel}
+        >
+          {entity.name}:
+        </label>
+        <input
+          type="number"
+          id={`${entity.id}-initiativeForm`}
+          name={entity.id}
+          value={entityInitiatives[entity.id] ?? ""}
+          onChange={(e) => handleInitiativeChange(e, entity.id)}
+          className={styles.formSmall}
+        />
+      </div>
+    )
+  );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    window.location.reload();
+    e.preventDefault(); // prevent default form submission behavior
+    // Update the initiatives for each entity
+    Object.keys(entityInitiatives).forEach((entityId) => {
+      updateEntity({ id: entityId, initiative: entityInitiatives[entityId] });
+    });
+    onClose();
   };
 
   return (
     <form onSubmit={handleSubmit} className={styles.formContainer}>
-      {planCards}
-      {playerCards}
+      {formFields}
       <br />
       <button type="submit" className={styles.formButton}>
         Start Encounter

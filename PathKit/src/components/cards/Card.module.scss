@@ -3,16 +3,9 @@
   height: 5em;
 
   position: relative;
-  overflow: hidden;
   flex-direction: row;
   background-color: var(--primaryBackground);
   color: var(--primaryText);
-  // background: linear-gradient(
-  //   to right,
-  //   burlywood 0%,
-  //   burlywood 77%,
-  //   #9e603f 100%
-  // );
 
   .cardContainer {
     width: 100%;
