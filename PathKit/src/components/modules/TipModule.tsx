@@ -51,17 +51,19 @@ function TipModule() {
         <RoundButton small icon="angle-right" onClick={handleNextTip} />
       </div>
 
-      <div className={styles.tipBody}>
-        {currentTip.description.split("\n\n").map((paragraph, index) => {
-          if (paragraph.startsWith("# ")) {
-            // Header
-            const headerText = paragraph.slice(2);
-            return <h3 key={index}>{headerText}</h3>;
-          } else {
-            // Paragraph
-            return <p key={index}>{paragraph}</p>;
-          }
-        })}
+      <div className={styles.moduleContent}>
+        <div className={styles.tipBody}>
+          {currentTip.description.split("\n\n").map((paragraph, index) => {
+            if (paragraph.startsWith("# ")) {
+              // Header
+              const headerText = paragraph.slice(2);
+              return <h3 key={index}>{headerText}</h3>;
+            } else {
+              // Paragraph
+              return <p key={index}>{paragraph}</p>;
+            }
+          })}
+        </div>
       </div>
     </div>
   );

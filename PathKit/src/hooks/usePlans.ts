@@ -10,11 +10,11 @@ export type PartialPlan = PartialBy<IPlan, "id" | "campaignId">;
 interface IUsePlans {
   plans: IPlan[];
   setPlans: (plans: IPlan[]) => void;
-  addPlan: (plan: PartialPlan) => void;
+  addPlan: (plan: PartialPlan) => IPlan;
   getPlanById: (planId?: string) => IPlan | undefined;
   deletePlan: (planId: string) => void;
-  updatePlan: (plan: PartialPlan) => void;
-  updateOrAddPlan: (plan: PartialPlan) => void;
+  updatePlan: (plan: PartialPlan) => IPlan;
+  updateOrAddPlan: (plan: PartialPlan) => IPlan;
 }
 export const usePlans = (): IUsePlans => {
   const { plans, setPlans, refreshPlans } = useStore((store) => ({
@@ -32,14 +32,15 @@ export const usePlans = (): IUsePlans => {
   }, []);
 
   const addPlan = useCallback(
-    (newPlan: PartialPlan): void => {
+    (newPlan: PartialPlan): IPlan => {
       const plan: IPlan = {
         ...newPlan,
         id: uuid(),
         campaignId: currentCampaignId, // TODO get campaignId from high level
       } as IPlan;
 
-      return setPlans([...plans, plan]);
+      setPlans([...plans, plan]);
+      return plan;
     },
     [plans, currentCampaignId]
   );
@@ -62,17 +63,23 @@ export const usePlans = (): IUsePlans => {
   );
 
   const updatePlan = useCallback(
-    (newPlan: PartialPlan): void => {
-      const newPlans: IPlan[] = plans.map((plan) =>
-        plan.id === newPlan.id ? Object.assign({}, plan, newPlan) : plan
-      );
+    (newPlan: PartialPlan): IPlan => {
+      let plan = newPlan;
+      const newPlans: IPlan[] = plans.map((p) => {
+        if (p.id === newPlan.id) {
+          plan = Object.assign({}, p, plan);
+          return plan as IPlan;
+        }
+        return p;
+      });
       setPlans(newPlans);
+      return plan as IPlan;
     },
     [plans]
   );
 
   const updateOrAddPlan = useCallback(
-    (newPlan: PartialPlan): void => {
+    (newPlan: PartialPlan): IPlan => {
       const planExists = getPlanById(newPlan.id);
       if (planExists) {
         return updatePlan(newPlan);
@@ -83,7 +90,7 @@ export const usePlans = (): IUsePlans => {
   );
 
   return {
-    plans,
+    plans: plans.filter((n) => n.campaignId === currentCampaignId),
     setPlans,
     addPlan,
     getPlanById,

@@ -30,7 +30,8 @@ export interface IPlan {
   id: string;
   planType: PlanType;
   campaignId?: string;
-  entities: IEntity[];
+  // Array of entity Ids
+  entities: string[];
   order?: number;
 }
 
@@ -45,4 +46,6 @@ export interface INote {
   campaignId: string;
   title: string;
   body: string;
+  createDate: string;
+  modifiedDate?: string;
 }

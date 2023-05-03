@@ -1,12 +1,19 @@
 import styles from "./Menu.module.scss";
 import Button from "../buttons/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { usePlans, useEntities, useCampaigns } from "../../hooks";
+import {
+  usePlans,
+  useEntities,
+  useCampaigns,
+  useNotes,
+  usePreferencesStore,
+} from "../../hooks";
 import { WelcomeMenu } from "./WelcomeMenu";
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface IDeleteMenuProps {
-  type: "entity" | "plan" | "campaign";
+  type: "entity" | "plan" | "campaign" | "note";
   id: string;
   onClose: () => void;
 }
@@ -16,40 +23,60 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
   id,
   onClose,
 }: IDeleteMenuProps) => {
-  const plans = usePlans();
+  const navigate = useNavigate();
+  const { deletePlan } = usePlans();
   const { deleteEntity } = useEntities();
   const { deleteCampaign } = useCampaigns();
+  const { deleteNote } = useNotes();
+  const { preferences, setPreferences } = usePreferencesStore();
   const [showWelcomeMenu, setShowWelcomeMenu] = useState(false);
 
-  const handleYesClick = () => {
+  const handleClose = () => {
+    onClose();
+  };
+
+  const handleYesClick = useCallback(() => {
     switch (type) {
       case "plan":
-        deletePlan(id);
+        if (preferences.selectedPlan === id) {
+          setPreferences({
+            selectedPlan: null,
+          });
+        }
+        deleteNote(id);
         break;
+
       case "entity":
         deleteEntity(id);
         break;
+
       case "campaign":
+        if (preferences.currentCampaignId === id) {
+          setPreferences({
+            currentCampaignId: null,
+          });
+        }
         deleteCampaign(id);
         window.location.reload();
         setShowWelcomeMenu(true); // set the state to show the WelcomeMenu
+        break;
+
+      case "note":
+        if (preferences.selectedNote === id) {
+          setPreferences({
+            selectedNote: null,
+          });
+        }
+        deleteNote(id);
         break;
 
       default:
         break;
     }
 
-    onClose();
-  };
-
-  const handleClose = () => {
-    onClose();
-  };
-
-  const deletePlan = (id: string) => {
-    plans.deletePlan(id);
-    onClose();
-  };
+    handleClose();
+    navigate("/");
+  }, []);
 
   return (
     <div className={styles.menuOverlay}>

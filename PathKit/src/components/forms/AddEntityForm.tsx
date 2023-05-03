@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import monster from "../../assets/monster.png";
 import player from "../../assets/knight.png";
 import defaultImage from "../../assets/fighter.png";
@@ -17,18 +18,25 @@ export interface IEntityFormProps {
 }
 
 const AddEntityForm: React.FC<IEntityFormProps> = ({
-  type = EntityType.none,
-  entityData,
+  type: typeProp = EntityType.none,
+  entityData: entityDataProp,
   onAddEntity,
   onClose,
 }) => {
-  const { addEntity } = useEntities();
+  const { entityId } = useParams();
+  const [searchParams] = useSearchParams();
+  const { updateOrAddEntity, getEntityById } = useEntities();
+  const type = searchParams.get("type") || typeProp;
+  const entityData = useMemo(
+    () => entityDataProp || getEntityById(entityId),
+    [entityId, entityDataProp]
+  );
   const [entity, setEntity] = useState<Omit<IEntity, "id">>({
     image: defaultImage,
     name: "",
     stats: {},
     hp: [0, 0],
-    entityType: type,
+    entityType: type as EntityType,
     isActive: true,
     ...entityData,
   });
@@ -46,7 +54,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
 
   const handleAddEntity = (e: React.FormEvent) => {
     e.preventDefault();
-    const newEntity = addEntity(entity);
+    const newEntity = updateOrAddEntity(entity);
     onAddEntity(newEntity);
   };
 
@@ -74,7 +82,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
   let statsField;
   let hpField;
 
-  if (type === "Monster" || type === "Player") {
+  if (entity.entityType === "Monster" || entity.entityType === "Player") {
     statsField = (
       <>
         <div className={styles.formRow}>
@@ -144,7 +152,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
       {hpField}
       <div className={classNames(styles.formRow, styles.actionRow)}>
         <Button type="submit" variant="primary">
-          Save {type}
+          Save {entity.entityType}
         </Button>
         {onClose && <Button onClick={handleClose}>Cancel</Button>}
       </div>

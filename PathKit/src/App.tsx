@@ -9,7 +9,6 @@ import CardView from "./components/views/CardView";
 import ModuleView from "./components/views/ModuleView";
 import MainMenu from "./components/menus/MainMenu";
 import { IEntity, IPlan } from "./api/model";
-import PlannerDropdown from "./components/dropdowns/PlannerDropdown";
 import classNames from "classnames";
 import {
   usePreferencesStore,
@@ -25,6 +24,8 @@ import Search from "./components/search/Search";
 import EntitySheet from "./components/sheets/EntitySheet";
 import EditEntitySheet from "./components/sheets/EditEntitySheet";
 import NotesSheet from "./components/sheets/NotesSheet";
+import CreationDropdown from "./components/dropdowns/CreationDropdown";
+import EditPlanSheet from "./components/sheets/EditPlanSheet";
 
 // Load FontAwesome icons
 library.add(fas);
@@ -47,7 +48,7 @@ function App() {
   // Define the props for the Header component
   const [mode, setMode] = useState<AppMode>(AppMode.exploration);
   const [menu, setMenu] = useState(false);
-  const [plannerMenu, setPlannerMenu] = useState(false);
+  const [createDropdown, setCreateDropdown] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const { preferences, setPreferences } = usePreferencesStore();
 
@@ -63,8 +64,8 @@ function App() {
     setMenu(!menu);
   };
 
-  const handleTogglePlannerMenu = () => {
-    setPlannerMenu(!plannerMenu);
+  const handleToggleCreate = () => {
+    setCreateDropdown(!createDropdown);
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +86,7 @@ function App() {
     resetEntities();
   };
 
-  //open and close intitiative menu
+  //open and close initiative menu
   const [showInitiativeMenu, setShowInitiativeMenu] = useState(false);
   useEffect(() => {
     if (
@@ -111,8 +112,16 @@ function App() {
       {!currentCampaignId && <WelcomeMenu />}
       <header className={styles.header}>
         <div className={styles.headerSection}>
-          {/* Header over cards view, button pulls up plan menu*/}
-          <PlannerDropdown />
+          {/* Header over cards view, button pulls up create menu*/}
+          <RoundButton icon="file-circle-plus" onClick={handleToggleCreate} />
+          {/* Render MainMenu component */}
+          {/* <div className={styles.dropdown}> */}
+          <CreationDropdown
+            isOpen={createDropdown}
+            onClose={handleToggleCreate}
+          ></CreationDropdown>
+          {/* </div> */}
+          {/* <PlannerDropdown onClose={() => setCreateDropdown(false)} /> */}
           {/* if in encounter mode, show a close button to exit it*/}
           {preferences.selectedPlan != undefined ? (
             <>
@@ -164,10 +173,13 @@ function App() {
         <Routes>
           <Route path="/" element={<SheetView />}>
             <Route index element={<NotesSheet />} />
-            <Route path="entity/:id" element={<EntitySheet />} />
-            <Route path="entity/:id/edit" element={<EditEntitySheet />} />
-            <Route path="plan/new" element={<div />} />
-            <Route path="plan/:id/edit" element={<div />} />
+            <Route path="entity/:entityId" element={<EntitySheet />} />
+            <Route path="entity/:entityId/edit" element={<EditEntitySheet />} />
+            <Route path="plan/:planId/*" element={<EditPlanSheet />} />
+            {/* <Route
+              path="plan/:planId/editEntity/:entityId"
+              element={<EditEntitySheet />}
+            /> */}
             <Route path="*" element={<NotesSheet />} />
           </Route>
         </Routes>

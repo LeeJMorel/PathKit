@@ -12,10 +12,12 @@ interface IUseEntities {
   setEntities: (entities: IEntity[]) => void;
   addEntity: (entity: PartialEntity) => IEntity;
   getEntityById: (entityId?: string) => IEntity | undefined;
+  getEntitiesById: (entityIds?: string[]) => IEntity[];
   deleteEntity: (entityId: string) => void;
   getPlayerEntities: () => IEntity[];
   getActivePlayerEntities: () => IEntity[];
-  updateEntity: (entity: PartialEntity) => void;
+  updateEntity: (entity: PartialEntity) => IEntity;
+  updateOrAddEntity: (entity: PartialEntity) => IEntity;
   resetEntities: () => void;
 }
 
@@ -41,19 +43,29 @@ export const useEntities = (): IUseEntities => {
         id: newEntity.id || uuid(),
         campaignId: newEntity.campaignId || currentCampaignId,
       } as IEntity;
+      console.log("debug addEntity:", {
+        entity,
+        newEntity,
+      });
 
       setEntities([...entities, entity]);
       return entity;
     },
-    [setEntities, currentCampaignId]
+    [setEntities, currentCampaignId, entities]
   );
 
   const getEntityById = useCallback(
     (entityId?: string): IEntity | undefined => {
-      const matches = entities.filter((e) => e.id === entityId);
-      if (matches.length) {
-        return matches[0];
-      }
+      const match = entities.find((e) => e.id === entityId);
+      return match;
+    },
+    [entities]
+  );
+
+  const getEntitiesById = useCallback(
+    (entityIds?: string[]): IEntity[] => {
+      const matches = entities.filter((e) => entityIds?.includes(e.id));
+      return matches;
     },
     [entities]
   );
@@ -76,16 +88,25 @@ export const useEntities = (): IUseEntities => {
   }, [entities]);
 
   const updateEntity = useCallback(
-    (newEntity: PartialEntity): void => {
-      const newEntities: IEntity[] = entities.map((entity) =>
-        entity.id === newEntity.id
-          ? Object.assign({}, entity, newEntity)
-          : entity
-      );
+    (newEntity: PartialEntity): IEntity => {
+      let entity = newEntity;
+      const newEntities: IEntity[] = entities.map((e) => {
+        if (e.id === entity.id) {
+          entity = Object.assign({}, e, entity);
+          return entity as IEntity;
+        }
+        return e;
+      });
+
       setEntities(newEntities);
+      return entity as IEntity;
     },
     [entities]
   );
+
+  const updateOrAddEntity = (newEntity: PartialEntity): IEntity => {
+    return newEntity.id ? updateEntity(newEntity) : addEntity(newEntity);
+  };
 
   const resetEntities = useCallback((): void => {
     const resetEntities: IEntity[] = entities.map((entity) =>
@@ -95,14 +116,16 @@ export const useEntities = (): IUseEntities => {
   }, [entities]);
 
   return {
-    entities,
+    entities: entities.filter((n) => n.campaignId === currentCampaignId),
     setEntities,
     addEntity,
     getEntityById,
+    getEntitiesById,
     deleteEntity,
     getPlayerEntities,
     getActivePlayerEntities,
     updateEntity,
+    updateOrAddEntity,
     resetEntities,
   };
 };

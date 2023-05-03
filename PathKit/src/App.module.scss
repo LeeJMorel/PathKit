@@ -30,10 +30,6 @@ This consists of two main objects, the header and the content*/
   overflow-y: hidden;
   font-size: 16px;
 
-  a {
-    color: var(--linkText);
-  }
-
   &.largeFont {
     font-size: 18px;
   }
@@ -75,6 +71,13 @@ This consists of two main objects, the header and the content*/
   .hamburgerMenu {
     cursor: pointer;
   }
+
+  // .dropdown {
+  //   position: absolute;
+  //   top: $headerHeight;
+  //   left: 5px;
+  //   z-index: 999;
+  // }
 
   /* The header consists of 3 sections, one for each of our Views*/
   .headerSection {

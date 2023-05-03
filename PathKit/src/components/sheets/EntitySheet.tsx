@@ -8,10 +8,10 @@ import { Button } from "../buttons";
 import classNames from "classnames";
 
 function EntitySheet() {
-  const { id } = useParams();
+  const { entityId } = useParams();
   const navigate = useNavigate();
   const { getEntityById } = useEntities();
-  const entity = getEntityById(id);
+  const entity = getEntityById(entityId);
 
   const handleCancelClick = () => {
     navigate("/");
