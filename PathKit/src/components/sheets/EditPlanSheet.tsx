@@ -101,8 +101,8 @@ function EditPlanSheet() {
     <div className={styles.sheetRowContainer}>
       <Button onClick={() => handleAddEntity(EntityType.Shop)}>Add Shop</Button>
       <Button onClick={() => handleAddEntity(EntityType.NPC)}>Add NPC</Button>
-      <Button onClick={() => handleAddEntity(EntityType.Monster)}>
-        Add Monster
+      <Button onClick={() => handleAddEntity(EntityType.beast)}>
+        Add Beast
       </Button>
       <Button onClick={() => handleLoadClick()}>Load</Button>
     </div>

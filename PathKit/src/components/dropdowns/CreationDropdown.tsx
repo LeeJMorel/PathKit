@@ -28,9 +28,13 @@ const CreationDropdown: React.FC<CreationDropdownProps> = ({
   }, [isOpenProp]);
 
   const actions = [
-    { label: "Create a plan", onClick: () => navigate("/plan/new") },
     {
-      label: "Create a new note",
+      label: "Create a Player",
+      onClick: () => console.log("Creating a Player"),
+    },
+    { label: "Create a Plan", onClick: () => navigate("/plan/new") },
+    {
+      label: "Create a note",
       onClick: () => {
         const newNote = addNote({});
         setPreferences({
@@ -40,8 +44,8 @@ const CreationDropdown: React.FC<CreationDropdownProps> = ({
     },
     { label: "Create an NPC", onClick: () => console.log("Creating a NPC") },
     {
-      label: "Create a Monster",
-      onClick: () => console.log("Creating a monster"),
+      label: "Create a Beast",
+      onClick: () => console.log("Creating a Beast"),
     },
     { label: "Create a Shop", onClick: () => console.log("Creating a shop") },
   ];
