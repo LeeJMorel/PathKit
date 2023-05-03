@@ -1,6 +1,6 @@
 export enum EntityType {
   Shop = "Shop",
-  Beast = "Beast",
+  Monster = "Monster",
   Player = "Player",
   NPC = "NPC",
   none = "none",

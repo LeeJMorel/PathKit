@@ -51,8 +51,8 @@ const BinderObject: React.FC<IBinderProps> = ({
     (e) => !filterEntities?.includes(e.id)
   );
   const npcs = filteredEntities.filter((e) => e.entityType === EntityType.NPC);
-  const beasts = filteredEntities.filter(
-    (e) => e.entityType === EntityType.Beast
+  const monsters = filteredEntities.filter(
+    (e) => e.entityType === EntityType.Monster
   );
   const shops = filteredEntities.filter(
     (e) => e.entityType === EntityType.Shop
@@ -216,8 +216,8 @@ const BinderObject: React.FC<IBinderProps> = ({
       case "Shops":
         return shops.map((shop) => renderEntityRow(shop));
 
-      case "Beasts":
-        return beasts.map((beast) => renderEntityRow(beast));
+      case "Monsters":
+        return monsters.map((monster) => renderEntityRow(monster));
 
       default:
         break;
@@ -286,12 +286,12 @@ const BinderObject: React.FC<IBinderProps> = ({
           </div>
           <div
             className={`${styles.tab} ${
-              activeTab === "Beasts" ? styles.active : ""
+              activeTab === "Monsters" ? styles.active : ""
             }`}
-            title={"beasts"}
-            onClick={() => handleTabClick("beasts")}
+            title={"Monsters"}
+            onClick={() => handleTabClick("Monsters")}
           >
-            Beasts
+            monsters
           </div>
         </div>
       )}

@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import beast from "../../assets/beast.png";
+import monster from "../../assets/monster.png";
 import player from "../../assets/knight.png";
 import defaultImage from "../../assets/fighter.png";
 import store from "../../assets/store.png";
@@ -82,7 +82,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
   let statsField;
   let hpField;
 
-  if (entity.entityType === "Beast" || entity.entityType === "Player") {
+  if (entity.entityType === "Monster" || entity.entityType === "Player") {
     statsField = (
       <>
         <div className={styles.formRow}>
@@ -131,7 +131,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
           value={entity.image}
         >
           <option value={defaultImage}>Fighter</option>
-          <option value={beast}>beast</option>
+          <option value={monster}>Monster</option>
           <option value={player}>Player</option>
           <option value={store}>Store</option>
         </select>

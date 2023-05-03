@@ -9,7 +9,7 @@ PathKit is a virtual GM (Game Master) screen for the tabletop role-playing game 
 [View a demo for the Alpha Release](https://www.youtube.com/watch?v=01wgcb1VR4I)
 ### Functional use-cases
 1. **Click on planned encounters:** You can select an encounter you have planned to run the initiative screen and organize initiative for you.
-2. **Add Players, NPCs, Shops, and Beasts:** You can create custom entities by using the creation menu in the upper left corner of the header.
+2. **Add Players, NPCs, Shops, and Monsters:** You can create custom entities by using the creation menu in the upper left corner of the header.
 3. **Add Planned Encounters or Exploration Paths:** You can create custom plans by using the creation menu in the upper left corner of the header.
 
 ## Major Features
@@ -19,7 +19,7 @@ PathKit comes with the following major features:
 1. **Physics-based Dice Roller:** PathKit includes a physics-based dice roller that provides realistic and immersive rolling experience for GMs and players.
 2. **GM Customization Options:** GMs can customize various input options in PathKit, such as modifying dice rolls, adjusting character stats, and setting up encounter modes.
 3. **Create Exploration or Encounter Modes:** PathKit allows GMs to create exploration or encounter modes, where they can easily manage player and NPC actions, initiative order, and other game mechanics.
-4. **Add Players/NPCs/Beasts/Shops:** PathKit provides an easy-to-use interface for GMs to add and manage players, NPCs, beasts, and shops within the game session.
+4. **Add Players/NPCs/monsters/Shops:** PathKit provides an easy-to-use interface for GMs to add and manage players, NPCs, monsters, and shops within the game session.
 5. **Integrated Search Engine:** PathKit includes an integrated search engine that allows GMs to quickly search for rules, spells, items, and other game-related information.
 6. **Notes Feature:** PathKit has a built-in notes feature that enables GMs to take and manage session notes, campaign details, and other important information.
 

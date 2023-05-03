@@ -11,7 +11,7 @@ assignees: ''
 - [ ] Physics based dice roller
 - [ ] GM customization options to all input
 - [ ] Create Exploration or Encounter modes
-- [ ] Add players/NPCS/Beasts/Shops
+- [ ] Add players/NPCS/monsters/Shops
 - [ ] Integrated search engine
 - [ ] Notes Feature
 - [ ] Documentation & Automation Tools

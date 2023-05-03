@@ -44,8 +44,8 @@ const CreationDropdown: React.FC<CreationDropdownProps> = ({
     },
     { label: "Create an NPC", onClick: () => console.log("Creating a NPC") },
     {
-      label: "Create a Beast",
-      onClick: () => console.log("Creating a Beast"),
+      label: "Create a Monster",
+      onClick: () => console.log("Creating a monster"),
     },
     { label: "Create a Shop", onClick: () => console.log("Creating a shop") },
   ];

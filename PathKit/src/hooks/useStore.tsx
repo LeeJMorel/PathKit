@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid";
 import { create } from "zustand";
 import { persist, createJSONStorage, StateStorage } from "zustand/middleware";
 import { IEntity, IPlan, ICampaign, INote } from "../api/model";
-import beast from "../assets/beast.png";
+import monster from "../assets/monster.png";
 import player from "../assets/knight.png";
 // import { get, set, del } from 'idb-keyval' // can use anything: IndexedDB, Ionic Storage, etc.
 
