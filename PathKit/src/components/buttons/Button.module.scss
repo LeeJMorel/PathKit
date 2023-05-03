@@ -44,6 +44,40 @@
     }
   }
 
+  &.toggle {
+    color: var(--accentText);
+    background-color: var(--accentBackground);
+
+    &:hover {
+      background-color: var(--tertiaryAccentBackground);
+    }
+
+    &:first-child {
+      border-radius: 8px 0 0 8px; // apply rounded corners to the first button only
+    }
+
+    &:last-child {
+      border-radius: 0 8px 8px 0; // apply rounded corners to the last button only
+    }
+  }
+
+  &.toggleActive {
+    color: var(--accentText);
+    background-color: var(--tertiaryAccentBackground);
+
+    &:hover {
+      background-color: var(--tertiaryAccentBackground);
+    }
+
+    &:first-child {
+      border-radius: 8px 0 0 8px; // apply rounded corners to the first button only
+    }
+
+    &:last-child {
+      border-radius: 0 8px 8px 0; // apply rounded corners to the last button only
+    }
+  }
+
   &:hover {
     background-color: var(--bodyBackground);
   }
