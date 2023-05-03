@@ -9,7 +9,14 @@ export interface IButtonProps extends React.HTMLProps<HTMLButtonElement> {
   icon?: IconName | JSX.Element;
   primary?: boolean;
   subtle?: boolean;
-  variant?: "default" | "primary" | "subtle" | "destructive" | "text";
+  variant?:
+    | "default"
+    | "primary"
+    | "subtle"
+    | "destructive"
+    | "text"
+    | "toggle"
+    | "toggleActive";
 }
 
 const Button: React.FC<IButtonProps> = ({

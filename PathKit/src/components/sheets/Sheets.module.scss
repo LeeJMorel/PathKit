@@ -52,10 +52,17 @@
     flex-direction: row;
     width: 100%;
     margin-bottom: 1em;
+    margin-top: 1em;
 
     &.end {
       justify-content: flex-end;
     }
+  }
+
+  .sheetCenterContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
   }
 
   .sheetEndContainer {

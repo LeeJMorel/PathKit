@@ -43,7 +43,7 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
             selectedPlan: null,
           });
         }
-        deleteNote(id);
+        deletePlan(id);
         break;
 
       case "entity":

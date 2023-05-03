@@ -4,7 +4,7 @@ import uniq from "lodash.uniq";
 import AddEntityForm from "../forms/AddEntityForm";
 import { PartialPlan, usePlans, useEntities } from "../../hooks";
 import styles from "./Sheets.module.scss";
-import { Button } from "../buttons";
+import { Button, ToggleButton } from "../buttons";
 import { EntityType, PlanType, IEntity } from "../../api/model";
 import BinderObject from "../objects/BinderObject";
 import classNames from "classnames";
@@ -43,6 +43,11 @@ function EditPlanSheet() {
     navigate("/");
   };
 
+  const [planType, setPlanType] = useState(PlanType.encounter);
+  const handlePlanTypeChange = (value: PlanType) => {
+    setPlanType(value);
+  };
+
   //We want to show the load menu
   const [showLoad, setShowLoad] = useState(false);
   const handleLoadClick = () => {
@@ -72,10 +77,9 @@ function EditPlanSheet() {
     }));
   };
 
-  let headerText = `Add ${plan.planType}`;
-  if (planId) {
-    headerText = `Edit ${plan.planType}`;
-  }
+  let headerText = `Plan: ${planEntities
+    .map((entity) => entity.name)
+    .join(", ")}`;
 
   const handleLoadEntity = (entity: IEntity) => {
     setPlan((prev) => ({
@@ -133,7 +137,13 @@ function EditPlanSheet() {
           </div>
         ))}
       </div>
-
+      <div className={styles.sheetCenterContainer}>
+        <ToggleButton
+          options={[PlanType.encounter, PlanType.exploration]}
+          value={planType}
+          onChange={handlePlanTypeChange}
+        />
+      </div>
       <div className={styles.sheetRowContainer}>
         <Routes>
           <Route index element={renderAddEntityRow()} />
