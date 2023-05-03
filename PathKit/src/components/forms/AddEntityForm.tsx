@@ -82,7 +82,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
   let statsField;
   let hpField;
 
-  if (entity.entityType === "beast" || entity.entityType === "Player") {
+  if (entity.entityType === "Beast" || entity.entityType === "Player") {
     statsField = (
       <>
         <div className={styles.formRow}>

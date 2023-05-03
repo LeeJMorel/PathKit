@@ -52,7 +52,7 @@ const BinderObject: React.FC<IBinderProps> = ({
   );
   const npcs = filteredEntities.filter((e) => e.entityType === EntityType.NPC);
   const beasts = filteredEntities.filter(
-    (e) => e.entityType === EntityType.beast
+    (e) => e.entityType === EntityType.Beast
   );
   const shops = filteredEntities.filter(
     (e) => e.entityType === EntityType.Shop
