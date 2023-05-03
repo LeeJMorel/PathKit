@@ -30,10 +30,16 @@ export const WelcomeMenu = () => {
           </div>
           <br />
           <div className={styles.menuRowContainer}>
-            <Button onClick={() => handleCampaign("New")}>
+            <Button
+              className={styles.buttonMargin}
+              onClick={() => handleCampaign("New")}
+            >
               Start New Campaign
             </Button>
-            <Button onClick={() => handleCampaign("Load")}>
+            <Button
+              className={styles.buttonMargin}
+              onClick={() => handleCampaign("Load")}
+            >
               Load Existing Campaign
             </Button>
           </div>

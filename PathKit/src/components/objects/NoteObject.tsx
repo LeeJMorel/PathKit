@@ -53,10 +53,10 @@ function NotesObject({ note: noteProp }: INotesObjectProps) {
           placeholder="New note title"
           value={note.title}
         />
-        <Button onClick={() => setEditMode(!editMode)}>
-          {editMode ? "Preview" : "Edit"} Note
-        </Button>
       </div>
+      <Button onClick={() => setEditMode(!editMode)}>
+        {editMode ? "Preview" : "Edit"} Note
+      </Button>
       {editMode ? (
         <textarea
           className={styles.notesEdit}
