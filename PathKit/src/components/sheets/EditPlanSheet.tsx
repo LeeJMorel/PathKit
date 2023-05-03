@@ -4,7 +4,7 @@ import uniq from "lodash.uniq";
 import AddEntityForm from "../forms/AddEntityForm";
 import { PartialPlan, usePlans, useEntities } from "../../hooks";
 import styles from "./Sheets.module.scss";
-import { Button, ToggleButton } from "../buttons";
+import { Button } from "../buttons";
 import { EntityType, PlanType, IEntity } from "../../api/model";
 import BinderObject from "../objects/BinderObject";
 import classNames from "classnames";
@@ -18,19 +18,23 @@ function EditPlanSheet() {
   const navigate = useNavigate();
   const { getPlanById, updateOrAddPlan } = usePlans();
   const { getEntitiesById } = useEntities();
+
+  const [plan, setPlan] = useState<PartialPlan>(
+    getPlanById(planId) || defaultPlanData
+  );
+
   useEffect(() => {
+    const p = getPlanById(planId);
     // Create plan and redirect to this form with the right ID
     if (planId === "new") {
       const newPlan = updateOrAddPlan(defaultPlanData);
       navigate(`/plan/${newPlan.id}`, {
         replace: true,
       });
+    } else if (p) {
+      setPlan(p);
     }
   }, [planId]);
-
-  const [plan, setPlan] = useState<PartialPlan>(
-    getPlanById(planId) || defaultPlanData
-  );
 
   const planEntities = getEntitiesById(plan.entities);
 
@@ -41,11 +45,6 @@ function EditPlanSheet() {
   const handleSavePlan = () => {
     updateOrAddPlan(plan);
     navigate("/");
-  };
-
-  const [planType, setPlanType] = useState(PlanType.encounter);
-  const handlePlanTypeChange = (value: PlanType) => {
-    setPlanType(value);
   };
 
   //We want to show the load menu
@@ -77,9 +76,10 @@ function EditPlanSheet() {
     }));
   };
 
-  let headerText = `Plan: ${planEntities
-    .map((entity) => entity.name)
-    .join(", ")}`;
+  let headerText = `Add ${plan.planType}`;
+  if (planId) {
+    headerText = `Edit ${plan.planType}`;
+  }
 
   const handleLoadEntity = (entity: IEntity) => {
     setPlan((prev) => ({
@@ -137,13 +137,7 @@ function EditPlanSheet() {
           </div>
         ))}
       </div>
-      <div className={styles.sheetCenterContainer}>
-        <ToggleButton
-          options={[PlanType.encounter, PlanType.exploration]}
-          value={planType}
-          onChange={handlePlanTypeChange}
-        />
-      </div>
+
       <div className={styles.sheetRowContainer}>
         <Routes>
           <Route index element={renderAddEntityRow()} />
