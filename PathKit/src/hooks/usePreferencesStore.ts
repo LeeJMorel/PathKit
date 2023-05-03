@@ -29,7 +29,7 @@ export const defaultPreferences = {
     DCModule: false,
     DiceModule: true,
     NotesModule: false,
-    BinderModule: false,
+    BinderModule: true,
   },
   currentCampaignId: null,
   selectedPlan: null,

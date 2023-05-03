@@ -8,10 +8,11 @@
   background: rgba(0, 0, 0, 0.7);
   transition: opacity 500ms;
   z-index: 9999; /* Set a high z-index to ensure it appears on top */
+  display: flex;
 }
 
 .mainMenu {
-  margin: 70px auto;
+  margin: auto;
   padding: 20px;
   background: var(--secondaryBackground);
   color: var(--secondaryText);
@@ -19,6 +20,10 @@
   width: 30%;
   position: relative;
   transition: all 0.2s ease-in-out;
+
+  .buttonMargin {
+    margin: 0.5em;
+  }
 
   .header {
     display: flex;

@@ -3,27 +3,37 @@ import { useNavigate } from "react-router-dom";
 import styles from "./Objects.module.scss";
 import { Button } from "../buttons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEntities, usePreferencesStore, useStore } from "../../hooks";
+import {
+  useEntities,
+  usePreferencesStore,
+  useStore,
+  useNotes,
+  usePlans,
+} from "../../hooks";
 import DeleteMenu from "../menus/DeleteMenu";
-import PlannerMenu from "../menus/PlannerMenu";
-import { IEntity } from "../../api/model";
-import AddEntityForm from "../forms/AddEntityForm";
+import { EntityType, IEntity, INote } from "../../api/model";
 
 interface IBinderProps {
-  load?: boolean;
+  onLoad?: (entity: IEntity) => void;
+  filterEntities?: string[];
 }
 
-const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
-  const plans = useStore((store) => store.plans);
+const BinderObject: React.FC<IBinderProps> = ({
+  onLoad,
+  filterEntities,
+}: IBinderProps) => {
+  const { plans } = usePlans();
+  const { notes } = useNotes();
+  const { entities, getPlayerEntities, getEntitiesById } = useEntities();
   const [showMenu, setShowMenu] = useState(true);
   const [activeTab, setActiveTab] = useState("Plans");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (load) {
+    if (onLoad) {
       setActiveTab("NPCs");
     }
-  }, [load]);
+  }, [onLoad]);
 
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
@@ -35,31 +45,30 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
 
   const { preferences, setPreferences } = usePreferencesStore();
 
-  const handleSelectClick = (id: string) => {
-    const selectedSearch = null;
-    setPreferences({
-      ...preferences,
-      // selectedEntity: id,
-      selectedSearch,
-    });
-  };
-
   //load players
-  const { getPlayerEntities } = useEntities();
   const players = getPlayerEntities();
-
-  const handleEditEntity = (entity: IEntity) => {
-    navigate(`/entity/${entity.id}/edit`);
-  };
+  const filteredEntities = entities.filter(
+    (e) => !filterEntities?.includes(e.id)
+  );
+  const npcs = filteredEntities.filter((e) => e.entityType === EntityType.NPC);
+  const monsters = filteredEntities.filter(
+    (e) => e.entityType === EntityType.Monster
+  );
+  const shops = filteredEntities.filter(
+    (e) => e.entityType === EntityType.Shop
+  );
 
   //placeholder until store can delete
   const [showDeleteMenu, setShowDeleteMenu] = useState<boolean>(false);
-  const [deleteType, setDeleteType] = useState<"entity" | "plan" | "campaign">(
-    "entity"
-  );
+  const [deleteType, setDeleteType] = useState<
+    "entity" | "plan" | "campaign" | "note"
+  >("entity");
   const [deleteId, setDeleteId] = useState<string>("");
 
-  const handleDelete = (type: "entity" | "plan" | "campaign", id: string) => {
+  const handleDelete = (
+    type: "entity" | "plan" | "campaign" | "note",
+    id: string
+  ) => {
     setShowDeleteMenu(true);
     setDeleteType(type);
     setDeleteId(id);
@@ -69,16 +78,154 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
     setShowDeleteMenu(false);
   };
 
-  const [planId, setPlanId] = useState<string | null>(null);
-  const handleEdit = (id: string) => {
-    setPlanId(id);
+  const handleEditPlan = (id: string) => {
+    navigate(`/plan/${id}`);
+  };
+
+  const handleEditEntity = (entity: IEntity) => {
+    navigate(`/entity/${entity.id}/edit`);
+  };
+
+  const handleEditNote = (note: INote) => {
+    setPreferences({
+      selectedNote: note.id,
+    });
+  };
+
+  const renderEntityRow = (entity: IEntity) => (
+    <tr key={entity.id} className={styles.plansTableRow}>
+      <td className={styles.plansTableAction}>
+        <Button
+          variant="text"
+          title={`Edit ${entity.name}`}
+          onClick={() => handleEditEntity(entity)}
+        >
+          <FontAwesomeIcon icon="pencil" />
+        </Button>
+      </td>
+      <td className={styles.plansTablePlanType} title={`${entity.name}`}>
+        {entity.name}
+      </td>
+      <td className={styles.plansTableEntities}></td>
+      <td className={styles.plansTableAction}>
+        {typeof onLoad === "function" ? (
+          <Button
+            title={`Load ${entity.name}`}
+            onClick={() => onLoad(entity)}
+            icon={<FontAwesomeIcon icon="share-from-square" rotation={270} />}
+            variant="text"
+          />
+        ) : (
+          <Button
+            title={`Delete ${entity.name}`}
+            onClick={() => handleDelete("entity", entity.id)}
+            icon="trash"
+            variant="text"
+          />
+        )}
+      </td>
+    </tr>
+  );
+
+  const getEntitiesText = (entities: IEntity[]): string => {
+    const maxShown = 5;
+    const length = entities.length;
+    let result = entities
+      .slice(0, maxShown)
+      .map((e) => e.name)
+      .join(", ");
+    if (length > maxShown) {
+      result = `${result} +${length - maxShown}`;
+    }
+    return result;
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "Plans":
+        return plans.map((plan) => {
+          const planEntities = getEntitiesById(plan.entities);
+          return (
+            <tr key={plan.id} className={styles.plansTableRow}>
+              <td className={styles.plansTableAction}>
+                <Button
+                  variant="text"
+                  title={"Edit Plan"}
+                  onClick={() => handleEditPlan(plan.id)}
+                >
+                  <FontAwesomeIcon icon="pencil" />
+                </Button>
+              </td>
+              <td className={styles.plansTablePlanType} title={plan.planType}>
+                {plan.planType}
+              </td>
+              <td
+                className={styles.plansTableEntities}
+                title={`${planEntities
+                  .map((entity) => entity.name)
+                  .join(", ")}`}
+              >
+                {getEntitiesText(planEntities)}
+              </td>
+
+              <td className={styles.plansTableAction}>
+                <Button
+                  title={"Delete Plan"}
+                  onClick={() => handleDelete("plan", plan.id)}
+                  icon="trash"
+                  variant="text"
+                />
+              </td>
+            </tr>
+          );
+        });
+
+      case "Notes":
+        return notes.map((note) => (
+          <tr key={note.id} className={styles.plansTableRow}>
+            <td className={styles.plansTableAction}>
+              <Button
+                variant="text"
+                title={"Edit Note"}
+                onClick={() => handleEditNote(note)}
+              >
+                <FontAwesomeIcon icon="pencil" />
+              </Button>
+            </td>
+            <td className={styles.plansTableSpan} title={note.title}>
+              {note.title}
+            </td>
+
+            <td className={styles.plansTableAction}>
+              <Button
+                title={"Delete Note"}
+                onClick={() => handleDelete("note", note.id)}
+                icon="trash"
+                variant="text"
+              />
+            </td>
+          </tr>
+        ));
+
+      case "Players":
+        return players.map((player) => renderEntityRow(player));
+
+      case "NPCs":
+        return npcs.map((npc) => renderEntityRow(npc));
+
+      case "Shops":
+        return shops.map((shop) => renderEntityRow(shop));
+
+      case "Monsters":
+        return monsters.map((monster) => renderEntityRow(monster));
+
+      default:
+        break;
+    }
   };
 
   return (
     <div className={styles.binderObject}>
-      {planId && (
-        <PlannerMenu onClose={() => setPlanId(null)} planId={planId} />
-      )}
       {showDeleteMenu && (
         <DeleteMenu
           type={deleteType}
@@ -88,7 +235,7 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
       )}
       {showMenu && (
         <div className={styles.tabContainer}>
-          {load != true && (
+          {!onLoad && (
             <>
               <div
                 className={`${styles.tab} ${
@@ -98,6 +245,15 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
                 onClick={() => handleTabClick("Plans")}
               >
                 Plans
+              </div>
+              <div
+                className={`${styles.tab} ${
+                  activeTab === "Players" ? styles.active : ""
+                }`}
+                title={"Players"}
+                onClick={() => handleTabClick("Players")}
+              >
+                Players
               </div>
               <div
                 className={`${styles.tab} ${
@@ -137,15 +293,6 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
           >
             Monsters
           </div>
-          <div
-            className={`${styles.tab} ${
-              activeTab === "Players" ? styles.active : ""
-            }`}
-            title={"Players"}
-            onClick={() => handleTabClick("Players")}
-          >
-            Players
-          </div>
         </div>
       )}
       <div
@@ -158,86 +305,9 @@ const BinderObject: React.FC<IBinderProps> = ({ load }: IBinderProps) => {
         />
       </div>
       <div className={styles.content}>
-        {activeTab === "Plans" && (
-          <table className={styles.plansTable}>
-            <tbody>
-              {plans.map((plan) => (
-                <tr key={plan.id} className={styles.plansTableRow}>
-                  <td className={styles.plansTableAction}>
-                    <Button
-                      variant="text"
-                      title={"Edit Plan"}
-                      onClick={() => handleEdit(plan.id)}
-                    >
-                      <FontAwesomeIcon icon="pencil" />
-                    </Button>
-                  </td>
-                  <td
-                    className={styles.plansTablePlanType}
-                    title={plan.planType}
-                  >
-                    {plan.planType}
-                  </td>
-                  <td
-                    className={styles.plansTableEntities}
-                    title={`${plan.entities
-                      .map((entity) => entity.name)
-                      .join(", ")}`}
-                  >
-                    {plan.entities.map((entity, index) => (
-                      <React.Fragment key={entity.id}>
-                        {entity.name}
-                        {index !== plan.entities.length - 1 ? ", " : ""}
-                      </React.Fragment>
-                    ))}
-                  </td>
-
-                  <td className={styles.plansTableAction}>
-                    <Button
-                      title={"Delete Plan"}
-                      onClick={() => handleDelete("plan", plan.id)}
-                      icon="trash"
-                      variant="text"
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-        {activeTab === "Players" && (
-          <table className={styles.plansTable}>
-            <tbody>
-              {players.map((player) => (
-                <tr key={player.id} className={styles.plansTableRow}>
-                  <td className={styles.plansTableAction}>
-                    <Button
-                      title={`Edit ${player.name}`}
-                      onClick={() => handleEditEntity(player)}
-                    >
-                      <FontAwesomeIcon icon="pencil" />
-                    </Button>
-                  </td>
-                  <td
-                    className={styles.plansTablePlanType}
-                    title={`${player.name}`}
-                  >
-                    {player.name}
-                  </td>
-                  <td className={styles.plansTableEntities}></td>
-                  <td className={styles.plansTableAction}>
-                    <Button
-                      title={`Delete ${player.name}`}
-                      onClick={() => handleDelete("entity", player.id)}
-                      icon="trash"
-                      variant="text"
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        <table className={styles.plansTable}>
+          <tbody>{renderTabContent()}</tbody>
+        </table>
       </div>
     </div>
   );

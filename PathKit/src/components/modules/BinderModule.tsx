@@ -7,7 +7,9 @@ function BinderModule() {
       <div className={styles.moduleHeader}>
         <h4>Binder</h4>
       </div>
-      <BinderObject />
+      <div className={styles.moduleContent}>
+        <BinderObject />
+      </div>
     </div>
   );
 }

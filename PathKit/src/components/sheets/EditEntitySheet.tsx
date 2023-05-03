@@ -6,7 +6,7 @@ import styles from "./Sheets.module.scss";
 import { Button } from "../buttons";
 
 function EditEntitySheet() {
-  const { id } = useParams();
+  const { entityId } = useParams();
   const navigate = useNavigate();
 
   const handleCancelClick = () => {
@@ -14,12 +14,12 @@ function EditEntitySheet() {
   };
 
   //edit an entity
-  const { updateEntity, getEntityById } = useEntities();
+  const { updateOrAddEntity, getEntityById } = useEntities();
 
-  const entityData = useMemo(() => getEntityById(id), [id]);
+  const entityData = useMemo(() => getEntityById(entityId), [entityId]);
   const type = entityData?.entityType || "Entity";
   let headerText = `Add ${type}`;
-  if (id) {
+  if (entityId) {
     headerText = `Edit ${type}`;
   }
 
@@ -39,7 +39,7 @@ function EditEntitySheet() {
         entityData={entityData}
         type={entityData?.entityType}
         onAddEntity={(entity) => {
-          updateEntity(entity);
+          updateOrAddEntity(entity);
           navigate(-1);
         }}
       />

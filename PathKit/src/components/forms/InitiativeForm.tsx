@@ -31,28 +31,31 @@ const InitiativeForm = ({ onClose }: InitiativeMenuProps) => {
   );
 
   //get all the player entities, they should always be visible
-  const { getPlayerEntities, updateEntity } = useEntities();
+  const {
+    getEntitiesById,
+    getPlayerEntities,
+    updateOrAddEntity: updateEntity,
+  } = useEntities();
   const playerEntities = getPlayerEntities();
-  const formFields = [...(currentPlan?.entities ?? []), ...playerEntities].map(
-    (entity) => (
-      <div key={entity.id} className={styles.formRow}>
-        <label
-          htmlFor={`${entity.id}-initiativeForm`}
-          className={styles.formLabel}
-        >
-          {entity.name}:
-        </label>
-        <input
-          type="number"
-          id={`${entity.id}-initiativeForm`}
-          name={entity.id}
-          value={entityInitiatives[entity.id] ?? ""}
-          onChange={(e) => handleInitiativeChange(e, entity.id)}
-          className={styles.formSmall}
-        />
-      </div>
-    )
-  );
+  const planEntities = getEntitiesById(currentPlan?.entities);
+  const formFields = [...planEntities, ...playerEntities].map((entity) => (
+    <div key={entity.id} className={styles.formRow}>
+      <label
+        htmlFor={`${entity.id}-initiativeForm`}
+        className={styles.formLabel}
+      >
+        {entity.name}:
+      </label>
+      <input
+        type="number"
+        id={`${entity.id}-initiativeForm`}
+        name={entity.id}
+        value={entityInitiatives[entity.id] ?? ""}
+        onChange={(e) => handleInitiativeChange(e, entity.id)}
+        className={styles.formSmall}
+      />
+    </div>
+  ));
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // prevent default form submission behavior

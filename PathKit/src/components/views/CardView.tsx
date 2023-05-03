@@ -10,7 +10,7 @@ import DragAndDropList from "../dragAndDropList/DragAndDropList";
 
 function CardView() {
   const preferences = usePreferencesStore((store) => store.preferences);
-  const { getPlayerEntities } = useEntities();
+  const { getPlayerEntities, getEntitiesById } = useEntities();
   const playerEntities = getPlayerEntities();
   const activePlayersEntities = playerEntities.filter(
     (entity) =>
@@ -24,13 +24,14 @@ function CardView() {
   const [currentPlan, setCurrentPlan] = useState<IPlan | undefined>(
     getPlanById(preferences.selectedPlan || undefined)
   );
-  const planEntities = currentPlan?.entities || [];
+  const planEntities = getEntitiesById(currentPlan?.entities);
 
   useEffect(() => {
     const newPlan = getPlanById(preferences.selectedPlan || undefined);
     setCurrentPlan(newPlan);
     if (newPlan && newPlan.id !== currentPlan?.id) {
-      setCurrentEntities((prev) => [...prev, ...newPlan.entities]);
+      const newPlanEntities = getEntitiesById(newPlan.entities);
+      setCurrentEntities((prev) => [...prev, ...newPlanEntities]);
     }
   }, [preferences.selectedPlan, getPlanById]);
 

@@ -30,7 +30,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   const plans = useStore((store) => store.plans);
   const [currentTab, setCurrentTab] = useState(Tab.Campaign);
   const { preferences, setPreferences } = usePreferencesStore();
-  const { getPlayerEntities, updateEntity } = useEntities();
+  const { getPlayerEntities, updateOrAddEntity: updateEntity } = useEntities();
   const players = getPlayerEntities();
   const { currentCampaign } = useCampaigns();
 
@@ -260,6 +260,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                   <div className={styles.menuRowContainer}>
                     <Button
                       title={"Delete Campaign"}
+                      className={styles.buttonMargin}
                       onClick={() =>
                         preferences.currentCampaignId &&
                         handleDelete("campaign", preferences.currentCampaignId)
@@ -269,36 +270,19 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                     </Button>
                     <Button
                       title={"Load Campaign"}
+                      className={styles.buttonMargin}
                       onClick={() => handleCampaign("Load")}
                     >
                       Load Campaign
                     </Button>
                     <Button
                       title={"Start New Campaign"}
+                      className={styles.buttonMargin}
                       onClick={() => handleCampaign("New")}
                     >
                       Start New Campaign
                     </Button>
                   </div>
-                  <br />
-                  {/* <div className={styles.menuRowContainer}>
-                    <Button
-                      onClick={() => handleAddEntityClick(EntityType.Shop)}
-                    >
-                      Add Shop
-                    </Button>
-                    <Button
-                      onClick={() => handleAddEntityClick(EntityType.NPC)}
-                    >
-                      Add NPC
-                    </Button>
-                    <Button
-                      onClick={() => handleAddEntityClick(EntityType.Monster)}
-                    >
-                      Add Monster
-                    </Button>
-                    <Button onClick={() => handleLoadClick()}>Load</Button>
-                  </div> */}
                   <div className={styles.menuRowContainer}>
                     <h2 title={"Players"} className={styles.tabHeader}>
                       Players

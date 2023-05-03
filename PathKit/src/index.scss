@@ -1,4 +1,9 @@
-*, *:before, *:after {
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Ubuntu+Mono:wght@400;700&display=swap");
+
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
@@ -9,7 +14,7 @@ html {
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  line-height: 1.4;
   font-weight: 400;
   font-size: 1em;
 
@@ -26,7 +31,7 @@ html {
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--linkText);
   text-decoration: inherit;
 }
 
@@ -43,9 +48,59 @@ body {
   min-height: 100vh;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol {
+  &:not(:last-child) {
+    margin: 0.5em 0 0.4em 0;
+  }
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+code,
+pre {
+  font-family: "Ubuntu Mono", monospace;
+  padding: 0 0.2em;
+  border: 1px solid var(--accentBackground);
+  font-size: 0.9em;
+  border-radius: 4px;
+  white-space: break-spaces;
+
+  code {
+    padding: 0;
+    border: 0;
+    font-size: inherit;
+    border-radius: 0;
+  }
+}
+
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 2em;
+  border-bottom: 1px solid var(--secondaryBackground);
+}
+
+h2 {
+  font-size: 1.6em;
+}
+
+h3 {
+  font-size: 1.2em;
+}
+
+ul,
+ol {
+  padding-left: 1.25em;
+  li {
+    margin-bottom: 0.25em;
+  }
 }
 
 button {
