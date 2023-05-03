@@ -49,6 +49,10 @@ function EditPlanSheet() {
 
   const [planType, setPlanType] = useState(PlanType.encounter);
   const handlePlanTypeChange = (value: PlanType) => {
+    setPlan((prev) => ({
+      ...prev,
+      planType: value,
+    }));
     setPlanType(value);
   };
 
