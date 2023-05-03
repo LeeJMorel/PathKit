@@ -59,11 +59,30 @@ const InitiativeForm = ({ onClose }: InitiativeMenuProps) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // prevent default form submission behavior
-    // Update the initiatives for each entity
-    Object.keys(entityInitiatives).forEach((entityId) => {
-      updateEntity({ id: entityId, initiative: entityInitiatives[entityId] });
-    });
-    onClose();
+
+    // Check if the number of initiative values is less than the total number of entities
+    if (
+      Object.keys(entityInitiatives).length <
+      getEntitiesById(currentPlan?.entities).length + getPlayerEntities().length
+    ) {
+      alert("Please enter a value for each entity's initiative.");
+      return;
+    }
+
+    // Check if all initiative values are non-negative numbers
+    const allValid = Object.values(entityInitiatives).every(
+      (value) => !isNaN(value) && value >= 0
+    );
+
+    if (allValid) {
+      // Update the initiatives for each entity
+      Object.keys(entityInitiatives).forEach((entityId) => {
+        updateEntity({ id: entityId, initiative: entityInitiatives[entityId] });
+      });
+      onClose();
+    } else {
+      alert("Please enter a non-negative number for each initiative value.");
+    }
   };
 
   return (
