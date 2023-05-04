@@ -12,7 +12,7 @@ interface IPreferences {
   selectedPlan: string | null;
   selectedNote: string | null;
   selectedSearch: string | null;
-  activePlayers: string[];
+  absentPlayers: string[];
 }
 
 interface IPreferencesStore {
@@ -35,7 +35,7 @@ export const defaultPreferences = {
   selectedPlan: null,
   selectedNote: null,
   selectedSearch: null,
-  activePlayers: [],
+  absentPlayers: [],
 };
 
 export const usePreferencesStore = create(
@@ -55,7 +55,7 @@ export const usePreferencesStore = create(
         selectedPlan: null,
         selectedNote: null,
         selectedSearch: null,
-        activePlayers: [],
+        absentPlayers: [],
       },
 
       setPreferences: (newPreferences: Partial<IPreferences>): void => {
