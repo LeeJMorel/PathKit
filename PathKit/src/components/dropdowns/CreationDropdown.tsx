@@ -30,7 +30,7 @@ const CreationDropdown: React.FC<CreationDropdownProps> = ({
   const actions = [
     {
       label: "Create a Player",
-      onClick: () => console.log("Creating a Player"),
+      onClick: () => navigate("/entity/new/edit?type=Player"),
     },
     { label: "Create a Plan", onClick: () => navigate("/plan/new") },
     {
@@ -42,12 +42,18 @@ const CreationDropdown: React.FC<CreationDropdownProps> = ({
         });
       },
     },
-    { label: "Create an NPC", onClick: () => console.log("Creating a NPC") },
+    {
+      label: "Create an NPC",
+      onClick: () => navigate("/entity/new/edit?type=NPC"),
+    },
+    {
+      label: "Create a Shop",
+      onClick: () => navigate("/entity/new/edit?type=Shop"),
+    },
     {
       label: "Create a Monster",
-      onClick: () => console.log("Creating a monster"),
+      onClick: () => navigate("/entity/new/edit?type=Monster"),
     },
-    { label: "Create a Shop", onClick: () => console.log("Creating a shop") },
   ];
 
   useEffect(() => {

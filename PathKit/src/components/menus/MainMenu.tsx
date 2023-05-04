@@ -103,16 +103,18 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   };
 
   //We don't want this player to be active this session
-  const handleActive = (
+  const handleAbsent = (
     event: React.ChangeEvent<HTMLInputElement>,
     playerId: string
   ) => {
     const { checked } = event.target;
 
+    console.log({ checked, playerId });
+
     setPreferences({
-      activePlayers: checked
-        ? [...preferences.activePlayers, playerId]
-        : preferences.activePlayers.filter((id) => id !== playerId),
+      absentPlayers: checked
+        ? preferences.absentPlayers.filter((id) => id !== playerId)
+        : [...preferences.absentPlayers, playerId],
     });
   };
 
@@ -304,8 +306,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                         <div
                           className={styles.largeCheck}
                           title={`${player.name}: ${
-                            preferences.activePlayers &&
-                            preferences.activePlayers.includes(player.id)
+                            !preferences.absentPlayers.includes(player.id)
                               ? "is Present"
                               : "is Not Present"
                           }`}
@@ -313,15 +314,13 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                           <MenuInput
                             key={player.id}
                             checked={
-                              preferences.activePlayers &&
-                              preferences.activePlayers.includes(player.id)
+                              !preferences.absentPlayers.includes(player.id)
                             }
-                            type={"checkbox"}
+                            type="checkbox"
                             name="isActive"
-                            value="isActive"
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
-                            ) => handleActive(event, player.id)}
+                            ) => handleAbsent(event, player.id)}
                           />
                         </div>
                       </div>
