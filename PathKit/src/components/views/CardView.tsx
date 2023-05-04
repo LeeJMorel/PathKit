@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import isEqual from "lodash.isequal";
 import PlannerCard from "../cards/PlannerCard";
 import EntityCard from "../cards/EntityCard";
-import AddPlayerCard from "../cards/AddPlayerCard";
 import { IEntity, IPlan } from "../../api/model";
 import { useEntities, usePlans, usePreferencesStore } from "../../hooks";
 import DragAndDropList from "../dragAndDropList/DragAndDropList";
@@ -13,8 +12,7 @@ function CardView() {
   const { getPlayerEntities, getEntitiesById } = useEntities();
   const playerEntities = getPlayerEntities();
   const activePlayersEntities = playerEntities.filter(
-    (entity) =>
-      preferences.activePlayers && preferences.activePlayers.includes(entity.id)
+    (entity) => !preferences.absentPlayers.includes(entity.id)
   );
   const [currentEntities, setCurrentEntities] = useState<IEntity[]>(
     activePlayersEntities
@@ -59,7 +57,6 @@ function CardView() {
           className: styles.entityListItem,
         }}
       />
-      <AddPlayerCard />
     </div>
   );
 }
