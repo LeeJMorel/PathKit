@@ -47,9 +47,9 @@ export const usePreferencesStore = create(
         visibleModules: {
           TipModule: true,
           DCModule: false,
-          DiceModule: true,
+          DiceModule: false,
           NotesModule: false,
-          BinderModule: false,
+          BinderModule: true,
         },
         currentCampaignId: null,
         selectedPlan: null,
