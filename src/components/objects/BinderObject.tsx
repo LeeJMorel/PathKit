@@ -15,7 +15,7 @@ import { EntityType, IEntity, INote } from "../../api/model";
 
 interface IBinderProps {
   onLoad?: (entity: IEntity) => void;
-  filterEntities?: string[];
+  filterEntities?: (string | number)[];
 }
 
 const BinderObject: React.FC<IBinderProps> = ({
@@ -48,7 +48,7 @@ const BinderObject: React.FC<IBinderProps> = ({
   //load players
   const players = getPlayerEntities();
   const filteredEntities = entities.filter(
-    (e) => !filterEntities?.includes(e.id)
+    (e) => !filterEntities?.includes(e.entityId)
   );
   const npcs = filteredEntities.filter((e) => e.entityType === EntityType.NPC);
   const monsters = filteredEntities.filter(
@@ -63,11 +63,11 @@ const BinderObject: React.FC<IBinderProps> = ({
   const [deleteType, setDeleteType] = useState<
     "entity" | "plan" | "campaign" | "note"
   >("entity");
-  const [deleteId, setDeleteId] = useState<string>("");
+  const [deleteId, setDeleteId] = useState<string | number>("");
 
   const handleDelete = (
     type: "entity" | "plan" | "campaign" | "note",
-    id: string
+    id: string | number
   ) => {
     setShowDeleteMenu(true);
     setDeleteType(type);
@@ -78,47 +78,47 @@ const BinderObject: React.FC<IBinderProps> = ({
     setShowDeleteMenu(false);
   };
 
-  const handleEditPlan = (id: string) => {
-    navigate(`/plan/${id}`);
+  const handleEditPlan = (planId: string | number) => {
+    navigate(`/plan/${planId}`);
   };
 
   const handleEditEntity = (entity: IEntity) => {
-    navigate(`/entity/${entity.id}/edit`);
+    navigate(`/entity/${entity.entityId}/edit`);
   };
 
   const handleEditNote = (note: INote) => {
     setPreferences({
-      selectedNote: note.id,
+      selectedNote: note.noteId,
     });
   };
 
   const renderEntityRow = (entity: IEntity) => (
-    <tr key={entity.id} className={styles.plansTableRow}>
+    <tr key={entity.entityId} className={styles.plansTableRow}>
       <td className={styles.plansTableAction}>
         <Button
           variant="text"
-          title={`Edit ${entity.name}`}
+          title={`Edit ${entity.entityName}`}
           onClick={() => handleEditEntity(entity)}
         >
           <FontAwesomeIcon icon="pencil" />
         </Button>
       </td>
-      <td className={styles.plansTablePlanType} title={`${entity.name}`}>
-        {entity.name}
+      <td className={styles.plansTablePlanType} title={`${entity.entityName}`}>
+        {entity.entityName}
       </td>
       <td className={styles.plansTableEntities}></td>
       <td className={styles.plansTableAction}>
         {typeof onLoad === "function" ? (
           <Button
-            title={`Load ${entity.name}`}
+            title={`Load ${entity.entityName}`}
             onClick={() => onLoad(entity)}
             icon={<FontAwesomeIcon icon="share-from-square" rotation={270} />}
             variant="text"
           />
         ) : (
           <Button
-            title={`Delete ${entity.name}`}
-            onClick={() => handleDelete("entity", entity.id)}
+            title={`Delete ${entity.entityName}`}
+            onClick={() => handleDelete("entity", entity.entityId)}
             icon="trash"
             variant="text"
           />
@@ -132,7 +132,7 @@ const BinderObject: React.FC<IBinderProps> = ({
     const length = entities.length;
     let result = entities
       .slice(0, maxShown)
-      .map((e) => e.name)
+      .map((e) => e.entityName)
       .join(", ");
     if (length > maxShown) {
       result = `${result} +${length - maxShown}`;
@@ -144,14 +144,14 @@ const BinderObject: React.FC<IBinderProps> = ({
     switch (activeTab) {
       case "Plans":
         return plans.map((plan) => {
-          const planEntities = getEntitiesById(plan.entities);
+          const planEntities = getEntitiesById(plan.planEntities);
           return (
-            <tr key={plan.id} className={styles.plansTableRow}>
+            <tr key={plan.planId} className={styles.plansTableRow}>
               <td className={styles.plansTableAction}>
                 <Button
                   variant="text"
                   title={"Edit Plan"}
-                  onClick={() => handleEditPlan(plan.id)}
+                  onClick={() => handleEditPlan(plan.planId)}
                 >
                   <FontAwesomeIcon icon="pencil" />
                 </Button>
@@ -162,7 +162,7 @@ const BinderObject: React.FC<IBinderProps> = ({
               <td
                 className={styles.plansTableEntities}
                 title={`${planEntities
-                  .map((entity) => entity.name)
+                  .map((entity) => entity.entityName)
                   .join(", ")}`}
               >
                 {getEntitiesText(planEntities)}
@@ -171,7 +171,7 @@ const BinderObject: React.FC<IBinderProps> = ({
               <td className={styles.plansTableAction}>
                 <Button
                   title={"Delete Plan"}
-                  onClick={() => handleDelete("plan", plan.id)}
+                  onClick={() => handleDelete("plan", plan.planId)}
                   icon="trash"
                   variant="text"
                 />
@@ -182,7 +182,7 @@ const BinderObject: React.FC<IBinderProps> = ({
 
       case "Notes":
         return notes.map((note) => (
-          <tr key={note.id} className={styles.plansTableRow}>
+          <tr key={note.noteId} className={styles.plansTableRow}>
             <td className={styles.plansTableAction}>
               <Button
                 variant="text"
@@ -192,14 +192,14 @@ const BinderObject: React.FC<IBinderProps> = ({
                 <FontAwesomeIcon icon="pencil" />
               </Button>
             </td>
-            <td className={styles.plansTableSpan} title={note.title}>
-              {note.title}
+            <td className={styles.plansTableSpan} title={note.noteTitle}>
+              {note.noteTitle}
             </td>
 
             <td className={styles.plansTableAction}>
               <Button
                 title={"Delete Note"}
-                onClick={() => handleDelete("note", note.id)}
+                onClick={() => handleDelete("note", note.noteId)}
                 icon="trash"
                 variant="text"
               />

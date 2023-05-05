@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 interface IDeleteMenuProps {
   type: "entity" | "plan" | "campaign" | "note";
-  id: string;
+  id: string | number;
   onClose: () => void;
 }
 
@@ -51,11 +51,6 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
         break;
 
       case "campaign":
-        if (preferences.currentCampaignId === id) {
-          setPreferences({
-            currentCampaignId: null,
-          });
-        }
         deleteCampaign(id);
         window.location.reload();
         setShowWelcomeMenu(true); // set the state to show the WelcomeMenu

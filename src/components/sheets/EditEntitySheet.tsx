@@ -25,7 +25,7 @@ function EditEntitySheet() {
         entityType: (searchType as EntityType) || undefined,
       });
       navigate(
-        `/entity/${newEntity.id}/edit${
+        `/entity/${newEntity.entityId}/edit${
           searchType ? "?type=" + searchType : ""
         }`,
         {
@@ -45,9 +45,9 @@ function EditEntitySheet() {
 
   return (
     <div className={styles.sheetsContainer}>
-      {entityData?.image && (
+      {entityData?.entityImage && (
         <div className={styles.imageContainer}>
-          <img src={entityData.image} alt={entityData.name} />
+          <img src={entityData.entityImage} alt={entityData.entityName} />
         </div>
       )}
       <div className={styles.header}>

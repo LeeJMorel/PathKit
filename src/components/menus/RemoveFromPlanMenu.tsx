@@ -3,8 +3,8 @@ import MenuButton from "../buttons/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface IRemoveMenuProps {
-  planId: string;
-  entityId: string;
+  planId: string | number;
+  entityId: string | number;
   onRemove: () => void;
   onClose: () => void;
 }

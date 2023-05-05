@@ -5,15 +5,15 @@ import { usePreferencesStore } from "./usePreferencesStore";
 import { IEntity, EntityType } from "../api/model";
 import { PartialBy } from "../utilities";
 
-export type PartialEntity = PartialBy<IEntity, "id" | "campaignId">;
+export type PartialEntity = PartialBy<IEntity, "entityId" | "campaignId">;
 
 interface IUseEntities {
   entities: IEntity[];
   setEntities: (entities: IEntity[]) => void;
   addEntity: (entity: PartialEntity) => IEntity;
-  getEntityById: (entityId?: string) => IEntity | undefined;
-  getEntitiesById: (entityIds?: string[]) => IEntity[];
-  deleteEntity: (entityId: string) => void;
+  getEntityById: (entityId?: string | number) => IEntity | undefined;
+  getEntitiesById: (entityIds?: (string | number)[]) => IEntity[];
+  deleteEntity: (entityId: string | number) => void;
   getPlayerEntities: () => IEntity[];
   getActivePlayerEntities: () => IEntity[];
   updateEntity: (entity: PartialEntity) => IEntity;
@@ -22,14 +22,13 @@ interface IUseEntities {
 }
 
 export const useEntities = (): IUseEntities => {
-  const { entities, setEntities, refreshEntities } = useStore((store) => ({
-    entities: store.entities,
-    setEntities: store.setEntities,
-    refreshEntities: store.refreshEntities,
-  }));
-  const currentCampaignId = usePreferencesStore(
-    (store) => store.preferences.currentCampaignId
-  );
+  const { entities, setEntities, refreshEntities, currentCampaignId } =
+    useStore((store) => ({
+      entities: store.entities,
+      setEntities: store.setEntities,
+      refreshEntities: store.refreshEntities,
+      currentCampaignId: store.currentCampaignId,
+    }));
 
   // Initial call should refresh stored entities from API
   useEffect(() => {
@@ -40,7 +39,7 @@ export const useEntities = (): IUseEntities => {
     (newEntity: PartialEntity): IEntity => {
       const entity: IEntity = {
         ...newEntity,
-        id: newEntity.id || uuid(),
+        entityId: newEntity.entityId || uuid(),
         campaignId: newEntity.campaignId || currentCampaignId,
       } as IEntity;
       console.log("debug addEntity:", {
@@ -55,24 +54,24 @@ export const useEntities = (): IUseEntities => {
   );
 
   const getEntityById = useCallback(
-    (entityId?: string): IEntity | undefined => {
-      const match = entities.find((e) => e.id === entityId);
+    (entityId?: string | number): IEntity | undefined => {
+      const match = entities.find((e) => e.entityId === entityId);
       return match;
     },
     [entities]
   );
 
   const getEntitiesById = useCallback(
-    (entityIds?: string[]): IEntity[] => {
-      const matches = entities.filter((e) => entityIds?.includes(e.id));
+    (entityIds?: (string | number)[]): IEntity[] => {
+      const matches = entities.filter((e) => entityIds?.includes(e.entityId));
       return matches;
     },
     [entities]
   );
 
   const deleteEntity = useCallback(
-    (entityId: string): void => {
-      return setEntities(entities.filter((e) => e.id !== entityId));
+    async (entityId: string | number): Promise<void> => {
+      return await setEntities(entities.filter((e) => e.entityId !== entityId));
     },
     [entities]
   );
@@ -82,16 +81,14 @@ export const useEntities = (): IUseEntities => {
   }, [entities]);
 
   const getActivePlayerEntities = useCallback((): IEntity[] => {
-    return entities.filter(
-      (e) => e.entityType === EntityType.Player && e.isActive
-    );
+    return entities.filter((e) => e.entityType === EntityType.Player);
   }, [entities]);
 
   const updateEntity = useCallback(
     (newEntity: PartialEntity): IEntity => {
       let entity = newEntity;
       const newEntities: IEntity[] = entities.map((e) => {
-        if (e.id === entity.id) {
+        if (e.entityId === entity.entityId) {
           entity = Object.assign({}, e, entity);
           return entity as IEntity;
         }
@@ -105,7 +102,7 @@ export const useEntities = (): IUseEntities => {
   );
 
   const updateOrAddEntity = (newEntity: PartialEntity): IEntity => {
-    return newEntity.id ? updateEntity(newEntity) : addEntity(newEntity);
+    return newEntity.entityId ? updateEntity(newEntity) : addEntity(newEntity);
   };
 
   const resetEntities = useCallback((): void => {

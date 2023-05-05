@@ -16,7 +16,7 @@ function NotesSheet() {
     if (preferences.selectedNote === null) {
       newNote = getLatestNote() || addNote({});
       setPreferences({
-        selectedNote: newNote.id,
+        selectedNote: newNote.noteId,
       });
     }
     setNote(newNote);

@@ -7,18 +7,18 @@ export enum EntityType {
 }
 
 export interface IEntity {
-  id: string;
-  image?: string; //an image for each object added
-  name?: string;
-  stats?: {
+  entityId: string | number;
+  entityImage?: string; //an image for each object added
+  entityName?: string;
+  entityStats?: {
     [key: string]: number;
   };
-  hp?: [number, number, number?]; // current hp, total hp, and temp hp
-  equipment?: string[];
-  campaignId?: string;
+  entityHp?: [number, number, number?]; // current hp, total hp, and temp hp
+  entityEquipment?: string[];
+  campaignId?: number;
   entityType?: EntityType;
-  initiative?: number;
-  isActive?: boolean;
+  entityInitiative?: number;
+  entityIsActive?: boolean;
 }
 
 export enum PlanType {
@@ -27,25 +27,30 @@ export enum PlanType {
 }
 
 export interface IPlan {
-  id: string;
+  planId: string | number;
   planType: PlanType;
-  campaignId?: string;
+  campaignId?: number;
   // Array of entity Ids
-  entities: string[];
-  order?: number;
+  planEntities: (string | number)[];
+  planOrderNum?: number;
 }
 
 export interface ICampaign {
-  id: string;
-  name: string;
-  desc: string;
+  campaignId: string | number;
+  campaignName: string;
+  campaignDesc: string;
 }
 
 export interface INote {
-  id: string;
-  campaignId: string;
-  title: string;
-  body: string;
-  createDate: string;
-  modifiedDate?: string;
+  noteId: string | number;
+  campaignId: string | number;
+  noteTitle: string;
+  noteBody: string;
+  noteCreateDate: string;
+  noteModifiedDate?: string;
 }
+
+export type Operator = "=" | "<>" | "!=" | "<" | ">" | "<=" | ">=";
+export type SqliteOper = Operator | "IN" | "LIKE" | "BETWEEN";
+export type SqlOrder = "DESC" | "ASC";
+export type SqlOrderBy = [string, SqlOrder][];

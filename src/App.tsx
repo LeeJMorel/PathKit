@@ -26,6 +26,7 @@ import EditEntitySheet from "./components/sheets/EditEntitySheet";
 import NotesSheet from "./components/sheets/NotesSheet";
 import CreationDropdown from "./components/dropdowns/CreationDropdown";
 import EditPlanSheet from "./components/sheets/EditPlanSheet";
+import { initializeDatabase } from "./api/database";
 
 // Load FontAwesome icons
 library.add(fas);
@@ -36,14 +37,15 @@ export enum AppMode {
 }
 
 function App() {
+  useEffect(() => {
+    // Initialize database on first load
+    const asyncInit = async () => await initializeDatabase;
+    asyncInit();
+  }, []);
   //control at a high level the campaign that we load
   const { currentCampaignId, deleteCampaign, unloadCampaign } = useCampaigns();
-  const handleDeleteCampaign = (campaignId: string) => {
+  const handleDeleteCampaign = (campaignId: string | number) => {
     deleteCampaign(campaignId);
-    // Also reset the current campaign if it is the one being deleted
-    if (currentCampaignId === campaignId) {
-      unloadCampaign();
-    }
   };
   // Define the props for the Header component
   const [mode, setMode] = useState<AppMode>(AppMode.exploration);

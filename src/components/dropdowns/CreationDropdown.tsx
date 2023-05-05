@@ -38,7 +38,7 @@ const CreationDropdown: React.FC<CreationDropdownProps> = ({
       onClick: () => {
         const newNote = addNote({});
         setPreferences({
-          selectedNote: newNote.id,
+          selectedNote: newNote.noteId,
         });
       },
     },

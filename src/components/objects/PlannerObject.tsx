@@ -10,16 +10,16 @@ export interface PlannerObjectProps {
 }
 
 function PlannerObject({ plan }: PlannerObjectProps) {
-  const { entities, planType } = plan;
+  const { planEntities: entities, planType } = plan;
   const { getEntitiesById } = useEntities();
   const planEntities = getEntitiesById(entities);
   const { setPreferences } = usePreferencesStore();
   const [isHovering, setIsHovering] = useState(false);
 
   const handleClick = () => {
-    setPreferences({ selectedPlan: plan.id });
+    setPreferences({ selectedPlan: plan.planId });
   };
-  const tooltipId = `tooltip-${plan.id}`;
+  const tooltipId = `tooltip-${plan.planId}`;
 
   return (
     <div
@@ -33,9 +33,9 @@ function PlannerObject({ plan }: PlannerObjectProps) {
         if (i < 4) {
           return (
             <img
-              key={entity.id}
-              src={entity.image}
-              alt={entity.name}
+              key={entity.entityId}
+              src={entity.entityImage}
+              alt={entity.entityName}
               className={classNames(planEntities.length > 1 && styles.grid)}
             />
           );
@@ -50,7 +50,7 @@ function PlannerObject({ plan }: PlannerObjectProps) {
       )}
       {isHovering && (
         <div className={styles.tooltip}>
-          {planEntities.map((e) => e.name).join(",\n")}
+          {planEntities.map((e) => e.entityName).join(",\n")}
         </div>
       )}
     </div>

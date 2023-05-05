@@ -31,13 +31,13 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
     () => entityDataProp || getEntityById(entityId),
     [entityId, entityDataProp]
   );
-  const [entity, setEntity] = useState<Omit<IEntity, "id">>({
-    image: defaultImage,
-    name: "",
-    stats: {},
-    hp: [0, 0],
+  const [entity, setEntity] = useState<Omit<IEntity, "entityId">>({
+    entityImage: defaultImage,
+    entityName: "",
+    entityStats: {},
+    entityHp: [0, 0],
     entityType: type as EntityType,
-    isActive: true,
+    entityIsActive: true,
     ...entityData,
   });
 
@@ -75,7 +75,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
     const { value } = e.target;
     setEntity({
       ...entity,
-      hp: [Number(value), Number(value)],
+      entityHp: [Number(value), Number(value)],
     });
   };
 
@@ -92,7 +92,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
           <input
             type="text"
             name="stats"
-            value={entity.stats?.toString()}
+            value={entity.entityStats?.toString()}
             onChange={handleInputChange}
             className={styles.formInput}
           />
@@ -109,7 +109,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
             type="text"
             name="hp"
             min={0}
-            value={entity.hp ? entity.hp[1] : ""}
+            value={entity.entityHp ? entity.entityHp[1] : ""}
             onChange={handleHPChange}
             className={styles.formInput}
           />
@@ -128,7 +128,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
           name="image"
           onChange={handleInputChange}
           className={styles.formSelect}
-          value={entity.image}
+          value={entity.entityImage}
         >
           <option value={defaultImage}>Fighter</option>
           <option value={monster}>Monster</option>
@@ -143,7 +143,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
         <input
           type="text"
           name="name"
-          value={entity.name}
+          value={entity.entityName}
           onChange={handleInputChange}
           className={styles.formInput}
         />

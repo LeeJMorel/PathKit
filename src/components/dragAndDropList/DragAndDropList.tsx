@@ -9,33 +9,31 @@ import { onDragEnd } from "../../utilities";
 import classNames from "classnames";
 import styles from "./DragAndDropList.module.scss";
 
-export interface DraggableItem extends Object {
-  id: string;
-}
-
-export interface IDragAndDropListProps<T extends DraggableItem> {
+export interface IDragAndDropListProps {
   listAs?: React.ElementType;
   listItemAs?: React.ElementType;
-  id: string;
-  items: T[];
-  setItems: (items: T[]) => void;
+  id: string | number;
+  items: any[];
+  itemIdKey: string;
+  setItems: (items: any[]) => void;
   onDragEnd?: (result: DropResult) => void;
-  onRenderItem: (item: T) => React.ReactNode;
+  onRenderItem: (item: any) => React.ReactNode;
   listProps?: React.HTMLProps<HTMLUListElement>;
   listItemProps?: React.HTMLProps<HTMLLIElement>;
 }
 
-export const DragAndDropList = <T extends DraggableItem>({
+export const DragAndDropList = ({
   listAs = "ul",
   listItemAs = "li",
   id,
   items,
   setItems,
+  itemIdKey = "id",
   onDragEnd: onDragEndProp,
   onRenderItem,
   listProps = {},
   listItemProps = {},
-}: IDragAndDropListProps<T>) => {
+}: IDragAndDropListProps) => {
   const handleDragEnd = (result: DropResult) => {
     onDragEnd(result, items, setItems);
     if (typeof onDragEndProp === "function") {
@@ -48,7 +46,7 @@ export const DragAndDropList = <T extends DraggableItem>({
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Droppable droppableId={id}>
+      <Droppable droppableId={id.toString()}>
         {(droppableProvided, droppableSnapshot) => (
           <List
             {...droppableProvided.droppableProps}
@@ -57,7 +55,11 @@ export const DragAndDropList = <T extends DraggableItem>({
             className={classNames(styles.dragAndDropList, listProps.className)}
           >
             {items.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
+              <Draggable
+                key={item[itemIdKey]}
+                draggableId={item[itemIdKey].toString()}
+                index={index}
+              >
                 {(draggableProvided, draggableSnapshot) => (
                   <ListItem
                     ref={draggableProvided.innerRef}

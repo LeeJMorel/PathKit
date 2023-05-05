@@ -11,20 +11,20 @@ interface IUseNotes {
   notes: INote[];
   setNotes: (notes: INote[]) => void;
   addNote: (note: PartialNote) => INote;
-  getNoteById: (noteId?: string | null) => INote | undefined;
-  deleteNote: (noteId: string) => void;
+  getNoteById: (noteId?: string | number | null) => INote | undefined;
+  deleteNote: (noteId: string | number) => void;
   updateNote: (note: PartialNote) => INote;
   updateOrAddNote: (note: PartialNote) => INote;
   getLatestNote: () => INote | undefined;
 }
 export const useNotes = (): IUseNotes => {
-  const { notes, setNotes, refreshNotes } = useStore((store) => ({
-    notes: store.notes,
-    setNotes: store.setNotes,
-    refreshNotes: store.refreshNotes,
-  }));
-  const currentCampaignId = usePreferencesStore(
-    (store) => store.preferences.currentCampaignId
+  const { notes, setNotes, refreshNotes, currentCampaignId } = useStore(
+    (store) => ({
+      notes: store.notes,
+      setNotes: store.setNotes,
+      refreshNotes: store.refreshNotes,
+      currentCampaignId: store.currentCampaignId,
+    })
   );
 
   // Initial call should refresh stored notes from API
@@ -36,12 +36,12 @@ export const useNotes = (): IUseNotes => {
     (newNote: PartialNote): INote => {
       const date = new Date().toLocaleString();
       const note: INote = {
-        title: date,
-        body: "",
+        noteTitle: date,
+        noteBody: "",
         ...newNote,
-        id: uuid(),
-        createDate: date,
-        modifiedDate: date,
+        noteId: uuid(),
+        noteCreateDate: date,
+        noteModifiedDate: date,
         campaignId: currentCampaignId,
       } as INote;
 
@@ -52,8 +52,8 @@ export const useNotes = (): IUseNotes => {
   );
 
   const getNoteById = useCallback(
-    (noteId?: string | null): INote | undefined => {
-      const matches = notes.filter((p) => p.id === noteId);
+    (noteId?: string | number | null): INote | undefined => {
+      const matches = notes.filter((p) => p.noteId === noteId);
       if (matches.length) {
         return matches[0];
       }
@@ -62,8 +62,8 @@ export const useNotes = (): IUseNotes => {
   );
 
   const deleteNote = useCallback(
-    (noteId: string): void => {
-      return setNotes(notes.filter((p) => p.id !== noteId));
+    async (noteId: string | number): Promise<void> => {
+      return await setNotes(notes.filter((p) => p.noteId !== noteId));
     },
     [notes]
   );
@@ -73,9 +73,9 @@ export const useNotes = (): IUseNotes => {
       const date = new Date().toLocaleString();
       let note = newNote;
       const newNotes: INote[] = notes.map((n) => {
-        if (n.id === note.id) {
+        if (n.noteId === note.noteId) {
           note = Object.assign({}, n, note);
-          note.modifiedDate = date;
+          note.noteModifiedDate = date;
           return note as INote;
         }
         return n;
@@ -88,14 +88,14 @@ export const useNotes = (): IUseNotes => {
   );
 
   const updateOrAddNote = (newNote: PartialNote): INote => {
-    return newNote.id ? updateNote(newNote) : addNote(newNote);
+    return newNote.noteId ? updateNote(newNote) : addNote(newNote);
   };
 
   const getLatestNote = (): INote | undefined => {
     if (notes.length === 0) return;
     return notes.sort((a, z) => {
-      const dateA = Date.parse(a.modifiedDate || a.createDate);
-      const dateZ = Date.parse(z.modifiedDate || z.createDate);
+      const dateA = Date.parse(a.noteModifiedDate || a.noteCreateDate);
+      const dateZ = Date.parse(z.noteModifiedDate || z.noteCreateDate);
       return dateZ - dateA;
     })[0];
   };

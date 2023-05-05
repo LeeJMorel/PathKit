@@ -27,19 +27,17 @@ function NotesObject({ note: noteProp }: INotesObjectProps) {
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // setNotes(event.target.value); // Update notes state with input value
-    console.log(event);
     setNote((prev) => ({
       ...prev,
-      title: event.target.value,
+      noteTitle: event.target.value,
     }));
   };
 
   const handleBodyChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     // setNotes(event.target.value); // Update notes state with input value
-    console.log(event);
     setNote((prev) => ({
       ...prev,
-      body: event.target.value,
+      noteBody: event.target.value,
     }));
   };
 
@@ -51,7 +49,7 @@ function NotesObject({ note: noteProp }: INotesObjectProps) {
           name="title"
           onChange={handleTitleChange}
           placeholder="New note title"
-          value={note.title}
+          value={note.noteTitle}
         />
       </div>
       <Button onClick={() => setEditMode(!editMode)}>
@@ -60,14 +58,14 @@ function NotesObject({ note: noteProp }: INotesObjectProps) {
       {editMode ? (
         <textarea
           className={styles.notesEdit}
-          value={note.body}
+          value={note.noteBody}
           name="body"
           onChange={handleBodyChange}
           placeholder="Type your notes here. I support Markdown syntax."
         />
       ) : (
         <div className={styles.notesContainer}>
-          <Markdown>{note.body || "## Edit this note"}</Markdown>
+          <Markdown>{note.noteBody || "## Edit this note"}</Markdown>
         </div>
       )}
       <span className={styles.caption}>

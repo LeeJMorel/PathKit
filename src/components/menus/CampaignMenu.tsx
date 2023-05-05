@@ -20,15 +20,17 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
     unloadCampaign,
   } = useCampaigns();
 
-  const [selectedCampaign, setSelectedCampaign] = useState<string>("");
+  const [selectedCampaign, setSelectedCampaign] = useState<string | number>();
 
-  const handleCampaignSelect = (campaignId: string) => {
+  const handleCampaignSelect = (campaignId: string | number) => {
     setSelectedCampaign(campaignId);
   };
 
   const handleLoadClick = () => {
-    loadCampaign(selectedCampaign);
-    handleClose();
+    if (selectedCampaign) {
+      loadCampaign(selectedCampaign);
+      handleClose();
+    }
   };
 
   const handleClose = () => {
@@ -56,16 +58,16 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
       <>
         <div className={styles.content}>
           {campaigns.map((campaign) => (
-            <div key={campaign.id} className={styles.menuRowContainer}>
+            <div key={campaign.campaignId} className={styles.menuRowContainer}>
               <div
                 className={`${styles.menuTitle} ${
-                  selectedCampaign === campaign.name
+                  selectedCampaign === campaign.campaignName
                     ? styles.selectedCampaign
                     : ""
                 }`}
-                onClick={() => handleCampaignSelect(campaign.id)}
+                onClick={() => handleCampaignSelect(campaign.campaignId)}
               >
-                {campaign.name}
+                {campaign.campaignName}
               </div>
             </div>
           ))}

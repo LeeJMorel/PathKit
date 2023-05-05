@@ -30,24 +30,24 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
     setShowConditionsMenu((prevValue) => !prevValue);
   };
 
-  const handleEntityClick = (id: string) => {
+  const handleEntityClick = (id: string | number) => {
     const selectedSearch = null;
     setPreferences({
       selectedSearch,
     });
-    navigate(`/entity/${entity.id}`);
+    navigate(`/entity/${entity.entityId}`);
   };
-  const isHPZero = entity.hp && entity.hp[0] === 0;
-  const stats = entity.stats || {};
+  const isHPZero = entity.entityHp && entity.entityHp[0] === 0;
+  const stats = entity.entityStats || {};
 
   const statKeys = Object.keys(exampleStats);
 
   return (
     <div className={classNames(styles.card, className)} {...rest}>
       <div
-        key={entity.id}
+        key={entity.entityId}
         className={styles.cardContainer}
-        onClick={() => handleEntityClick(entity.id)}
+        onClick={() => handleEntityClick(entity.entityId)}
       >
         <div
           className={classNames(
@@ -55,14 +55,14 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
             isHPZero && styles.entityDeadImage
           )}
         >
-          <img src={entity.image} alt={entity.name} />
+          <img src={entity.entityImage} alt={entity.entityName} />
           {isHPZero && (
             <FontAwesomeIcon className={styles.deadIcon} icon="skull" />
           )}
         </div>
         <div className={styles.entityContent}>
-          <div className={styles.entityName}>{entity.name}</div>
-          {entity.hp && (
+          <div className={styles.entityName}>{entity.entityName}</div>
+          {entity.entityHp && (
             <>
               <div className={styles.entityHP}>
                 {showConditionsMenu && (
@@ -80,7 +80,7 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
                   <FontAwesomeIcon icon="plus" />
                 </button>
                 <div className={styles.entityHPNumbers}>
-                  {entity.hp[0]}/{entity.hp[1]}
+                  {entity.entityHp[0]}/{entity.entityHp[1]}
                 </div>
               </div>
               <div className={styles.entityStats}>

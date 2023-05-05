@@ -7,12 +7,11 @@ interface IPreferences {
   largeFont: boolean;
   theme: string;
   visibleModules: Record<Module, boolean>;
-  currentCampaignId: string | null;
 
-  selectedPlan: string | null;
-  selectedNote: string | null;
-  selectedSearch: string | null;
-  absentPlayers: string[];
+  selectedPlan: string | number | null;
+  selectedNote: string | number | null;
+  selectedSearch: string | number | null;
+  absentPlayers: (string | number)[];
 }
 
 interface IPreferencesStore {
@@ -31,7 +30,6 @@ export const defaultPreferences = {
     NotesModule: false,
     BinderModule: true,
   },
-  currentCampaignId: null,
   selectedPlan: null,
   selectedNote: null,
   selectedSearch: null,
@@ -51,7 +49,7 @@ export const usePreferencesStore = create(
           NotesModule: false,
           BinderModule: true,
         },
-        currentCampaignId: null,
+        currentCampaignId: 0,
         selectedPlan: null,
         selectedNote: null,
         selectedSearch: null,
@@ -66,12 +64,6 @@ export const usePreferencesStore = create(
             ...newPreferences,
           },
         });
-      },
-
-      setCampaignId: (campaignId: string): void => {
-        const { setPreferences } = get();
-        // clearInitiative(currentCampaignId);
-        setPreferences({ currentCampaignId: campaignId });
       },
     }),
     {

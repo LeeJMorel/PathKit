@@ -19,6 +19,10 @@
   border-radius: 5px;
   width: 30%;
   min-width: 380px;
+  max-width: 680px;
+  max-height: 50vh;
+  display: flex;
+  flex-direction: column;
   position: relative;
   transition: all 0.2s ease-in-out;
 
@@ -76,8 +80,9 @@
   }
 
   .content {
-    max-height: 30%;
+    // max-height: 30%;
     overflow: auto;
+    margin-bottom: 1em;
   }
 
   .tabContent {

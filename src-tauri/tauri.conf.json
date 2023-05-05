@@ -7,7 +7,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "pathkit",
+    "productName": "PathKit",
     "version": "0.1.0"
   },
   "tauri": {
@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.pathkit2e.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -55,11 +55,9 @@
     },
     "windows": [
       {
-        "fullscreen": false,
-        "height": 600,
         "resizable": true,
         "title": "PathKit",
-        "width": 800
+        "maximized": true
       }
     ]
   }

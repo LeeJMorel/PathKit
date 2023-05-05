@@ -32,14 +32,14 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   const { preferences, setPreferences } = usePreferencesStore();
   const { getPlayerEntities, updateOrAddEntity: updateEntity } = useEntities();
   const players = getPlayerEntities();
-  const { currentCampaign } = useCampaigns();
+  const { currentCampaign, currentCampaignId } = useCampaigns();
 
   //placeholder until store can delete
   const [showDeleteMenu, setShowDeleteMenu] = useState<boolean>(false);
   const [deleteType, setDeleteType] = useState<"entity" | "plan" | "campaign">(
     "entity"
   );
-  const [deleteId, setDeleteId] = useState<string>("");
+  const [deleteId, setDeleteId] = useState<string | number>();
 
   const [showCampaignMenu, setShowCampaignMenu] = useState<boolean>(false);
   const [campaignType, setCampaignType] = useState<"Load" | "New">("Load");
@@ -75,7 +75,10 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     });
   };
 
-  const handleDelete = (type: "entity" | "plan" | "campaign", id: string) => {
+  const handleDelete = (
+    type: "entity" | "plan" | "campaign",
+    id: string | number
+  ) => {
     setShowDeleteMenu(true);
     setDeleteType(type);
     setDeleteId(id);
@@ -105,11 +108,9 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   //We don't want this player to be active this session
   const handleAbsent = (
     event: React.ChangeEvent<HTMLInputElement>,
-    playerId: string
+    playerId: string | number
   ) => {
     const { checked } = event.target;
-
-    console.log({ checked, playerId });
 
     setPreferences({
       absentPlayers: checked
@@ -175,7 +176,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
           renderEntityForm()
         ) : (
           <>
-            {showDeleteMenu && (
+            {showDeleteMenu && deleteId && (
               <DeleteMenu
                 type={deleteType}
                 id={deleteId}
@@ -245,17 +246,19 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                 <div className={styles.tabContent}>
                   <h2
                     className={styles.tabHeader}
-                    title={currentCampaign ? currentCampaign.name : ""}
+                    title={currentCampaign ? currentCampaign.campaignName : ""}
                   >
-                    {currentCampaign ? currentCampaign.name : "Campaign Name"}
+                    {currentCampaign
+                      ? currentCampaign.campaignName
+                      : "Campaign Name"}
                   </h2>
                   <hr className={styles.tabHorizontalLine} />
                   <div
                     className={styles.tabSubtext}
-                    title={currentCampaign ? currentCampaign.desc : ""}
+                    title={currentCampaign ? currentCampaign.campaignDesc : ""}
                   >
                     {currentCampaign
-                      ? currentCampaign.desc
+                      ? currentCampaign.campaignDesc
                       : "A Campaign description provided by the user when they make a new campaign"}
                   </div>
                   <br />
@@ -264,8 +267,8 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                       title={"Delete Campaign"}
                       className={styles.buttonMargin}
                       onClick={() =>
-                        preferences.currentCampaignId &&
-                        handleDelete("campaign", preferences.currentCampaignId)
+                        currentCampaignId &&
+                        handleDelete("campaign", currentCampaignId)
                       }
                     >
                       Delete Campaign
@@ -297,30 +300,38 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
 
                   <div className={styles.menuScrollContainer}>
                     {players.map((player) => (
-                      <div key={player.id} className={styles.menuRowContainer}>
+                      <div
+                        key={player.entityId}
+                        className={styles.menuRowContainer}
+                      >
                         <div className={styles.menuEndContainer}>
-                          <div className={styles.menuTitle} title={player.name}>
-                            {player.name}
+                          <div
+                            className={styles.menuTitle}
+                            title={player.entityName}
+                          >
+                            {player.entityName}
                           </div>
                         </div>
                         <div
                           className={styles.largeCheck}
-                          title={`${player.name}: ${
-                            !preferences.absentPlayers.includes(player.id)
+                          title={`${player.entityName}: ${
+                            !preferences.absentPlayers.includes(player.entityId)
                               ? "is Present"
                               : "is Not Present"
                           }`}
                         >
                           <MenuInput
-                            key={player.id}
+                            key={player.entityId}
                             checked={
-                              !preferences.absentPlayers.includes(player.id)
+                              !preferences.absentPlayers.includes(
+                                player.entityId
+                              )
                             }
                             type="checkbox"
                             name="isActive"
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
-                            ) => handleAbsent(event, player.id)}
+                            ) => handleAbsent(event, player.entityId)}
                           />
                         </div>
                       </div>
