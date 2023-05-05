@@ -1,0 +1,83 @@
+.sheetsContainer {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+
+  .imageContainer {
+    display: flex;
+    justify-content: center;
+    padding-right: 1em;
+    padding-left: 1em;
+    padding-bottom: 1em;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h2 {
+      font-size: 1.5rem;
+      margin: 0 auto 0 0;
+      color: var(--primaryText);
+    }
+
+    .headerButton {
+      margin: 0 0 0 0.5em;
+    }
+    .closeButton {
+      &:hover {
+        color: var(--close);
+      }
+    }
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--primaryBackground);
+    margin-bottom: 1em;
+  }
+
+  .sheetRowContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 1em;
+    margin-top: 1em;
+
+    &.end {
+      justify-content: flex-end;
+    }
+  }
+
+  .sheetCenterContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .sheetEndContainer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .editEntityContainer {
+    width: 100%;
+  }
+
+  .binderContainer {
+    border: 1px solid var(--secondaryBackground);
+    width: 100%;
+    height: 300px;
+  }
+}

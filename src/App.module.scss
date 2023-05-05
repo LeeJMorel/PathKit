@@ -1,0 +1,121 @@
+@import "./styles/variables.scss";
+@import "./styles/themeHelpers.scss";
+
+:root {
+  /* Allow access to color palette variables directly. */
+  @each $name, $value in $colorPalette {
+    @include define-custom-property($name, $value);
+  }
+}
+
+#root {
+  height: 100%; /* Set height of App to take up the full height of the screen */
+  width: 100%; /* Set width of App to take up the full height of the screen */
+  text-align: center;
+}
+
+$headerButtonWidth: 20px;
+
+/* Our main component, this takes up the full screen .
+This consists of two main objects, the header and the content*/
+.app {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 100vh; /* Set height of App to take up the full height of the screen */
+  width: 100vw; /* Set width of App to take up the full height of the screen */
+  background-color: var(--bodyBackground);
+  color: var(--bodyText);
+  overflow-x: hidden;
+  overflow-y: hidden;
+  font-size: 16px;
+
+  &.largeFont {
+    font-size: 18px;
+  }
+
+  &.parchment {
+    @each $name, $value in $parchmentTheme {
+      @include define-custom-property($name, $value);
+    }
+  }
+
+  &.dark {
+    @each $name, $value in $darkTheme {
+      @include define-custom-property($name, $value);
+    }
+  }
+
+  &.highContrast {
+    @each $name, $value in $highContrastTheme {
+      @include define-custom-property($name, $value);
+    }
+  }
+
+  &.highContrastDark {
+    @each $name, $value in $highContrastDarkTheme {
+      @include define-custom-property($name, $value);
+    }
+  }
+}
+
+/* At the top of the app is a header */
+.header {
+  height: $headerHeight; /* Set height of Header to 10em */
+  width: 100%; /* Set width of Header to 100% to take up the full width of its column */
+  background-color: var(--accentBackground);
+  color: var(--accentText);
+  flex-direction: row;
+  display: flex;
+
+  .hamburgerMenu {
+    cursor: pointer;
+  }
+
+  // .dropdown {
+  //   position: absolute;
+  //   top: $headerHeight;
+  //   left: 5px;
+  //   z-index: 999;
+  // }
+
+  /* The header consists of 3 sections, one for each of our Views*/
+  .headerSection {
+    padding: 0.5em;
+    flex: 1 1 33%;
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+    width: 100%;
+
+    .headerTitle {
+      font-weight: bold;
+      font-size: 1.4em;
+      margin: 0 auto;
+    }
+
+    /* If a button exists to one side, we place a spacer to ensure the title is centered*/
+    .spacer {
+      width: $headerButtonWidth;
+    }
+
+    .searchBar {
+      width: 100%;
+      height: 100%;
+      background-color: var(--secondaryBackground);
+
+      &::placeholder {
+        color: var(--secondaryText);
+      }
+    }
+  }
+}
+
+/* The app content is shown underneath the header */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex-wrap: nowrap;
+}

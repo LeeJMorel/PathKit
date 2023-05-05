@@ -1,0 +1,75 @@
+//this container takes the full size of the given module frame
+.moduleContainer {
+  color: black;
+  min-height: 33vh;
+  background-color: var(--bodyBackground);
+  color: var(--bodyText);
+  border-bottom: 1px solid var(--accentBackground);
+  display: flex;
+  flex: 1;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+
+  .moduleHeader {
+    border-bottom: 1px solid var(--accentBackground);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.5em;
+    width: 100%;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin: 0.2em auto;
+    }
+  }
+
+  .moduleContent {
+    padding: 1rem;
+    overflow: auto; /* Add overflow property to enable scrollbar */
+    display: flex;
+    flex: 1;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.dcTable {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--primaryText);
+
+  th,
+  td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--primaryBackground);
+    color: var(--bodyText);
+  }
+
+  th {
+    background-color: var(--primaryBackground);
+    color: var(--primaryText);
+  }
+
+  tr:nth-child(even) {
+    background-color: var(--secondaryAccentBackground);
+  }
+}
+
+.tipBody {
+  justify-content: flex-start;
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
