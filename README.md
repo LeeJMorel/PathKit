@@ -6,7 +6,7 @@ PathKit is a virtual GM (Game Master) screen for the tabletop role-playing game 
 ## Project Demo Video
 [View an example gameplay usage of prototype](https://www.youtube.com/watch?v=01wgcb1VR4I)
 ## Alpha Release
-[View a demo for the Alpha Release](https://www.youtube.com/watch?v=01wgcb1VR4I)
+[View a demo for the Alpha Release](https://main--fantastic-pegasus-e6a1d9.netlify.app/)
 ### Functional use-cases
 1. **Click on planned encounters:** You can select an encounter you have planned to run the initiative screen and organize initiative for you.
 2. **Add Players, NPCs, Shops, and Monsters:** You can create custom entities by using the creation menu in the upper left corner of the header.
