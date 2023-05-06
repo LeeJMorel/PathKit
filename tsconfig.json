@@ -17,6 +17,6 @@
     "noEmit": true,
     "jsx": "react-jsx",
   },
-  "include": ["src", "ReactDiceRollerBuild/Build"],
+  "include": ["src", "dice-resources"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
