@@ -3,21 +3,6 @@
 version = 3
 
 [[package]]
-name = "PathKit"
-version = "0.1.0"
-dependencies = [
- "async-std",
- "futures",
- "meilisearch-sdk",
- "serde",
- "serde_json",
- "sqlx 0.5.13",
- "tauri",
- "tauri-build",
- "tauri-plugin-sql",
-]
-
-[[package]]
 name = "adler"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2310,6 +2295,21 @@ name = "paste"
 version = "1.0.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9f746c4065a8fa3fe23974dd82f15431cc8d40779821001404d10d2e79ca7d79"
+
+[[package]]
+name = "pathkit"
+version = "0.1.0"
+dependencies = [
+ "async-std",
+ "futures",
+ "meilisearch-sdk",
+ "serde",
+ "serde_json",
+ "sqlx 0.5.13",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-sql",
+]
 
 [[package]]
 name = "percent-encoding"
