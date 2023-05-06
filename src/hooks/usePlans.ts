@@ -33,64 +33,69 @@ export const usePlans = (): IUsePlans => {
 
   const addPlan = useCallback(
     (newPlan: PartialPlan): IPlan => {
-      const plan: IPlan = {
-        ...newPlan,
-        planId: uuid(),
-        campaignId: currentCampaignId, // TODO get campaignId from high level
-      } as IPlan;
+      // const plan: IPlan = {
+      //   ...newPlan,
+      //   planId: uuid(),
+      //   campaignId: currentCampaignId, // TODO get campaignId from high level
+      // } as IPlan;
 
-      setPlans([...plans, plan]);
-      return plan;
+      // setPlans([...plans, plan]);
+      // return plan;
+      return {} as IPlan;
     },
     [plans, currentCampaignId]
   );
 
   const getPlanById = useCallback(
     (planId?: string | number): IPlan | undefined => {
-      const matches = plans.filter((p) => p.planId === planId);
-      if (matches.length) {
-        return matches[0];
-      }
+      // const matches = plans.filter((p) => p.planId === planId);
+      // if (matches.length) {
+      //   return matches[0];
+      // }
+      return undefined;
     },
     [plans]
   );
 
   const deletePlan = useCallback(
     async (planId: string | number): Promise<void> => {
-      return await setPlans(plans.filter((p) => p.planId !== planId));
+      // return await setPlans(plans.filter((p) => p.planId !== planId));
     },
     [plans]
   );
 
   const updatePlan = useCallback(
     (newPlan: PartialPlan): IPlan => {
-      let plan = newPlan;
-      const newPlans: IPlan[] = plans.map((p) => {
-        if (p.planId === newPlan.planId) {
-          plan = Object.assign({}, p, plan);
-          return plan as IPlan;
-        }
-        return p;
-      });
-      setPlans(newPlans);
-      return plan as IPlan;
+      // let plan = newPlan;
+      // const newPlans: IPlan[] = plans.map((p) => {
+      //   if (p.planId === newPlan.planId) {
+      //     plan = Object.assign({}, p, plan);
+      //     return plan as IPlan;
+      //   }
+      //   return p;
+      // });
+      // setPlans(newPlans);
+      // return plan as IPlan;
+      return {} as IPlan;
     },
     [plans]
   );
 
   const updateOrAddPlan = useCallback(
     (newPlan: PartialPlan): IPlan => {
-      const planExists = getPlanById(newPlan.planId);
-      if (planExists) {
-        return updatePlan(newPlan);
-      }
-      return addPlan(newPlan);
+      // const planExists = getPlanById(newPlan.planId);
+      // if (planExists) {
+      //   return updatePlan(newPlan);
+      // }
+      // return addPlan(newPlan);
+      return {} as IPlan;
     },
     [plans]
   );
 
   return {
-    plans: plans.filter((n) => n.campaignId === currentCampaignId),
+    // plans: plans.filter((n) => n.campaignId === currentCampaignId),
+    plans,
     setPlans,
     addPlan,
     getPlanById,

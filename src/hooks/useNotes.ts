@@ -34,74 +34,80 @@ export const useNotes = (): IUseNotes => {
 
   const addNote = useCallback(
     (newNote: PartialNote): INote => {
-      const date = new Date().toLocaleString();
-      const note: INote = {
-        noteTitle: date,
-        noteBody: "",
-        ...newNote,
-        noteId: uuid(),
-        noteCreateDate: date,
-        noteModifiedDate: date,
-        campaignId: currentCampaignId,
-      } as INote;
+      // const date = new Date().toLocaleString();
+      // const note: INote = {
+      //   noteTitle: date,
+      //   noteBody: "",
+      //   ...newNote,
+      //   noteId: uuid(),
+      //   noteCreateDate: date,
+      //   noteModifiedDate: date,
+      //   campaignId: currentCampaignId,
+      // } as INote;
 
-      setNotes([...notes, note]);
-      return note;
+      // setNotes([...notes, note]);
+      // return note;
+      return {} as INote;
     },
     [notes, currentCampaignId]
   );
 
   const getNoteById = useCallback(
     (noteId?: string | number | null): INote | undefined => {
-      const matches = notes.filter((p) => p.noteId === noteId);
-      if (matches.length) {
-        return matches[0];
-      }
+      // const matches = notes.filter((p) => p.noteId === noteId);
+      // if (matches.length) {
+      //   // return matches[0];
+      // }
+      return undefined;
     },
     [notes]
   );
 
   const deleteNote = useCallback(
     async (noteId: string | number): Promise<void> => {
-      return await setNotes(notes.filter((p) => p.noteId !== noteId));
+      // return await setNotes(notes.filter((p) => p.noteId !== noteId));
     },
     [notes]
   );
 
   const updateNote = useCallback(
     (newNote: PartialNote): INote => {
-      const date = new Date().toLocaleString();
-      let note = newNote;
-      const newNotes: INote[] = notes.map((n) => {
-        if (n.noteId === note.noteId) {
-          note = Object.assign({}, n, note);
-          note.noteModifiedDate = date;
-          return note as INote;
-        }
-        return n;
-      });
+      // const date = new Date().toLocaleString();
+      // let note = newNote;
+      // const newNotes: INote[] = notes.map((n) => {
+      //   if (n.noteId === note.noteId) {
+      //     note = Object.assign({}, n, note);
+      //     note.noteModifiedDate = date;
+      //     return note as INote;
+      //   }
+      //   return n;
+      // });
 
-      setNotes(newNotes);
-      return note as INote;
+      // setNotes(newNotes);
+      // return note as INote;
+      return {} as INote;
     },
     [notes]
   );
 
   const updateOrAddNote = (newNote: PartialNote): INote => {
-    return newNote.noteId ? updateNote(newNote) : addNote(newNote);
+    // return newNote.noteId ? updateNote(newNote) : addNote(newNote);
+    return {} as INote;
   };
 
   const getLatestNote = (): INote | undefined => {
-    if (notes.length === 0) return;
-    return notes.sort((a, z) => {
-      const dateA = Date.parse(a.noteModifiedDate || a.noteCreateDate);
-      const dateZ = Date.parse(z.noteModifiedDate || z.noteCreateDate);
-      return dateZ - dateA;
-    })[0];
+    // if (notes.length === 0) return;
+    // return notes.sort((a, z) => {
+    //   const dateA = Date.parse(a.noteModifiedDate || a.noteCreateDate);
+    //   const dateZ = Date.parse(z.noteModifiedDate || z.noteCreateDate);
+    //   return dateZ - dateA;
+    // })[0];
+    return undefined;
   };
 
   return {
-    notes: notes.filter((n) => n.campaignId === currentCampaignId),
+    // notes: notes.filter((n) => n.campaignId === currentCampaignId),
+    notes,
     setNotes,
     addNote,
     getNoteById,

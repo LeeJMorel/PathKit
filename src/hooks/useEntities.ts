@@ -37,26 +37,29 @@ export const useEntities = (): IUseEntities => {
 
   const addEntity = useCallback(
     (newEntity: PartialEntity): IEntity => {
-      const entity: IEntity = {
-        ...newEntity,
-        entityId: newEntity.entityId || uuid(),
-        campaignId: newEntity.campaignId || currentCampaignId,
-      } as IEntity;
-      console.log("debug addEntity:", {
-        entity,
-        newEntity,
-      });
+      // const entity: IEntity = {
+      //   ...newEntity,
+      //   entityId: newEntity.entityId || uuid(),
+      //   campaignId: newEntity.campaignId || currentCampaignId,
+      // } as IEntity;
+      // console.log("debug addEntity:", {
+      //   entity,
+      //   newEntity,
+      // });
 
-      setEntities([...entities, entity]);
-      return entity;
+      // setEntities([...entities, entity]);
+      //return entities;
+      return {} as IEntity;
     },
-    [setEntities, currentCampaignId, entities]
+    []
+    // [setEntities, currentCampaignId, entities]
   );
 
   const getEntityById = useCallback(
     (entityId?: string | number): IEntity | undefined => {
       const match = entities.find((e) => e.entityId === entityId);
-      return match;
+      // return match;
+      return undefined;
     },
     [entities]
   );
@@ -64,56 +67,62 @@ export const useEntities = (): IUseEntities => {
   const getEntitiesById = useCallback(
     (entityIds?: (string | number)[]): IEntity[] => {
       const matches = entities.filter((e) => entityIds?.includes(e.entityId));
-      return matches;
+      // return matches;
+      return [];
     },
     [entities]
   );
 
   const deleteEntity = useCallback(
     async (entityId: string | number): Promise<void> => {
-      return await setEntities(entities.filter((e) => e.entityId !== entityId));
+      // return await setEntities(entities.filter((e) => e.entityId !== entityId));
     },
     [entities]
   );
 
   const getPlayerEntities = useCallback((): IEntity[] => {
-    return entities.filter((e) => e.entityType === EntityType.Player);
+    return [];
+    // return entities.filter((e) => e.entityType === EntityType.Player);
   }, [entities]);
 
   const getActivePlayerEntities = useCallback((): IEntity[] => {
-    return entities.filter((e) => e.entityType === EntityType.Player);
+    return [];
+    // return entities.filter((e) => e.entityType === EntityType.Player);
   }, [entities]);
 
   const updateEntity = useCallback(
     (newEntity: PartialEntity): IEntity => {
-      let entity = newEntity;
-      const newEntities: IEntity[] = entities.map((e) => {
-        if (e.entityId === entity.entityId) {
-          entity = Object.assign({}, e, entity);
-          return entity as IEntity;
-        }
-        return e;
-      });
+      // let entity = newEntity;
+      // const newEntities: IEntity[] = entities.map((e) => {
+      //   if (e.entityId === entity.entityId) {
+      //     entity = Object.assign({}, e, entity);
+      //     return entity as IEntity;
+      //   }
+      //   return e;
+      // });
 
-      setEntities(newEntities);
-      return entity as IEntity;
+      // setEntities(newEntities);
+      // return entity as IEntity;
+      return {} as IEntity;
     },
     [entities]
   );
 
   const updateOrAddEntity = (newEntity: PartialEntity): IEntity => {
-    return newEntity.entityId ? updateEntity(newEntity) : addEntity(newEntity);
+    return {} as IEntity;
+    // return newEntity.entityId ? updateEntity(newEntity) : addEntity(newEntity);
   };
 
   const resetEntities = useCallback((): void => {
-    const resetEntities: IEntity[] = entities.map((entity) =>
-      Object.assign({}, entity, { initiative: 0 })
-    );
-    setEntities(resetEntities);
+    // const resetEntities: IEntity[] = entities.map((entity) =>
+    //   Object.assign({}, entity, { initiative: 0 })
+    // );
+    // setEntities(resetEntities);
   }, [entities]);
 
   return {
-    entities: entities.filter((n) => n.campaignId === currentCampaignId),
+    // entities: entities.filter((n) => n.campaignId === currentCampaignId),
+    entities,
     setEntities,
     addEntity,
     getEntityById,
