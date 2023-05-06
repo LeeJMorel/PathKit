@@ -56,7 +56,13 @@ export const useStore = create(
       ...initialState,
 
       loadCampaign: async (campaignId) => {
-        const { refreshEntities, refreshNotes, refreshPlans } = get();
+        const {
+          refreshCampaigns,
+          refreshEntities,
+          refreshNotes,
+          refreshPlans,
+        } = get();
+        refreshCampaigns();
         set({ currentCampaignId: campaignId });
         refreshEntities();
         refreshNotes();

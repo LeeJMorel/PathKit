@@ -33,7 +33,7 @@ const NewCampaignForm = () => {
       return;
     }
     addCampaign({ campaignName: name, campaignDesc: desc });
-    window.location.reload();
+    // window.location.reload();
   };
 
   return (

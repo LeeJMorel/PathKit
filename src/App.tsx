@@ -39,7 +39,7 @@ export enum AppMode {
 function App() {
   useEffect(() => {
     // Initialize database on first load
-    const asyncInit = async () => await initializeDatabase;
+    const asyncInit = async () => await initializeDatabase();
     asyncInit();
   }, []);
   //control at a high level the campaign that we load

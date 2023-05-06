@@ -16,6 +16,7 @@ export const initializeDatabase = async () => {
   try {
     const initResult = await db.execute(db_init);
     const migrateResult = await db.execute(migrations);
+    console.log({ migrateResult, initResult });
     return { initResult, migrateResult };
   } catch (error) {
     console.error(error);

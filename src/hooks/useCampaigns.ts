@@ -55,8 +55,12 @@ export const useCampaigns = (): IUseCampaigns => {
     //   ...newCampaign,
     // };
     // setCampaigns([...campaigns, campaign]);
-    const result = insert("campaign", [newCampaign]);
-    console.log(result);
+    const result = await insert("campaign", [newCampaign]);
+    if (result) {
+      loadCampaign(result.lastInsertId);
+    }
+    // refreshCampaigns();
+    console.log("addCampaign", { result });
     // setPreferences({ currentCampaignId: id });
   };
 
