@@ -5,6 +5,8 @@ import { useCampaigns } from "../../hooks";
 const NewCampaignForm = () => {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
+  const [formError, setFormError] = useState("");
+
   const {
     campaigns,
     currentCampaignId,
@@ -26,6 +28,10 @@ const NewCampaignForm = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (name.trim() === "") {
+      setFormError("Name cannot be empty.");
+      return;
+    }
     addCampaign({ campaignName: name, campaignDesc: desc });
     window.location.reload();
   };
@@ -43,6 +49,7 @@ const NewCampaignForm = () => {
           onChange={handleNameChange}
           className={styles.formInput}
         />
+        {formError && <div className={styles.formError}>{formError}</div>}
       </div>
       <div className={styles.formRow}>
         <label htmlFor="description" className={styles.formLabel}>
