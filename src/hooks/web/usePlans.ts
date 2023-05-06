@@ -35,6 +35,8 @@
 //     (newPlan: PartialPlan): IPlan => {
 //       const plan: IPlan = {
 //         ...newPlan,
+export {};
+
 //         id: uuid(),
 //         campaignId: currentCampaignId, // TODO get campaignId from high level
 //       } as IPlan;
