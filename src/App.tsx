@@ -44,7 +44,7 @@ function App() {
   }, []);
   //control at a high level the campaign that we load
   const { currentCampaignId, deleteCampaign, unloadCampaign } = useCampaigns();
-  const handleDeleteCampaign = (campaignId: string | number) => {
+  const handleDeleteCampaign = (campaignId: number) => {
     deleteCampaign(campaignId);
   };
   // Define the props for the Header component
@@ -78,9 +78,9 @@ function App() {
     });
   };
 
-  const { resetEntities } = useEntities();
+  const { resetInitiative: resetEntities } = useEntities();
   const cancelPlan = () => {
-    const selectedPlan = null;
+    const selectedPlan = 0;
     setPreferences({
       ...preferences,
       selectedPlan,
@@ -93,7 +93,7 @@ function App() {
   useEffect(() => {
     if (
       preferences.selectedPlan !== undefined &&
-      currentPlan?.planType === "encounter"
+      currentPlan?.type === "encounter"
     ) {
       setShowInitiativeMenu(true);
     }
@@ -127,14 +127,14 @@ function App() {
           {/* if in encounter mode, show a close button to exit it*/}
           {preferences.selectedPlan != undefined ? (
             <>
-              {showInitiativeMenu && currentPlan?.planType === "encounter" && (
+              {showInitiativeMenu && currentPlan?.type === "encounter" && (
                 <InitiativeMenu onClose={handleInitiativeMenu} />
               )}
               <h2 className={styles.headerTitle}>
                 {/*capitalize the Header Title*/}
-                {currentPlan?.planType &&
-                  currentPlan.planType.charAt(0).toUpperCase() +
-                    currentPlan.planType.slice(1)}
+                {currentPlan?.type &&
+                  currentPlan.type.charAt(0).toUpperCase() +
+                    currentPlan.type.slice(1)}
               </h2>
               <RoundButton icon="close" onClick={cancelPlan} />
             </>

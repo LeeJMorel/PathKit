@@ -5,7 +5,7 @@ import player from "../../assets/knight.png";
 import defaultImage from "../../assets/fighter.png";
 import store from "../../assets/store.png";
 import styles from "./Form.module.scss";
-import { IEntity, EntityType } from "../../api/model";
+import { IEntity, EntityType, PartialEntity } from "../../api/model";
 import { useEntities } from "../../hooks";
 import { Button } from "../buttons";
 import classNames from "classnames";
@@ -31,13 +31,12 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
     () => entityDataProp || getEntityById(entityId),
     [entityId, entityDataProp]
   );
-  const [entity, setEntity] = useState<Omit<IEntity, "entityId">>({
-    entityImage: defaultImage,
-    entityName: "",
-    entityStats: {},
-    entityHp: [0, 0],
-    entityType: type as EntityType,
-    entityIsActive: true,
+  const [entity, setEntity] = useState<PartialEntity>({
+    image: defaultImage,
+    name: "",
+    stats: {},
+    hp: [0, 0],
+    type: type as EntityType,
     ...entityData,
   });
 
@@ -52,10 +51,12 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
     onClose?.();
   };
 
-  const handleAddEntity = (e: React.FormEvent) => {
+  const handleAddEntity = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newEntity = updateOrAddEntity(entity);
-    onAddEntity(newEntity);
+    const newEntity = await updateOrAddEntity(entity);
+    if (newEntity) {
+      onAddEntity(newEntity);
+    }
   };
 
   const handleInputChange = (
@@ -75,14 +76,14 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
     const { value } = e.target;
     setEntity({
       ...entity,
-      entityHp: [Number(value), Number(value)],
+      hp: [Number(value), Number(value)],
     });
   };
 
   let statsField;
   let hpField;
 
-  if (entity.entityType === "Monster" || entity.entityType === "Player") {
+  if (entity.type === "Monster" || entity.type === "Player") {
     statsField = (
       <>
         <div className={styles.formRow}>
@@ -92,7 +93,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
           <input
             type="text"
             name="stats"
-            value={entity.entityStats?.toString()}
+            value={entity.stats?.toString()}
             onChange={handleInputChange}
             className={styles.formInput}
           />
@@ -109,7 +110,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
             type="text"
             name="hp"
             min={0}
-            value={entity.entityHp ? entity.entityHp[1] : ""}
+            value={entity.hp ? entity.hp[1] : ""}
             onChange={handleHPChange}
             className={styles.formInput}
           />
@@ -128,7 +129,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
           name="image"
           onChange={handleInputChange}
           className={styles.formSelect}
-          value={entity.entityImage}
+          value={entity.image}
         >
           <option value={defaultImage}>Fighter</option>
           <option value={monster}>Monster</option>
@@ -143,7 +144,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
         <input
           type="text"
           name="name"
-          value={entity.entityName}
+          value={entity.name}
           onChange={handleInputChange}
           className={styles.formInput}
         />
@@ -152,7 +153,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
       {hpField}
       <div className={classNames(styles.formRow, styles.actionRow)}>
         <Button type="submit" variant="primary">
-          Save {entity.entityType}
+          Save {entity.type}
         </Button>
         {onClose && <Button onClick={handleClose}>Cancel</Button>}
       </div>

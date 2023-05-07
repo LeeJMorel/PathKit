@@ -16,7 +16,7 @@ const InitiativeForm = ({ onClose }: InitiativeMenuProps) => {
 
   const handleInitiativeChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    entityId: string | number
+    entityId: number
   ) => {
     const newInitiative = parseInt(e.target.value, 10) || 0;
     setEntityInitiatives({ ...entityInitiatives, [entityId]: newInitiative });
@@ -37,21 +37,21 @@ const InitiativeForm = ({ onClose }: InitiativeMenuProps) => {
     updateOrAddEntity: updateEntity,
   } = useEntities();
   const playerEntities = getPlayerEntities();
-  const planEntities = getEntitiesById(currentPlan?.planEntities);
+  const planEntities = getEntitiesById(currentPlan?.entities);
   const formFields = [...planEntities, ...playerEntities].map((entity) => (
-    <div key={entity.entityId} className={styles.formRow}>
+    <div key={entity.id} className={styles.formRow}>
       <label
-        htmlFor={`${entity.entityId}-initiativeForm`}
+        htmlFor={`${entity.id}-initiativeForm`}
         className={styles.formLabel}
       >
-        {entity.entityName}:
+        {entity.name}:
       </label>
       <input
         type="number"
-        id={`${entity.entityId}-initiativeForm`}
-        name={entity.entityId.toString()}
-        value={entityInitiatives[entity.entityId] ?? ""}
-        onChange={(e) => handleInitiativeChange(e, entity.entityId)}
+        id={`${entity.id}-initiativeForm`}
+        name={entity.id.toString()}
+        value={entityInitiatives[entity.id] ?? ""}
+        onChange={(e) => handleInitiativeChange(e, entity.id)}
         className={styles.formSmall}
       />
     </div>
@@ -63,8 +63,7 @@ const InitiativeForm = ({ onClose }: InitiativeMenuProps) => {
     // Check if the number of initiative values is less than the total number of entities
     if (
       Object.keys(entityInitiatives).length <
-      getEntitiesById(currentPlan?.planEntities).length +
-        getPlayerEntities().length
+      getEntitiesById(currentPlan?.entities).length + getPlayerEntities().length
     ) {
       alert("Please enter a value for each entity's initiative.");
       return;
@@ -79,8 +78,8 @@ const InitiativeForm = ({ onClose }: InitiativeMenuProps) => {
       // Update the initiatives for each entity
       Object.keys(entityInitiatives).forEach((entityId) => {
         updateEntity({
-          entityId: entityId,
-          entityInitiative: entityInitiatives[entityId],
+          id: Number(entityId),
+          initiative: entityInitiatives[entityId],
         });
       });
       onClose();

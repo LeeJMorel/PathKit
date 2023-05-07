@@ -50,7 +50,7 @@ function PlannerCard({ className, ...rest }: IPlannerCardProps) {
         {plans.length > 0 ? (
           <div className={styles.plannerCardScrollCard}>
             {plans.map((plan) => (
-              <PlannerObject key={plan.planId} plan={plan} />
+              <PlannerObject key={plan.id} plan={plan} />
             ))}
           </div>
         ) : (

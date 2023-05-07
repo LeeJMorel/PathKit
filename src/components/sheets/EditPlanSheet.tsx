@@ -10,8 +10,8 @@ import BinderObject from "../objects/BinderObject";
 import classNames from "classnames";
 
 const defaultPlanData = {
-  planType: PlanType.encounter,
-  planEntities: [],
+  type: PlanType.encounter,
+  entities: [],
 };
 function EditPlanSheet() {
   const { planId } = useParams();
@@ -28,7 +28,7 @@ function EditPlanSheet() {
     // Create plan and redirect to this form with the right ID
     if (planId === "new") {
       const newPlan = updateOrAddPlan(defaultPlanData);
-      navigate(`/plan/${newPlan.planId}`, {
+      navigate(`/plan/${newPlan.id}`, {
         replace: true,
       });
     } else if (p) {
@@ -36,7 +36,7 @@ function EditPlanSheet() {
     }
   }, [planId]);
 
-  const planEntities = getEntitiesById(plan.planEntities);
+  const planEntities = getEntitiesById(plan.entities);
 
   const handleCancelClick = () => {
     navigate("/");
@@ -51,7 +51,7 @@ function EditPlanSheet() {
   const handlePlanTypeChange = (value: PlanType) => {
     setPlan((prev) => ({
       ...prev,
-      planType: value,
+      type: value,
     }));
     setPlanType(value);
   };
@@ -59,40 +59,40 @@ function EditPlanSheet() {
   //We want to show the load menu
   const [showLoad, setShowLoad] = useState(false);
   const handleLoadClick = () => {
-    navigate(`/plan/${plan.planId}/load`);
+    navigate(`/plan/${plan.id}/load`);
   };
 
   // We want to add or edit an entity
   const handleAddEntity = useCallback(
     (selectedEntityType: EntityType) => {
       console.log({ plan, planId, what: getPlanById(planId) });
-      navigate(`/plan/${plan.planId}/entity/new?type=${selectedEntityType}`);
+      navigate(`/plan/${plan.id}/entity/new?type=${selectedEntityType}`);
     },
     [plan]
   );
   const handleEditEntity = useCallback(
-    (entityId: string | number) => {
-      navigate(`/plan/${plan.planId}/entity/${entityId}`);
+    (entityId: number) => {
+      navigate(`/plan/${plan.id}/entity/${entityId}`);
     },
     [plan]
   );
 
   //we want to remove an entity from our plan
-  const handleRemoveEntity = (id: string | number) => {
+  const handleRemoveEntity = (id: number) => {
     setPlan((prev) => ({
       ...prev,
-      planEntities: uniq(prev.planEntities.filter((i) => i !== id)),
+      entities: uniq(prev.entities.filter((i) => i !== id)),
     }));
   };
 
   let headerText = `Plan: ${planEntities
-    .map((entity) => entity.entityName)
+    .map((entity) => entity.name)
     .join(", ")}`;
 
   const handleLoadEntity = (entity: IEntity) => {
     setPlan((prev) => ({
       ...prev,
-      planEntities: uniq([...prev.planEntities, entity.entityId]),
+      entities: uniq([...prev.entities, entity.id]),
     }));
     navigate(-1);
   };
@@ -122,22 +122,22 @@ function EditPlanSheet() {
       <hr />
       <div className={styles.entityList}>
         {planEntities.map((entity) => (
-          <div key={entity.entityId} className={styles.sheetRowContainer}>
+          <div key={entity.id} className={styles.sheetRowContainer}>
             <div className={styles.sheetEndContainer}>
               <Button
                 variant="text"
-                onClick={() => handleEditEntity(entity.entityId)}
+                onClick={() => handleEditEntity(entity.id)}
                 icon="pencil"
-                title={`Edit ${entity.entityType || "entity"}`}
+                title={`Edit ${entity.type || "entity"}`}
               />
 
-              <div className={styles.menuTitle}>{entity.entityName}</div>
+              <div className={styles.menuTitle}>{entity.name}</div>
             </div>
-            {entity.entityId && (
+            {entity.id && (
               <Button
                 variant="text"
                 className={styles.deleteButton}
-                onClick={() => handleRemoveEntity(entity.entityId)}
+                onClick={() => handleRemoveEntity(entity.id)}
                 icon="user-minus"
                 title="Remove from plan"
               />
@@ -164,10 +164,7 @@ function EditPlanSheet() {
                   onAddEntity={(entity) => {
                     setPlan((prev) => ({
                       ...prev,
-                      planEntities: uniq([
-                        ...prev.planEntities,
-                        entity.entityId,
-                      ]),
+                      entities: uniq([...prev.entities, entity.id]),
                     }));
                     navigate(-1);
                   }}
@@ -181,7 +178,7 @@ function EditPlanSheet() {
               <div className={styles.binderContainer}>
                 <BinderObject
                   onLoad={handleLoadEntity}
-                  filterEntities={plan.planEntities}
+                  filterEntities={plan.entities}
                 />
               </div>
             }

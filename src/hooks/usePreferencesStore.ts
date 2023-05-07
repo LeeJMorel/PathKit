@@ -8,10 +8,10 @@ interface IPreferences {
   theme: string;
   visibleModules: Record<Module, boolean>;
 
-  selectedPlan: string | number | null;
-  selectedNote: string | number | null;
+  selectedPlan: number;
+  selectedNote: number;
   selectedSearch: string | number | null;
-  absentPlayers: (string | number)[];
+  absentPlayers: number[];
 }
 
 interface IPreferencesStore {
@@ -30,8 +30,8 @@ export const defaultPreferences = {
     NotesModule: false,
     BinderModule: true,
   },
-  selectedPlan: null,
-  selectedNote: null,
+  selectedPlan: 0,
+  selectedNote: 0,
   selectedSearch: null,
   absentPlayers: [],
 };
@@ -49,9 +49,8 @@ export const usePreferencesStore = create(
           NotesModule: false,
           BinderModule: true,
         },
-        currentCampaignId: 0,
-        selectedPlan: null,
-        selectedNote: null,
+        selectedPlan: 0,
+        selectedNote: 0,
         selectedSearch: null,
         absentPlayers: [],
       },

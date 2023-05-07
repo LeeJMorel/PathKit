@@ -2,127 +2,134 @@ export default `
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS campaign (
-  campaign_id INTEGER PRIMARY KEY,
-  campaign_name TEXT NOT NULL,
-  campaign_desc TEXT
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  desc TEXT
 );
 
 CREATE TABLE IF NOT EXISTS note (
-  note_id INTEGER PRIMARY KEY,
-  note_title TEXT,
-  note_body TEXT NOT NULL,
-  note_create_date DATETIME DEFAULT current_timestamp,
-  note_modified_date DATETIME DEFAULT current_timestamp,
-  campaign_id INTEGER NOT NULL,
-  FOREIGN KEY(campaign_id) REFERENCES campaign(campaign_id) ON UPDATE SET NULL ON DELETE SET NULL
+  id INTEGER PRIMARY KEY,
+  title TEXT NOT NULL DEFAULT '',
+  body TEXT NOTE NULL DEFAULT '',
+  createDate DATETIME DEFAULT current_timestamp,
+  modifiedDate DATETIME DEFAULT current_timestamp,
+  campaignId INTEGER NOT NULL,
+  FOREIGN KEY(campaignId) REFERENCES campaign(id) ON UPDATE SET NULL ON DELETE SET NULL
 );
 
+CREATE TRIGGER IF NOT EXISTS note_modified
+  AFTER UPDATE ON note
+BEGIN
+  UPDATE note SET modifiedDate = current_timestamp;
+END;
+
 CREATE TABLE IF NOT EXISTS entity (
-  entity_id INTEGER PRIMARY KEY,
-  entity_type TEXT,
-  entity_initiative INTEGER,
-  campaign_id INTEGER NOT NULL,
-  entity_desc TEXT,
-  entity_notes TEXT,
-  entity_image TEXT,
-  entity_ancestry TEXT,
-  entity_heritage TEXT,
-  entity_background TEXT,
-  entity_class TEXT,
-  entity_size TEXT,
-  entity_alignment TEXT,
-  entity_traits TEXT,
-  entity_deity TEXT,
-  entity_level INTEGER,
-  entity_experience INTEGER,
-  entity_xp_to_level INTEGER,
-  entity_hero_points INTEGER,
-  entity_current_hp INTEGER,
-  entity_max_hp INTEGER,
-  entity_bonus_hp INTEGER,
-  entity_temp_hp INTEGER,
-  entity_condition_flag TEXT,
-  entity_abilities TEXT,
-  entity_resistances TEXT,
-  entity_immunities TEXT NOT NULL,
-  entity_conditions TEXT,
-  entity_class_dc INTEGER,
-  entity_perception INTEGER,
-  entity_fortitude INTEGER,
-  entity_reflex INTEGER,
-  entity_will INTEGER,
-  entity_heavy INTEGER,
-  entity_medium INTEGER,
-  entity_light INTEGER,
-  entity_unarmored INTEGER,
-  entity_advanced INTEGER,
-  entity_martial INTEGER,
-  entity_simple INTEGER,
-  entity_unarmed INTEGER,
-  entity_arcane_casting INTEGER,
-  entity_divine_casting INTEGER,
-  entity_occult_casting INTEGER,
-  entity_primal_casting INTEGER,
-  entity_acrobatics INTEGER,
-  entity_arcana INTEGER,
-  entity_athletics INTEGER,
-  entity_crafting INTEGER,
-  entity_deception INTEGER,
-  entity_diplomacy INTEGER,
-  entity_intimidation INTEGER,
-  entity_medicine INTEGER,
-  entity_nature INTEGER,
-  entity_occultism INTEGER,
-  entity_performance INTEGER,
-  entity_religion INTEGER,
-  entity_society INTEGER,
-  entity_stealth INTEGER,
-  entity_survival INTEGER,
-  entity_thievery INTEGER,
-  entity_specific_trained_prof TEXT,
-  entity_specific_expert_prof TEXT,
-  entity_specific_master_prof TEXT,
-  entity_armor_name TEXT DEFAULT 'Unarmored',
-  entity_armor_prof_type TEXT DEFAULT 'Unarmored',
-  entity_armor_bonus INTEGER DEFAULT 0,
-  entity_armor_equipped BOOLEAN,
-  entity_armor_traits TEXT,
-  entity_weapons TEXT,
-  entity_ancestry_feats TEXT,
-  entity_skill_feats TEXT,
-  entity_general_feats TEXT,
-  entity_class_feats TEXT,
-  entity_bonus_feats TEXT,
-  entity_special_features TEXT,
-  entity_worn_items TEXT,
-  entity_readied_items TEXT,
-  entity_items TEXT,
-  entity_currency TEXT,
-  entity_focus_points TEXT,
-  entity_focus_spells TEXT,
-  entity_spell_pools TEXT,
-  FOREIGN KEY(campaign_id) REFERENCES campaign(campaign_id) ON UPDATE SET NULL ON DELETE SET NULL,
+  id INTEGER PRIMARY KEY,
+  type TEXT,
+  initiative INTEGER,
+  campaignId INTEGER NOT NULL,
+  desc TEXT,
+  notes TEXT,
+  image TEXT,
+  ancestry TEXT,
+  heritage TEXT,
+  background TEXT,
+  class TEXT,
+  size TEXT,
+  alignment TEXT,
+  traits TEXT,
+  deity TEXT,
+  level INTEGER,
+  experience INTEGER,
+  xpToLevel INTEGER,
+  heroPoints INTEGER,
+  currentHp INTEGER,
+  maxHp INTEGER,
+  bonusHp INTEGER,
+  tempHp INTEGER,
+  conditionFlag TEXT,
+  abilities TEXT,
+  resistances TEXT,
+  immunities TEXT NOT NULL,
+  conditions TEXT,
+  classDc INTEGER,
+  perception INTEGER,
+  fortitude INTEGER,
+  reflex INTEGER,
+  will INTEGER,
+  heavy INTEGER,
+  medium INTEGER,
+  light INTEGER,
+  unarmored INTEGER,
+  advanced INTEGER,
+  martial INTEGER,
+  simple INTEGER,
+  unarmed INTEGER,
+  arcaneCasting INTEGER,
+  divineCasting INTEGER,
+  occultCasting INTEGER,
+  primalCasting INTEGER,
+  acrobatics INTEGER,
+  arcana INTEGER,
+  athletics INTEGER,
+  crafting INTEGER,
+  deception INTEGER,
+  diplomacy INTEGER,
+  intimidation INTEGER,
+  medicine INTEGER,
+  nature INTEGER,
+  occultism INTEGER,
+  performance INTEGER,
+  religion INTEGER,
+  society INTEGER,
+  stealth INTEGER,
+  survival INTEGER,
+  thievery INTEGER,
+  specificTrainedProf TEXT,
+  specificExpertProf TEXT,
+  specificMasterProf TEXT,
+  armorName TEXT DEFAULT 'Unarmored',
+  armorProfType TEXT DEFAULT 'Unarmored',
+  armorBonus INTEGER DEFAULT 0,
+  armorEquipped BOOLEAN,
+  armorTraits TEXT,
+  weapons TEXT,
+  ancestryFeats TEXT,
+  skillFeats TEXT,
+  generalFeats TEXT,
+  classFeats TEXT,
+  bonusFeats TEXT,
+  specialFeatures TEXT,
+  wornItems TEXT,
+  readiedItems TEXT,
+  items TEXT,
+  currency TEXT,
+  focusPoints TEXT,
+  focusSpells TEXT,
+  spellPools TEXT,
+  FOREIGN KEY(campaignId) REFERENCES campaign(id) ON UPDATE SET NULL ON DELETE SET NULL,
 
   CHECK (
-    entity_level >= 1
-    AND entity_level <= 20
-    AND entity_experience >= 0
-    AND entity_xp_to_level >= entity_experience
-    AND entity_hero_points >= 0
-    AND entity_hero_points <= 3
-    AND entity_current_hp >= 0
-    AND entity_max_hp >= 0
-    AND entity_bonus_hp >= 0
-    AND entity_temp_hp >= 0
-    AND entity_armor_bonus >= 0
+    level >= 1
+    AND level <= 20
+    AND experience >= 0
+    AND xpToLevel >= experience
+    AND heroPoints >= 0
+    AND heroPoints <= 3
+    AND currentHp >= 0
+    AND maxHp >= 0
+    AND bonusHp >= 0
+    AND tempHp >= 0
+    AND armorBonus >= 0
   )
 );
 
 CREATE TABLE IF NOT EXISTS plan (
-  plan_id INTEGER PRIMARY KEY,
-  plan_order_num INTEGER,
-  plan_type TEXT,
-  plan_entities TEXT,
-  campaign_id INTEGER NOT NULL,
-  FOREIGN KEY(campaign_id) REFERENCES campaign(campaign_id) ON UPDATE SET NULL ON DELETE SET NULL
-);`;
+  id INTEGER PRIMARY KEY,
+  orderNum INTEGER,
+  type TEXT,
+  entities TEXT,
+  campaignId INTEGER NOT NULL,
+  FOREIGN KEY(campaignId) REFERENCES campaign(id) ON UPDATE SET NULL ON DELETE SET NULL
+);
+`;

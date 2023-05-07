@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 interface IDeleteMenuProps {
   type: "entity" | "plan" | "campaign" | "note";
-  id: string | number;
+  id: number;
   onClose: () => void;
 }
 
@@ -40,7 +40,7 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
       case "plan":
         if (preferences.selectedPlan === id) {
           setPreferences({
-            selectedPlan: null,
+            selectedPlan: 0,
           });
         }
         deletePlan(id);
@@ -59,7 +59,7 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
       case "note":
         if (preferences.selectedNote === id) {
           setPreferences({
-            selectedNote: null,
+            selectedNote: 0,
           });
         }
         deleteNote(id);

@@ -1,6 +1,4 @@
 import { SqlOrderBy } from "../model";
-import snakeCase from "lodash.snakecase";
-import camelCase from "lodash.camelcase";
 
 export const saneSqlValue = (value: any): string => {
   if (typeof value === "boolean") {
@@ -12,54 +10,44 @@ export const saneSqlValue = (value: any): string => {
   }
   let val = value;
   if (typeof val === "string") {
-    if (val.indexOf("'") !== 0) {
-      val = "'" + val;
-    }
-    if (val.indexOf("'") !== val.length - 1) {
-      val = val + "'";
-    }
+    val = val.replaceAll("'", "''");
+    return (val = `'${val}'`);
   }
-  return typeof value === "string" ? `'${value}'` : value.toString();
+  return val;
 };
 
 export const orderBy = (sort?: SqlOrderBy): string => {
   if (!sort) return "";
-  const result = sort.map((a) => a.join(" ")).join(", ");
+  let result = "ORDER BY ";
+  result = result + sort.map((a) => a.join(" ")).join(", ");
   return result;
 };
 
-export const transformToSqlKeys = (data: any): any => {
-  const newData: any = {};
-  Object.entries(data).forEach(([key, value]) => {
-    newData[snakeCase(key)] = value;
-  });
-  return newData;
+export const getColumnsFromObject = (obj: Record<string, unknown>): string => {
+  const cols = Object.keys(obj).join(",");
+  return `(${cols})`;
 };
 
-const transformFromSqlKeysObject = (data: any): any => {
-  const newData: any = {};
-
-  Object.entries(data).forEach(([key, value]) => {
-    newData[camelCase(key)] = value;
-  });
-  return newData;
+export const getInsertValuesFromObject = (
+  obj: Record<string, unknown>
+): string => {
+  const values = `(${Object.values(obj)
+    .map((value) => saneSqlValue(value))
+    .join(",")})`;
+  return values;
 };
 
-const transformFromSqlKeysArray = (data: any): any => {
-  const newData = data.map((d: any) => {
-    const newObj: any = {};
-    Object.entries(d).forEach(([key, value]) => {
-      const newKey = camelCase(key);
-      newObj[newKey] = value;
-    });
-    return newObj;
-  });
-  return newData;
+export const getInsertValuesFromObjArr = (
+  data: Record<string, unknown>[]
+): string => {
+  const values = data.map((d) => getInsertValuesFromObject(d)).join(",");
+  return values;
 };
 
-export const transformFromSqlKeys = (data: any): any => {
-  if (Array.isArray(data)) {
-    return transformFromSqlKeysArray(data);
-  }
-  return transformFromSqlKeysObject(data);
+export const getUpdateValuesFromObject = (
+  obj: Record<string, unknown>
+): string => {
+  return Object.entries(obj)
+    .map(([key, value]) => `${key} = ${saneSqlValue(value)}`)
+    .join(",");
 };

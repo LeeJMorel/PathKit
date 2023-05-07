@@ -39,7 +39,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   const [deleteType, setDeleteType] = useState<"entity" | "plan" | "campaign">(
     "entity"
   );
-  const [deleteId, setDeleteId] = useState<string | number>();
+  const [deleteId, setDeleteId] = useState<number>();
 
   const [showCampaignMenu, setShowCampaignMenu] = useState<boolean>(false);
   const [campaignType, setCampaignType] = useState<"Load" | "New">("Load");
@@ -75,10 +75,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     });
   };
 
-  const handleDelete = (
-    type: "entity" | "plan" | "campaign",
-    id: string | number
-  ) => {
+  const handleDelete = (type: "entity" | "plan" | "campaign", id: number) => {
     setShowDeleteMenu(true);
     setDeleteType(type);
     setDeleteId(id);
@@ -108,7 +105,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   //We don't want this player to be active this session
   const handleAbsent = (
     event: React.ChangeEvent<HTMLInputElement>,
-    playerId: string | number
+    playerId: number
   ) => {
     const { checked } = event.target;
 
@@ -145,10 +142,10 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   };
 
   const renderEntityForm = () => {
-    if (showEntityForm && showEntityForm.entityType) {
+    if (showEntityForm && showEntityForm.type) {
       return (
         <div className={styles.tabContent}>
-          <h2>Edit {showEntityForm.entityType}</h2>
+          <h2>Edit {showEntityForm.type}</h2>
           <div
             className={styles.close}
             title={"Close Edit Form"}
@@ -158,7 +155,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
           </div>
           <AddEntityForm
             entityData={showEntityForm}
-            type={showEntityForm.entityType}
+            type={showEntityForm.type}
             onAddEntity={(entity) => {
               updateEntity(entity);
               setShowEntityForm(null);
@@ -246,19 +243,17 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                 <div className={styles.tabContent}>
                   <h2
                     className={styles.tabHeader}
-                    title={currentCampaign ? currentCampaign.campaignName : ""}
+                    title={currentCampaign ? currentCampaign.name : ""}
                   >
-                    {currentCampaign
-                      ? currentCampaign.campaignName
-                      : "Campaign Name"}
+                    {currentCampaign ? currentCampaign.name : "Campaign Name"}
                   </h2>
                   <hr className={styles.tabHorizontalLine} />
                   <div
                     className={styles.tabSubtext}
-                    title={currentCampaign ? currentCampaign.campaignDesc : ""}
+                    title={currentCampaign ? currentCampaign.desc : ""}
                   >
                     {currentCampaign
-                      ? currentCampaign.campaignDesc
+                      ? currentCampaign.desc
                       : "A Campaign description provided by the user when they make a new campaign"}
                   </div>
                   <br />
@@ -300,38 +295,30 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
 
                   <div className={styles.menuScrollContainer}>
                     {players.map((player) => (
-                      <div
-                        key={player.entityId}
-                        className={styles.menuRowContainer}
-                      >
+                      <div key={player.id} className={styles.menuRowContainer}>
                         <div className={styles.menuEndContainer}>
-                          <div
-                            className={styles.menuTitle}
-                            title={player.entityName}
-                          >
-                            {player.entityName}
+                          <div className={styles.menuTitle} title={player.name}>
+                            {player.name}
                           </div>
                         </div>
                         <div
                           className={styles.largeCheck}
-                          title={`${player.entityName}: ${
-                            !preferences.absentPlayers.includes(player.entityId)
+                          title={`${player.name}: ${
+                            !preferences.absentPlayers.includes(player.id)
                               ? "is Present"
                               : "is Not Present"
                           }`}
                         >
                           <MenuInput
-                            key={player.entityId}
+                            key={player.id}
                             checked={
-                              !preferences.absentPlayers.includes(
-                                player.entityId
-                              )
+                              !preferences.absentPlayers.includes(player.id)
                             }
                             type="checkbox"
                             name="isActive"
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
-                            ) => handleAbsent(event, player.entityId)}
+                            ) => handleAbsent(event, player.id)}
                           />
                         </div>
                       </div>

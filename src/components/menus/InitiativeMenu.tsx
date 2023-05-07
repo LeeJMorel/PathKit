@@ -14,9 +14,9 @@ export const InitiativeMenu = ({ onClose }: InitiativeMenuProps) => {
   };
 
   const { preferences, setPreferences } = usePreferencesStore();
-  const { resetEntities } = useEntities();
+  const { resetInitiative: resetEntities } = useEntities();
   const cancelPlan = () => {
-    const selectedPlan = null;
+    const selectedPlan = 0;
     setPreferences({
       ...preferences,
       selectedPlan,

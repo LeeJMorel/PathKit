@@ -12,7 +12,7 @@ function CardView() {
   const { getPlayerEntities, getEntitiesById } = useEntities();
   const playerEntities = getPlayerEntities();
   const activePlayersEntities = playerEntities.filter(
-    (entity) => !preferences.absentPlayers.includes(entity.entityId)
+    (entity) => !preferences.absentPlayers.includes(entity.id)
   );
   const [currentEntities, setCurrentEntities] = useState<IEntity[]>(
     activePlayersEntities
@@ -22,20 +22,20 @@ function CardView() {
   const [currentPlan, setCurrentPlan] = useState<IPlan | undefined>(
     getPlanById(preferences.selectedPlan || undefined)
   );
-  const planEntities = getEntitiesById(currentPlan?.planEntities);
+  const planEntities = getEntitiesById(currentPlan?.entities);
 
   useEffect(() => {
     const newPlan = getPlanById(preferences.selectedPlan || undefined);
     setCurrentPlan(newPlan);
-    if (newPlan && newPlan.planId !== currentPlan?.planId) {
-      const newPlanEntities = getEntitiesById(newPlan.planEntities);
+    if (newPlan && newPlan.id !== currentPlan?.id) {
+      const newPlanEntities = getEntitiesById(newPlan.entities);
       setCurrentEntities((prev) => [...prev, ...newPlanEntities]);
     }
   }, [preferences.selectedPlan, getPlanById]);
 
   useEffect(() => {
     const newEntities = [...activePlayersEntities, ...planEntities].sort(
-      (a, z) => (z.entityInitiative || 0) - (a.entityInitiative || 0)
+      (a, z) => (z.initiative || 0) - (a.initiative || 0)
     );
     if (!isEqual(currentEntities, newEntities)) {
       setCurrentEntities(newEntities);

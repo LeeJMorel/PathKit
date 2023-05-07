@@ -48,26 +48,24 @@ const BinderObject: React.FC<IBinderProps> = ({
   //load players
   const players = getPlayerEntities();
   const filteredEntities = entities.filter(
-    (e) => !filterEntities?.includes(e.entityId)
+    (e) => !filterEntities?.includes(e.id)
   );
-  const npcs = filteredEntities.filter((e) => e.entityType === EntityType.NPC);
+  const npcs = filteredEntities.filter((e) => e.type === EntityType.NPC);
   const monsters = filteredEntities.filter(
-    (e) => e.entityType === EntityType.Monster
+    (e) => e.type === EntityType.Monster
   );
-  const shops = filteredEntities.filter(
-    (e) => e.entityType === EntityType.Shop
-  );
+  const shops = filteredEntities.filter((e) => e.type === EntityType.Shop);
 
   //placeholder until store can delete
   const [showDeleteMenu, setShowDeleteMenu] = useState<boolean>(false);
   const [deleteType, setDeleteType] = useState<
     "entity" | "plan" | "campaign" | "note"
   >("entity");
-  const [deleteId, setDeleteId] = useState<string | number>("");
+  const [deleteId, setDeleteId] = useState<number>(0);
 
   const handleDelete = (
     type: "entity" | "plan" | "campaign" | "note",
-    id: string | number
+    id: number
   ) => {
     setShowDeleteMenu(true);
     setDeleteType(type);
@@ -78,47 +76,47 @@ const BinderObject: React.FC<IBinderProps> = ({
     setShowDeleteMenu(false);
   };
 
-  const handleEditPlan = (planId: string | number) => {
+  const handleEditPlan = (planId: number) => {
     navigate(`/plan/${planId}`);
   };
 
   const handleEditEntity = (entity: IEntity) => {
-    navigate(`/entity/${entity.entityId}/edit`);
+    navigate(`/entity/${entity.id}/edit`);
   };
 
   const handleEditNote = (note: INote) => {
     setPreferences({
-      selectedNote: note.noteId,
+      selectedNote: note.id,
     });
   };
 
   const renderEntityRow = (entity: IEntity) => (
-    <tr key={entity.entityId} className={styles.plansTableRow}>
+    <tr key={entity.id} className={styles.plansTableRow}>
       <td className={styles.plansTableAction}>
         <Button
           variant="text"
-          title={`Edit ${entity.entityName}`}
+          title={`Edit ${entity.name}`}
           onClick={() => handleEditEntity(entity)}
         >
           <FontAwesomeIcon icon="pencil" />
         </Button>
       </td>
-      <td className={styles.plansTablePlanType} title={`${entity.entityName}`}>
-        {entity.entityName}
+      <td className={styles.plansTablePlanType} title={`${entity.name}`}>
+        {entity.name}
       </td>
       <td className={styles.plansTableEntities}></td>
       <td className={styles.plansTableAction}>
         {typeof onLoad === "function" ? (
           <Button
-            title={`Load ${entity.entityName}`}
+            title={`Load ${entity.name}`}
             onClick={() => onLoad(entity)}
             icon={<FontAwesomeIcon icon="share-from-square" rotation={270} />}
             variant="text"
           />
         ) : (
           <Button
-            title={`Delete ${entity.entityName}`}
-            onClick={() => handleDelete("entity", entity.entityId)}
+            title={`Delete ${entity.name}`}
+            onClick={() => handleDelete("entity", entity.id)}
             icon="trash"
             variant="text"
           />
@@ -132,7 +130,7 @@ const BinderObject: React.FC<IBinderProps> = ({
     const length = entities.length;
     let result = entities
       .slice(0, maxShown)
-      .map((e) => e.entityName)
+      .map((e) => e.name)
       .join(", ");
     if (length > maxShown) {
       result = `${result} +${length - maxShown}`;
@@ -144,25 +142,25 @@ const BinderObject: React.FC<IBinderProps> = ({
     switch (activeTab) {
       case "Plans":
         return plans.map((plan) => {
-          const planEntities = getEntitiesById(plan.planEntities);
+          const planEntities = getEntitiesById(plan.entities);
           return (
-            <tr key={plan.planId} className={styles.plansTableRow}>
+            <tr key={plan.id} className={styles.plansTableRow}>
               <td className={styles.plansTableAction}>
                 <Button
                   variant="text"
                   title={"Edit Plan"}
-                  onClick={() => handleEditPlan(plan.planId)}
+                  onClick={() => handleEditPlan(plan.id)}
                 >
                   <FontAwesomeIcon icon="pencil" />
                 </Button>
               </td>
-              <td className={styles.plansTablePlanType} title={plan.planType}>
-                {plan.planType}
+              <td className={styles.plansTablePlanType} title={plan.type}>
+                {plan.type}
               </td>
               <td
                 className={styles.plansTableEntities}
                 title={`${planEntities
-                  .map((entity) => entity.entityName)
+                  .map((entity) => entity.name)
                   .join(", ")}`}
               >
                 {getEntitiesText(planEntities)}
@@ -171,7 +169,7 @@ const BinderObject: React.FC<IBinderProps> = ({
               <td className={styles.plansTableAction}>
                 <Button
                   title={"Delete Plan"}
-                  onClick={() => handleDelete("plan", plan.planId)}
+                  onClick={() => handleDelete("plan", plan.id)}
                   icon="trash"
                   variant="text"
                 />
@@ -182,7 +180,7 @@ const BinderObject: React.FC<IBinderProps> = ({
 
       case "Notes":
         return notes.map((note) => (
-          <tr key={note.noteId} className={styles.plansTableRow}>
+          <tr key={note.id} className={styles.plansTableRow}>
             <td className={styles.plansTableAction}>
               <Button
                 variant="text"
@@ -192,14 +190,14 @@ const BinderObject: React.FC<IBinderProps> = ({
                 <FontAwesomeIcon icon="pencil" />
               </Button>
             </td>
-            <td className={styles.plansTableSpan} title={note.noteTitle}>
-              {note.noteTitle}
+            <td className={styles.plansTableSpan} title={note.title}>
+              {note.title}
             </td>
 
             <td className={styles.plansTableAction}>
               <Button
                 title={"Delete Note"}
-                onClick={() => handleDelete("note", note.noteId)}
+                onClick={() => handleDelete("note", note.id)}
                 icon="trash"
                 variant="text"
               />

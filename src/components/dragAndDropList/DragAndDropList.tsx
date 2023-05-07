@@ -12,7 +12,7 @@ import styles from "./DragAndDropList.module.scss";
 export interface IDragAndDropListProps {
   listAs?: React.ElementType;
   listItemAs?: React.ElementType;
-  id: string | number;
+  id: string;
   items: any[];
   itemIdKey: string;
   setItems: (items: any[]) => void;

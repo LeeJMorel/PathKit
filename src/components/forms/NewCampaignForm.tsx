@@ -32,7 +32,10 @@ const NewCampaignForm = () => {
       setFormError("Name cannot be empty.");
       return;
     }
-    addCampaign({ campaignName: name, campaignDesc: desc });
+    addCampaign({
+      name,
+      desc,
+    });
     // window.location.reload();
   };
 

@@ -5,26 +5,22 @@ import { IPlan } from "../api/model";
 import { usePreferencesStore } from "./usePreferencesStore";
 import { PartialBy } from "../utilities";
 
-export type PartialPlan = PartialBy<IPlan, "planId" | "campaignId">;
+export type PartialPlan = PartialBy<IPlan, "id" | "campaignId">;
 
 interface IUsePlans {
   plans: IPlan[];
-  setPlans: (plans: IPlan[]) => void;
   addPlan: (plan: PartialPlan) => IPlan;
   getPlanById: (planId?: string | number) => IPlan | undefined;
-  deletePlan: (planId: string | number) => void;
+  deletePlan: (planId: number) => void;
   updatePlan: (plan: PartialPlan) => IPlan;
   updateOrAddPlan: (plan: PartialPlan) => IPlan;
 }
 export const usePlans = (): IUsePlans => {
-  const { plans, setPlans, refreshPlans, currentCampaignId } = useStore(
-    (store) => ({
-      plans: store.plans,
-      setPlans: store.setPlans,
-      refreshPlans: store.refreshPlans,
-      currentCampaignId: store.currentCampaignId,
-    })
-  );
+  const { plans, refreshPlans, currentCampaignId } = useStore((store) => ({
+    plans: store.plans,
+    refreshPlans: store.refreshPlans,
+    currentCampaignId: store.currentCampaignId,
+  }));
 
   // Initial call should refresh stored plans from API
   useEffect(() => {
@@ -58,7 +54,7 @@ export const usePlans = (): IUsePlans => {
   );
 
   const deletePlan = useCallback(
-    async (planId: string | number): Promise<void> => {
+    async (planId: number): Promise<void> => {
       // return await setPlans(plans.filter((p) => p.planId !== planId));
     },
     [plans]
@@ -96,7 +92,6 @@ export const usePlans = (): IUsePlans => {
   return {
     // plans: plans.filter((n) => n.campaignId === currentCampaignId),
     plans,
-    setPlans,
     addPlan,
     getPlanById,
     deletePlan,

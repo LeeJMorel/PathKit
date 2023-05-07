@@ -17,18 +17,18 @@ function EntitySheet() {
     navigate("/");
   };
   const handleEditClick = () => {
-    navigate(`/entity/${entity?.entityId}/edit`);
+    navigate(`/entity/${entity?.id}/edit`);
   };
 
   return (
     <div className={styles.sheetsContainer}>
-      {entity?.entityImage && (
+      {entity?.image && (
         <div className={styles.imageContainer}>
-          <img src={entity.entityImage} alt={entity.entityName} />
+          <img src={entity.image} alt={entity.name} />
         </div>
       )}
       <div className={styles.header}>
-        <h2>{entity?.entityName}</h2>
+        <h2>{entity?.name}</h2>
         <div className={styles.headerButtons}>
           <Button
             className={styles.headerButton}
@@ -49,11 +49,11 @@ function EntitySheet() {
       </div>
       <hr />
       <ul>
-        {entity?.entityStats && (
+        {entity?.stats && (
           <li>
             Stats:
             <ul>
-              {Object.entries(entity.entityStats).map(([key, value]) => (
+              {Object.entries(entity.stats).map(([key, value]) => (
                 <li key={key}>
                   {key}: {value}
                 </li>
@@ -61,15 +61,13 @@ function EntitySheet() {
             </ul>
           </li>
         )}
-        {entity?.entityHp && (
+        {entity?.hp && (
           <li>
-            HP: {entity.entityHp[0]}/{entity.entityHp[1]}
-            {entity.entityHp[2] && ` (+${entity.entityHp[2]} temp HP)`}
+            HP: {entity.hp[0]}/{entity.hp[1]}
+            {entity.hp[2] && ` (+${entity.hp[2]} temp HP)`}
           </li>
         )}
-        {entity?.entityEquipment && (
-          <li>Equipment: {entity.entityEquipment.join(", ")}</li>
-        )}
+        {entity?.equipment && <li>Equipment: {entity.equipment.join(", ")}</li>}
       </ul>
     </div>
   );

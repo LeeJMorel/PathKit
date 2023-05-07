@@ -1,45 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Markdown from "markdown-to-jsx";
 import { Button } from "../buttons";
 import styles from "./Objects.module.scss";
-import { INote } from "../../api/model";
-import { useNotes, PartialNote } from "../../hooks";
+import { INote, PartialNote } from "../../api/model";
+import { useNotes } from "../../hooks";
 
 export interface INotesObjectProps {
-  note?: INote;
+  note?: PartialNote;
+  onChange?: (note: PartialNote) => void;
 }
-function NotesObject({ note: noteProp }: INotesObjectProps) {
-  const { getLatestNote, addNote, updateOrAddNote } = useNotes();
-  const [note, setNote] = useState<PartialNote>(
-    noteProp || getLatestNote() || addNote({})
-  );
-  // const [notes, setNotes] = useState(""); // State to store notes
+
+/**
+ * This component only handles rendering a note title and body passed as props
+ */
+function NotesObject({
+  note = { title: "", body: "" },
+  onChange,
+}: INotesObjectProps) {
   const [editMode, setEditMode] = useState(true);
 
-  useEffect(() => {
-    // Function to handle automatic saving of notes whenever they change
-    updateOrAddNote(note);
-  }, [note]);
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => {
+      const { name, value } = event.target;
+      if (
+        typeof onChange === "function" &&
+        (name === "body" || name === "title")
+      ) {
+        onChange({
+          ...note,
+          [name]: value,
+        });
+      }
+    },
+    [note]
+  );
 
-  useEffect(() => {
-    setNote(noteProp || addNote({}));
-  }, [noteProp]);
-
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // setNotes(event.target.value); // Update notes state with input value
-    setNote((prev) => ({
-      ...prev,
-      noteTitle: event.target.value,
-    }));
-  };
-
-  const handleBodyChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    // setNotes(event.target.value); // Update notes state with input value
-    setNote((prev) => ({
-      ...prev,
-      noteBody: event.target.value,
-    }));
-  };
+  console.log("debug: noteObject", { note });
 
   return (
     <div className={styles.notes}>
@@ -47,9 +43,9 @@ function NotesObject({ note: noteProp }: INotesObjectProps) {
         <input
           className={styles.noteTitle}
           name="title"
-          onChange={handleTitleChange}
+          onChange={handleChange}
           placeholder="New note title"
-          value={note.noteTitle}
+          value={note.title}
         />
       </div>
       <Button onClick={() => setEditMode(!editMode)}>
@@ -58,14 +54,14 @@ function NotesObject({ note: noteProp }: INotesObjectProps) {
       {editMode ? (
         <textarea
           className={styles.notesEdit}
-          value={note.noteBody}
+          value={note.body}
           name="body"
-          onChange={handleBodyChange}
+          onChange={handleChange}
           placeholder="Type your notes here. I support Markdown syntax."
         />
       ) : (
         <div className={styles.notesContainer}>
-          <Markdown>{note.noteBody || "## Edit this note"}</Markdown>
+          <Markdown>{note.body || "## Edit this note"}</Markdown>
         </div>
       )}
       <span className={styles.caption}>
