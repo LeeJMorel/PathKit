@@ -12,8 +12,8 @@ import classNames from "classnames";
 
 export interface IEntityFormProps {
   type?: EntityType;
-  entityData?: IEntity;
-  onAddEntity: (entity: IEntity) => void;
+  entityData?: PartialEntity;
+  onAddEntity: (entity: PartialEntity) => void;
   onClose?: () => void;
 }
 
@@ -34,8 +34,8 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
   const [entity, setEntity] = useState<PartialEntity>({
     image: defaultImage,
     name: "",
-    stats: {},
-    hp: [0, 0],
+    // stats: {},
+    // hp: [0, 0],
     type: type as EntityType,
     ...entityData,
   });
@@ -72,51 +72,51 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
     });
   };
 
-  const handleHPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setEntity({
-      ...entity,
-      hp: [Number(value), Number(value)],
-    });
-  };
+  // const handleHPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { value } = e.target;
+  //   setEntity({
+  //     ...entity,
+  //     hp: [Number(value), Number(value)],
+  //   });
+  // };
 
-  let statsField;
-  let hpField;
+  // let statsField;
+  // let hpField;
 
   if (entity.type === "Monster" || entity.type === "Player") {
-    statsField = (
-      <>
-        <div className={styles.formRow}>
-          <label htmlFor="stats" className={styles.formLabel}>
-            Stats:
-          </label>
-          <input
-            type="text"
-            name="stats"
-            value={entity.stats?.toString()}
-            onChange={handleInputChange}
-            className={styles.formInput}
-          />
-        </div>
-      </>
-    );
-    hpField = (
-      <>
-        <div className={styles.formRow}>
-          <label htmlFor="hp" className={styles.formLabel}>
-            HP:
-          </label>
-          <input
-            type="text"
-            name="hp"
-            min={0}
-            value={entity.hp ? entity.hp[1] : ""}
-            onChange={handleHPChange}
-            className={styles.formInput}
-          />
-        </div>
-      </>
-    );
+    // statsField = (
+    //   <>
+    //     <div className={styles.formRow}>
+    //       <label htmlFor="stats" className={styles.formLabel}>
+    //         Stats:
+    //       </label>
+    //       <input
+    //         type="text"
+    //         name="stats"
+    //         value={entity.stats?.toString()}
+    //         onChange={handleInputChange}
+    //         className={styles.formInput}
+    //       />
+    //     </div>
+    //   </>
+    // );
+    //   hpField = (
+    //     <>
+    //       <div className={styles.formRow}>
+    //         <label htmlFor="hp" className={styles.formLabel}>
+    //           HP:
+    //         </label>
+    //         <input
+    //           type="text"
+    //           name="hp"
+    //           min={0}
+    //           value={entity.hp ? entity.hp[1] : ""}
+    //           onChange={handleHPChange}
+    //           className={styles.formInput}
+    //         />
+    //       </div>
+    //     </>
+    //   );
   }
 
   return (
@@ -149,8 +149,8 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
           className={styles.formInput}
         />
       </div>
-      {statsField}
-      {hpField}
+      {/* {statsField}
+      {hpField} */}
       <div className={classNames(styles.formRow, styles.actionRow)}>
         <Button type="submit" variant="primary">
           Save {entity.type}

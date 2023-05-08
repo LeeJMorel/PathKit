@@ -1,9 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import { v4 as uuid } from "uuid";
 import { useStore } from "./useStore";
-import { usePreferencesStore } from "./usePreferencesStore";
-import { ICampaign, IEntity, IPlan } from "../api/model";
-import { insertRow } from "../api/database";
+import { ICampaign } from "../api/model";
+import useBoolean from "./useBoolean";
 
 interface IUseCampaigns {
   campaigns: ICampaign[];
@@ -12,11 +10,13 @@ interface IUseCampaigns {
   deleteCampaign: (campaignId: number) => void;
   loadCampaign: (campaignId: number) => Promise<void>;
   unloadCampaign: () => void;
-  getCurrentCampaign: () => ICampaign | undefined;
+  getCurrentCampaign: () => Promise<ICampaign | undefined>;
   currentCampaign: ICampaign | undefined;
+  refreshCampaigns: () => Promise<void>;
 }
 
 export const useCampaigns = (): IUseCampaigns => {
+  const { value: mounted, setTrue: setMountedTrue } = useBoolean(false);
   const currentCampaignId = useStore((store) => store.currentCampaignId);
   const loadCampaign = useStore((store) => store.loadCampaign);
   const unloadCampaign = useStore((store) => store.unloadCampaign);
@@ -29,15 +29,23 @@ export const useCampaigns = (): IUseCampaigns => {
   >();
 
   useEffect(() => {
-    refreshCampaigns();
-  }, []);
+    if (!mounted && campaigns.length < 1) {
+      refreshCampaigns();
+      setMountedTrue();
+    }
+  }, [mounted, campaigns]);
 
-  const getCurrentCampaign = useCallback((): ICampaign | undefined => {
+  const getCurrentCampaign = useCallback(async (): Promise<
+    ICampaign | undefined
+  > => {
+    await refreshCampaigns();
     return campaigns.find((e) => e.id === currentCampaignId);
   }, [campaigns, currentCampaignId]);
 
   useEffect(() => {
-    setCurrentCampaign(getCurrentCampaign());
+    (async () => {
+      setCurrentCampaign(await getCurrentCampaign());
+    })();
   }, [currentCampaignId]);
 
   const addCampaign = async (
@@ -59,5 +67,6 @@ export const useCampaigns = (): IUseCampaigns => {
     unloadCampaign,
     getCurrentCampaign,
     currentCampaign,
+    refreshCampaigns,
   };
 };

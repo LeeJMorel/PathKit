@@ -1,56 +1,67 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import Markdown from "markdown-to-jsx";
 import { Button } from "../buttons";
 import styles from "./Objects.module.scss";
-import { INote, PartialNote } from "../../api/model";
+import { PartialNote } from "../../api/model";
 import { useNotes } from "../../hooks";
 
 export interface INotesObjectProps {
-  note?: PartialNote;
+  noteId?: number;
   onChange?: (note: PartialNote) => void;
+  onClose?: () => void;
 }
 
-/**
- * This component only handles rendering a note title and body passed as props
- */
-function NotesObject({
-  note = { title: "", body: "" },
-  onChange,
-}: INotesObjectProps) {
+function NotesObject({ noteId, onChange, onClose }: INotesObjectProps) {
+  const [note, setNote] = useState<PartialNote>({ title: "", body: "" });
   const [editMode, setEditMode] = useState(true);
+  const { getNoteById } = useNotes();
 
-  const handleChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => {
-      const { name, value } = event.target;
-      if (
-        typeof onChange === "function" &&
-        (name === "body" || name === "title")
-      ) {
-        onChange({
-          ...note,
-          [name]: value,
-        });
+  useEffect(() => {
+    if (noteId) {
+      const selectedNote = getNoteById(noteId);
+      if (selectedNote) {
+        setNote(selectedNote);
       }
-    },
-    [note]
-  );
+    }
+  }, [noteId, getNoteById]);
 
-  console.log("debug: noteObject", { note });
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>
+  ) => {
+    const { name, value } = event.target;
+    if (name === "body" || name === "title") {
+      setNote((prev) => {
+        const newNote = {
+          ...prev,
+          [name]: value,
+        };
+        if (typeof onChange === "function") {
+          onChange(newNote);
+        }
+        return newNote;
+      });
+    }
+  };
 
   return (
     <div className={styles.notes}>
       <div className={styles.noteHeader}>
-        <input
-          className={styles.noteTitle}
-          name="title"
-          onChange={handleChange}
-          placeholder="New note title"
-          value={note.title}
-        />
+        <div className={styles.noteHeaderTitle}>
+          <input
+            className={styles.noteTitle}
+            name="title"
+            onChange={handleChange}
+            placeholder="New note title"
+            value={note.title}
+          />
+          {typeof onClose === "function" && (
+            <Button onClick={onClose} icon="close" variant="text" />
+          )}
+        </div>
+        <Button onClick={() => setEditMode(!editMode)}>
+          {editMode ? "Preview" : "Edit"} Note
+        </Button>
       </div>
-      <Button onClick={() => setEditMode(!editMode)}>
-        {editMode ? "Preview" : "Edit"} Note
-      </Button>
       {editMode ? (
         <textarea
           className={styles.notesEdit}
@@ -61,7 +72,7 @@ function NotesObject({
         />
       ) : (
         <div className={styles.notesContainer}>
-          <Markdown>{note.body || "## Edit this note"}</Markdown>
+          <Markdown>{note.body}</Markdown>
         </div>
       )}
       <span className={styles.caption}>

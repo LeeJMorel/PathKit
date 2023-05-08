@@ -57,9 +57,9 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
         break;
 
       case "note":
-        if (preferences.selectedNote === id) {
+        if (preferences.selectedNoteSheet === id) {
           setPreferences({
-            selectedNote: 0,
+            selectedNoteSheet: 0,
           });
         }
         deleteNote(id);

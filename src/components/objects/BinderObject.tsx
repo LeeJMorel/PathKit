@@ -13,29 +13,49 @@ import {
 import DeleteMenu from "../menus/DeleteMenu";
 import { EntityType, IEntity, INote } from "../../api/model";
 
+export enum BinderTab {
+  Plans = "Plans",
+  Players = "Players",
+  Notes = "Notes",
+  NPCs = "NPCs",
+  Shops = "Shops",
+  Monsters = "Monsters",
+}
+
 interface IBinderProps {
-  onLoad?: (entity: IEntity) => void;
+  onLoad?: (id: number) => void;
   filterEntities?: (string | number)[];
+  showTabs?: BinderTab[];
+  showTabMenu?: boolean;
 }
 
 const BinderObject: React.FC<IBinderProps> = ({
   onLoad,
   filterEntities,
+  showTabs = [
+    BinderTab.Plans,
+    BinderTab.Players,
+    BinderTab.Notes,
+    BinderTab.NPCs,
+    BinderTab.Shops,
+    BinderTab.Monsters,
+  ],
+  showTabMenu = true,
 }: IBinderProps) => {
   const { plans } = usePlans();
   const { notes } = useNotes();
   const { entities, getPlayerEntities, getEntitiesById } = useEntities();
-  const [showMenu, setShowMenu] = useState(true);
-  const [activeTab, setActiveTab] = useState("Plans");
+  const [showMenu, setShowMenu] = useState(showTabMenu);
+  const [activeTab, setActiveTab] = useState(showTabs[0]);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (onLoad) {
-      setActiveTab("NPCs");
+      setActiveTab(showTabs[0]);
     }
   }, [onLoad]);
 
-  const handleTabClick = (tabName: string) => {
+  const handleTabClick = (tabName: BinderTab) => {
     setActiveTab(tabName);
   };
 
@@ -86,7 +106,7 @@ const BinderObject: React.FC<IBinderProps> = ({
 
   const handleEditNote = (note: INote) => {
     setPreferences({
-      selectedNote: note.id,
+      selectedNoteSheet: note.id,
     });
   };
 
@@ -109,7 +129,7 @@ const BinderObject: React.FC<IBinderProps> = ({
         {typeof onLoad === "function" ? (
           <Button
             title={`Load ${entity.name}`}
-            onClick={() => onLoad(entity)}
+            onClick={() => onLoad(entity.id)}
             icon={<FontAwesomeIcon icon="share-from-square" rotation={270} />}
             variant="text"
           />
@@ -182,13 +202,24 @@ const BinderObject: React.FC<IBinderProps> = ({
         return notes.map((note) => (
           <tr key={note.id} className={styles.plansTableRow}>
             <td className={styles.plansTableAction}>
-              <Button
-                variant="text"
-                title={"Edit Note"}
-                onClick={() => handleEditNote(note)}
-              >
-                <FontAwesomeIcon icon="pencil" />
-              </Button>
+              {typeof onLoad === "function" ? (
+                <Button
+                  title={`Load ${note.title}`}
+                  onClick={() => onLoad(note.id)}
+                  icon={
+                    <FontAwesomeIcon icon="share-from-square" rotation={270} />
+                  }
+                  variant="text"
+                />
+              ) : (
+                <Button
+                  variant="text"
+                  title={"Edit Note"}
+                  onClick={() => handleEditNote(note)}
+                >
+                  <FontAwesomeIcon icon="pencil" />
+                </Button>
+              )}
             </td>
             <td className={styles.plansTableSpan} title={note.title}>
               {note.title}
@@ -222,6 +253,18 @@ const BinderObject: React.FC<IBinderProps> = ({
     }
   };
 
+  const renderTab = (tab: BinderTab): JSX.Element | undefined =>
+    showTabs.includes(tab) ? (
+      <div
+        key={tab}
+        className={`${styles.tab} ${activeTab === tab ? styles.active : ""}`}
+        title={tab}
+        onClick={() => handleTabClick(tab)}
+      >
+        {tab}
+      </div>
+    ) : undefined;
+
   return (
     <div className={styles.binderObject}>
       {showDeleteMenu && (
@@ -233,64 +276,7 @@ const BinderObject: React.FC<IBinderProps> = ({
       )}
       {showMenu && (
         <div className={styles.tabContainer}>
-          {!onLoad && (
-            <>
-              <div
-                className={`${styles.tab} ${
-                  activeTab === "Plans" ? styles.active : ""
-                }`}
-                title={"Plans"}
-                onClick={() => handleTabClick("Plans")}
-              >
-                Plans
-              </div>
-              <div
-                className={`${styles.tab} ${
-                  activeTab === "Players" ? styles.active : ""
-                }`}
-                title={"Players"}
-                onClick={() => handleTabClick("Players")}
-              >
-                Players
-              </div>
-              <div
-                className={`${styles.tab} ${
-                  activeTab === "Notes" ? styles.active : ""
-                }`}
-                title={"Notes"}
-                onClick={() => handleTabClick("Notes")}
-              >
-                Notes
-              </div>
-            </>
-          )}
-          <div
-            className={`${styles.tab} ${
-              activeTab === "NPCs" ? styles.active : ""
-            }`}
-            title={"NPCs"}
-            onClick={() => handleTabClick("NPCs")}
-          >
-            NPCs
-          </div>
-          <div
-            className={`${styles.tab} ${
-              activeTab === "Shops" ? styles.active : ""
-            }`}
-            title={"Shops"}
-            onClick={() => handleTabClick("Shops")}
-          >
-            Shops
-          </div>
-          <div
-            className={`${styles.tab} ${
-              activeTab === "Monsters" ? styles.active : ""
-            }`}
-            title={"Monsters"}
-            onClick={() => handleTabClick("Monsters")}
-          >
-            monsters
-          </div>
+          {showTabs.map((tab) => renderTab(tab))}
         </div>
       )}
       <div

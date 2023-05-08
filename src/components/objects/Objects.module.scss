@@ -19,6 +19,12 @@
   }
 
   .noteHeader {
+    margin-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .noteHeaderTitle {
     display: flex;
     width: 100%;
     align-items: flex-end;
@@ -139,6 +145,7 @@
   width: 100%;
   transition: all 0.3s ease-in-out;
   overflow: hidden;
+  border: 1px solid var(--accentBackground);
 
   .menuToggle {
     top: 0;
@@ -152,6 +159,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    padding: 0 0.25em;
 
     .tab {
       padding: 0.2em;

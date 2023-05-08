@@ -1,53 +1,73 @@
-import { useState, useEffect } from "react";
-import NotesObject from "../objects/NoteObject";
+import { useCallback } from "react";
+import NoteObject from "../objects/NoteObject";
 import styles from "./Sheets.module.scss";
 import { useNotes, usePreferencesStore } from "../../hooks";
 import { Button } from "../buttons";
-import { PartialNote, INote } from "../../api/model";
+import { PartialNote } from "../../api/model";
+import BinderObject, { BinderTab } from "../objects/BinderObject";
 
 function NotesSheet() {
-  const { getNoteById, getLatestNote, updateOrAddNote } = useNotes();
+  const { updateOrAddNote, notes } = useNotes();
   const { preferences, setPreferences } = usePreferencesStore();
-  const [note, setNote] = useState(
-    getNoteById(preferences.selectedNote) || getLatestNote()
-  );
-
-  useEffect(() => {
-    const selectedNote = getNoteById(preferences.selectedNote);
-    console.log("debug: selectedNote useeffect", { selectedNote, preferences });
-    if (selectedNote) {
-      setNote(selectedNote);
-    }
-  }, [preferences.selectedNote]);
-
-  useEffect(() => {
-    const initNote = async () => {
-      console.log("debug: initNote");
-      let newNote = getNoteById(preferences.selectedNote) || getLatestNote();
-      if (!newNote) {
-        newNote = await updateOrAddNote({
-          title: "",
-          body: "",
-        });
-
-        console.log("debug: initNote", { newNote });
-        setPreferences({
-          selectedNote: newNote?.id || 0,
-        });
-      }
-      setNote(newNote);
-    };
-    initNote();
-  }, [preferences.selectedNote]);
+  const notesExist = notes.length > 0;
 
   const handleChange = (newNote: PartialNote) => {
-    setNote((prev) => ({ ...prev, ...newNote } as INote));
     updateOrAddNote(newNote);
   };
 
+  const handleCreateNoteClick = async () => {
+    const newNote = await updateOrAddNote({
+      title: new Date().toLocaleString(),
+      body: "",
+    });
+    setPreferences({
+      selectedNoteSheet: newNote?.id || 0,
+    });
+  };
+
+  const handleLoadNote = (id: number) => {
+    setPreferences({
+      selectedNoteSheet: id,
+    });
+  };
+
+  const renderCreateNote = useCallback(() => {
+    return (
+      <div className={styles.notesFallback}>
+        <h3>{notesExist ? "No note selected." : "Create your first note."}</h3>
+        <div className={styles.actionRow}>
+          <Button onClick={handleCreateNoteClick} variant="primary">
+            Create Note
+          </Button>
+        </div>
+      </div>
+    );
+  }, [notesExist]);
+
   return (
     <div className={styles.sheetsContainer}>
-      <NotesObject note={note} onChange={handleChange} />
+      {!preferences.selectedNoteSheet ? (
+        renderCreateNote()
+      ) : (
+        <NoteObject
+          onChange={handleChange}
+          onClose={() =>
+            setPreferences({
+              selectedNoteSheet: 0,
+            })
+          }
+          noteId={preferences.selectedNoteSheet}
+        />
+      )}
+      {notesExist && !preferences.selectedNoteSheet && (
+        <div className={styles.notesBinder}>
+          <BinderObject
+            showTabs={[BinderTab.Notes]}
+            showTabMenu={false}
+            onLoad={handleLoadNote}
+          />
+        </div>
+      )}
     </div>
   );
 }

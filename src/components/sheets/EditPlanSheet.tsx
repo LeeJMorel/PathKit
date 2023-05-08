@@ -6,7 +6,7 @@ import { PartialPlan, usePlans, useEntities } from "../../hooks";
 import styles from "./Sheets.module.scss";
 import { Button, ToggleButton } from "../buttons";
 import { EntityType, PlanType, IEntity } from "../../api/model";
-import BinderObject from "../objects/BinderObject";
+import BinderObject, { BinderTab } from "../objects/BinderObject";
 import classNames from "classnames";
 
 const defaultPlanData = {
@@ -24,16 +24,18 @@ function EditPlanSheet() {
   );
 
   useEffect(() => {
-    const p = getPlanById(planId);
-    // Create plan and redirect to this form with the right ID
-    if (planId === "new") {
-      const newPlan = updateOrAddPlan(defaultPlanData);
-      navigate(`/plan/${newPlan.id}`, {
-        replace: true,
-      });
-    } else if (p) {
-      setPlan(p);
-    }
+    (async () => {
+      const p = await getPlanById(planId);
+      // Create plan and redirect to this form with the right ID
+      if (planId === "new") {
+        const newPlan = await updateOrAddPlan(defaultPlanData);
+        navigate(`/plan/${newPlan?.id}`, {
+          replace: true,
+        });
+      } else if (p) {
+        setPlan(p);
+      }
+    })();
   }, [planId]);
 
   const planEntities = getEntitiesById(plan.entities);
@@ -57,7 +59,6 @@ function EditPlanSheet() {
   };
 
   //We want to show the load menu
-  const [showLoad, setShowLoad] = useState(false);
   const handleLoadClick = () => {
     navigate(`/plan/${plan.id}/load`);
   };
@@ -89,10 +90,10 @@ function EditPlanSheet() {
     .map((entity) => entity.name)
     .join(", ")}`;
 
-  const handleLoadEntity = (entity: IEntity) => {
+  const handleLoadEntity = (entityId: number) => {
     setPlan((prev) => ({
       ...prev,
-      entities: uniq([...prev.entities, entity.id]),
+      entities: uniq([...prev.entities, entityId]),
     }));
     navigate(-1);
   };
@@ -160,15 +161,17 @@ function EditPlanSheet() {
             element={
               <div className={styles.editEntityContainer}>
                 <h3>Edit entity</h3>
-                <AddEntityForm
+                {/* <AddEntityForm
                   onAddEntity={(entity) => {
-                    setPlan((prev) => ({
-                      ...prev,
-                      entities: uniq([...prev.entities, entity.id]),
-                    }));
+                    if (entity?.id) {
+                      setPlan((prev) => ({
+                        ...prev,
+                        entities: uniq([...prev.entities, entity.id]),
+                      }));
+                    }
                     navigate(-1);
                   }}
-                />
+                /> */}
               </div>
             }
           />
@@ -179,6 +182,11 @@ function EditPlanSheet() {
                 <BinderObject
                   onLoad={handleLoadEntity}
                   filterEntities={plan.entities}
+                  showTabs={[
+                    BinderTab.NPCs,
+                    BinderTab.Shops,
+                    BinderTab.Monsters,
+                  ]}
                 />
               </div>
             }

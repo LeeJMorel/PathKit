@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Routes, Route } from "react-router-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
@@ -15,7 +15,7 @@ import {
   useCampaigns,
   usePlans,
   useEntities,
-  defaultPreferences,
+  useBoolean,
 } from "./hooks";
 import { WelcomeMenu } from "./components/menus/WelcomeMenu";
 import { RoundButton } from "./components/buttons";
@@ -50,7 +50,8 @@ function App() {
   // Define the props for the Header component
   const [mode, setMode] = useState<AppMode>(AppMode.exploration);
   const [menu, setMenu] = useState(false);
-  const [createDropdown, setCreateDropdown] = useState(false);
+  const { value: createDropdown, toggle: toggleCreateDropdown } =
+    useBoolean(false);
   const [searchTerm, setSearchTerm] = useState("");
   const { preferences, setPreferences } = usePreferencesStore();
 
@@ -67,7 +68,7 @@ function App() {
   };
 
   const handleToggleCreate = () => {
-    setCreateDropdown(!createDropdown);
+    toggleCreateDropdown();
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -171,17 +172,12 @@ function App() {
         <CardView />
         {/* Content component for the second column will change if
             header search component is used to show results*/}
-        {/* <SheetView /> */}
         <Routes>
           <Route path="/" element={<SheetView />}>
             <Route index element={<NotesSheet />} />
             <Route path="entity/:entityId" element={<EntitySheet />} />
             <Route path="entity/:entityId/edit" element={<EditEntitySheet />} />
             <Route path="plan/:planId/*" element={<EditPlanSheet />} />
-            {/* <Route
-              path="plan/:planId/editEntity/:entityId"
-              element={<EditEntitySheet />}
-            /> */}
             <Route path="*" element={<NotesSheet />} />
           </Route>
         </Routes>
