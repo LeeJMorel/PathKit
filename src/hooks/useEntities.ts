@@ -1,47 +1,41 @@
 import { useEffect, useCallback } from "react";
 import { useStore } from "./useStore";
-import { IEntity, PartialEntity } from "../api/model";
+import { usePreferencesStore } from "./usePreferencesStore";
+import { IEntity, PartialEntity, EntityType } from "../api/model";
 import { updateAllRows } from "../api/database";
+import useBoolean from "./useBoolean";
 
 interface IUseEntities {
   entities: IEntity[];
-  addEntity: (entity: PartialEntity) => Promise<IEntity | undefined>;
   getEntityById: (entityId?: string | number) => IEntity | undefined;
   getEntitiesById: (entityIds?: (string | number)[]) => IEntity[];
   deleteEntity: (entityId: number) => void;
   getPlayerEntities: () => IEntity[];
   getActivePlayerEntities: () => IEntity[];
-  updateEntity: (entity: PartialEntity) => Promise<IEntity | undefined>;
   updateOrAddEntity: (entity: PartialEntity) => Promise<IEntity | undefined>;
   resetInitiative: () => void;
 }
 
 export const useEntities = (): IUseEntities => {
-  const {
-    entities,
-    insertEntity,
-    refreshEntities,
-    updateEntity,
-    deleteEntity,
-  } = useStore((store) => ({
-    entities: store.entities,
-    insertEntity: store.insertEntity,
-    updateEntity: store.updateEntity,
-    deleteEntity: store.deleteEntity,
-    refreshEntities: store.refreshEntities,
-    currentCampaignId: store.currentCampaignId,
-  }));
+  const { value: mounted, setTrue: setMountedTrue } = useBoolean(false);
+  const { entities, insertEntity, refreshEntities, deleteEntity } = useStore(
+    (store) => ({
+      entities: store.entities,
+      insertEntity: store.insertEntity,
+      deleteEntity: store.deleteEntity,
+      refreshEntities: store.refreshEntities,
+      currentCampaignId: store.currentCampaignId,
+    })
+  );
+  const { preferences, setPreferences } = usePreferencesStore();
 
   // Initial call should refresh stored entities from API
   useEffect(() => {
-    refreshEntities();
-  }, []);
-
-  const addEntity = async (
-    newEntity: PartialEntity
-  ): Promise<IEntity | undefined> => {
-    return await insertEntity(newEntity);
-  };
+    if (!mounted && entities.length < 1) {
+      refreshEntities();
+      setMountedTrue();
+    }
+  }, [mounted, entities]);
 
   const getEntityById = useCallback(
     (entityId?: string | number): IEntity | undefined => {
@@ -59,22 +53,21 @@ export const useEntities = (): IUseEntities => {
   );
 
   const getPlayerEntities = useCallback((): IEntity[] => {
-    return [];
-    // return entities.filter((e) => e.entityType === EntityType.Player);
+    return entities.filter((e) => e.type === EntityType.Player);
   }, [entities]);
 
   const getActivePlayerEntities = useCallback((): IEntity[] => {
-    // return entities.filter((e) => e.entityType === EntityType.Player);
-    return [];
+    return entities.filter(
+      (e) =>
+        e.type === EntityType.Player &&
+        !preferences.absentPlayers.includes(e.id)
+    );
   }, [entities]);
 
   const updateOrAddEntity = async (
     newEntity: PartialEntity
   ): Promise<IEntity | undefined> => {
-    if (newEntity.id) {
-      return updateEntity(newEntity);
-    }
-    return addEntity(newEntity);
+    return await insertEntity(newEntity);
   };
 
   const resetInitiative = useCallback((): void => {
@@ -83,13 +76,12 @@ export const useEntities = (): IUseEntities => {
 
   return {
     entities,
-    addEntity,
     getEntityById,
     getEntitiesById,
     deleteEntity,
     getPlayerEntities,
     getActivePlayerEntities,
-    updateEntity,
+    // updateEntity,
     updateOrAddEntity,
     resetInitiative,
   };

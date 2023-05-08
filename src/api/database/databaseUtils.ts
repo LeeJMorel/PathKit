@@ -24,7 +24,10 @@ export const orderBy = (sort?: SqlOrderBy): string => {
 };
 
 export const getColumnsFromObject = (obj: Record<string, unknown>): string => {
-  const cols = Object.keys(obj).join(",");
+  const cols = Object.entries(obj)
+    .filter(([key, value]) => value !== undefined)
+    .map(([key]) => key)
+    .join(",");
   return `(${cols})`;
 };
 
@@ -32,6 +35,7 @@ export const getInsertValuesFromObject = (
   obj: Record<string, unknown>
 ): string => {
   const values = `(${Object.values(obj)
+    .filter((v) => v !== undefined)
     .map((value) => saneSqlValue(value))
     .join(",")})`;
   return values;
@@ -48,6 +52,7 @@ export const getUpdateValuesFromObject = (
   obj: Record<string, unknown>
 ): string => {
   return Object.entries(obj)
+    .filter((v) => v !== undefined)
     .map(([key, value]) => `${key} = ${saneSqlValue(value)}`)
     .join(",");
 };

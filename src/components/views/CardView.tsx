@@ -48,7 +48,7 @@ function CardView() {
       <DragAndDropList
         id="card-view-entity-list"
         items={currentEntities}
-        itemIdKey="entityId"
+        itemIdKey="id"
         setItems={setCurrentEntities}
         onRenderItem={(item) => <EntityCard entity={item} />}
         listProps={{

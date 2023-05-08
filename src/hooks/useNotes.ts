@@ -1,7 +1,9 @@
 import { useEffect, useCallback } from "react";
+import debounce from "lodash.debounce";
 import { useStore } from "./useStore";
 import { usePreferencesStore } from "./usePreferencesStore";
 import { INote, PartialNote } from "../api/model";
+import useBoolean from "./useBoolean";
 
 interface IUseNotes {
   notes: INote[];
@@ -11,20 +13,24 @@ interface IUseNotes {
   getLatestNote: () => INote | undefined;
 }
 export const useNotes = (): IUseNotes => {
-  const { notes, refreshNotes, insertNote, updateNote, deleteNoteFromDb } =
-    useStore((store) => ({
+  const { value: mounted, setTrue: setMountedTrue } = useBoolean(false);
+  const { notes, refreshNotes, insertNote, deleteNoteFromDb } = useStore(
+    (store) => ({
       notes: store.notes,
       refreshNotes: store.refreshNotes,
       insertNote: store.insertNote,
-      updateNote: store.updateNote,
       deleteNoteFromDb: store.deleteNote,
-    }));
+    })
+  );
   const { preferences, setPreferences } = usePreferencesStore();
 
   // Initial call should refresh stored notes from API
   useEffect(() => {
-    refreshNotes();
-  }, []);
+    if (!mounted && notes.length < 1) {
+      refreshNotes();
+      setMountedTrue();
+    }
+  }, [mounted, notes]);
 
   const getNoteById = useCallback(
     (noteId?: string | number | null): INote | undefined => {
@@ -32,6 +38,10 @@ export const useNotes = (): IUseNotes => {
     },
     [notes]
   );
+
+  const debouncedUpdateOrAdd = debounce(async (newNote: PartialNote) => {
+    return await insertNote(newNote);
+  }, 500);
 
   const updateOrAddNote = async (
     newNote: PartialNote
@@ -42,7 +52,7 @@ export const useNotes = (): IUseNotes => {
       title:
         newNote.title.length > 0 ? newNote.title : new Date().toLocaleString(),
     };
-    return !newNote.id ? await insertNote(note) : await updateNote(note);
+    return debouncedUpdateOrAdd(note);
   };
 
   const getLatestNote = (): INote | undefined => {
@@ -57,13 +67,18 @@ export const useNotes = (): IUseNotes => {
   const deleteNote = useCallback(
     (id: number): void => {
       deleteNoteFromDb(id);
-      if (id === preferences.selectedNote) {
+      if (id === preferences.selectedNoteSheet) {
         setPreferences({
-          selectedNote: 0,
+          selectedNoteSheet: 0,
+        });
+      }
+      if (id === preferences.selectedNoteModule) {
+        setPreferences({
+          selectedNoteModule: 0,
         });
       }
     },
-    [preferences.selectedNote]
+    [preferences]
   );
 
   return {

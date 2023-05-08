@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import styles from "./Card.module.scss";
 import { IEntity } from "../../api/model";
-import { usePreferencesStore } from "../../hooks";
+import { usePreferencesStore, useBoolean } from "../../hooks";
 import StatObject from "../objects/StatObject";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
 import ConditionsDropdown from "../dropdowns/ConditionsDropdown";
@@ -22,12 +22,13 @@ const exampleStats = {
 };
 
 function EntityCard({ entity, className, ...rest }: EntityCardProps) {
-  const [showConditionsMenu, setShowConditionsMenu] = useState(false);
+  const { value: showConditionsMenu, toggle: toggleConditionsMenu } =
+    useBoolean(false);
   const { preferences, setPreferences } = usePreferencesStore();
   const navigate = useNavigate();
 
   const handleConditionsClick = () => {
-    setShowConditionsMenu((prevValue) => !prevValue);
+    toggleConditionsMenu();
   };
 
   const handleEntityClick = (id: number) => {
@@ -37,8 +38,8 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
     });
     navigate(`/entity/${entity.id}`);
   };
-  const isHPZero = entity.hp && entity.hp[0] === 0;
-  const stats = entity.stats || {};
+  // const isHPZero = entity.hp && entity.hp[0] === 0;
+  // const stats = entity.stats || {};
 
   const statKeys = Object.keys(exampleStats);
 
@@ -51,78 +52,79 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
       >
         <div
           className={classNames(
-            styles.cardImage,
-            isHPZero && styles.entityDeadImage
+            styles.cardImage
+            // isHPZero && styles.entityDeadImage
           )}
         >
           <img src={entity.image} alt={entity.name} />
-          {isHPZero && (
+          {/* {isHPZero && (
             <FontAwesomeIcon className={styles.deadIcon} icon="skull" />
-          )}
+          )} */}
         </div>
         <div className={styles.entityContent}>
           <div className={styles.entityName}>{entity.name}</div>
-          {entity.hp && (
-            <>
-              <div className={styles.entityHP}>
-                {showConditionsMenu && (
-                  <ConditionsDropdown
-                    onConditionSelect={(condition) => {
-                      console.log(condition);
-                      handleConditionsClick(); // call handleConditionsClick to hide the menu
-                    }}
-                  />
-                )}
-                <button
-                  className={styles.entityHPButton}
-                  onClick={handleConditionsClick}
-                >
-                  <FontAwesomeIcon icon="plus" />
-                </button>
-                <div className={styles.entityHPNumbers}>
+          {/* {entity.hp && ( */}
+          <>
+            <div className={styles.entityHP}>
+              {showConditionsMenu && (
+                <ConditionsDropdown
+                  onConditionSelect={(condition) => {
+                    console.log(condition);
+                    handleConditionsClick(); // call handleConditionsClick to hide the menu
+                  }}
+                  onClose={toggleConditionsMenu}
+                />
+              )}
+              <button
+                className={styles.entityHPButton}
+                onClick={handleConditionsClick}
+              >
+                <FontAwesomeIcon icon="plus" />
+              </button>
+              {/* <div className={styles.entityHPNumbers}>
                   {entity.hp[0]}/{entity.hp[1]}
-                </div>
-              </div>
-              <div className={styles.entityStats}>
-                {Object.entries(exampleStats).map(([statKey, stat]) => {
-                  let icon: IconName;
-                  switch (statKey) {
-                    case "ac":
-                      icon = "shield";
-                      break;
-                    case "dc":
-                      icon = "star";
-                      break;
-                    default:
-                      icon = "circle";
-                  }
-                  let label;
-                  switch (statKey) {
-                    case "will":
-                      label = "w";
-                      break;
-                    case "reflex":
-                      label = "r";
-                      break;
-                    case "fortitude":
-                      label = "f";
-                      break;
-                    default:
-                      break;
-                  }
-                  return (
-                    <div
-                      key={statKey}
-                      className={styles.entityStat}
-                      title={`${statKey}: ${stat}`}
-                    >
-                      <StatObject icon={icon} number={stat} label={label} />
-                    </div>
-                  );
-                })}
-              </div>
-            </>
-          )}
+                </div> */}
+            </div>
+            <div className={styles.entityStats}>
+              {Object.entries(exampleStats).map(([statKey, stat]) => {
+                let icon: IconName;
+                switch (statKey) {
+                  case "ac":
+                    icon = "shield";
+                    break;
+                  case "dc":
+                    icon = "star";
+                    break;
+                  default:
+                    icon = "circle";
+                }
+                let label;
+                switch (statKey) {
+                  case "will":
+                    label = "w";
+                    break;
+                  case "reflex":
+                    label = "r";
+                    break;
+                  case "fortitude":
+                    label = "f";
+                    break;
+                  default:
+                    break;
+                }
+                return (
+                  <div
+                    key={statKey}
+                    className={styles.entityStat}
+                    title={`${statKey}: ${stat}`}
+                  >
+                    <StatObject icon={icon} number={stat} label={label} />
+                  </div>
+                );
+              })}
+            </div>
+          </>
+          {/* )} */}
         </div>
       </div>
 

@@ -9,7 +9,8 @@ interface IPreferences {
   visibleModules: Record<Module, boolean>;
 
   selectedPlan: number;
-  selectedNote: number;
+  selectedNoteSheet: number;
+  selectedNoteModule: number;
   selectedSearch: string | number | null;
   absentPlayers: number[];
 }
@@ -20,7 +21,7 @@ interface IPreferencesStore {
 }
 
 //default preferences state
-export const defaultPreferences = {
+export const defaultPreferences: IPreferences = {
   largeFont: false,
   theme: "parchment",
   visibleModules: {
@@ -31,7 +32,8 @@ export const defaultPreferences = {
     BinderModule: true,
   },
   selectedPlan: 0,
-  selectedNote: 0,
+  selectedNoteSheet: 0,
+  selectedNoteModule: 0,
   selectedSearch: null,
   absentPlayers: [],
 };
@@ -39,21 +41,7 @@ export const defaultPreferences = {
 export const usePreferencesStore = create(
   persist<IPreferencesStore>(
     (set, get) => ({
-      preferences: {
-        largeFont: false,
-        theme: "parchment",
-        visibleModules: {
-          TipModule: true,
-          DCModule: false,
-          DiceModule: false,
-          NotesModule: false,
-          BinderModule: true,
-        },
-        selectedPlan: 0,
-        selectedNote: 0,
-        selectedSearch: null,
-        absentPlayers: [],
-      },
+      preferences: defaultPreferences,
 
       setPreferences: (newPreferences: Partial<IPreferences>): void => {
         const { preferences } = get();

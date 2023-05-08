@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { useOnClickOutside } from "../../hooks";
 import styles from "./Dropdown.module.scss";
 
 type ConditionOption = {
@@ -44,13 +45,23 @@ const conditions: ConditionOption[] = [
 
 interface ConditionDropdownProps {
   onConditionSelect: (condition: string) => void;
+  onClose?: () => void;
 }
 
 const ConditionsDropdown: React.FC<ConditionDropdownProps> = ({
   onConditionSelect,
+  onClose,
 }) => {
   const [selectedCondition, setSelectedCondition] =
     useState<ConditionOption | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleClose = () => {
+    if (typeof onClose === "function") {
+      onClose();
+    }
+  };
+  useOnClickOutside(dropdownRef, handleClose);
 
   const handleConditionSelect = (option: ConditionOption | null) => {
     setSelectedCondition(option);
@@ -60,7 +71,7 @@ const ConditionsDropdown: React.FC<ConditionDropdownProps> = ({
   };
 
   return (
-    <div className={styles.dropdownContainer}>
+    <div className={styles.dropdownContainer} ref={dropdownRef}>
       <div className={styles.menuDropdown}>
         <div className={styles.optionsContainer}>
           {conditions.map((option) => (

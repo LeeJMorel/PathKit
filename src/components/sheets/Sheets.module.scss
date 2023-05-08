@@ -2,6 +2,8 @@
   width: 100%;
   height: 100%;
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
 
   .imageContainer {
     display: flex;
@@ -79,5 +81,30 @@
     border: 1px solid var(--secondaryBackground);
     width: 100%;
     height: 300px;
+  }
+
+  .notesFallback {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    > h3 {
+      text-align: center;
+    }
+  }
+
+  .notesBinder {
+    margin-top: 1em;
+    overflow-y: auto;
+  }
+
+  .actionRow {
+    display: flex;
+    justify-content: center;
+    > * {
+      margin: 0 0.5em;
+    }
   }
 }

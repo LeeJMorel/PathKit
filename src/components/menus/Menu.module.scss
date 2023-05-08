@@ -208,3 +208,11 @@
     align-items: center;
   }
 }
+
+.campaignName {
+  cursor: pointer;
+  &.selectedCampaign {
+    font-weight: 700;
+    border-bottom: 1px solid currentColor;
+  }
+}

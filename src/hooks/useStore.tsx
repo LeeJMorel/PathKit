@@ -9,13 +9,14 @@ import {
   PartialEntity,
   PartialNote,
   PartialPlan,
+  IRawEntity,
+  IRawPlan,
 } from "../api/model";
 import {
   selectAllRows,
   insertRow,
   selectRowWhere,
   deleteRow,
-  updateAllRows,
   updateRow,
 } from "../api/database/database";
 
@@ -39,17 +40,17 @@ export interface Actions {
   refreshCampaigns: () => Promise<void>;
 
   insertEntity: (entity: PartialEntity) => Promise<IEntity | undefined>;
-  updateEntity: (entity: PartialEntity) => Promise<IEntity | undefined>;
+  // updateEntity: (entity: PartialEntity) => Promise<IEntity | undefined>;
   deleteEntity: (id: number) => Promise<void>;
   refreshEntities: () => Promise<void>;
 
   insertPlan: (plan: PartialPlan) => Promise<IPlan | undefined>;
-  updatePlan: (plan: PartialPlan) => Promise<IPlan | undefined>;
+  // updatePlan: (plan: PartialPlan) => Promise<IPlan | undefined>;
   deletePlan: (id: number) => Promise<void>;
   refreshPlans: () => Promise<void>;
 
-  insertNote: (note: PartialNote) => Promise<INote | undefined>;
-  updateNote: (note: PartialNote) => Promise<INote | undefined>;
+  insertNote: (note: Partial<INote>) => Promise<INote | undefined>;
+  // updateNote: (note: PartialNote) => Promise<INote | undefined>;
   deleteNote: (id: number) => Promise<void>;
   refreshNotes: () => Promise<void>;
 }
@@ -68,27 +69,23 @@ const initialState: State = {
   notesLoading: false,
 };
 
-export const useStore = create(
-  persist<IStore>(
+export const useStore = create<IStore>()(
+  persist(
     (set, get) => ({
       ...initialState,
 
       loadCampaign: async (campaignId) => {
-        const { refreshEntities, refreshNotes, refreshPlans, unloadCampaign } =
-          get();
+        const { refreshEntities, refreshNotes, refreshPlans } = get();
         selectRowWhere<ICampaign>("campaign", {
           key: "id",
           oper: "=",
           value: campaignId,
-        }).then(async (result) => {
+        }).then((result) => {
           if (result && result[0].id) {
-            unloadCampaign();
             set({ currentCampaignId: campaignId });
-            await Promise.all([
-              refreshEntities(),
-              refreshNotes(),
-              refreshPlans(),
-            ]);
+            refreshEntities();
+            refreshNotes();
+            refreshPlans();
           }
         });
       },
@@ -151,21 +148,21 @@ export const useStore = create(
         }
       },
 
-      updateEntity: async (entity) => {
-        const { refreshEntities } = get();
-        if (entity.id) {
-          const result = await updateRow("entity", entity, entity.id);
-          if (result?.rowsAffected && result.rowsAffected > 0) {
-            refreshEntities();
-            const newResult = await selectRowWhere<IEntity>("entity", {
-              key: "id",
-              oper: "=",
-              value: result.lastInsertId,
-            });
-            return newResult && newResult.length > 0 ? newResult[0] : undefined;
-          }
-        }
-      },
+      // updateEntity: async (entity) => {
+      //   const { refreshEntities } = get();
+      //   if (entity.id) {
+      //     const result = await updateRow("entity", entity, entity.id);
+      //     if (result?.rowsAffected && result.rowsAffected > 0) {
+      //       refreshEntities();
+      //       const newResult = await selectRowWhere<IEntity>("entity", {
+      //         key: "id",
+      //         oper: "=",
+      //         value: result.lastInsertId,
+      //       });
+      //       return newResult && newResult.length > 0 ? newResult[0] : undefined;
+      //     }
+      //   }
+      // },
 
       deleteEntity: async (id) => {
         const { refreshEntities } = get();
@@ -177,15 +174,20 @@ export const useStore = create(
         const { currentCampaignId } = get();
         set({ entitiesLoading: true });
 
-        const response = await selectRowWhere<IEntity>("entity", {
+        const response = await selectRowWhere<IRawEntity>("entity", {
           key: "campaignId",
           oper: "=",
           value: currentCampaignId,
-          sort: [["id", "DESC"]],
+          sort: [["name", "ASC"]],
         });
 
         if (response) {
-          set({ entities: response });
+          const entities: IEntity[] = response.map((e) => ({
+            ...e,
+            build: JSON.parse(e.build || "{}"),
+            conditions: JSON.parse(e.conditions || "[]"),
+          }));
+          set({ entities });
         }
         set({ entitiesLoading: false });
       },
@@ -208,21 +210,21 @@ export const useStore = create(
         }
       },
 
-      updatePlan: async (plan) => {
-        const { refreshPlans } = get();
-        if (plan.id) {
-          const result = await updateRow("plan", plan, plan.id);
-          if (result?.rowsAffected && result.rowsAffected > 0) {
-            refreshPlans();
-            const newResult = await selectRowWhere<IPlan>("plan", {
-              key: "id",
-              oper: "=",
-              value: result.lastInsertId,
-            });
-            return newResult && newResult.length > 0 ? newResult[0] : undefined;
-          }
-        }
-      },
+      // updatePlan: async (plan) => {
+      //   const { refreshPlans } = get();
+      //   if (plan.id) {
+      //     const result = await updateRow("plan", plan, plan.id);
+      //     if (result?.rowsAffected && result.rowsAffected > 0) {
+      //       refreshPlans();
+      //       const newResult = await selectRowWhere<IPlan>("plan", {
+      //         key: "id",
+      //         oper: "=",
+      //         value: result.lastInsertId,
+      //       });
+      //       return newResult && newResult.length > 0 ? newResult[0] : undefined;
+      //     }
+      //   }
+      // },
 
       deletePlan: async (id) => {
         const { refreshPlans } = get();
@@ -234,7 +236,7 @@ export const useStore = create(
         const { currentCampaignId } = get();
         set({ plansLoading: true });
 
-        const response = await selectRowWhere<IPlan>("plan", {
+        const response = await selectRowWhere<IRawPlan>("plan", {
           key: "campaignId",
           oper: "=",
           value: currentCampaignId,
@@ -242,7 +244,11 @@ export const useStore = create(
         });
 
         if (response) {
-          set({ plans: response });
+          const plans: IPlan[] = response.map((p) => ({
+            ...p,
+            entities: JSON.parse(p.entities || "[]"),
+          }));
+          set({ plans });
         }
         set({ plansLoading: false });
       },
@@ -254,7 +260,6 @@ export const useStore = create(
             ...newNote,
             campaignId: currentCampaignId,
           };
-          console.log("debug:usestore insertNote", { newNote, note });
           const result = await insertRow("note", note);
           if (result?.lastInsertId) {
             refreshNotes();
@@ -268,24 +273,21 @@ export const useStore = create(
         }
       },
 
-      updateNote: async (note) => {
-        const { refreshNotes } = get();
-        console.log("debug:usestore updateNote", {
-          note,
-        });
-        if (note.id) {
-          const result = await insertRow("note", note);
-          if (result?.rowsAffected && result.rowsAffected > 0) {
-            refreshNotes();
-            const newResult = await selectRowWhere<INote>("note", {
-              key: "id",
-              oper: "=",
-              value: note.id,
-            });
-            return newResult && newResult.length > 0 ? newResult[0] : undefined;
-          }
-        }
-      },
+      // updateNote: async (note) => {
+      //   const { refreshNotes } = get();
+      //   if (note.id) {
+      //     const result = await insertRow("note", note);
+      //     if (result?.rowsAffected && result.rowsAffected > 0) {
+      //       refreshNotes();
+      //       const newResult = await selectRowWhere<INote>("note", {
+      //         key: "id",
+      //         oper: "=",
+      //         value: note.id,
+      //       });
+      //       return newResult && newResult.length > 0 ? newResult[0] : undefined;
+      //     }
+      //   }
+      // },
 
       deleteNote: async (id) => {
         const { refreshNotes } = get();
@@ -301,7 +303,7 @@ export const useStore = create(
           key: "campaignId",
           oper: "=",
           value: currentCampaignId,
-          sort: [["id", "DESC"]],
+          sort: [["modifiedDate", "DESC"]],
         });
 
         if (response) {
@@ -312,7 +314,7 @@ export const useStore = create(
     }),
     {
       name: "PathKit-storage",
-      // partialize: (state) => ({ currentCampaignId: state.currentCampaignId }),
+      partialize: (state) => ({ currentCampaignId: state.currentCampaignId }),
     }
   )
 );

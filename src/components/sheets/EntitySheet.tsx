@@ -49,7 +49,7 @@ function EntitySheet() {
       </div>
       <hr />
       <ul>
-        {entity?.stats && (
+        {/* {entity?.stats && (
           <li>
             Stats:
             <ul>
@@ -67,7 +67,7 @@ function EntitySheet() {
             {entity.hp[2] && ` (+${entity.hp[2]} temp HP)`}
           </li>
         )}
-        {entity?.equipment && <li>Equipment: {entity.equipment.join(", ")}</li>}
+        {entity?.equipment && <li>Equipment: {entity.equipment.join(", ")}</li>} */}
       </ul>
     </div>
   );
