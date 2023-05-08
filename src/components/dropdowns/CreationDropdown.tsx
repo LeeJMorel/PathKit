@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Dropdown.module.scss";
-import { useNotes, usePreferencesStore } from "../../hooks";
+import { useNotes, usePreferencesStore, useOnClickOutside } from "../../hooks";
 
 interface Action {
   label: string;
@@ -38,7 +38,7 @@ const CreationDropdown: React.FC<CreationDropdownProps> = ({
       onClick: async () => {
         const newNote = await updateOrAddNote({ title: "", body: "" });
         setPreferences({
-          selectedNote: newNote?.id,
+          selectedNoteSheet: newNote?.id,
         });
       },
     },
@@ -56,23 +56,12 @@ const CreationDropdown: React.FC<CreationDropdownProps> = ({
     },
   ];
 
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-        onClose();
-      }
-    };
+  const handleOutsideClick = () => {
+    setIsOpen(false);
+    onClose();
+  };
 
-    document.addEventListener("click", handleOutsideClick);
-
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, [dropdownRef, onClose]);
+  useOnClickOutside(dropdownRef, handleOutsideClick);
 
   const handleActionClick = (action: Action) => {
     action.onClick();
@@ -80,8 +69,8 @@ const CreationDropdown: React.FC<CreationDropdownProps> = ({
   };
 
   return isOpen ? (
-    <div className={styles.dropdownContainer} onClick={onClose}>
-      <div className={styles.menuDropdown} onClick={(e) => e.stopPropagation()}>
+    <div className={styles.dropdownContainer} ref={dropdownRef}>
+      <div className={styles.menuDropdown}>
         <div className={styles.menuDropdownContent}>
           {actions.map((action, index) => (
             <div

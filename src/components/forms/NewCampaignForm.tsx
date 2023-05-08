@@ -2,19 +2,15 @@ import { useState } from "react";
 import styles from "./Form.module.scss";
 import { useCampaigns } from "../../hooks";
 
-const NewCampaignForm = () => {
+interface INewCampaignFormProps {
+  onSubmit?: () => void;
+}
+const NewCampaignForm = ({ onSubmit }: INewCampaignFormProps) => {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [formError, setFormError] = useState("");
 
-  const {
-    campaigns,
-    currentCampaignId,
-    addCampaign,
-    deleteCampaign,
-    loadCampaign,
-    unloadCampaign,
-  } = useCampaigns();
+  const { addCampaign } = useCampaigns();
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -36,7 +32,9 @@ const NewCampaignForm = () => {
       name,
       desc,
     });
-    // window.location.reload();
+    if (typeof onSubmit === "function") {
+      onSubmit();
+    }
   };
 
   return (

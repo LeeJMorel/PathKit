@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import classNames from "classnames";
 import styles from "./Menu.module.scss";
 import Button from "../buttons/Button";
 import NewCampaignForm from "../forms/NewCampaignForm";
-import { useCampaigns, usePreferencesStore } from "../../hooks";
+import { useCampaigns } from "../../hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface ICampaignMenuProps {
@@ -11,14 +12,11 @@ interface ICampaignMenuProps {
 }
 
 const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
-  const {
-    campaigns,
-    currentCampaignId,
-    addCampaign,
-    deleteCampaign,
-    loadCampaign,
-    unloadCampaign,
-  } = useCampaigns();
+  const { campaigns, loadCampaign, refreshCampaigns } = useCampaigns();
+
+  useEffect(() => {
+    refreshCampaigns();
+  }, []);
 
   const [selectedCampaign, setSelectedCampaign] = useState<number>();
 
@@ -60,11 +58,10 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
           {campaigns.map((campaign) => (
             <div key={campaign.id} className={styles.menuRowContainer}>
               <div
-                className={`${styles.menuTitle} ${
-                  selectedCampaign === campaign.id
-                    ? styles.selectedCampaign
-                    : ""
-                }`}
+                className={classNames(
+                  styles.campaignName,
+                  selectedCampaign === campaign.id && styles.selectedCampaign
+                )}
                 onClick={() => handleCampaignSelect(campaign.id)}
               >
                 {campaign.name}
@@ -85,7 +82,7 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
   const renderNewContent = () => {
     return (
       <>
-        <NewCampaignForm />
+        <NewCampaignForm onSubmit={handleClose} />
       </>
     );
   };
