@@ -15,7 +15,7 @@ const DiceModule = () => {
     // create UnityLoader instance and load the build
     const unityLoader = new UnityLoader();
     unityLoader
-      .load(unityContainerId, "/dice-resources/Downloads.json", {
+      .load(unityContainerId, "../../../dice-resources/Downloads.json", {
         onProgress: unityContext.setLoadingProgress,
         onComplete: unityContext.setLoadingComplete,
       })
