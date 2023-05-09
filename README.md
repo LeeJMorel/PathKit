@@ -41,13 +41,13 @@ PathKit is built using the MVC (Model-View-Controller) architecture system, with
 - **Container** It provides a bridge between the web-based UI components built with React, Vite, and TypeScript, and the native desktop environment, enabling a smooth and seamless user experience. We are using Tauri.
 
 
-## Installation
+## Installation (Build/Run For Users)
 
 To install and run PathKit locally please look over our helpful Wiki [user guide](https://github.com/LeeJMorel/PathKit/wiki/User-Manual) which we update with each release as needed.
 
-## Contributing
+## Contributing (Build/Run/Test For Developers)
 
-Contributions to PathKit are welcome! If you would like to contribute to the development of PathKit, please follow the guidelines outlined in the [developers guide](https://github.com/LeeJMorel/PathKit/wiki/Developer-Guidelines) in the wiki. Included are instructions on how to build and test using our existing tools.
+Contributions to PathKit are welcome! If you would like to contribute to the development of PathKit, please follow the guidelines outlined in the [developers guide](https://github.com/LeeJMorel/PathKit/wiki/Developer-Guidelines) in the wiki. Included are instructions on how to build, run, and test using our existing tools.
 
 ## License
 
