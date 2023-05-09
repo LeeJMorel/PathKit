@@ -2,25 +2,25 @@ import { useEffect, useState } from "react";
 import styles from "./Modules.module.scss";
 import { Unity, useUnityContext } from "react-unity-webgl";
 
-function DiceModule() {
-  //this connects to unity
-  const { unityProvider } = useUnityContext({
-    loaderUrl: "../../../dice-resources/Downloads.loader.js",
-    dataUrl: "../../../dice-resources/Downloads.data",
-    frameworkUrl: "../../../dice-resources/Downloads.framework.js",
-    codeUrl: "../../../dice-resources/Downloads.wasm",
-  });
+// import UnityLoader script
+import "../../../dice-resources/Downloads.loader.js";
 
-  //this checks if the unity component loaded, if not we show an error message
+const unityContainerId = "unity-container";
+
+const DiceModule = () => {
+  const unityContext = useUnityContext();
   const [hasError, setHasError] = useState(false);
+
   useEffect(() => {
-    fetch("../../../dice-resources/Downloads.framework.js")
-      .then((response) => {
-        if (!response.ok) {
-          setHasError(true);
-        }
+    // create UnityLoader instance and load the build
+    const unityLoader = new UnityLoader();
+    unityLoader
+      .load(unityContainerId, "/dice-resources/Downloads.json", {
+        onProgress: unityContext.setLoadingProgress,
+        onComplete: unityContext.setLoadingComplete,
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error(error);
         setHasError(true);
       });
   }, []);
@@ -35,14 +35,15 @@ function DiceModule() {
     );
   }
 
-  //this is our game loader
   return (
     <div className={styles.moduleContainer}>
       <div className={styles.moduleContent}>
-        <Unity unityProvider={unityProvider} />
+        <div id={unityContainerId}>
+          <Unity unityContext={unityContext} />
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default DiceModule;
