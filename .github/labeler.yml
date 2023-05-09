@@ -1,9 +1,30 @@
-front-end dev:
-  - frontend*
-
-back-end dev:
-  - backend*
-
+bug:
+  - '(bug)'
+  
 documentation:
   - README.md
   - ./*.md
+  - ./docs
+  - '(documentation)'
+
+duplicate:
+  - '(duplicate)'
+
+enhancement:
+  - '(enhancement|new feature)'
+
+good first issue:
+  - '(simple|good first issue|good for newcomers)'
+
+help wanted:
+  - '(help wanted|attention)'
+
+test:
+  - ./tests
+  - '(test)'
+
+
+# Example of how to use:
+# # Add/remove 'critical' label if issue contains the words 'urgent' or 'critical'
+# critical:
+#     - '(critical|urgent)'
