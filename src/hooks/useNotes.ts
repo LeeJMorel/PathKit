@@ -9,6 +9,7 @@ interface IUseNotes {
   notes: INote[];
   getNoteById: (noteId: number) => INote | undefined;
   deleteNote: (noteId: number) => void;
+  addNote: (note: PartialNote) => Promise<INote | undefined>;
   updateOrAddNote: (note: PartialNote) => Promise<INote | undefined>;
   getLatestNote: () => INote | undefined;
 }
@@ -39,6 +40,15 @@ export const useNotes = (): IUseNotes => {
     [notes]
   );
 
+  const addNote = async (newNote: PartialNote): Promise<INote | undefined> => {
+    const note = {
+      ...newNote,
+      title:
+        newNote.title.length > 0 ? newNote.title : new Date().toLocaleString(),
+    };
+    return await insertNote(note);
+  };
+
   const debouncedUpdateOrAdd = debounce(async (newNote: PartialNote) => {
     return await insertNote(newNote);
   }, 500);
@@ -46,13 +56,12 @@ export const useNotes = (): IUseNotes => {
   const updateOrAddNote = async (
     newNote: PartialNote
   ): Promise<INote | undefined> => {
-    console.log("debug: updateOrAdd", { newNote });
     const note = {
       ...newNote,
       title:
         newNote.title.length > 0 ? newNote.title : new Date().toLocaleString(),
     };
-    return debouncedUpdateOrAdd(note);
+    return await debouncedUpdateOrAdd(note);
   };
 
   const getLatestNote = (): INote | undefined => {
@@ -85,6 +94,7 @@ export const useNotes = (): IUseNotes => {
     notes,
     getNoteById,
     deleteNote,
+    addNote,
     updateOrAddNote,
     getLatestNote,
   };

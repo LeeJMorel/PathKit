@@ -10,7 +10,6 @@ import {
 } from "../../hooks";
 import { WelcomeMenu } from "./WelcomeMenu";
 import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 
 interface IDeleteMenuProps {
   type: "entity" | "plan" | "campaign" | "note";
@@ -23,7 +22,6 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
   id,
   onClose,
 }: IDeleteMenuProps) => {
-  const navigate = useNavigate();
   const { deletePlan } = usePlans();
   const { deleteEntity } = useEntities();
   const { deleteCampaign } = useCampaigns();
@@ -62,6 +60,11 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
             selectedNoteSheet: 0,
           });
         }
+        if (preferences.selectedNoteModule === id) {
+          setPreferences({
+            selectedNoteModule: 0,
+          });
+        }
         deleteNote(id);
         break;
 
@@ -70,7 +73,6 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
     }
 
     handleClose();
-    navigate("/");
   }, []);
 
   return (
