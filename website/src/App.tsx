@@ -8,7 +8,7 @@ import light from "./assets/light.png";
 import YouTube, { YouTubeProps } from "react-youtube";
 
 function App() {
-  const { isDarkMode, toggle, enable, disable } = useDarkMode();
+  const { isDarkMode, enable, disable } = useDarkMode();
   const downloadAuto = useDownload();
   const downloadWin = useDownload(Platform.Windows);
   const downloadMac = useDownload(Platform.MacOS);
