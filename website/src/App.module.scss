@@ -1,0 +1,296 @@
+@import "./styles/variables.scss";
+@import "./styles/themeHelpers.scss";
+
+:root {
+  /* Allow access to color palette variables directly. */
+  @each $name, $value in $colorPalette {
+    @include define-custom-property($name, $value);
+  }
+}
+
+#root {
+  height: 100%; /* Set height of App to take up the full height of the screen */
+  width: 100%; /* Set width of App to take up the full height of the screen */
+  text-align: center;
+}
+
+$headerButtonWidth: 20px;
+
+/* Our main component, this takes up the full screen .
+This consists of two main objects, the header and the content*/
+.app {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 100vh; /* Set height of App to take up the full height of the screen */
+  width: 100vw; /* Set width of App to take up the full height of the screen */
+  background-color: var(--secondaryBackground);
+  color: var(--secondaryText);
+  overflow-x: hidden;
+  overflow-y: hidden;
+  font-size: 16px;
+  overflow: auto;
+
+  &.largeFont {
+    font-size: 18px;
+  }
+
+  &.parchment {
+    @each $name, $value in $parchmentTheme {
+      @include define-custom-property($name, $value);
+    }
+  }
+
+  &.dark {
+    @each $name, $value in $darkTheme {
+      @include define-custom-property($name, $value);
+    }
+  }
+
+  &.highContrast {
+    @each $name, $value in $highContrastTheme {
+      @include define-custom-property($name, $value);
+    }
+  }
+
+  &.highContrastDark {
+    @each $name, $value in $highContrastDarkTheme {
+      @include define-custom-property($name, $value);
+    }
+  }
+
+  .grid {
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+
+    .heroBackground {
+      background-color: transparent;
+      color: var(--bodyText);
+      position: relative;
+      width: 100%;
+      min-height: 626px;
+      overflow: hidden;
+
+      @media screen and (min-width: 1024px) {
+        padding-bottom: 0;
+      }
+
+      @media screen and (min-width: 768px) {
+        padding-bottom: var(--section-spacing);
+        min-height: 626px;
+      }
+
+      .heroImage {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        position: absolute;
+        filter: blur(3px);
+        background-size: cover;
+      }
+
+      .header {
+        width: 100%;
+        height: $headerHeight; /* Set height of Header to 10em */
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+
+        .headerEnd {
+          margin-left: 2em;
+          margin-right: 2em;
+          width: 100px;
+        }
+
+        .headerContent {
+          width: 100%;
+          height: $headerHeight; /* Set height of Header to 10em */
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .headerLink {
+            color: var(--bodyText);
+            font-weight: normal;
+
+            &:not(:last-child) {
+              margin-right: 1em;
+              &::after {
+                content: "|";
+                margin-left: 1em;
+              }
+            }
+
+            &:hover {
+              font-weight: bold;
+            }
+          }
+        }
+      }
+
+      .heroContent {
+        width: 100%;
+        height: 100%; /* Set height of Header to 10em */
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+        .heroText {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          position: relative;
+          margin: 4em;
+
+          h1 {
+            font-size: 3em;
+            margin-bottom: 0;
+          }
+          p {
+            font-size: 2em;
+          }
+        }
+      }
+    }
+
+    .sectionContent {
+      width: 100%;
+      height: 100%;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      margin: 2em;
+
+      .buttonMargin {
+        margin: 0.2em;
+      }
+
+      .downloadSection {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+
+        .downloadItem {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+        }
+      }
+
+      .exploreSection {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        text-align: center;
+
+        .exploreItem {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          margin: 1em;
+        }
+
+        .exploreItemRow {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: flex-start;
+          margin: 1em;
+
+          .exploreText {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            margin: 1em;
+          }
+        }
+      }
+
+      .supportSection {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        text-align: center;
+
+        .supportItem {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: flex-start;
+
+          .supportText {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex: 3;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            margin: 1em;
+          }
+
+          .supportTextEnd {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            margin: 1em;
+          }
+        }
+      }
+    }
+  }
+}
