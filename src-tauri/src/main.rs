@@ -6,11 +6,8 @@ pub mod db;
     all(not(debug_assertions), target_os = "windows"),
     windows_subsystem = "windows"
 )]
-
-
 #[async_std::main]
 async fn main() {
-
     db_init().await;
 
     tauri::Builder::default()
@@ -18,5 +15,3 @@ async fn main() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
-
-

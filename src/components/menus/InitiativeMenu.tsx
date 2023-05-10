@@ -15,11 +15,11 @@ export const InitiativeMenu = ({ onClose }: InitiativeMenuProps) => {
 
   const { preferences, setPreferences } = usePreferencesStore();
   const { resetInitiative: resetEntities } = useEntities();
-  const cancelPlan = () => {
-    const selectedPlan = 0;
+  const cancelPath = () => {
+    const selectedPath = 0;
     setPreferences({
       ...preferences,
-      selectedPlan,
+      selectedPath,
     });
     resetEntities();
     onClose();
@@ -30,7 +30,7 @@ export const InitiativeMenu = ({ onClose }: InitiativeMenuProps) => {
       <div className={styles.mainMenu}>
         <div className={styles.header}>
           <h2>Roll For Initiative</h2>
-          <div className={styles.close} onClick={cancelPlan}>
+          <div className={styles.close} onClick={cancelPath}>
             <FontAwesomeIcon icon="close" />
           </div>
         </div>

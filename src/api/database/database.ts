@@ -50,7 +50,7 @@ export const selectAllRows = async <T>(
 interface ISelectWhereOptions extends ISelectAllOptions {
   key: string;
   oper: SqliteOper;
-  value: (string | number) | (string | number)[];
+  value: (string | number | null) | (string | number | null)[];
   sort?: SqlOrderBy;
 }
 

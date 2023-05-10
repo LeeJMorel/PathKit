@@ -2,15 +2,16 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import {
   IEntity,
-  IPlan,
+  IPath,
   ICampaign,
   INote,
   PartialCampaign,
   PartialEntity,
   PartialNote,
-  PartialPlan,
+  PartialPath,
   IRawEntity,
-  IRawPlan,
+  IRawPath,
+  IUpdateEntity,
 } from "../api/model";
 import {
   selectAllRows,
@@ -26,8 +27,8 @@ export interface State {
   campaignsLoading: boolean;
   entities: IEntity[];
   entitiesLoading: boolean;
-  plans: IPlan[];
-  plansLoading: boolean;
+  paths: IPath[];
+  pathsLoading: boolean;
   notes: INote[];
   notesLoading: boolean;
 }
@@ -39,15 +40,17 @@ export interface Actions {
   deleteCampaign: (id: number) => Promise<void>;
   refreshCampaigns: () => Promise<void>;
 
-  insertEntity: (entity: PartialEntity) => Promise<IEntity | undefined>;
+  insertEntity: (
+    entity: PartialEntity | IUpdateEntity
+  ) => Promise<IEntity | undefined>;
   // updateEntity: (entity: PartialEntity) => Promise<IEntity | undefined>;
   deleteEntity: (id: number) => Promise<void>;
   refreshEntities: () => Promise<void>;
 
-  insertPlan: (plan: PartialPlan) => Promise<IPlan | undefined>;
-  // updatePlan: (plan: PartialPlan) => Promise<IPlan | undefined>;
-  deletePlan: (id: number) => Promise<void>;
-  refreshPlans: () => Promise<void>;
+  insertPath: (path: PartialPath) => Promise<IPath | undefined>;
+  // updatePlan: (path: PartialPlan) => Promise<IPath | undefined>;
+  deletePath: (id: number) => Promise<void>;
+  refreshPaths: () => Promise<void>;
 
   insertNote: (note: Partial<INote>) => Promise<INote | undefined>;
   // updateNote: (note: PartialNote) => Promise<INote | undefined>;
@@ -63,8 +66,8 @@ const initialState: State = {
   campaignsLoading: false,
   entities: [],
   entitiesLoading: false,
-  plans: [],
-  plansLoading: false,
+  paths: [],
+  pathsLoading: false,
   notes: [],
   notesLoading: false,
 };
@@ -75,7 +78,7 @@ export const useStore = create<IStore>()(
       ...initialState,
 
       loadCampaign: async (campaignId) => {
-        const { refreshEntities, refreshNotes, refreshPlans } = get();
+        const { refreshEntities, refreshNotes, refreshPaths } = get();
         selectRowWhere<ICampaign>("campaign", {
           key: "id",
           oper: "=",
@@ -85,7 +88,7 @@ export const useStore = create<IStore>()(
             set({ currentCampaignId: campaignId });
             refreshEntities();
             refreshNotes();
-            refreshPlans();
+            refreshPaths();
           }
         });
       },
@@ -111,7 +114,7 @@ export const useStore = create<IStore>()(
         }
         deleteRow("campaign", "id", id);
         deleteRow("entity", "campaignId", id);
-        deleteRow("plan", "campaignId", id);
+        deleteRow("path", "campaignId", id);
         deleteRow("note", "campaignId", id);
       },
 
@@ -192,16 +195,16 @@ export const useStore = create<IStore>()(
         set({ entitiesLoading: false });
       },
 
-      insertPlan: async (newPlan) => {
-        const { currentCampaignId, refreshPlans } = get();
-        const plan = {
-          ...newPlan,
+      insertPath: async (newPath) => {
+        const { currentCampaignId, refreshPaths } = get();
+        const path = {
+          ...newPath,
           campaignId: currentCampaignId,
         };
-        const result = await insertRow("Plan", plan);
+        const result = await insertRow("path", path);
         if (result?.lastInsertId) {
-          refreshPlans();
-          const newResult = await selectRowWhere<IPlan>("plan", {
+          refreshPaths();
+          const newResult = await selectRowWhere<IPath>("path", {
             key: "id",
             oper: "=",
             value: result.lastInsertId,
@@ -210,13 +213,13 @@ export const useStore = create<IStore>()(
         }
       },
 
-      // updatePlan: async (plan) => {
+      // updatePlan: async (path) => {
       //   const { refreshPlans } = get();
-      //   if (plan.id) {
-      //     const result = await updateRow("plan", plan, plan.id);
+      //   if (path.id) {
+      //     const result = await updateRow("path", path, path.id);
       //     if (result?.rowsAffected && result.rowsAffected > 0) {
       //       refreshPlans();
-      //       const newResult = await selectRowWhere<IPlan>("plan", {
+      //       const newResult = await selectRowWhere<IPath>("path", {
       //         key: "id",
       //         oper: "=",
       //         value: result.lastInsertId,
@@ -226,17 +229,17 @@ export const useStore = create<IStore>()(
       //   }
       // },
 
-      deletePlan: async (id) => {
-        const { refreshPlans } = get();
-        deleteRow("plan", "id", id);
-        refreshPlans();
+      deletePath: async (id) => {
+        const { refreshPaths } = get();
+        deleteRow("path", "id", id);
+        refreshPaths();
       },
 
-      refreshPlans: async () => {
+      refreshPaths: async () => {
         const { currentCampaignId } = get();
-        set({ plansLoading: true });
+        set({ pathsLoading: true });
 
-        const response = await selectRowWhere<IRawPlan>("plan", {
+        const response = await selectRowWhere<IRawPath>("path", {
           key: "campaignId",
           oper: "=",
           value: currentCampaignId,
@@ -244,13 +247,13 @@ export const useStore = create<IStore>()(
         });
 
         if (response) {
-          const plans: IPlan[] = response.map((p) => ({
+          const paths: IPath[] = response.map((p) => ({
             ...p,
             entities: JSON.parse(p.entities || "[]"),
           }));
-          set({ plans });
+          set({ paths });
         }
-        set({ plansLoading: false });
+        set({ pathsLoading: false });
       },
 
       insertNote: async (newNote) => {

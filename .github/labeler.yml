@@ -1,9 +1,8 @@
-front-end dev:
-  - frontend*
-
-back-end dev:
-  - backend*
 
 documentation:
   - README.md
   - ./*.md
+  - ./docs
+
+test:
+  - ./tests

@@ -1,25 +1,25 @@
 // import { useEffect, useCallback } from "react";
 // import { v4 as uuid } from "uuid";
 // import { useStore } from "./useStore";
-// import { IPlan } from "../api/model";
+// import { IPath } from "../api/model";
 // import { usePreferencesStore } from "./usePreferencesStore";
 // import { PartialBy } from "../utilities";
 
-// export type PartialPlan = PartialBy<IPlan, "id" | "campaignId">;
+// export type PartialPlan = PartialBy<IPath, "id" | "campaignId">;
 
-// interface IUsePlans {
-//   plans: IPlan[];
-//   setPlans: (plans: IPlan[]) => void;
-//   addPlan: (plan: PartialPlan) => IPlan;
-//   getPlanById: (planId?: string) => IPlan | undefined;
-//   deletePlan: (planId: string) => void;
-//   updatePlan: (plan: PartialPlan) => IPlan;
-//   updateOrAddPlan: (plan: PartialPlan) => IPlan;
+// interface IusePaths {
+//   plans: IPath[];
+//   setPaths: (plans: IPath[]) => void;
+//   addPlan: (path: PartialPlan) => IPath;
+//   getPathById: (pathId?: string) => IPath | undefined;
+//   deletePath: (pathId: string) => void;
+//   updatePlan: (path: PartialPlan) => IPath;
+//   updateOrAddPath: (path: PartialPlan) => IPath;
 // }
-// export const usePlans = (): IUsePlans => {
-//   const { plans, setPlans, refreshPlans } = useStore((store) => ({
-//     plans: store.plans,
-//     setPlans: store.setPlans,
+// export const usePaths = (): IusePaths => {
+//   const { plans, setPaths, refreshPlans } = useStore((store) => ({
+//     plans: store.paths,
+//     setPaths: store.setPaths,
 //     refreshPlans: store.refreshPlans,
 //   }));
 //   const currentCampaignId = usePreferencesStore(
@@ -32,24 +32,24 @@
 //   }, []);
 
 //   const addPlan = useCallback(
-//     (newPlan: PartialPlan): IPlan => {
-//       const plan: IPlan = {
-//         ...newPlan,
+//     (newPath: PartialPlan): IPath => {
+//       const path: IPath = {
+//         ...newPath,
 export {};
 
 //         id: uuid(),
 //         campaignId: currentCampaignId, // TODO get campaignId from high level
-//       } as IPlan;
+//       } as IPath;
 
-//       setPlans([...plans, plan]);
-//       return plan;
+//       setPaths([...plans, path]);
+//       return path;
 //     },
 //     [plans, currentCampaignId]
 //   );
 
-//   const getPlanById = useCallback(
-//     (planId?: string): IPlan | undefined => {
-//       const matches = plans.filter((p) => p.id === planId);
+//   const getPathById = useCallback(
+//     (pathId?: string): IPath | undefined => {
+//       const matches = plans.filter((p) => p.id === pathId);
 //       if (matches.length) {
 //         return matches[0];
 //       }
@@ -57,47 +57,47 @@ export {};
 //     [plans]
 //   );
 
-//   const deletePlan = useCallback(
-//     (planId: string): void => {
-//       return setPlans(plans.filter((p) => p.id !== planId));
+//   const deletePath = useCallback(
+//     (pathId: string): void => {
+//       return setPaths(plans.filter((p) => p.id !== pathId));
 //     },
 //     [plans]
 //   );
 
 //   const updatePlan = useCallback(
-//     (newPlan: PartialPlan): IPlan => {
-//       let plan = newPlan;
-//       const newPlans: IPlan[] = plans.map((p) => {
-//         if (p.id === newPlan.id) {
-//           plan = Object.assign({}, p, plan);
-//           return plan as IPlan;
+//     (newPath: PartialPlan): IPath => {
+//       let path = newPath;
+//       const newPaths: IPath[] = plans.map((p) => {
+//         if (p.id === newPath.id) {
+//           path = Object.assign({}, p, path);
+//           return path as IPath;
 //         }
 //         return p;
 //       });
-//       setPlans(newPlans);
-//       return plan as IPlan;
+//       setPaths(newPaths);
+//       return path as IPath;
 //     },
 //     [plans]
 //   );
 
-//   const updateOrAddPlan = useCallback(
-//     (newPlan: PartialPlan): IPlan => {
-//       const planExists = getPlanById(newPlan.id);
+//   const updateOrAddPath = useCallback(
+//     (newPath: PartialPlan): IPath => {
+//       const planExists = getPathById(newPath.id);
 //       if (planExists) {
-//         return updatePlan(newPlan);
+//         return updatePlan(newPath);
 //       }
-//       return addPlan(newPlan);
+//       return addPlan(newPath);
 //     },
 //     [plans]
 //   );
 
 //   return {
 //     plans: plans.filter((n) => n.campaignId === currentCampaignId),
-//     setPlans,
+//     setPaths,
 //     addPlan,
-//     getPlanById,
-//     deletePlan,
+//     getPathById,
+//     deletePath,
 //     updatePlan,
-//     updateOrAddPlan,
+//     updateOrAddPath,
 //   };
 // };

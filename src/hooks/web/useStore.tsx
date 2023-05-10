@@ -3,7 +3,7 @@ export {};
 // import { v4 as uuid } from "uuid";
 // import { create } from "zustand";
 // import { persist, createJSONStorage, StateStorage } from "zustand/middleware";
-// import { IEntity, IPlan, ICampaign, INote } from "../api/model";
+// import { IEntity, IPath, ICampaign, INote } from "../api/model";
 // import monster from "../assets/monster.png";
 // import player from "../assets/knight.png";
 // // import { get, set, del } from 'idb-keyval' // can use anything: IndexedDB, Ionic Storage, etc.
@@ -36,10 +36,10 @@ export {};
 //   setEntities: (entities: IEntity[]) => void;
 //   setEntitiesLoading: (loading: boolean) => void;
 
-//   plans: IPlan[];
+//   plans: IPath[];
 //   plansLoading: boolean;
-//   setPlans: (plans: IPlan[]) => void;
-//   setPlansLoading: (loading: boolean) => void;
+//   setPaths: (plans: IPath[]) => void;
+//   setPathsLoading: (loading: boolean) => void;
 
 //   notes: INote[];
 //   notesLoading: boolean;
@@ -70,8 +70,8 @@ export {};
 
 //       plans: [],
 //       plansLoading: false,
-//       setPlans: (plans) => set({ plans }),
-//       setPlansLoading: (loading) => set({ plansLoading: loading }),
+//       setPaths: (plans) => set({ plans }),
+//       setPathsLoading: (loading) => set({ plansLoading: loading }),
 
 //       notes: [],
 //       notesLoading: false,
@@ -101,14 +101,14 @@ export {};
 //       },
 
 //       refreshPlans: async () => {
-//         const { setPlans, setPlansLoading } = get();
-//         setPlansLoading(true);
+//         const { setPaths, setPathsLoading } = get();
+//         setPathsLoading(true);
 
 //         // fetch from database?
 //         // const response = await fetch(db)... yada
 //         // const json = await response.json();
-//         // setPlans(json)
-//         setPlansLoading(false);
+//         // setPaths(json)
+//         setPathsLoading(false);
 //       },
 
 //       refreshNotes: async () => {

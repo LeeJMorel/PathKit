@@ -1,0 +1,32 @@
+//Themes are global constants that consist of colors and fonts
+@import "./palette.scss";
+@import "./fonts.scss";
+
+$highContrastTheme: (
+  bodyBackground: map-get($colorPalette, parchmentLight),
+  bodyText: map-get($colorPalette, black),
+  primaryBackground: map-get($colorPalette, brownDark),
+  primaryText: map-get($colorPalette, white),
+  secondaryBackground: map-get($colorPalette, parchmentDark),
+  secondaryText: map-get($colorPalette, black),
+  tertiaryBackground: map-get($colorPalette, white),
+  tertiaryText: map-get($colorPalette, blackLight),
+  accentBackground: map-get($colorPalette, black),
+  accentText: map-get($colorPalette, parchmentLight),
+  secondaryAccentBackground: map-get($colorPalette, greenLight),
+  secondaryAccentText: map-get($colorPalette, black),
+  tertiaryAccentBackground: map-get($colorPalette, blueDark),
+  tertiaryAccentText: map-get($colorPalette, white),
+  errorBackground: map-get($colorPalette, grayDarker),
+  errorText: map-get($colorPalette, white),
+  linkText: map-get($colorPalette, blueDark),
+  close: map-get($colorPalette, redLight),
+);
+
+$theme: map-merge($fonts, $highContrastTheme);
+
+:export {
+  @each $color, $value in $highContrastTheme {
+    #{$color}: $value;
+  }
+}

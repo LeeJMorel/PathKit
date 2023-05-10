@@ -11,7 +11,7 @@ export {};
 //   visibleModules: Record<Module, boolean>;
 //   currentCampaignId: string | null;
 
-//   selectedPlan: string | null;
+//   selectedPath: string | null;
 //   selectedNote: string | null;
 //   selectedSearch: string | null;
 //   absentPlayers: string[];
@@ -34,7 +34,7 @@ export {};
 //     BinderModule: true,
 //   },
 //   currentCampaignId: null,
-//   selectedPlan: null,
+//   selectedPath: null,
 //   selectedNote: null,
 //   selectedSearch: null,
 //   absentPlayers: [],
@@ -54,7 +54,7 @@ export {};
 //           BinderModule: true,
 //         },
 //         currentCampaignId: null,
-//         selectedPlan: null,
+//         selectedPath: null,
 //         selectedNote: null,
 //         selectedSearch: null,
 //         absentPlayers: [],

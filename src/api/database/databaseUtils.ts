@@ -1,6 +1,7 @@
 import { SqlOrderBy } from "../model";
 
-export const saneSqlValue = (value: any): string => {
+export const saneSqlValue = (value: any): string | number | null => {
+  if (value === null) return "null";
   if (typeof value === "boolean") {
     // Returns "0" or "1" for bools
     return Number(value).toString();

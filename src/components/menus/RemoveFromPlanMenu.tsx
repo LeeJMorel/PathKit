@@ -3,14 +3,14 @@ import MenuButton from "../buttons/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface IRemoveMenuProps {
-  planId: number;
+  pathId: number;
   entityId: number;
   onRemove: () => void;
   onClose: () => void;
 }
 
 const RemoveMenu: React.FC<IRemoveMenuProps> = ({
-  planId,
+  pathId,
   entityId,
   onRemove,
   onClose,
@@ -29,20 +29,20 @@ const RemoveMenu: React.FC<IRemoveMenuProps> = ({
       <div className={styles.mainMenu}>
         <div className={styles.deleteMenu}>
           <div className={styles.header}>
-            <h2>Remove From Plan</h2>
+            <h2>Remove From path</h2>
             <div className={styles.close} onClick={onClose}>
               <FontAwesomeIcon icon="close" />
             </div>
           </div>
           <p>
-            Are you sure you wish to permanently remove this from your plan? The
+            Are you sure you wish to permanently remove this from your path? The
             NPC, Monster, or Shop will still exist so you can load them back on
-            by editing the plan.
+            by editing the path.
           </p>
           <div className={styles.menuRowContainer}>
             <MenuButton onClick={handleClose}>No</MenuButton>
             <MenuButton variant="destructive" onClick={handleRemove}>
-              Remove from Plan
+              Remove from path
             </MenuButton>
           </div>
         </div>

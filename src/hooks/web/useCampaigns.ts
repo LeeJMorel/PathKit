@@ -4,7 +4,7 @@ export {};
 // import { v4 as uuid } from "uuid";
 // import { useStore } from "./useStore";
 // import { usePreferencesStore } from "./usePreferencesStore";
-// import { ICampaign, IEntity, IPlan } from "../api/model";
+// import { ICampaign, IEntity, IPath } from "../api/model";
 
 // interface IUseCampaigns {
 //   campaigns: ICampaign[];
@@ -23,8 +23,8 @@ export {};
 //   const refreshCampaigns = useStore((store) => store.refreshCampaigns);
 //   const entities = useStore((store) => store.entities);
 //   const setEntities = useStore((store) => store.setEntities);
-//   const plans = useStore((store) => store.plans);
-//   const setPlans = useStore((store) => store.setPlans);
+//   const plans = useStore((store) => store.paths);
+//   const setPaths = useStore((store) => store.setPaths);
 //   const { currentCampaignId } = usePreferencesStore(
 //     (store) => store.preferences
 //   );
@@ -65,7 +65,7 @@ export {};
 //       setEntities(
 //         entities.filter((entity) => entity.campaignId !== campaignId)
 //       );
-//       setPlans(plans.filter((plan) => plan.campaignId !== campaignId));
+//       setPaths(plans.filter((path) => path.campaignId !== campaignId));
 //       setPreferences({ currentCampaignId: null });
 //     },
 //     [
@@ -74,7 +74,7 @@ export {};
 //       entities,
 //       setEntities,
 //       plans,
-//       setPlans,
+//       setPaths,
 //       setPreferences,
 //     ]
 //   );

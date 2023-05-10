@@ -8,21 +8,27 @@ export enum EntityType {
 
 export interface PartialEntity {
   image?: string;
-  name?: string;
-  type?: EntityType;
-  initiative?: number;
+  name: string;
+  type: EntityType;
+  initiative: number;
+  noteId?: number;
+  build: IEntityBuild;
+  damage: number;
+  tempHp: number;
+  /** Should not use on player entities, this should be calculated instead */
+  maxHp?: number;
+  conditions: ICondition[];
   id?: number;
   campaignId?: number;
-  noteId?: number;
-  build?: IEntityBuild;
-  damage?: number;
-  tempHp?: number;
-  conditions?: ICondition[];
 }
 
 export interface IEntity extends PartialEntity {
   id: number;
   campaignId: number;
+}
+
+export interface IUpdateEntity extends Partial<IEntity> {
+  id: number;
 }
 
 /** Raw entity with JSON stringified data for storage in DB */
@@ -31,10 +37,11 @@ export interface IRawEntity extends Omit<IEntity, "conditions" | "build"> {
   build?: string;
 }
 
+//entity builds are based on the JSON string import from PathBuilder 2e
 export interface IEntityBuild {
   name?: string;
   class?: string;
-  level?: number;
+  level: number;
   ancestry?: string;
   heritage?: string;
   background?: string;
@@ -45,13 +52,15 @@ export interface IEntityBuild {
   size?: number;
   keyability?: string;
   languages?: string[];
-  attributes?: IAttributes;
-  abilities?: IAbilities;
-  proficiencies?: { [key: string]: number };
+  attributes: IAttributes;
+  abilities?: TAbilities;
+  proficiencies?: {
+    [key: string]: number;
+  };
   feats?: Feat[][];
   specials?: string[];
-  lores?: Res[][];
-  equipment?: Res[][];
+  lores?: (number | string)[][];
+  equipment?: (number | string)[][];
   specificProficiencies?: ISpecificProficiencies;
   weapons?: IArmor[];
   money?: IMoney;
@@ -63,14 +72,27 @@ export interface IEntityBuild {
   acTotal?: IACTotal;
 }
 
-export interface IAbilities {
-  str?: number;
-  dex?: number;
-  con?: number;
-  int?: number;
-  wis?: number;
-  cha?: number;
+export enum Ability {
+  str = "str",
+  dex = "dex",
+  con = "con",
+  int = "int",
+  wis = "wis",
+  cha = "cha",
 }
+
+export enum AbilityLong {
+  str = "Strength",
+  dex = "Dexterity",
+  con = "Constitution",
+  int = "Intelligence",
+  wis = "Wisdom",
+  cha = "Charisma",
+}
+
+export type TAbilities = {
+  [key in Ability]: number;
+};
 
 export interface IACTotal {
   acProfBonus?: number;
@@ -85,7 +107,7 @@ export interface IArmor {
   qty?: number;
   prof?: string;
   pot?: number;
-  res?: Res;
+  res?: number | string;
   mat?: null;
   display?: string;
   worn?: boolean;
@@ -93,8 +115,6 @@ export interface IArmor {
   die?: string;
   str?: string;
 }
-
-export type Res = number | string;
 
 export interface IAttributes {
   ancestryhp?: number;
@@ -158,4 +178,59 @@ export interface ICondition {
   name: string;
   isValued: boolean;
   value?: number;
+}
+
+export enum Skill {
+  acrobatics = "acrobatics",
+  arcana = "arcana",
+  athletics = "athletics",
+  crafting = "crafting",
+  deception = "deception",
+  diplomacy = "diplomacy",
+  intimidation = "intimidation",
+  medicine = "medicine",
+  nature = "nature",
+  occultism = "occultism",
+  performance = "performance",
+  religion = "religion",
+  society = "society",
+  stealth = "stealth",
+  survival = "survival",
+  thievery = "thievery",
+}
+
+export enum Proficiency {
+  classDC = "classDC",
+  perception = "perception",
+  fortitude = "fortitude",
+  reflex = "reflex",
+  will = "will",
+  heavy = "heavy",
+  medium = "medium",
+  light = "light",
+  unarmored = "unarmored",
+  advanced = "advanced",
+  martial = "martial",
+  simple = "simple",
+  unarmed = "unarmed",
+  castingArcane = "castingArcane",
+  castingDivine = "castingDivine",
+  castingOccult = "castingOccult",
+  castingPrimal = "castingPrimal",
+  acrobatics = "acrobatics",
+  arcana = "arcana",
+  athletics = "athletics",
+  crafting = "crafting",
+  deception = "deception",
+  diplomacy = "diplomacy",
+  intimidation = "intimidation",
+  medicine = "medicine",
+  nature = "nature",
+  occultism = "occultism",
+  performance = "performance",
+  religion = "religion",
+  society = "society",
+  stealth = "stealth",
+  survival = "survival",
+  thievery = "thievery",
 }

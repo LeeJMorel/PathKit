@@ -2,96 +2,96 @@ import { useMemo, useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate, Routes, Route } from "react-router-dom";
 import uniq from "lodash.uniq";
 import AddEntityForm from "../forms/AddEntityForm";
-import { PartialPlan, usePlans, useEntities } from "../../hooks";
+import { PartialPath, usePaths, useEntities } from "../../hooks";
 import styles from "./Sheets.module.scss";
 import { Button, ToggleButton } from "../buttons";
-import { EntityType, PlanType, IEntity } from "../../api/model";
+import { EntityType, PathType, IEntity } from "../../api/model";
 import BinderObject, { BinderTab } from "../objects/BinderObject";
 import classNames from "classnames";
 
-const defaultPlanData = {
-  type: PlanType.encounter,
+const defaultPathData = {
+  type: PathType.encounter,
   entities: [],
 };
-function EditPlanSheet() {
-  const { planId } = useParams();
+function EditPathSheet() {
+  const { pathId } = useParams();
   const navigate = useNavigate();
-  const { getPlanById, updateOrAddPlan } = usePlans();
+  const { getPathById, updateOrAddPath } = usePaths();
   const { getEntitiesById } = useEntities();
 
-  const [plan, setPlan] = useState<PartialPlan>(
-    getPlanById(planId) || defaultPlanData
+  const [path, setPath] = useState<PartialPath>(
+    getPathById(pathId) || defaultPathData
   );
 
   useEffect(() => {
     (async () => {
-      const p = await getPlanById(planId);
-      // Create plan and redirect to this form with the right ID
-      if (planId === "new") {
-        const newPlan = await updateOrAddPlan(defaultPlanData);
-        navigate(`/plan/${newPlan?.id}`, {
+      const p = await getPathById(pathId);
+      // Create path and redirect to this form with the right ID
+      if (pathId === "new") {
+        const newPath = await updateOrAddPath(defaultPathData);
+        navigate(`/path/${newPath?.id}`, {
           replace: true,
         });
       } else if (p) {
-        setPlan(p);
+        setPath(p);
       }
     })();
-  }, [planId]);
+  }, [pathId]);
 
-  const planEntities = getEntitiesById(plan.entities);
+  const pathEntities = getEntitiesById(path.entities);
 
   const handleCancelClick = () => {
     navigate("/");
   };
 
-  const handleSavePlan = () => {
-    updateOrAddPlan(plan);
+  const handleSavePath = () => {
+    updateOrAddPath(path);
     navigate("/");
   };
 
-  const [planType, setPlanType] = useState(PlanType.encounter);
-  const handlePlanTypeChange = (value: PlanType) => {
-    setPlan((prev) => ({
+  const [pathType, setPathType] = useState(PathType.encounter);
+  const handlePathTypeChange = (value: PathType) => {
+    setPath((prev) => ({
       ...prev,
       type: value,
     }));
-    setPlanType(value);
+    setPathType(value);
   };
 
   //We want to show the load menu
   const handleLoadClick = () => {
-    navigate(`/plan/${plan.id}/load`);
+    navigate(`/path/${path.id}/load`);
   };
 
   // We want to add or edit an entity
   const handleAddEntity = useCallback(
     (selectedEntityType: EntityType) => {
-      console.log({ plan, planId, what: getPlanById(planId) });
-      navigate(`/plan/${plan.id}/entity/new?type=${selectedEntityType}`);
+      console.log({ path, pathId, what: getPathById(pathId) });
+      navigate(`/path/${path.id}/entity/new?type=${selectedEntityType}`);
     },
-    [plan]
+    [path]
   );
   const handleEditEntity = useCallback(
     (entityId: number) => {
-      navigate(`/plan/${plan.id}/entity/${entityId}`);
+      navigate(`/path/${path.id}/entity/${entityId}`);
     },
-    [plan]
+    [path]
   );
 
-  //we want to remove an entity from our plan
+  //we want to remove an entity from our path
   const handleRemoveEntity = (id: number) => {
-    setPlan((prev) => ({
+    setPath((prev) => ({
       ...prev,
       entities: uniq(prev.entities.filter((i) => i !== id)),
     }));
   };
 
-  let headerText = `Plan: ${planEntities
+  let headerText = `path: ${pathEntities
     .map((entity) => entity.name)
     .join(", ")}`;
 
   const handleLoadEntity = (entityId: number) => {
-    setPlan((prev) => ({
+    setPath((prev) => ({
       ...prev,
       entities: uniq([...prev.entities, entityId]),
     }));
@@ -122,7 +122,7 @@ function EditPlanSheet() {
       </div>
       <hr />
       <div className={styles.entityList}>
-        {planEntities.map((entity) => (
+        {pathEntities.map((entity) => (
           <div key={entity.id} className={styles.sheetRowContainer}>
             <div className={styles.sheetEndContainer}>
               <Button
@@ -140,7 +140,7 @@ function EditPlanSheet() {
                 className={styles.deleteButton}
                 onClick={() => handleRemoveEntity(entity.id)}
                 icon="user-minus"
-                title="Remove from plan"
+                title="Remove from path"
               />
             )}
           </div>
@@ -148,9 +148,9 @@ function EditPlanSheet() {
       </div>
       <div className={styles.sheetCenterContainer}>
         <ToggleButton
-          options={[PlanType.encounter, PlanType.exploration]}
-          value={planType}
-          onChange={handlePlanTypeChange}
+          options={[PathType.encounter, PathType.exploration]}
+          value={pathType}
+          onChange={handlePathTypeChange}
         />
       </div>
       <div className={styles.sheetRowContainer}>
@@ -164,7 +164,7 @@ function EditPlanSheet() {
                 {/* <AddEntityForm
                   onAddEntity={(entity) => {
                     if (entity?.id) {
-                      setPlan((prev) => ({
+                      setPath((prev) => ({
                         ...prev,
                         entities: uniq([...prev.entities, entity.id]),
                       }));
@@ -181,7 +181,7 @@ function EditPlanSheet() {
               <div className={styles.binderContainer}>
                 <BinderObject
                   onLoad={handleLoadEntity}
-                  filterEntities={plan.entities}
+                  filterEntities={path.entities}
                   showTabs={[
                     BinderTab.NPCs,
                     BinderTab.Shops,
@@ -195,12 +195,12 @@ function EditPlanSheet() {
       </div>
 
       <div className={classNames(styles.sheetRowContainer, styles.end)}>
-        <Button onClick={handleSavePlan} variant="primary">
-          Save Plan
+        <Button onClick={handleSavePath} variant="primary">
+          Save path
         </Button>
       </div>
     </div>
   );
 }
 
-export default EditPlanSheet;
+export default EditPathSheet;

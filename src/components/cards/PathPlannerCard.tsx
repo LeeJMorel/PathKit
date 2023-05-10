@@ -1,14 +1,14 @@
 import { useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import PlannerObject, { PlannerObjectProps } from "../objects/PlannerObject";
-import { usePlans } from "../../hooks";
+import PathObject, { PathObjectProps } from "../objects/PathObject";
+import { usePaths } from "../../hooks";
 import styles from "./Card.module.scss";
 
-interface IPlannerCardProps extends React.HTMLProps<HTMLDivElement> {}
+interface IPathPlannerCardProps extends React.HTMLProps<HTMLDivElement> {}
 
-function PlannerCard({ className, ...rest }: IPlannerCardProps) {
-  const { plans } = usePlans();
+function PathPlannerCard({ className, ...rest }: IPathPlannerCardProps) {
+  const { paths } = usePaths();
   const containerRef = useRef<HTMLDivElement | null>(null); // Provide type assertion for containerRef
 
   const handleScrollLeft = () => {
@@ -39,28 +39,31 @@ function PlannerCard({ className, ...rest }: IPlannerCardProps) {
 
   return (
     <div className={classNames(styles.card, className)}>
-      <div className={styles.plannerCardScrollLeft} onClick={handleScrollLeft}>
+      <div
+        className={styles.PathPlannerCardScrollLeft}
+        onClick={handleScrollLeft}
+      >
         <FontAwesomeIcon icon="arrow-left" />
       </div>
       <div
-        className={styles.plannerCardScrollContainer}
+        className={styles.PathPlannerCardScrollContainer}
         ref={containerRef}
         onWheel={handleScroll}
       >
-        {plans.length > 0 ? (
-          <div className={styles.plannerCardScrollCard}>
-            {plans.map((plan) => (
-              <PlannerObject key={plan.id} plan={plan} />
+        {paths.length > 0 ? (
+          <div className={styles.PathPlannerCardScrollCard}>
+            {paths.map((path) => (
+              <PathObject key={path.id} path={path} />
             ))}
           </div>
         ) : (
-          <div className={styles.plannerCardPlaceholder}>
-            <h2>Create a plan with the button above.</h2>
+          <div className={styles.PathPlannerCardPlaceholder}>
+            <h2>Create a path with the button above.</h2>
           </div>
         )}
       </div>
       <div
-        className={styles.plannerCardScrollRight}
+        className={styles.PathPlannerCardScrollRight}
         onClick={handleScrollRight}
       >
         <FontAwesomeIcon icon="arrow-right" />
@@ -69,4 +72,4 @@ function PlannerCard({ className, ...rest }: IPlannerCardProps) {
   );
 }
 
-export default PlannerCard;
+export default PathPlannerCard;
