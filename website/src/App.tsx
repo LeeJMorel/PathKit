@@ -106,7 +106,7 @@ function App() {
               </h1>
               <p>
                 Your maps are drawn, the snacks are open, your players wait with
-                baited breathe to journey down their next path. Be prepared for
+                bated breathe to journey down their next path. Be prepared for
                 the the road ahead with your perfect GM companion.
               </p>
               <Button
