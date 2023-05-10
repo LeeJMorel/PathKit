@@ -5,8 +5,9 @@ import player from "../../assets/knight.png";
 import defaultImage from "../../assets/fighter.png";
 import store from "../../assets/store.png";
 import styles from "./Form.module.scss";
-import { IEntity, EntityType, PartialEntity } from "../../api/model";
+import { EntityType, PartialEntity } from "../../api/model";
 import { useEntities } from "../../hooks";
+import { defaultEntity } from "../../consts";
 import { Button } from "../buttons";
 import classNames from "classnames";
 
@@ -31,14 +32,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
     () => entityDataProp || getEntityById(entityId),
     [entityId, entityDataProp]
   );
-  const [entity, setEntity] = useState<PartialEntity>({
-    image: defaultImage,
-    name: "",
-    // stats: {},
-    // hp: [0, 0],
-    type: type as EntityType,
-    ...entityData,
-  });
+  const [entity, setEntity] = useState<PartialEntity>(defaultEntity);
 
   useEffect(() => {
     setEntity((prev) => ({

@@ -1,7 +1,12 @@
 import { useEffect, useCallback } from "react";
 import { useStore } from "./useStore";
 import { usePreferencesStore } from "./usePreferencesStore";
-import { IEntity, PartialEntity, EntityType } from "../api/model";
+import {
+  IEntity,
+  PartialEntity,
+  EntityType,
+  IUpdateEntity,
+} from "../api/model";
 import { updateAllRows } from "../api/database";
 import useBoolean from "./useBoolean";
 
@@ -13,6 +18,7 @@ interface IUseEntities {
   getPlayerEntities: () => IEntity[];
   getActivePlayerEntities: () => IEntity[];
   updateOrAddEntity: (entity: PartialEntity) => Promise<IEntity | undefined>;
+  updateEntityById: (entity: IUpdateEntity) => Promise<IEntity | undefined>;
   resetInitiative: () => void;
 }
 
@@ -70,6 +76,12 @@ export const useEntities = (): IUseEntities => {
     return await insertEntity(newEntity);
   };
 
+  const updateEntityById = async (
+    newEntity: IUpdateEntity
+  ): Promise<IEntity | undefined> => {
+    return await insertEntity(newEntity);
+  };
+
   const resetInitiative = useCallback((): void => {
     updateAllRows("entity", { initiative: 0 });
   }, [entities]);
@@ -81,7 +93,7 @@ export const useEntities = (): IUseEntities => {
     deleteEntity,
     getPlayerEntities,
     getActivePlayerEntities,
-    // updateEntity,
+    updateEntityById,
     updateOrAddEntity,
     resetInitiative,
   };

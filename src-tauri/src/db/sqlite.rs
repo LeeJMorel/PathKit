@@ -1,7 +1,7 @@
+use sqlx::{migrate::MigrateDatabase, sqlite::SqliteQueryResult, Sqlite, SqlitePool};
 use std::result::Result;
-use sqlx::{sqlite::SqliteQueryResult, Sqlite, SqlitePool, migrate::MigrateDatabase};
 
-async fn create_schema(db_url:&str) -> Result<SqliteQueryResult, sqlx::Error> {
+async fn create_schema(db_url: &str) -> Result<SqliteQueryResult, sqlx::Error> {
     let pool = SqlitePool::connect(&db_url).await?;
     let qry =
     "PRAGMA foreign_keys = ON ;".to_owned()
@@ -131,11 +131,11 @@ async fn create_schema(db_url:&str) -> Result<SqliteQueryResult, sqlx::Error> {
                     +"AND entity_armor_bonus >= 0"
                 +")"
         +");"
-        +"CREATE TABLE IF NOT EXISTS plan"
+        +"CREATE TABLE IF NOT EXISTS path"
         +"("
-            +"plan_id                     INTEGER PRIMARY KEY AUTOINCREMENT,"
-            +"plan_order_num              INTEGER,"
-            +"plan_type                   TEXT,"
+            +"path_id                     INTEGER PRIMARY KEY AUTOINCREMENT,"
+            +"path_order_num              INTEGER,"
+            +"path_type                   TEXT,"
             +"entity_id_array             TEXT," // stores array of entities as string to parse
             +"campaign_id                 INTEGER NOT NULL DEFAULT 1,"
             +"FOREIGN KEY(campaign_id)    REFERENCES campaign(campaign_id) ON UPDATE SET NULL ON DELETE SET NULL"
@@ -151,12 +151,10 @@ pub async fn db_init() {
         Sqlite::create_database(&db_url).await.unwrap();
         match create_schema(&db_url).await {
             Ok(_) => println!("Database created Sucessfully"),
-            Err(e) => panic!("{}",e),
+            Err(e) => panic!("{}", e),
         }
     }
-
 }
-
 
 pub async fn db_insert() {
     let db_url = String::from("sqlite://sqlite.db");
@@ -165,7 +163,7 @@ pub async fn db_insert() {
     let qry ="INSERT INTO campaign (campaign_name, campaign_desc) VALUES('My second campaign', 'Entering Rivendell');".to_owned()
     +"INSERT INTO notes (notes_name, notes_body) VALUES('Note two', 'One ring to rule them all');"
     +"INSERT INTO entity (entity_name, entity_type, entity_immunities) VALUES('Sean Bean', 'Hobbit', 'Poison');"
-    +"INSERT INTO plan (plan_type) VALUES('shop');";
+    +"INSERT INTO path (path_type) VALUES('shop');";
     let result = sqlx::query(&qry).bind("testing").execute(&instances).await;
 
     instances.close().await;

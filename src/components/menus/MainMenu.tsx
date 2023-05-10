@@ -27,7 +27,7 @@ interface IMainMenuProps {
   onClose: () => void;
 }
 const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
-  const plans = useStore((store) => store.plans);
+  const paths = useStore((store) => store.paths);
   const [currentTab, setCurrentTab] = useState(Tab.Campaign);
   const { preferences, setPreferences } = usePreferencesStore();
   const { getPlayerEntities, updateOrAddEntity: updateEntity } = useEntities();
@@ -36,7 +36,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
 
   //placeholder until store can delete
   const [showDeleteMenu, setShowDeleteMenu] = useState<boolean>(false);
-  const [deleteType, setDeleteType] = useState<"entity" | "plan" | "campaign">(
+  const [deleteType, setDeleteType] = useState<"entity" | "path" | "campaign">(
     "entity"
   );
   const [deleteId, setDeleteId] = useState<number>();
@@ -75,7 +75,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     });
   };
 
-  const handleDelete = (type: "entity" | "plan" | "campaign", id: number) => {
+  const handleDelete = (type: "entity" | "path" | "campaign", id: number) => {
     setShowDeleteMenu(true);
     setDeleteType(type);
     setDeleteId(id);

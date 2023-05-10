@@ -156,8 +156,8 @@
     }
   }
 
-  .plannerCardScrollLeft,
-  .plannerCardScrollRight {
+  .PathPlannerCardScrollLeft,
+  .PathPlannerCardScrollRight {
     position: absolute;
     cursor: pointer;
     font-size: 1.5em;
@@ -168,17 +168,17 @@
     align-items: center;
   }
 
-  .plannerCardScrollLeft {
+  .PathPlannerCardScrollLeft {
     left: 0;
     padding-left: 0.2em;
   }
 
-  .plannerCardScrollRight {
+  .PathPlannerCardScrollRight {
     right: 0;
     padding-right: 0.2em;
   }
 
-  .plannerCardScrollContainer {
+  .PathPlannerCardScrollContainer {
     overflow: hidden;
     height: 100%;
     width: calc(
@@ -189,14 +189,14 @@
     padding: 0.2em;
     display: flex;
     align-items: center;
-    white-space: nowrap; /* Prevent line wrapping of planner objects */
+    white-space: nowrap; /* Prevent line wrapping of PathPlanner objects */
   }
 
-  .plannerCardScrollCard {
+  .PathPlannerCardScrollCard {
     display: flex;
   }
 
-  .plannerCardPlaceholder {
+  .PathPlannerCardPlaceholder {
     font-size: 0.8em;
     width: 100%;
     white-space: break-spaces;

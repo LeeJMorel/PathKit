@@ -8,7 +8,7 @@ interface IPreferences {
   theme: string;
   visibleModules: Record<Module, boolean>;
 
-  selectedPlan: number;
+  selectedPath: number;
   selectedNoteSheet: number;
   selectedNoteModule: number;
   selectedSearch: string | number | null;
@@ -31,7 +31,7 @@ export const defaultPreferences: IPreferences = {
     NotesModule: false,
     BinderModule: true,
   },
-  selectedPlan: 0,
+  selectedPath: 0,
   selectedNoteSheet: 0,
   selectedNoteModule: 0,
   selectedSearch: null,

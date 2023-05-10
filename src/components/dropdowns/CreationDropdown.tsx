@@ -32,9 +32,9 @@ const CreationDropdown: React.FC<CreationDropdownProps> = ({
       label: "Create a Player",
       onClick: () => navigate("/entity/new/edit?type=Player"),
     },
-    { label: "Create a Plan", onClick: () => navigate("/plan/new") },
+    { label: "Create a Path", onClick: () => navigate("/path/new") },
     {
-      label: "Create a note",
+      label: "Create a Note",
       onClick: async () => {
         const newNote = await updateOrAddNote({ title: "", body: "" });
         setPreferences({
