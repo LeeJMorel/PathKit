@@ -7,7 +7,7 @@ import NoteObject from "../objects/NoteObject";
 import BinderObject, { BinderTab } from "../objects/BinderObject";
 
 function NotesModule() {
-  const { updateOrAddNote, notes } = useNotes();
+  const { addNote, updateOrAddNote, notes } = useNotes();
   const { preferences, setPreferences } = usePreferencesStore();
   const notesExist = notes.length > 0;
 
@@ -16,7 +16,7 @@ function NotesModule() {
   };
 
   const handleCreateNoteClick = async () => {
-    const newNote = await updateOrAddNote({
+    const newNote = await addNote({
       title: new Date().toLocaleString(),
       body: "",
     });

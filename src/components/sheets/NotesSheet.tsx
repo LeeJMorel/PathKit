@@ -7,7 +7,7 @@ import { PartialNote } from "../../api/model";
 import BinderObject, { BinderTab } from "../objects/BinderObject";
 
 function NotesSheet() {
-  const { updateOrAddNote, notes } = useNotes();
+  const { addNote, updateOrAddNote, notes } = useNotes();
   const { preferences, setPreferences } = usePreferencesStore();
   const notesExist = notes.length > 0;
 
@@ -16,7 +16,7 @@ function NotesSheet() {
   };
 
   const handleCreateNoteClick = async () => {
-    const newNote = await updateOrAddNote({
+    const newNote = await addNote({
       title: new Date().toLocaleString(),
       body: "",
     });
