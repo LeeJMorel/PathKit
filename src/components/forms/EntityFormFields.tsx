@@ -1,7 +1,8 @@
 import React from "react";
 import { AbilityLong, EntityType, PartialEntity } from "../../api/model";
 import { getMaxPlayerHp, isBase64UrlImage } from "../../utilities";
-import { abilityOptions, profLevelOptions, proficiencies } from "../../consts";
+//not pushed yet, next run, still buggy
+// import { abilityOptions, profLevelOptions, proficiencies } from "../../consts";
 
 type GenericInput = HTMLInputElement & HTMLTextAreaElement;
 
@@ -159,7 +160,7 @@ export const getEntityFormFields = (
       label: "Key ability",
       group: "abilities",
       inputType: "dropdown",
-      options: abilityOptions,
+      //   options: abilityOptions,
       value: entity.build.keyability,
       getIsRequired: (type) => type === EntityType.Player,
     },
@@ -221,8 +222,8 @@ export const getEntityFormFields = (
       inputType: "radio",
       multipleFields: true,
       multipleFieldsType: "dict",
-      keySuggestions: proficiencies,
-      options: profLevelOptions,
+      //   keySuggestions: proficiencies,
+      //   options: profLevelOptions,
       value: entity.build.proficiencies || {},
       getIsRequired: (type) => type === EntityType.Player,
     },

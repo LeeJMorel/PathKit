@@ -111,7 +111,7 @@ function App() {
               </p>
               <Button
                 variant={"primary"}
-                className={styles.buttonMargin}
+                className={styles.buttonLarge}
                 onClick={downloadAuto}
               >
                 ⇩ Download PathKit
