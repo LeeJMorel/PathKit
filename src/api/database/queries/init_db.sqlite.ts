@@ -29,7 +29,7 @@ BEGIN
     UPDATE note SET modifiedDate = CURRENT_TIMESTAMP WHERE id = NEW.id;
 END;
 
-CREATE TABLE IF NOT EXISTS plan (
+CREATE TABLE IF NOT EXISTS path (
   id INTEGER PRIMARY KEY,
   orderNum INTEGER,
   type TEXT CHECK( type IN ('exporation','encounter') ) NOT NULL DEFAULT 'exploration',
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS plan (
 CREATE TABLE IF NOT EXISTS entity (
   id INTEGER PRIMARY KEY,
   campaignId INTEGER NOT NULL,
-  name TEXT NOT NULL DEFAULT 'Unknown Adventurer',
+  name TEXT NOT NULL DEFAULT 'Unknown',
   image TEXT,
   type TEXT CHECK( type IN ('Shop','Monster','Player','NPC','none') ) NOT NULL DEFAULT 'none',
   initiative INTEGER CHECK( initiative >= 0 ) NOT NULL DEFAULT 0,
@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS entity (
   build TEXT NOT NULL DEFAULT '{}',
   damage INTEGER NOT NULL DEFAULT 0,
   tempHp INTEGER NOT NULL DEFAULT 0,
+  maxHp INTEGER,
   conditions TEXT NOT NULL DEFAULT '[]',
   FOREIGN KEY(campaignId) REFERENCES campaign(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY(noteId) REFERENCES note(id) ON UPDATE CASCADE ON DELETE SET NULL

@@ -8,12 +8,12 @@ import SheetView from "./components/views/SheetView";
 import CardView from "./components/views/CardView";
 import ModuleView from "./components/views/ModuleView";
 import MainMenu from "./components/menus/MainMenu";
-import { IEntity, IPlan } from "./api/model";
+import { IEntity, IPath } from "./api/model";
 import classNames from "classnames";
 import {
   usePreferencesStore,
   useCampaigns,
-  usePlans,
+  usePaths,
   useEntities,
   useBoolean,
 } from "./hooks";
@@ -25,7 +25,7 @@ import EntitySheet from "./components/sheets/EntitySheet";
 import EditEntitySheet from "./components/sheets/EditEntitySheet";
 import NotesSheet from "./components/sheets/NotesSheet";
 import CreationDropdown from "./components/dropdowns/CreationDropdown";
-import EditPlanSheet from "./components/sheets/EditPlanSheet";
+import EditPathSheet from "./components/sheets/EditPathSheet";
 import { initializeDatabase } from "./api/database";
 
 // Load FontAwesome icons
@@ -55,12 +55,12 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const { preferences, setPreferences } = usePreferencesStore();
 
-  //generate the header section based on if a plan is selected
-  const { getPlanById } = usePlans();
-  const [currentPlan, setCurrentPlan] = useState<IPlan | undefined>(undefined);
+  //generate the header section based on if a path is selected
+  const { getPathById } = usePaths();
+  const [currentPath, setCurrentPath] = useState<IPath | undefined>(undefined);
   useEffect(
-    () => setCurrentPlan(getPlanById(preferences.selectedPlan || undefined)),
-    [preferences.selectedPlan, getPlanById]
+    () => setCurrentPath(getPathById(preferences.selectedPath || undefined)),
+    [preferences.selectedPath, getPathById]
   );
 
   const handleToggleMenu = () => {
@@ -79,26 +79,26 @@ function App() {
     });
   };
 
-  const { resetInitiative: resetEntities } = useEntities();
-  const cancelPlan = () => {
-    const selectedPlan = 0;
+  const { resetInitiative } = useEntities();
+  const cancelPath = () => {
+    const selectedPath = 0;
     setPreferences({
       ...preferences,
-      selectedPlan,
+      selectedPath,
     });
-    resetEntities();
+    resetInitiative();
   };
 
   //open and close initiative menu
   const [showInitiativeMenu, setShowInitiativeMenu] = useState(false);
   useEffect(() => {
     if (
-      preferences.selectedPlan !== undefined &&
-      currentPlan?.type === "encounter"
+      preferences.selectedPath !== undefined &&
+      currentPath?.type === "encounter"
     ) {
       setShowInitiativeMenu(true);
     }
-  }, [preferences.selectedPlan, currentPlan]);
+  }, [preferences.selectedPath, currentPath]);
   const handleInitiativeMenu = () => {
     setShowInitiativeMenu((prevState) => !prevState);
   };
@@ -124,20 +124,20 @@ function App() {
             onClose={handleToggleCreate}
           ></CreationDropdown>
           {/* </div> */}
-          {/* <PlannerDropdown onClose={() => setCreateDropdown(false)} /> */}
+          {/* <PathPlannerDropdown onClose={() => setCreateDropdown(false)} /> */}
           {/* if in encounter mode, show a close button to exit it*/}
-          {preferences.selectedPlan != undefined ? (
+          {preferences.selectedPath != undefined ? (
             <>
-              {showInitiativeMenu && currentPlan?.type === "encounter" && (
+              {showInitiativeMenu && currentPath?.type === "encounter" && (
                 <InitiativeMenu onClose={handleInitiativeMenu} />
               )}
               <h2 className={styles.headerTitle}>
                 {/*capitalize the Header Title*/}
-                {currentPlan?.type &&
-                  currentPlan.type.charAt(0).toUpperCase() +
-                    currentPlan.type.slice(1)}
+                {currentPath?.type &&
+                  currentPath.type.charAt(0).toUpperCase() +
+                    currentPath.type.slice(1)}
               </h2>
-              <RoundButton icon="close" onClick={cancelPlan} />
+              <RoundButton icon="close" onClick={cancelPath} />
             </>
           ) : (
             // Empty div for layout
@@ -167,7 +167,7 @@ function App() {
         </div>
       </header>
       <main className={styles.content}>
-        {/* Content component for the first column holds planner
+        {/* Content component for the first column holds PathPlanner
             which then tells the header what mode we are in. */}
         <CardView />
         {/* Content component for the second column will change if
@@ -177,7 +177,7 @@ function App() {
             <Route index element={<NotesSheet />} />
             <Route path="entity/:entityId" element={<EntitySheet />} />
             <Route path="entity/:entityId/edit" element={<EditEntitySheet />} />
-            <Route path="plan/:planId/*" element={<EditPlanSheet />} />
+            <Route path="path/:pathId/*" element={<EditPathSheet />} />
             <Route path="*" element={<NotesSheet />} />
           </Route>
         </Routes>

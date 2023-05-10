@@ -61,8 +61,8 @@
   }
 }
 
-//For the Planner Object
-.plan {
+//For the PathPlanner Object
+.path {
   display: flex;
   align-items: flex-start;
   flex: 1;
@@ -130,7 +130,7 @@
     transform: translate(
       50%,
       50%
-    ); // Add this line to center the plus sign inside the plannerObject container
+    ); // Add this line to center the plus sign inside the PathPlannerObject container
     font-size: 2em; // Add this line to increase the font size
     font-weight: bold; // Add this line to make the font bold
     z-index: 99;
@@ -182,11 +182,11 @@
     overflow-y: auto;
 
     //tables
-    .plansTable {
+    .pathsTable {
       border-collapse: collapse;
       width: 100%;
 
-      .plansTableRow {
+      .pathsTableRow {
         border-bottom: 1px solid var(--primaryBackground);
         display: flex;
         align-items: center;
@@ -198,27 +198,27 @@
         }
       }
 
-      .plansTableAction,
-      .plansTablePlanType,
-      .plansTableEntities,
-      .plansTableSpan {
+      .pathsTableAction,
+      .pathsTablePathType,
+      .pathsTableEntities,
+      .pathsTableSpan {
         padding: 0.3em;
         text-align: left;
       }
 
-      .plansTableAction {
+      .pathsTableAction {
         display: flex;
         flex-direction: row;
         align-items: center;
         height: 100%;
       }
 
-      .plansTablePlanType {
+      .pathsTablePathType {
         width: 25%;
       }
 
-      .plansTableEntities,
-      .plansTableSpan {
+      .pathsTableEntities,
+      .pathsTableSpan {
         flex: 1;
       }
 

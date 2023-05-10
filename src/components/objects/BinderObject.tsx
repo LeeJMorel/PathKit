@@ -8,13 +8,13 @@ import {
   usePreferencesStore,
   useStore,
   useNotes,
-  usePlans,
+  usePaths,
 } from "../../hooks";
 import DeleteMenu from "../menus/DeleteMenu";
 import { EntityType, IEntity, INote } from "../../api/model";
 
 export enum BinderTab {
-  Plans = "Plans",
+  Paths = "Paths",
   Players = "Players",
   Notes = "Notes",
   NPCs = "NPCs",
@@ -33,7 +33,7 @@ const BinderObject: React.FC<IBinderProps> = ({
   onLoad,
   filterEntities,
   showTabs = [
-    BinderTab.Plans,
+    BinderTab.Paths,
     BinderTab.Players,
     BinderTab.Notes,
     BinderTab.NPCs,
@@ -42,7 +42,7 @@ const BinderObject: React.FC<IBinderProps> = ({
   ],
   showTabMenu = true,
 }: IBinderProps) => {
-  const { plans } = usePlans();
+  const { paths } = usePaths();
   const { notes } = useNotes();
   const { entities, getPlayerEntities, getEntitiesById } = useEntities();
   const [showMenu, setShowMenu] = useState(showTabMenu);
@@ -79,12 +79,12 @@ const BinderObject: React.FC<IBinderProps> = ({
   //placeholder until store can delete
   const [showDeleteMenu, setShowDeleteMenu] = useState<boolean>(false);
   const [deleteType, setDeleteType] = useState<
-    "entity" | "plan" | "campaign" | "note"
+    "entity" | "path" | "campaign" | "note"
   >("entity");
   const [deleteId, setDeleteId] = useState<number>(0);
 
   const handleDelete = (
-    type: "entity" | "plan" | "campaign" | "note",
+    type: "entity" | "path" | "campaign" | "note",
     id: number
   ) => {
     setShowDeleteMenu(true);
@@ -96,8 +96,8 @@ const BinderObject: React.FC<IBinderProps> = ({
     setShowDeleteMenu(false);
   };
 
-  const handleEditPlan = (planId: number) => {
-    navigate(`/plan/${planId}`);
+  const handleEditPath = (pathId: number) => {
+    navigate(`/path/${pathId}`);
   };
 
   const handleEditEntity = (entity: IEntity) => {
@@ -111,8 +111,8 @@ const BinderObject: React.FC<IBinderProps> = ({
   };
 
   const renderEntityRow = (entity: IEntity) => (
-    <tr key={entity.id} className={styles.plansTableRow}>
-      <td className={styles.plansTableAction}>
+    <tr key={entity.id} className={styles.pathsTableRow}>
+      <td className={styles.pathsTableAction}>
         <Button
           variant="text"
           title={`Edit ${entity.name}`}
@@ -121,11 +121,11 @@ const BinderObject: React.FC<IBinderProps> = ({
           <FontAwesomeIcon icon="pencil" />
         </Button>
       </td>
-      <td className={styles.plansTablePlanType} title={`${entity.name}`}>
+      <td className={styles.pathsTablePathType} title={`${entity.name}`}>
         {entity.name}
       </td>
-      <td className={styles.plansTableEntities}></td>
-      <td className={styles.plansTableAction}>
+      <td className={styles.pathsTableEntities}></td>
+      <td className={styles.pathsTableAction}>
         {typeof onLoad === "function" ? (
           <Button
             title={`Load ${entity.name}`}
@@ -160,36 +160,36 @@ const BinderObject: React.FC<IBinderProps> = ({
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case "Plans":
-        return plans.map((plan) => {
-          const planEntities = getEntitiesById(plan.entities);
+      case "Paths":
+        return paths.map((path) => {
+          const pathEntities = getEntitiesById(path.entities);
           return (
-            <tr key={plan.id} className={styles.plansTableRow}>
-              <td className={styles.plansTableAction}>
+            <tr key={path.id} className={styles.pathsTableRow}>
+              <td className={styles.pathsTableAction}>
                 <Button
                   variant="text"
-                  title={"Edit Plan"}
-                  onClick={() => handleEditPlan(plan.id)}
+                  title={"Edit path"}
+                  onClick={() => handleEditPath(path.id)}
                 >
                   <FontAwesomeIcon icon="pencil" />
                 </Button>
               </td>
-              <td className={styles.plansTablePlanType} title={plan.type}>
-                {plan.type}
+              <td className={styles.pathsTablePathType} title={path.type}>
+                {path.type}
               </td>
               <td
-                className={styles.plansTableEntities}
-                title={`${planEntities
+                className={styles.pathsTableEntities}
+                title={`${pathEntities
                   .map((entity) => entity.name)
                   .join(", ")}`}
               >
-                {getEntitiesText(planEntities)}
+                {getEntitiesText(pathEntities)}
               </td>
 
-              <td className={styles.plansTableAction}>
+              <td className={styles.pathsTableAction}>
                 <Button
-                  title={"Delete Plan"}
-                  onClick={() => handleDelete("plan", plan.id)}
+                  title={"Delete path"}
+                  onClick={() => handleDelete("path", path.id)}
                   icon="trash"
                   variant="text"
                 />
@@ -200,8 +200,8 @@ const BinderObject: React.FC<IBinderProps> = ({
 
       case "Notes":
         return notes.map((note) => (
-          <tr key={note.id} className={styles.plansTableRow}>
-            <td className={styles.plansTableAction}>
+          <tr key={note.id} className={styles.pathsTableRow}>
+            <td className={styles.pathsTableAction}>
               {typeof onLoad === "function" ? (
                 <Button
                   title={`Load ${note.title}`}
@@ -221,11 +221,11 @@ const BinderObject: React.FC<IBinderProps> = ({
                 </Button>
               )}
             </td>
-            <td className={styles.plansTableSpan} title={note.title}>
+            <td className={styles.pathsTableSpan} title={note.title}>
               {note.title}
             </td>
 
-            <td className={styles.plansTableAction}>
+            <td className={styles.pathsTableAction}>
               <Button
                 title={"Delete Note"}
                 onClick={() => handleDelete("note", note.id)}
@@ -289,7 +289,7 @@ const BinderObject: React.FC<IBinderProps> = ({
         />
       </div>
       <div className={styles.content}>
-        <table className={styles.plansTable}>
+        <table className={styles.pathsTable}>
           <tbody>{renderTabContent()}</tbody>
         </table>
       </div>
