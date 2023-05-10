@@ -1,10 +1,10 @@
-export enum PlanType {
+export enum PathType {
   exploration = "exploration",
   encounter = "encounter",
 }
 
-export interface PartialPlan {
-  type: PlanType;
+export interface PartialPath {
+  type: PathType;
   // Array of entity Ids
   entities: number[];
   orderNum?: number;
@@ -12,11 +12,11 @@ export interface PartialPlan {
   campaignId?: number;
 }
 
-export interface IPlan extends PartialPlan {
+export interface IPath extends PartialPath {
   id: number;
   campaignId: number;
 }
 
-export interface IRawPlan extends Omit<IPlan, "entities"> {
+export interface IRawPath extends Omit<IPath, "entities"> {
   entities?: string;
 }

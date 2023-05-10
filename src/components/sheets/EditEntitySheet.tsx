@@ -5,6 +5,7 @@ import { useEntities } from "../../hooks";
 import styles from "./Sheets.module.scss";
 import { Button } from "../buttons";
 import { EntityType, IEntity, PartialEntity } from "../../api/model";
+import { defaultEntity } from "../../consts";
 
 function EditEntitySheet() {
   const { entityId } = useParams();
@@ -14,7 +15,7 @@ function EditEntitySheet() {
   const { updateOrAddEntity, getEntityById } = useEntities();
 
   const [entityData, setEntityData] = useState<PartialEntity>(
-    getEntityById(entityId) || {}
+    getEntityById(entityId) || defaultEntity
   );
 
   useEffect(() => {
@@ -22,17 +23,17 @@ function EditEntitySheet() {
       const e = await getEntityById(entityId);
       // Create entity and redirect to this form with the right ID
       if (entityId === "new") {
-        const newEntity = await updateOrAddEntity({
-          type: (searchType as EntityType) || undefined,
-        });
-        navigate(
-          `/entity/${newEntity?.id}/edit${
-            searchType ? "?type=" + searchType : ""
-          }`,
-          {
-            replace: true,
-          }
-        );
+        // const newEntity = await updateOrAddEntity({
+        //   type: (searchType as EntityType) || undefined,
+        // });
+        // navigate(
+        //   `/entity/${newEntity?.id}/edit${
+        //     searchType ? "?type=" + searchType : ""
+        //   }`,
+        //   {
+        //     replace: true,
+        //   }
+        // );
       } else if (e) {
         setEntityData(e);
       }

@@ -2,7 +2,7 @@ import styles from "./Menu.module.scss";
 import Button from "../buttons/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  usePlans,
+  usePaths,
   useEntities,
   useCampaigns,
   useNotes,
@@ -12,7 +12,7 @@ import { WelcomeMenu } from "./WelcomeMenu";
 import { useState, useCallback } from "react";
 
 interface IDeleteMenuProps {
-  type: "entity" | "plan" | "campaign" | "note";
+  type: "entity" | "path" | "campaign" | "note";
   id: number;
   onClose: () => void;
 }
@@ -22,7 +22,7 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
   id,
   onClose,
 }: IDeleteMenuProps) => {
-  const { deletePlan } = usePlans();
+  const { deletePath } = usePaths();
   const { deleteEntity } = useEntities();
   const { deleteCampaign } = useCampaigns();
   const { deleteNote } = useNotes();
@@ -35,13 +35,13 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
 
   const handleYesClick = useCallback(() => {
     switch (type) {
-      case "plan":
-        if (preferences.selectedPlan === id) {
+      case "path":
+        if (preferences.selectedPath === id) {
           setPreferences({
-            selectedPlan: 0,
+            selectedPath: 0,
           });
         }
-        deletePlan(id);
+        deletePath(id);
         break;
 
       case "entity":

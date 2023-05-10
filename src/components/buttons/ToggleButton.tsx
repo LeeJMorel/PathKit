@@ -1,11 +1,11 @@
 import React from "react";
 import Button from "./Button";
-import { PlanType } from "src/api/model";
+import { PathType } from "src/api/model";
 
 interface IToggleButtonProps {
-  options: PlanType[];
-  value: PlanType;
-  onChange: (value: PlanType) => void;
+  options: PathType[];
+  value: PathType;
+  onChange: (value: PathType) => void;
 }
 
 const ToggleButton: React.FC<IToggleButtonProps> = ({
@@ -13,7 +13,7 @@ const ToggleButton: React.FC<IToggleButtonProps> = ({
   value,
   onChange,
 }) => {
-  const handleOptionClick = (option: PlanType) => {
+  const handleOptionClick = (option: PathType) => {
     if (value !== option) {
       onChange(option);
     }

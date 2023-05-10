@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./Form.module.scss";
-import { useEntities, usePlans, usePreferencesStore } from "../../hooks";
-import { IPlan } from "src/api/model";
+import { useEntities, usePaths, usePreferencesStore } from "../../hooks";
+import { IPath } from "src/api/model";
 
 export interface InitiativeMenuProps {
   onClose: () => void;
@@ -22,23 +22,20 @@ const InitiativeForm = ({ onClose }: InitiativeMenuProps) => {
     setEntityInitiatives({ ...entityInitiatives, [entityId]: newInitiative });
   };
 
-  //generate menu based on selected plan
-  const { getPlanById } = usePlans();
-  const [currentPlan, setCurrentPlan] = useState<IPlan | undefined>(undefined);
+  //generate menu based on selected path
+  const { getPathById } = usePaths();
+  const [currentPath, setCurrentPath] = useState<IPath | undefined>(undefined);
   useEffect(
-    () => setCurrentPlan(getPlanById(preferences.selectedPlan || undefined)),
-    [preferences.selectedPlan, getPlanById]
+    () => setCurrentPath(getPathById(preferences.selectedPath || undefined)),
+    [preferences.selectedPath, getPathById]
   );
 
   //get all the player entities, they should always be visible
-  const {
-    getEntitiesById,
-    getPlayerEntities,
-    updateOrAddEntity: updateEntity,
-  } = useEntities();
+  const { getEntitiesById, getPlayerEntities, updateEntityById } =
+    useEntities();
   const playerEntities = getPlayerEntities();
-  const planEntities = getEntitiesById(currentPlan?.entities);
-  const formFields = [...planEntities, ...playerEntities].map((entity) => (
+  const pathEntities = getEntitiesById(currentPath?.entities);
+  const formFields = [...pathEntities, ...playerEntities].map((entity) => (
     <div key={entity.id} className={styles.formRow}>
       <label
         htmlFor={`${entity.id}-initiativeForm`}
@@ -63,7 +60,7 @@ const InitiativeForm = ({ onClose }: InitiativeMenuProps) => {
     // Check if the number of initiative values is less than the total number of entities
     if (
       Object.keys(entityInitiatives).length <
-      getEntitiesById(currentPlan?.entities).length + getPlayerEntities().length
+      getEntitiesById(currentPath?.entities).length + getPlayerEntities().length
     ) {
       alert("Please enter a value for each entity's initiative.");
       return;
@@ -77,7 +74,7 @@ const InitiativeForm = ({ onClose }: InitiativeMenuProps) => {
     if (allValid) {
       // Update the initiatives for each entity
       Object.keys(entityInitiatives).forEach((entityId) => {
-        updateEntity({
+        updateEntityById({
           id: Number(entityId),
           initiative: entityInitiatives[entityId],
         });

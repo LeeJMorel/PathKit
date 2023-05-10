@@ -1,10 +1,10 @@
 import styles from "./View.module.scss";
 import React, { useEffect, useState } from "react";
 import isEqual from "lodash.isequal";
-import PlannerCard from "../cards/PlannerCard";
+import PathPlannerCard from "../cards/PathPlannerCard";
 import EntityCard from "../cards/EntityCard";
-import { IEntity, IPlan } from "../../api/model";
-import { useEntities, usePlans, usePreferencesStore } from "../../hooks";
+import { IEntity, IPath } from "../../api/model";
+import { useEntities, usePaths, usePreferencesStore } from "../../hooks";
 import DragAndDropList from "../dragAndDropList/DragAndDropList";
 
 function CardView() {
@@ -18,33 +18,33 @@ function CardView() {
     activePlayersEntities
   );
 
-  const { getPlanById } = usePlans();
-  const [currentPlan, setCurrentPlan] = useState<IPlan | undefined>(
-    getPlanById(preferences.selectedPlan || undefined)
+  const { getPathById } = usePaths();
+  const [currentPath, setCurrentPath] = useState<IPath | undefined>(
+    getPathById(preferences.selectedPath || undefined)
   );
-  const planEntities = getEntitiesById(currentPlan?.entities);
+  const pathEntities = getEntitiesById(currentPath?.entities);
 
   useEffect(() => {
-    const newPlan = getPlanById(preferences.selectedPlan || undefined);
-    setCurrentPlan(newPlan);
-    if (newPlan && newPlan.id !== currentPlan?.id) {
-      const newPlanEntities = getEntitiesById(newPlan.entities);
-      setCurrentEntities((prev) => [...prev, ...newPlanEntities]);
+    const newPath = getPathById(preferences.selectedPath || undefined);
+    setCurrentPath(newPath);
+    if (newPath && newPath.id !== currentPath?.id) {
+      const newpathEntities = getEntitiesById(newPath.entities);
+      setCurrentEntities((prev) => [...prev, ...newpathEntities]);
     }
-  }, [preferences.selectedPlan, getPlanById]);
+  }, [preferences.selectedPath, getPathById]);
 
   useEffect(() => {
-    const newEntities = [...activePlayersEntities, ...planEntities].sort(
+    const newEntities = [...activePlayersEntities, ...pathEntities].sort(
       (a, z) => (z.initiative || 0) - (a.initiative || 0)
     );
     if (!isEqual(currentEntities, newEntities)) {
       setCurrentEntities(newEntities);
     }
-  }, [activePlayersEntities, planEntities, currentEntities]);
+  }, [activePlayersEntities, pathEntities, currentEntities]);
 
   return (
     <div className={styles.cardView}>
-      <PlannerCard className={styles.planCard} />
+      <PathPlannerCard className={styles.planCard} />
       <DragAndDropList
         id="card-view-entity-list"
         items={currentEntities}

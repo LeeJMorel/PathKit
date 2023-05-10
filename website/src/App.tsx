@@ -163,8 +163,8 @@ function App() {
                 <h3>Demo</h3>
                 <p>
                   You can check out a demo of Pathkit to see if you think the
-                  tool may work for your party! Add players, plans, monsters,
-                  and mayhem! For full feature's press download above.
+                  tool may work for your party! Add players, paths to explore,
+                  monsters, and mayhem! For full feature's press download above.
                 </p>
                 <Button className={styles.buttonMargin} onClick={handleDemo}>
                   Demo
