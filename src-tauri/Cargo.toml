@@ -23,6 +23,7 @@ meilisearch-sdk = "0.23.1"
 sqlx = { version = "0.5.9", features = [ "runtime-async-std-native-tls", "sqlite" ] }
 async-std = { version = "1.6", features = [ "attributes" ] }
 futures = "0.3.18"
+flate2 = "1.0.23"
 
 [dependencies.tauri-plugin-sql]
 git = "https://github.com/tauri-apps/plugins-workspace"

@@ -2456,6 +2456,7 @@ name = "pathkit"
 version = "0.1.0"
 dependencies = [
  "async-std",
+ "flate2",
  "futures",
  "meilisearch-sdk",
  "serde",
