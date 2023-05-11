@@ -1,0 +1,19 @@
+.header {
+  flex-direction: row;
+  cursor: pointer;
+  border-bottom: 1px solid var(--accentBackground);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.5em;
+  width: 100%;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0.2em auto;
+  }
+}
