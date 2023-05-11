@@ -1,9 +1,9 @@
 on:
   pull_request:
     paths:
-    - 'src/**'
+      - "src/**"
     branches:
-    - main
+      - main
 
 jobs:
   test_frontend:
@@ -12,15 +12,14 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
-    
+
     steps:
-    - uses: actions/checkout@v3
-    - name: install node
-      uses: actions/setup-node@v3
-    
-    - name: npm install, build and test
-      run: |
-        cd PathKit
-        npm install
-        npm run build
-        npm run test run
+      - uses: actions/checkout@v3
+      - name: install node
+        uses: actions/setup-node@v3
+
+      - name: npm install, build and test
+        run: |
+          npm install
+          npm run build
+          npm run test run
