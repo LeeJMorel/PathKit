@@ -12,7 +12,10 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": true,
+      "fs": {
+        "scope": ["$RESOURCE/**"]
+      }
     },
     "bundle": {
       "active": true,
@@ -38,7 +41,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": ["../dice-resources/*"],
       "shortDescription": "",
       "targets": "all",
       "windows": {

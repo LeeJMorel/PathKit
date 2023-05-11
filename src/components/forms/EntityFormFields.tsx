@@ -1,52 +1,13 @@
 import React from "react";
 import { AbilityLong, EntityType, PartialEntity } from "../../api/model";
 import { getMaxPlayerHp, isBase64UrlImage } from "../../utilities";
-//not pushed yet, next run, still buggy
-// import { abilityOptions, profLevelOptions, proficiencies } from "../../consts";
-
-type GenericInput = HTMLInputElement & HTMLTextAreaElement;
-
-interface IFormFieldProps<O = unknown> extends React.HTMLProps<GenericInput> {
-  /** The name of the field as it appears in the dataset */
-  name: string;
-  /** The label that appears by the input */
-  label: string;
-  /** Organize fields by groups */
-  group?: string;
-  /** Determines what JSX is rendered */
-  inputType:
-    | "text"
-    | "number"
-    | "checkbox"
-    | "radio"
-    | "textarea"
-    | "dropdown"
-    | "multiselect"
-    | "file";
-
-  multipleFields?: boolean;
-
-  multipleFieldsType?: "list" | "dict";
-
-  value?: any;
-
-  /** For use when multipleFieldsType === "dict". Provides suggestions on names for the keys */
-  keySuggestions?: any[];
-
-  options?: any[];
-
-  onChange?: (event: React.ChangeEvent<GenericInput>, ...args: any[]) => void;
-
-  validation?: (...args: any[]) => boolean | Promise<boolean>;
-
-  errorMessage?: string;
-
-  getIsRequired?: (type?: EntityType) => boolean;
-}
+import { abilityOptions, profLevelOptions, proficiencies } from "../../consts";
+import { GenericInputElement, IFormFieldProps } from "../inputs";
 
 export const getEntityFormFields = (
   entity: PartialEntity,
-  setEntity: React.Dispatch<React.SetStateAction<PartialEntity>>
+  setEntity: React.Dispatch<React.SetStateAction<PartialEntity>>,
+  parentOnChange: (name: string, value: any) => void
 ): Record<string, IFormFieldProps[]> => ({
   general: [
     {
@@ -55,6 +16,7 @@ export const getEntityFormFields = (
       group: "general",
       inputType: "text",
       value: entity.name,
+      onChange: parentOnChange,
       validation: (value: string) => value.length > 0,
       errorMessage: "Name cannot be empty",
       required: true,
@@ -65,6 +27,7 @@ export const getEntityFormFields = (
       group: "general",
       inputType: "file",
       value: entity.image,
+      onChange: parentOnChange,
       validation: (image: string) => isBase64UrlImage(image),
       errorMessage: "The image provided is invalid.",
     },
@@ -76,9 +39,9 @@ export const getEntityFormFields = (
       value: entity.build.level || 1,
       validation: (value: number) => value > 0 && value <= 20,
       errorMessage: "Invalid level",
-      onChange: (e) => {
-        const { value } = e?.target;
-        const level = Number(value);
+      onChange: (n, v) => {
+        parentOnChange(n, v);
+        const level = Number(v);
         setEntity((prev) => ({
           ...prev,
           level,
@@ -95,6 +58,7 @@ export const getEntityFormFields = (
       group: "general",
       inputType: "text",
       value: entity.build.ancestry,
+      onChange: parentOnChange,
       getIsRequired: (type) => type === EntityType.Player,
     },
     {
@@ -103,6 +67,7 @@ export const getEntityFormFields = (
       group: "general",
       inputType: "text",
       value: entity.build.heritage,
+      onChange: parentOnChange,
       getIsRequired: (type) => type === EntityType.Player,
     },
     {
@@ -111,6 +76,7 @@ export const getEntityFormFields = (
       group: "general",
       inputType: "text",
       value: entity.build.background,
+      onChange: parentOnChange,
       getIsRequired: (type) => type === EntityType.Player,
     },
     {
@@ -119,6 +85,7 @@ export const getEntityFormFields = (
       group: "general",
       inputType: "text",
       value: entity.build.gender,
+      onChange: parentOnChange,
     },
     {
       name: "build.age",
@@ -126,6 +93,7 @@ export const getEntityFormFields = (
       group: "general",
       inputType: "text",
       value: entity.build.age,
+      onChange: parentOnChange,
     },
     {
       name: "build.deity",
@@ -133,24 +101,26 @@ export const getEntityFormFields = (
       group: "general",
       inputType: "text",
       value: entity.build.deity,
+      onChange: parentOnChange,
     },
     {
       name: "build.languages",
       label: "Languages",
       group: "general",
       inputType: "text",
-      multipleFields: true,
-      multipleFieldsType: "list",
+      multipleInputs: true,
+      multipleInputsType: "list",
       value: entity.build.languages,
+      onChange: parentOnChange,
     },
     {
       name: "build.size",
-      label: "Languages",
+      label: "Size",
       group: "general",
-      inputType: "text",
-      multipleFields: true,
-      multipleFieldsType: "list",
+      inputType: "radio",
+      // write options
       value: entity.build.size,
+      onChange: parentOnChange,
     },
   ],
 
@@ -160,8 +130,9 @@ export const getEntityFormFields = (
       label: "Key ability",
       group: "abilities",
       inputType: "dropdown",
-      //   options: abilityOptions,
+      options: abilityOptions,
       value: entity.build.keyability,
+      onChange: parentOnChange,
       getIsRequired: (type) => type === EntityType.Player,
     },
     {
@@ -170,6 +141,7 @@ export const getEntityFormFields = (
       group: "abilities",
       inputType: "number",
       value: entity.build.abilities?.str || 10,
+      onChange: parentOnChange,
       getIsRequired: (type) => type === EntityType.Player,
     },
     {
@@ -178,6 +150,7 @@ export const getEntityFormFields = (
       group: "abilities",
       inputType: "number",
       value: entity.build.abilities?.dex || 10,
+      onChange: parentOnChange,
       getIsRequired: (type) => type === EntityType.Player,
     },
     {
@@ -186,6 +159,7 @@ export const getEntityFormFields = (
       group: "abilities",
       inputType: "number",
       value: entity.build.abilities?.con || 10,
+      onChange: parentOnChange,
       getIsRequired: (type) => type === EntityType.Player,
     },
     {
@@ -194,6 +168,7 @@ export const getEntityFormFields = (
       group: "abilities",
       inputType: "number",
       value: entity.build.abilities?.int || 10,
+      onChange: parentOnChange,
       getIsRequired: (type) => type === EntityType.Player,
     },
     {
@@ -202,6 +177,7 @@ export const getEntityFormFields = (
       group: "abilities",
       inputType: "number",
       value: entity.build.abilities?.wis || 10,
+      onChange: parentOnChange,
       getIsRequired: (type) => type === EntityType.Player,
     },
     {
@@ -210,6 +186,7 @@ export const getEntityFormFields = (
       group: "abilities",
       inputType: "number",
       value: entity.build.abilities?.cha || 10,
+      onChange: parentOnChange,
       getIsRequired: (type) => type === EntityType.Player,
     },
   ],
@@ -220,11 +197,12 @@ export const getEntityFormFields = (
       label: "Proficiencies",
       group: "abilities",
       inputType: "radio",
-      multipleFields: true,
-      multipleFieldsType: "dict",
-      //   keySuggestions: proficiencies,
-      //   options: profLevelOptions,
+      multipleInputs: true,
+      multipleInputsType: "dict",
+      keySuggestions: proficiencies,
+      options: profLevelOptions,
       value: entity.build.proficiencies || {},
+      onChange: parentOnChange,
       getIsRequired: (type) => type === EntityType.Player,
     },
   ],
