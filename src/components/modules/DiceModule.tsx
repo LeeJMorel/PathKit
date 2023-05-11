@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import styles from "./Modules.module.scss";
 import { Unity, useUnityContext } from "react-unity-webgl";
+import { useResources } from "../../hooks";
 
 function DiceModule() {
-  //this connects to unity
+  const { loaderPath, dataPath, frameworkPath, wasmPath } = useResources();
+
   const { unityProvider } = useUnityContext({
-    loaderUrl: "../../../dice-resources/Downloads.loader.js",
-    dataUrl: "../../../dice-resources/Downloads.data",
-    frameworkUrl: "../../../dice-resources/Downloads.framework.js",
-    codeUrl: "../../../dice-resources/Downloads.wasm",
+    loaderUrl: loaderPath,
+    dataUrl: dataPath,
+    frameworkUrl: frameworkPath,
+    codeUrl: wasmPath,
   });
 
   //this checks if the unity component loaded, if not we show an error message
   const [hasError, setHasError] = useState(false);
   useEffect(() => {
-    fetch("../../../dice-resources/Downloads.framework.js")
+    fetch(frameworkPath)
       .then((response) => {
         if (!response.ok) {
           setHasError(true);

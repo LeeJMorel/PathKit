@@ -12,9 +12,9 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false,
+      "all": true,
       "fs": {
-        "scope": ["$RESOURCE/*"]
+        "scope": ["$RESOURCE/**"]
       }
     },
     "bundle": {

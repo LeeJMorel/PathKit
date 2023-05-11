@@ -30,14 +30,19 @@
     .cardImage {
       width: 4em;
       height: 4em;
-      padding: 0.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: var(--accentBackground);
       border-width: 0.1rem;
       border-style: solid;
       border-color: var(--accentText);
+      overflow: hidden;
 
       img {
-        width: 100%;
+        width: 4em;
+        height: 4em;
+        object-fit: cover;
       }
 
       .deadIcon {
