@@ -185,7 +185,6 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
                   </div>
                 </div>
                 <div
-                  className={styles.largeCheck}
                   title={`${player.name}: ${
                     !preferences.absentPlayers.includes(player.id)
                       ? "is Present"
@@ -314,8 +313,8 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   ];
   return (
     <div className={styles.menuOverlay}>
-      <div className={styles.mainMenu}>
-        <Tabs tabs={tabs} onClose={handleClose} setHeight={true} />
+      <div className={styles.mainMenu} style={{ height: "480px" }}>
+        <Tabs tabs={tabs} onClose={handleClose} />
         {showDeleteMenu && deleteId && (
           <DeleteMenu
             type={deleteType}

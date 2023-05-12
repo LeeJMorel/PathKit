@@ -5,14 +5,27 @@ import { useEntities } from "../../hooks";
 import { defaultEntity } from "../../consts";
 import { Button } from "../buttons";
 import classNames from "classnames";
-import { getEntityFormFields } from "./EntityFormFields";
-import FormField from "../inputs/FormField";
-import { TextInput } from "../inputs";
+import { Formik, Form, Field } from "formik";
+import Tabs from "../tabs/tab";
+import {
+  General,
+  Equipment,
+  Actions,
+  Attacks,
+  Spells,
+  Features,
+} from "./entityFormChildren";
 
 export interface IEntityFormProps {
   entityData: PartialEntity;
   onAddEntity: (entity: PartialEntity) => void;
   onClose?: () => void;
+}
+
+export interface IEntityFormChildrenProps {
+  entity: PartialEntity;
+  count?: number;
+  onImageUpload?: (result: FileReader["result"]) => void;
 }
 
 const AddEntityForm: React.FC<IEntityFormProps> = ({
@@ -50,33 +63,60 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
 
   console.log("addentityform", { entity, entityData });
 
+  const tabs = [
+    {
+      id: "general",
+      title: "General",
+      content: (
+        //onImageUpload={handleFileUpload}
+        <General entity={entity} />
+      ),
+    },
+    {
+      id: "equipment",
+      title: "Equipment",
+      content: <Equipment entity={entity} />,
+    },
+    {
+      id: "Actions",
+      title: "Actions & Effects",
+      content: <Actions entity={entity} />,
+    },
+    {
+      id: "Attacks",
+      title: "Attacks",
+      content: <Attacks entity={entity} />,
+    },
+    {
+      id: "Spells",
+      title: "Spells",
+      content: <Spells entity={entity} />,
+    },
+    {
+      id: "Features",
+      title: "Features",
+      content: <Features entity={entity} />,
+    },
+  ];
+
   return (
-    <form className={styles.formContainer} onSubmit={handleAddEntity}>
-      <div className={styles.formRow}>
-        <FormField
-          inputType="file"
-          label="Image"
-          name="image"
-          value={entity.image}
-          onUpload={handleFileUpload}
-        />
-      </div>
-      <div className={styles.formRow}>
-        <FormField
-          inputType="text"
-          name="name"
-          value={entity.name}
-          onChange={handleInputChange}
-          label="Name"
-          validation={(value: string) => value.length > 0}
-        />
-      </div>
-      <div className={classNames(styles.formRow, styles.actionRow)}>
-        <Button type="submit" variant="primary">
-          Save {entity.type}
-        </Button>
-      </div>
-    </form>
+    <Formik
+      initialValues={entity}
+      onSubmit={(values) => {
+        // same shape as initial values
+        //handleAddEntity
+        console.log(values);
+      }}
+    >
+      <Form className={styles.formContainer}>
+        <Tabs tabs={tabs} />
+        <div className={classNames(styles.formRow, styles.actionRow)}>
+          <Button type="submit" variant="primary">
+            Save {entity.type}
+          </Button>
+        </div>
+      </Form>
+    </Formik>
   );
 };
 

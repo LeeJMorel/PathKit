@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./Form.module.scss";
 import { useCampaigns } from "../../hooks";
+import { Button } from "../buttons";
 
 interface INewCampaignFormProps {
   onSubmit?: () => void;
@@ -64,9 +65,9 @@ const NewCampaignForm = ({ onSubmit }: INewCampaignFormProps) => {
           className={styles.formTextarea}
         />
       </div>
-      <button type="submit" className={styles.formButton}>
+      <Button type="submit" className={styles.formButton}>
         Create Campaign
-      </button>
+      </Button>
     </form>
   );
 };

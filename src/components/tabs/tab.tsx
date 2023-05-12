@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./Tab.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import classNames from "classnames";
 
 interface Tab {
   id: string;
@@ -12,10 +13,10 @@ interface Tab {
 interface TabsProps {
   tabs: Tab[];
   onClose?: () => void;
-  setHeight?: boolean;
+  className?: string;
 }
 
-const Tabs: React.FC<TabsProps> = ({ tabs, onClose, setHeight }) => {
+const Tabs: React.FC<TabsProps> = ({ tabs, onClose, className }) => {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
 
   const handleClose = () => {
@@ -24,12 +25,8 @@ const Tabs: React.FC<TabsProps> = ({ tabs, onClose, setHeight }) => {
     }
   };
 
-  const containerClassName = setHeight
-    ? `${styles.tabContainer} ${styles.setHeight}`
-    : styles.tabContainer;
-
   return (
-    <div className={containerClassName}>
+    <div className={classNames(styles.tabContainer, className)}>
       <div className={styles.tabRow}>
         {tabs.map((tab) => (
           <div

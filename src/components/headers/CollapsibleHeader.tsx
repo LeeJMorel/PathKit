@@ -21,7 +21,7 @@ const CollapsibleHeader = ({
   };
 
   return (
-    <div className={className} {...rest}>
+    <>
       <div className={styles.header} onClick={toggle ? toggleOpen : undefined}>
         <h3>{title}</h3>
         {toggle && (
@@ -30,8 +30,12 @@ const CollapsibleHeader = ({
           />
         )}
       </div>
-      {isOpen && children}
-    </div>
+      {isOpen && (
+        <div className={className} {...rest}>
+          {children}
+        </div>
+      )}
+    </>
   );
 };
 
