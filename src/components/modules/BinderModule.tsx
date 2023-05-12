@@ -1,16 +1,18 @@
 import BinderObject from "../objects/BinderObject";
 import styles from "./Modules.module.scss";
+import CollapsibleHeader from "../headers/CollapsibleHeader";
 
 function BinderModule() {
   return (
-    <div className={styles.moduleContainer}>
-      <div className={styles.moduleHeader}>
-        <h4>Binder</h4>
-      </div>
-      <div className={styles.moduleContent}>
+    <>
+      <CollapsibleHeader
+        className={styles.moduleContainer}
+        title="Binder"
+        toggle
+      >
         <BinderObject />
-      </div>
-    </div>
+      </CollapsibleHeader>
+    </>
   );
 }
 
