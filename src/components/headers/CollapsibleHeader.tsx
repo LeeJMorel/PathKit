@@ -2,13 +2,18 @@ import React, { useState } from "react";
 import styles from "./Header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-interface Props {
+interface ICollapsibleHeaderProps extends React.HTMLProps<HTMLDivElement> {
   title: string;
   toggle?: boolean;
-  children?: React.ReactNode;
 }
 
-const CollapsibleHeader = ({ title, toggle, children }: Props): JSX.Element => {
+const CollapsibleHeader = ({
+  title,
+  toggle,
+  children,
+  className,
+  ...rest
+}: ICollapsibleHeaderProps): JSX.Element => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
 
   const toggleOpen = (): void => {
@@ -16,7 +21,7 @@ const CollapsibleHeader = ({ title, toggle, children }: Props): JSX.Element => {
   };
 
   return (
-    <div>
+    <div className={className} {...rest}>
       <div className={styles.header} onClick={toggle ? toggleOpen : undefined}>
         <h3>{title}</h3>
         {toggle && (
