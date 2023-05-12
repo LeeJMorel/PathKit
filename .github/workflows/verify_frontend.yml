@@ -2,6 +2,7 @@ on:
   pull_request:
     paths:
     - 'src/**'
+    - 'tests/**'
     branches:
     - main
 
@@ -17,10 +18,14 @@ jobs:
     - uses: actions/checkout@v3
     - name: install node
       uses: actions/setup-node@v3
+
+    - name: install Rust and cargo
+      uses: brndnmtthws/rust-action-rustup@v1
     
     - name: npm install, build and test
       run: |
         cd PathKit
         npm install
         npm run build
-        npm run test run
+        npm run tauri build
+        npm run test run a
