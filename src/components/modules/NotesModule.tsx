@@ -5,6 +5,7 @@ import { PartialNote } from "../../api/model";
 import { Button } from "../buttons";
 import NoteObject from "../objects/NoteObject";
 import BinderObject, { BinderTab } from "../objects/BinderObject";
+import CollapsibleHeader from "../headers/CollapsibleHeader";
 
 function NotesModule() {
   const { addNote, updateOrAddNote, notes } = useNotes();
@@ -45,35 +46,38 @@ function NotesModule() {
   }, [notesExist]);
 
   return (
-    <div className={styles.moduleContainer}>
-      <div className={styles.moduleHeader}>
-        <h4>Notes</h4>
-      </div>
-      <div className={styles.moduleContent}>
-        {!preferences.selectedNoteModule ? (
-          renderCreateNote()
-        ) : (
-          <NoteObject
-            onChange={handleChange}
-            onClose={() =>
-              setPreferences({
-                selectedNoteModule: 0,
-              })
-            }
-            noteId={preferences.selectedNoteModule}
-          />
-        )}
-        {notesExist && !preferences.selectedNoteModule && (
-          <div className={styles.notesBinder}>
-            <BinderObject
-              showTabs={[BinderTab.Notes]}
-              showTabMenu={false}
-              onLoad={handleLoadNote}
+    <>
+      <CollapsibleHeader
+        className={styles.moduleContainer}
+        title="Notes"
+        toggle
+      >
+        <div className={styles.moduleContent}>
+          {!preferences.selectedNoteModule ? (
+            renderCreateNote()
+          ) : (
+            <NoteObject
+              onChange={handleChange}
+              onClose={() =>
+                setPreferences({
+                  selectedNoteModule: 0,
+                })
+              }
+              noteId={preferences.selectedNoteModule}
             />
-          </div>
-        )}
-      </div>
-    </div>
+          )}
+          {notesExist && !preferences.selectedNoteModule && (
+            <div className={styles.notesBinder}>
+              <BinderObject
+                showTabs={[BinderTab.Notes]}
+                showTabMenu={false}
+                onLoad={handleLoadNote}
+              />
+            </div>
+          )}
+        </div>
+      </CollapsibleHeader>
+    </>
   );
 }
 
