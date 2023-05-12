@@ -20,6 +20,7 @@ import {
   deleteRow,
   updateRow,
 } from "../api/database/database";
+import { tranformRawEntity } from "../utilities";
 
 export interface State {
   currentCampaignId: number;
@@ -46,9 +47,10 @@ export interface Actions {
   // updateEntity: (entity: PartialEntity) => Promise<IEntity | undefined>;
   deleteEntity: (id: number) => Promise<void>;
   refreshEntities: () => Promise<void>;
+  getEntityById: (id: number) => Promise<IEntity | undefined>;
 
   insertPath: (path: PartialPath) => Promise<IPath | undefined>;
-  // updatePlan: (path: PartialPlan) => Promise<IPath | undefined>;
+  // updatePath: (path: PartialPath) => Promise<IPath | undefined>;
   deletePath: (id: number) => Promise<void>;
   refreshPaths: () => Promise<void>;
 
@@ -185,14 +187,21 @@ export const useStore = create<IStore>()(
         });
 
         if (response) {
-          const entities: IEntity[] = response.map((e) => ({
-            ...e,
-            build: JSON.parse(e.build || "{}"),
-            conditions: JSON.parse(e.conditions || "[]"),
-          }));
+          const entities: IEntity[] = response.map(tranformRawEntity);
           set({ entities });
         }
         set({ entitiesLoading: false });
+      },
+
+      getEntityById: async (id) => {
+        const response = await selectRowWhere<IRawEntity>("entity", {
+          key: "id",
+          oper: "=",
+          value: id,
+        });
+        if (response) {
+          return tranformRawEntity(response[0]);
+        }
       },
 
       insertPath: async (newPath) => {
@@ -213,12 +222,12 @@ export const useStore = create<IStore>()(
         }
       },
 
-      // updatePlan: async (path) => {
-      //   const { refreshPlans } = get();
+      // updatePath: async (path) => {
+      //   const { refreshPaths } = get();
       //   if (path.id) {
       //     const result = await updateRow("path", path, path.id);
       //     if (result?.rowsAffected && result.rowsAffected > 0) {
-      //       refreshPlans();
+      //       refreshPaths();
       //       const newResult = await selectRowWhere<IPath>("path", {
       //         key: "id",
       //         oper: "=",

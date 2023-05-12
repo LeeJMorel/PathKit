@@ -2,23 +2,32 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEntities } from "../../hooks";
 import styles from "./Sheets.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
-import { IEntity } from "../../api/model";
+import { useCallback, useState, useEffect } from "react";
+
 import { Button } from "../buttons";
 import classNames from "classnames";
+import { defaultEntity } from "../../consts";
 
 function EntitySheet() {
   const { entityId } = useParams();
   const navigate = useNavigate();
   const { getEntityById } = useEntities();
-  const entity = getEntityById(entityId);
+  const [entity, setEntity] = useState(defaultEntity);
 
+  useEffect(() => {
+    (async () => {
+      const matchEntity = await getEntityById(Number(entityId));
+      if (matchEntity) {
+        setEntity(matchEntity);
+      }
+    })();
+  }, [entityId]);
   const handleCancelClick = () => {
     navigate("/");
   };
-  const handleEditClick = () => {
-    navigate(`/entity/${entity?.id}/edit`);
-  };
+  const handleEditClick = useCallback(() => {
+    navigate(`/entity/${entityId}/edit`);
+  }, [entity]);
 
   return (
     <div className={styles.sheetsContainer}>

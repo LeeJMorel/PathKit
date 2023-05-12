@@ -12,7 +12,7 @@ import useBoolean from "./useBoolean";
 
 interface IUseEntities {
   entities: IEntity[];
-  getEntityById: (entityId?: string | number) => IEntity | undefined;
+  getEntityById: (entityId: number) => Promise<IEntity | undefined>;
   getEntitiesById: (entityIds?: (string | number)[]) => IEntity[];
   deleteEntity: (entityId: number) => void;
   getPlayerEntities: () => IEntity[];
@@ -24,15 +24,20 @@ interface IUseEntities {
 
 export const useEntities = (): IUseEntities => {
   const { value: mounted, setTrue: setMountedTrue } = useBoolean(false);
-  const { entities, insertEntity, refreshEntities, deleteEntity } = useStore(
-    (store) => ({
-      entities: store.entities,
-      insertEntity: store.insertEntity,
-      deleteEntity: store.deleteEntity,
-      refreshEntities: store.refreshEntities,
-      currentCampaignId: store.currentCampaignId,
-    })
-  );
+  const {
+    entities,
+    insertEntity,
+    refreshEntities,
+    getEntityById,
+    deleteEntity,
+  } = useStore((store) => ({
+    entities: store.entities,
+    insertEntity: store.insertEntity,
+    deleteEntity: store.deleteEntity,
+    refreshEntities: store.refreshEntities,
+    getEntityById: store.getEntityById,
+    currentCampaignId: store.currentCampaignId,
+  }));
   const { preferences, setPreferences } = usePreferencesStore();
 
   // Initial call should refresh stored entities from API
@@ -43,17 +48,17 @@ export const useEntities = (): IUseEntities => {
     }
   }, [mounted, entities]);
 
-  const getEntityById = useCallback(
-    (entityId?: string | number): IEntity | undefined => {
-      const match = entities.find((e) => e.id === entityId);
-      return match;
-    },
-    [entities]
-  );
+  // const getEntityById = useCallback(
+  //   (entityId?: string | number): IEntity | undefined => {
+  //     const match = entities.find((e) => e.id === Number(entityId));
+  //     return match;
+  //   },
+  //   [entities]
+  // );
 
   const getEntitiesById = useCallback(
     (entityIds?: (string | number)[]): IEntity[] => {
-      return entities.filter((e) => entityIds?.includes(e.id));
+      return entities.filter((e) => entityIds?.includes(Number(e.id)));
     },
     [entities]
   );

@@ -1,7 +1,7 @@
 {
   "name": "pathkit",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -23,6 +23,7 @@
     "@testing-library/react": "^14.0.0",
     "classnames": "^2.3.2",
     "eslint-config-airbnb": "^19.0.4",
+    "formik": "^2.2.9",
     "instantsearch.css": "^8.0.0",
     "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
@@ -31,6 +32,7 @@
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-instantsearch-dom": "^6.39.1",
     "react-router-dom": "^6.11.0",
     "react-unity-webgl": "^9.4.0",

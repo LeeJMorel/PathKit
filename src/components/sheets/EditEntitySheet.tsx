@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import AddEntityForm from "../forms/AddEntityForm";
 import { useEntities } from "../../hooks";
@@ -10,42 +10,30 @@ import { defaultEntity } from "../../consts";
 function EditEntitySheet() {
   const { entityId } = useParams();
   const [searchParams] = useSearchParams();
-  const searchType = searchParams.get("type");
   const navigate = useNavigate();
   const { updateOrAddEntity, getEntityById } = useEntities();
+  const type = (searchParams.get("type") as EntityType) || EntityType.none;
 
-  const [entityData, setEntityData] = useState<PartialEntity>(
-    getEntityById(entityId) || defaultEntity
-  );
+  const [entityData, setEntityData] = useState<PartialEntity>({
+    ...defaultEntity,
+    type,
+  });
+
+  // TODO popup confirm if unsaved changes.
+  // const [confirmCancel, setConfirmCancel] = useState(false);
 
   useEffect(() => {
-    const initSheet = async () => {
-      const e = await getEntityById(entityId);
-      // Create entity and redirect to this form with the right ID
-      if (entityId === "new") {
-        // const newEntity = await updateOrAddEntity({
-        //   type: (searchType as EntityType) || undefined,
-        // });
-        // navigate(
-        //   `/entity/${newEntity?.id}/edit${
-        //     searchType ? "?type=" + searchType : ""
-        //   }`,
-        //   {
-        //     replace: true,
-        //   }
-        // );
-      } else if (e) {
-        setEntityData(e);
+    (async () => {
+      const matchEntity = await getEntityById(Number(entityId));
+      if (matchEntity) {
+        setEntityData(matchEntity);
       }
-    };
-    initSheet();
-  }, [entityId]);
+    })();
+  }, [entityId, type]);
 
   const handleCancelClick = () => {
     navigate(-1);
   };
-
-  const type = entityData?.type || searchType || "Entity";
 
   return (
     <div className={styles.sheetsContainer}>
@@ -55,16 +43,15 @@ function EditEntitySheet() {
         </div>
       )}
       <div className={styles.header}>
-        <h2>Edit {type}</h2>
+        <h2>Edit {entityData.type}</h2>
         <Button onClick={handleCancelClick} icon="arrow-left" variant="text" />
       </div>
       <hr />
       <AddEntityForm
         entityData={entityData as IEntity}
-        type={entityData?.type}
         onAddEntity={(entity) => {
           updateOrAddEntity(entity);
-          navigate(-1);
+          navigate("/");
         }}
       />
     </div>

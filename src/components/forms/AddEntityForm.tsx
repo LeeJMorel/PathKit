@@ -1,157 +1,122 @@
-import { useEffect, useState, useMemo } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
-import monster from "../../assets/monster.png";
-import player from "../../assets/knight.png";
-import defaultImage from "../../assets/fighter.png";
-import store from "../../assets/store.png";
+import { useEffect, useState, useCallback } from "react";
 import styles from "./Form.module.scss";
 import { EntityType, PartialEntity } from "../../api/model";
 import { useEntities } from "../../hooks";
 import { defaultEntity } from "../../consts";
 import { Button } from "../buttons";
 import classNames from "classnames";
+import { Formik, Form, Field } from "formik";
+import Tabs from "../tabs/tab";
+import {
+  General,
+  Equipment,
+  Actions,
+  Attacks,
+  Spells,
+  Features,
+} from "./entityFormChildren";
 
 export interface IEntityFormProps {
-  type?: EntityType;
-  entityData?: PartialEntity;
+  entityData: PartialEntity;
   onAddEntity: (entity: PartialEntity) => void;
   onClose?: () => void;
 }
 
+export interface IEntityFormChildrenProps {
+  entity: PartialEntity;
+  count?: number;
+  onImageUpload?: (result: FileReader["result"]) => void;
+}
+
 const AddEntityForm: React.FC<IEntityFormProps> = ({
-  type: typeProp = EntityType.none,
-  entityData: entityDataProp,
+  entityData,
   onAddEntity,
   onClose,
 }) => {
-  const { entityId } = useParams();
-  const [searchParams] = useSearchParams();
-  const { updateOrAddEntity, getEntityById } = useEntities();
-  const type = searchParams.get("type") || typeProp;
-  const entityData = useMemo(
-    () => entityDataProp || getEntityById(entityId),
-    [entityId, entityDataProp]
-  );
-  const [entity, setEntity] = useState<PartialEntity>(defaultEntity);
+  // const { updateOrAddEntity, getEntityById } = useEntities();
+  const [entity, setEntity] = useState<PartialEntity>(entityData);
 
   useEffect(() => {
-    setEntity((prev) => ({
-      ...prev,
-      ...entityData,
-    }));
+    setEntity(entityData);
   }, [entityData]);
 
-  const handleClose = () => {
-    onClose?.();
-  };
-
   const handleAddEntity = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const newEntity = await updateOrAddEntity(entity);
-    if (newEntity) {
-      onAddEntity(newEntity);
-    }
+    onAddEntity(entity);
   };
 
-  const handleInputChange = (
-    e:
-      | React.ChangeEvent<HTMLSelectElement>
-      | React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, value } = e.target;
+  const handleInputChange = (name: string, value: any) => {
+    console.log("handleInputChange", { name, value });
 
-    setEntity({
-      ...entity,
+    setEntity((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
-  // const handleHPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { value } = e.target;
-  //   setEntity({
-  //     ...entity,
-  //     hp: [Number(value), Number(value)],
-  //   });
-  // };
+  const handleFileUpload = (name: string, result: FileReader["result"]) => {
+    console.log("debug: handlefileupload", { name, result });
+    setEntity((prev) => ({
+      ...prev,
+      [name]: result,
+    }));
+  };
 
-  // let statsField;
-  // let hpField;
+  console.log("addentityform", { entity, entityData });
 
-  if (entity.type === "Monster" || entity.type === "Player") {
-    // statsField = (
-    //   <>
-    //     <div className={styles.formRow}>
-    //       <label htmlFor="stats" className={styles.formLabel}>
-    //         Stats:
-    //       </label>
-    //       <input
-    //         type="text"
-    //         name="stats"
-    //         value={entity.stats?.toString()}
-    //         onChange={handleInputChange}
-    //         className={styles.formInput}
-    //       />
-    //     </div>
-    //   </>
-    // );
-    //   hpField = (
-    //     <>
-    //       <div className={styles.formRow}>
-    //         <label htmlFor="hp" className={styles.formLabel}>
-    //           HP:
-    //         </label>
-    //         <input
-    //           type="text"
-    //           name="hp"
-    //           min={0}
-    //           value={entity.hp ? entity.hp[1] : ""}
-    //           onChange={handleHPChange}
-    //           className={styles.formInput}
-    //         />
-    //       </div>
-    //     </>
-    //   );
-  }
+  const tabs = [
+    {
+      id: "general",
+      title: "General",
+      content: (
+        //onImageUpload={handleFileUpload}
+        <General entity={entity} />
+      ),
+    },
+    {
+      id: "equipment",
+      title: "Equipment",
+      content: <Equipment entity={entity} />,
+    },
+    {
+      id: "Actions",
+      title: "Actions & Effects",
+      content: <Actions entity={entity} />,
+    },
+    {
+      id: "Attacks",
+      title: "Attacks",
+      content: <Attacks entity={entity} />,
+    },
+    {
+      id: "Spells",
+      title: "Spells",
+      content: <Spells entity={entity} />,
+    },
+    {
+      id: "Features",
+      title: "Features",
+      content: <Features entity={entity} />,
+    },
+  ];
 
   return (
-    <form className={styles.formContainer} onSubmit={handleAddEntity}>
-      <div className={styles.formRow}>
-        <label htmlFor="image" className={styles.formLabel}>
-          Image:
-        </label>
-        <select
-          name="image"
-          onChange={handleInputChange}
-          className={styles.formSelect}
-          value={entity.image}
-        >
-          <option value={defaultImage}>Fighter</option>
-          <option value={monster}>Monster</option>
-          <option value={player}>Player</option>
-          <option value={store}>Store</option>
-        </select>
-      </div>
-      <div className={styles.formRow}>
-        <label htmlFor="name" className={styles.formLabel}>
-          Name:
-        </label>
-        <input
-          type="text"
-          name="name"
-          value={entity.name}
-          onChange={handleInputChange}
-          className={styles.formInput}
-        />
-      </div>
-      {/* {statsField}
-      {hpField} */}
-      <div className={classNames(styles.formRow, styles.actionRow)}>
-        <Button type="submit" variant="primary">
-          Save {entity.type}
-        </Button>
-        {onClose && <Button onClick={handleClose}>Cancel</Button>}
-      </div>
-    </form>
+    <Formik
+      initialValues={entity}
+      onSubmit={(values) => {
+        // same shape as initial values
+        //handleAddEntity
+        console.log(values);
+      }}
+    >
+      <Form className={styles.formContainer}>
+        <Tabs tabs={tabs} />
+        <div className={classNames(styles.formRow, styles.actionRow)}>
+          <Button type="submit" variant="primary">
+            Save {entity.type}
+          </Button>
+        </div>
+      </Form>
+    </Formik>
   );
 };
 

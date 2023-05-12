@@ -1,6 +1,6 @@
 [package]
 name = "pathkit"
-version = "0.1.0"
+version = "0.0.2"
 description = "PathKit is a virtual GM (Game Master) screen for the tabletop role-playing game Pathfinder 2e. It provides a set of tools and features to assist GMs in running their game sessions smoothly and efficiently."
 authors = ["you"]
 license = ""
@@ -16,13 +16,14 @@ tauri-build = { version = "1.2.1", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.2.4", features = [] }
+tauri = { version = "1.2.4", features = ["api-all"] }
 meilisearch-sdk = "0.23.1"
   # futures: because we want to block on futures
   # futures = "0.3"
 sqlx = { version = "0.5.9", features = [ "runtime-async-std-native-tls", "sqlite" ] }
 async-std = { version = "1.6", features = [ "attributes" ] }
 futures = "0.3.18"
+flate2 = "1.0.23"
 
 [dependencies.tauri-plugin-sql]
 git = "https://github.com/tauri-apps/plugins-workspace"

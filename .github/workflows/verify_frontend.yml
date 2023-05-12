@@ -4,7 +4,7 @@ on:
     - 'src/**'
     - 'tests/**'
     branches:
-    - main
+      - main
 
 jobs:
   test_frontend:
@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
-    
+
     steps:
     - uses: actions/checkout@v3
     - name: install node
@@ -24,7 +24,6 @@ jobs:
     
     - name: npm install, build and test
       run: |
-        cd PathKit
         npm install
         npm run build
         npm run tauri build
