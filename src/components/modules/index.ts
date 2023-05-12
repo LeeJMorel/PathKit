@@ -1,4 +1,5 @@
 import DCModule from "./DCModule";
+import IncomeModule from "./IncomeModule";
 import DiceModule from "./DiceModule";
 import NotesModule from "./NotesModule";
 import BinderModule from "./BinderModule";
@@ -7,6 +8,7 @@ import TipModule from "./TipModule";
 export enum Module {
   TipModule = "TipModule",
   DCModule = "DCModule",
+  IncomeModule = "IncomeModule",
   DiceModule = "DiceModule",
   NotesModule = "NotesModule",
   BinderModule = "BinderModule",
@@ -45,6 +47,11 @@ const Modules: Record<Module, IModule> = {
     label: "DC Adjustments Table",
     ModuleComponent: DCModule,
   },
+  IncomeModule: {
+    id: Module.IncomeModule,
+    label: "Income Earned Table",
+    ModuleComponent: IncomeModule,
+  },
 };
 
-export { TipModule, DCModule, DiceModule, NotesModule, BinderModule, Modules };
+export { TipModule, DCModule, IncomeModule, DiceModule, NotesModule, BinderModule, Modules };
