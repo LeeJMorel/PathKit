@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./Form.module.scss";
 import { useEntities, usePaths, usePreferencesStore } from "../../hooks";
 import { IPath } from "src/api/model";
+import { Button } from "../buttons";
 
 export interface InitiativeMenuProps {
   onClose: () => void;
@@ -89,9 +90,9 @@ const InitiativeForm = ({ onClose }: InitiativeMenuProps) => {
     <form onSubmit={handleSubmit} className={styles.formContainer}>
       {formFields}
       <br />
-      <button type="submit" className={styles.formButton}>
+      <Button type="submit" className={styles.formButton}>
         Start Encounter
-      </button>
+      </Button>
     </form>
   );
 };
