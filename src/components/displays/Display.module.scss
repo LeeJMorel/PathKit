@@ -1,0 +1,182 @@
+.displayContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
+  align-items: flex-start;
+  flex: 1;
+
+  .labelContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.25em;
+
+    .label {
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 0.25em 0;
+    }
+  }
+
+  .inputContainer {
+    flex: 1;
+    width: 100%;
+    position: relative;
+    max-height: 100px;
+
+    .textInput {
+      padding: 0.25em 0.4em;
+      width: 100%;
+      min-width: 100px;
+      font-size: 1em;
+      overflow: auto;
+
+      &.hasError {
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+      }
+    }
+
+    .error {
+      background: var(--errorBackground);
+      color: var(--errorText);
+      font-size: 0.75em;
+      padding: 0 0.2em;
+      position: absolute;
+      width: 100%;
+      z-index: 999;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+  }
+
+  &.inline {
+    flex-direction: row;
+
+    .labelContainer {
+      justify-content: flex-start;
+      margin-right: 0.5em;
+      margin-bottom: 0;
+    }
+  }
+
+  &.above {
+    .labelContainer {
+      width: 100%;
+    }
+  }
+
+  &.above.start {
+    .labelContainer {
+      justify-content: flex-start;
+    }
+    .textInput {
+      text-align: left;
+    }
+  }
+
+  &.above.center {
+    .labelContainer {
+      justify-content: center;
+      width: 100%;
+    }
+    .inputContainer {
+      display: flex;
+      justify-content: center;
+    }
+    .textInput {
+      text-align: center;
+    }
+  }
+
+  &.above.end {
+    .labelContainer {
+      justify-content: flex-end;
+    }
+    .textInput {
+      text-align: right;
+    }
+  }
+
+  &.small {
+    width: auto;
+    .textInput {
+      width: 3.5em;
+      min-width: 3.5em;
+    }
+  }
+
+  + .displayContainer {
+    margin-left: 1em;
+  }
+}
+
+.entityStats {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Add this property to center stats horizontally */
+  margin-top: auto; /* Add this property to push stats to the bottom */
+
+  color: var(--secondaryText);
+
+  .entityStat {
+    width: 2em;
+    height: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0.2em;
+  }
+
+  .labelContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.25em;
+
+    .label {
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 0.25em 0;
+      color: var(--bodyText);
+    }
+  }
+
+  &.above {
+    .labelContainer {
+      width: 100%;
+    }
+  }
+
+  &.above.start {
+    .labelContainer {
+      justify-content: flex-start;
+    }
+    .textInput {
+      text-align: left;
+    }
+  }
+
+  &.above.center {
+    .labelContainer {
+      justify-content: center;
+      width: 100%;
+    }
+    .inputContainer {
+      display: flex;
+      justify-content: center;
+    }
+    .textInput {
+      text-align: center;
+    }
+  }
+
+  &.above.end {
+    .labelContainer {
+      justify-content: flex-end;
+    }
+    .textInput {
+      text-align: right;
+    }
+  }
+}

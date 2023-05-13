@@ -9,6 +9,7 @@ import StatObject from "../objects/StatObject";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
 import ConditionsDropdown from "../dropdowns/ConditionsDropdown";
 import { getProficiencyModifier } from "../../utilities";
+import { StatsDisplay } from "../displays/StatsDisplay";
 
 interface EntityCardProps extends React.HTMLProps<HTMLDivElement> {
   entity: IEntity;
@@ -84,46 +85,8 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
                   {entity.hp[0]}/{entity.hp[1]}
                 </div> */}
             </div>
-            <div className={styles.entityStats}>
-              {Object.entries(cardStats).map(([statKey, stat]) => {
-                let icon: IconName;
-                switch (statKey) {
-                  case "ac":
-                    icon = "shield";
-                    break;
-                  case "dc":
-                    icon = "star";
-                    break;
-                  default:
-                    icon = "circle";
-                }
-                let label;
-                switch (statKey) {
-                  case "will":
-                    label = "w";
-                    break;
-                  case "reflex":
-                    label = "r";
-                    break;
-                  case "fortitude":
-                    label = "f";
-                    break;
-                  default:
-                    break;
-                }
-                return (
-                  <div
-                    key={statKey}
-                    className={styles.entityStat}
-                    title={`${statKey}: ${stat}`}
-                  >
-                    <StatObject icon={icon} number={stat || 0} label={label} />
-                  </div>
-                );
-              })}
-            </div>
+            <StatsDisplay entity={entity} />
           </>
-          {/* )} */}
         </div>
       </div>
 
