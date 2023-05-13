@@ -27,6 +27,7 @@ export const defaultPreferences: IPreferences = {
   visibleModules: {
     TipModule: true,
     DCModule: false,
+    IncomeModule: false,
     DiceModule: true,
     NotesModule: false,
     BinderModule: true,
