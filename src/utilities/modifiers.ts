@@ -1,5 +1,5 @@
-import { skillsMetadata } from "../consts/buildProperties";
-import { Ability, PartialEntity, Skill } from "../api/model";
+import { proficiencyMetadata } from "../consts/buildProperties";
+import { Ability, PartialEntity, Proficiency, Skill } from "../api/model";
 
 export const getAbilityModifier = (score?: number): number => {
   if (score === undefined) return 0;
@@ -7,18 +7,23 @@ export const getAbilityModifier = (score?: number): number => {
   return Math.floor(offset / 2);
 };
 
-export const getSkillModifier = (
+export const getProficiencyModifier = (
   entity: PartialEntity,
-  skill: Skill
+  prof: Proficiency
 ): number => {
   if (!entity.build?.proficiencies) return 0;
 
   const { level, proficiencies, abilities } = entity.build;
-  const proficiency = proficiencies[skill];
+  const proficiency = proficiencies[prof];
 
-  if (!proficiency || !abilities) return 0;
+  let ability = proficiencyMetadata[prof].ability;
+  if (ability === "keyability") {
+    ability = entity.build.keyability as Ability;
+  }
+  const abilityMod = getAbilityModifier(abilities[ability as Ability]);
 
-  const ability = skillsMetadata[skill].ability;
-  const abilityMod = getAbilityModifier(abilities[ability]);
-  return level + abilityMod + proficiency;
+  if (!proficiency || Number(proficiency) === 0) {
+    return Number(abilityMod);
+  }
+  return Number(level) + Number(abilityMod) + Number(proficiency);
 };

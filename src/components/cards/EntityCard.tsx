@@ -3,23 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import styles from "./Card.module.scss";
-import { IEntity } from "../../api/model";
+import { IEntity, Proficiency } from "../../api/model";
 import { usePreferencesStore, useBoolean } from "../../hooks";
 import StatObject from "../objects/StatObject";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
 import ConditionsDropdown from "../dropdowns/ConditionsDropdown";
+import { getProficiencyModifier } from "../../utilities";
 
 interface EntityCardProps extends React.HTMLProps<HTMLDivElement> {
   entity: IEntity;
 }
-
-const exampleStats = {
-  ac: 18,
-  will: 13,
-  reflex: 10,
-  fortitude: 12,
-  dc: 12,
-};
 
 function EntityCard({ entity, className, ...rest }: EntityCardProps) {
   const { value: showConditionsMenu, toggle: toggleConditionsMenu } =
@@ -31,6 +24,14 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
     toggleConditionsMenu();
   };
 
+  const cardStats = {
+    ac: entity.build.acTotal.acTotal,
+    fortitude: getProficiencyModifier(entity, Proficiency.fortitude),
+    will: getProficiencyModifier(entity, Proficiency.will),
+    reflex: getProficiencyModifier(entity, Proficiency.reflex),
+    dc: getProficiencyModifier(entity, Proficiency.classDC),
+  };
+
   const handleEntityClick = (id: number) => {
     const selectedSearch = null;
     setPreferences({
@@ -40,8 +41,6 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
   };
   // const isHPZero = entity.hp && entity.hp[0] === 0;
   // const stats = entity.stats || {};
-
-  const statKeys = Object.keys(exampleStats);
 
   return (
     <div className={classNames(styles.card, className)} {...rest}>
@@ -86,7 +85,7 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
                 </div> */}
             </div>
             <div className={styles.entityStats}>
-              {Object.entries(exampleStats).map(([statKey, stat]) => {
+              {Object.entries(cardStats).map(([statKey, stat]) => {
                 let icon: IconName;
                 switch (statKey) {
                   case "ac":
@@ -118,7 +117,7 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
                     className={styles.entityStat}
                     title={`${statKey}: ${stat}`}
                   >
-                    <StatObject icon={icon} number={stat} label={label} />
+                    <StatObject icon={icon} number={stat || 0} label={label} />
                   </div>
                 );
               })}

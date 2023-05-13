@@ -8,14 +8,21 @@
   .imageContainer {
     display: flex;
     justify-content: center;
-    padding-right: 1em;
-    padding-left: 1em;
-    padding-bottom: 1em;
+    max-height: 250px;
+    position: relative;
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    .import {
+      position: absolute;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.6);
+      width: 100%;
+      padding: 1em;
     }
   }
 

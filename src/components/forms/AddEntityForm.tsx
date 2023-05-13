@@ -1,11 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 import styles from "./Form.module.scss";
-import { EntityType, PartialEntity } from "../../api/model";
-import { useEntities } from "../../hooks";
-import { defaultEntity } from "../../consts";
+import { PartialEntity } from "../../api/model";
 import { Button } from "../buttons";
 import classNames from "classnames";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, FormikProps } from "formik";
 import Tabs from "../tabs/tab";
 import {
   General,
@@ -15,6 +13,7 @@ import {
   Spells,
   Features,
 } from "./entityFormChildren";
+import entityFormSchema from "../../consts/entityFormSchema";
 
 export interface IEntityFormProps {
   entityData: PartialEntity;
@@ -26,32 +25,18 @@ export interface IEntityFormChildrenProps {
   entity: PartialEntity;
   count?: number;
   onImageUpload?: (result: FileReader["result"]) => void;
+  formProps: FormikProps<PartialEntity>;
 }
 
 const AddEntityForm: React.FC<IEntityFormProps> = ({
   entityData,
   onAddEntity,
-  onClose,
 }) => {
-  // const { updateOrAddEntity, getEntityById } = useEntities();
   const [entity, setEntity] = useState<PartialEntity>(entityData);
 
   useEffect(() => {
     setEntity(entityData);
   }, [entityData]);
-
-  const handleAddEntity = async (e: React.FormEvent) => {
-    onAddEntity(entity);
-  };
-
-  const handleInputChange = (name: string, value: any) => {
-    console.log("handleInputChange", { name, value });
-
-    setEntity((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
   const handleFileUpload = (name: string, result: FileReader["result"]) => {
     console.log("debug: handlefileupload", { name, result });
@@ -61,41 +46,39 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
     }));
   };
 
-  console.log("addentityform", { entity, entityData });
-
-  const tabs = [
+  const tabs = (formProps: FormikProps<PartialEntity>) => [
     {
       id: "general",
       title: "General",
       content: (
         //onImageUpload={handleFileUpload}
-        <General entity={entity} />
+        <General entity={entity} formProps={formProps} />
       ),
     },
     {
       id: "equipment",
       title: "Equipment",
-      content: <Equipment entity={entity} />,
+      content: <Equipment entity={entity} formProps={formProps} />,
     },
     {
       id: "Actions",
       title: "Actions & Effects",
-      content: <Actions entity={entity} />,
+      content: <Actions entity={entity} formProps={formProps} />,
     },
     {
       id: "Attacks",
       title: "Attacks",
-      content: <Attacks entity={entity} />,
+      content: <Attacks entity={entity} formProps={formProps} />,
     },
     {
       id: "Spells",
       title: "Spells",
-      content: <Spells entity={entity} />,
+      content: <Spells entity={entity} formProps={formProps} />,
     },
     {
       id: "Features",
       title: "Features",
-      content: <Features entity={entity} />,
+      content: <Features entity={entity} formProps={formProps} />,
     },
   ];
 
@@ -105,17 +88,26 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
       onSubmit={(values) => {
         // same shape as initial values
         //handleAddEntity
-        console.log(values);
+        onAddEntity(values);
       }}
+      validationSchema={entityFormSchema}
     >
-      <Form className={styles.formContainer}>
-        <Tabs tabs={tabs} />
-        <div className={classNames(styles.formRow, styles.actionRow)}>
-          <Button type="submit" variant="primary">
-            Save {entity.type}
-          </Button>
-        </div>
-      </Form>
+      {(props) => {
+        return (
+          <Form className={styles.formContainer}>
+            <Tabs tabs={tabs(props)} className={styles.formTabs} />
+            {props.errors.name && <div>{props.errors.name}</div>}
+            <div className={classNames(styles.formRow, styles.actionRow)}>
+              <Button type="submit" variant="primary">
+                Save {entity.type}
+              </Button>
+            </div>
+            {/* <div>
+              <pre>{JSON.stringify(props, null, 2)}</pre>
+            </div> */}
+          </Form>
+        );
+      }}
     </Formik>
   );
 };

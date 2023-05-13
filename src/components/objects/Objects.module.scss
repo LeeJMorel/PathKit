@@ -270,3 +270,19 @@
     transform: translate(-50%, 50%);
   }
 }
+
+.importObject {
+  .inlineForm {
+    display: flex;
+    align-items: center;
+    padding: 1em;
+
+    .importField {
+      margin-bottom: 0;
+    }
+
+    .submitButton {
+      margin-left: 1em;
+    }
+  }
+}

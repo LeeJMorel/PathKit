@@ -10,13 +10,12 @@ interface Tab {
   content: JSX.Element;
 }
 
-interface TabsProps {
+interface TabsProps extends React.HTMLProps<HTMLDivElement> {
   tabs: Tab[];
   onClose?: () => void;
-  className?: string;
 }
 
-const Tabs: React.FC<TabsProps> = ({ tabs, onClose, className }) => {
+const Tabs: React.FC<TabsProps> = ({ tabs, onClose, className, ...rest }) => {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
 
   const handleClose = () => {
@@ -26,7 +25,7 @@ const Tabs: React.FC<TabsProps> = ({ tabs, onClose, className }) => {
   };
 
   return (
-    <div className={classNames(styles.tabContainer, className)}>
+    <div className={classNames(styles.tabContainer, className)} {...rest}>
       <div className={styles.tabRow}>
         {tabs.map((tab) => (
           <div

@@ -66,7 +66,6 @@ function EditPathSheet() {
   // We want to add or edit an entity
   const handleAddEntity = useCallback(
     (selectedEntityType: EntityType) => {
-      console.log({ path, pathId, what: getPathById(pathId) });
       navigate(`/path/${path.id}/entity/new?type=${selectedEntityType}`);
     },
     [path]

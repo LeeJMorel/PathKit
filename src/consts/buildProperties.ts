@@ -1,90 +1,188 @@
-import { Ability, AbilityLong, Proficiency, Skill } from "../api/model";
+import { Ability, AbilityLong, Proficiency, EntityType } from "../api/model";
 
 interface AbilityOption {
-  key: Ability;
+  value: Ability;
   label: AbilityLong;
 }
 
-export const abilityOptions: AbilityOption[] = [
-  { key: Ability.str, label: AbilityLong.str },
-  { key: Ability.dex, label: AbilityLong.dex },
-  { key: Ability.con, label: AbilityLong.con },
-  { key: Ability.int, label: AbilityLong.int },
-  { key: Ability.wis, label: AbilityLong.wis },
-  { key: Ability.cha, label: AbilityLong.cha },
+export const abilities = [
+  Ability.cha,
+  Ability.con,
+  Ability.dex,
+  Ability.int,
+  Ability.str,
+  Ability.wis,
 ];
 
-interface ISkill {
-  skill: Skill;
-  ability: Ability;
+export const abilityOptions: AbilityOption[] = [
+  { value: Ability.str, label: AbilityLong.str },
+  { value: Ability.dex, label: AbilityLong.dex },
+  { value: Ability.con, label: AbilityLong.con },
+  { value: Ability.int, label: AbilityLong.int },
+  { value: Ability.wis, label: AbilityLong.wis },
+  { value: Ability.cha, label: AbilityLong.cha },
+];
+
+interface IProficiency {
+  prof: Proficiency;
+  ability: Ability | "keyability";
 }
 
-export const skillsMetadata: Record<Skill, ISkill> = {
+export const proficiencyMetadata: Record<Proficiency, IProficiency> = {
   acrobatics: {
-    skill: Skill.acrobatics,
+    prof: Proficiency.acrobatics,
     ability: Ability.dex,
   },
   arcana: {
-    skill: Skill.arcana,
+    prof: Proficiency.arcana,
     ability: Ability.int,
   },
   athletics: {
-    skill: Skill.athletics,
+    prof: Proficiency.athletics,
     ability: Ability.str,
   },
   crafting: {
-    skill: Skill.crafting,
+    prof: Proficiency.crafting,
     ability: Ability.int,
   },
   deception: {
-    skill: Skill.deception,
+    prof: Proficiency.deception,
     ability: Ability.cha,
   },
   diplomacy: {
-    skill: Skill.diplomacy,
+    prof: Proficiency.diplomacy,
     ability: Ability.cha,
   },
   intimidation: {
-    skill: Skill.intimidation,
+    prof: Proficiency.intimidation,
     ability: Ability.cha,
   },
   medicine: {
-    skill: Skill.medicine,
+    prof: Proficiency.medicine,
     ability: Ability.wis,
   },
   nature: {
-    skill: Skill.nature,
+    prof: Proficiency.nature,
     ability: Ability.wis,
   },
   occultism: {
-    skill: Skill.occultism,
+    prof: Proficiency.occultism,
     ability: Ability.int,
   },
   performance: {
-    skill: Skill.performance,
+    prof: Proficiency.performance,
     ability: Ability.cha,
   },
   religion: {
-    skill: Skill.religion,
+    prof: Proficiency.religion,
     ability: Ability.wis,
   },
   society: {
-    skill: Skill.society,
+    prof: Proficiency.society,
     ability: Ability.int,
   },
   stealth: {
-    skill: Skill.stealth,
+    prof: Proficiency.stealth,
     ability: Ability.dex,
   },
   survival: {
-    skill: Skill.survival,
+    prof: Proficiency.survival,
     ability: Ability.wis,
   },
   thievery: {
-    skill: Skill.thievery,
+    prof: Proficiency.thievery,
     ability: Ability.dex,
   },
+  classDC: {
+    prof: Proficiency.classDC,
+    ability: "keyability",
+  },
+  perception: {
+    prof: Proficiency.perception,
+    ability: Ability.wis,
+  },
+  fortitude: {
+    prof: Proficiency.fortitude,
+    ability: Ability.con,
+  },
+  reflex: {
+    prof: Proficiency.reflex,
+    ability: Ability.dex,
+  },
+  will: {
+    prof: Proficiency.will,
+    ability: Ability.wis,
+  },
+
+  // TODO Clarify if these are all keyability proficiencies
+  heavy: {
+    prof: Proficiency.heavy,
+    ability: "keyability",
+  },
+  medium: {
+    prof: Proficiency.medium,
+    ability: "keyability",
+  },
+  light: {
+    prof: Proficiency.light,
+    ability: "keyability",
+  },
+  unarmored: {
+    prof: Proficiency.unarmored,
+    ability: "keyability",
+  },
+  advanced: {
+    prof: Proficiency.advanced,
+    ability: "keyability",
+  },
+  martial: {
+    prof: Proficiency.martial,
+    ability: "keyability",
+  },
+  simple: {
+    prof: Proficiency.simple,
+    ability: "keyability",
+  },
+  unarmed: {
+    prof: Proficiency.unarmed,
+    ability: "keyability",
+  },
+  castingArcane: {
+    prof: Proficiency.castingArcane,
+    ability: "keyability",
+  },
+  castingDivine: {
+    prof: Proficiency.castingDivine,
+    ability: "keyability",
+  },
+  castingOccult: {
+    prof: Proficiency.castingOccult,
+    ability: "keyability",
+  },
+  castingPrimal: {
+    prof: Proficiency.castingPrimal,
+    ability: "keyability",
+  },
 };
+
+export const skills: Proficiency[] = [
+  Proficiency.acrobatics,
+  Proficiency.arcana,
+  Proficiency.athletics,
+  Proficiency.crafting,
+  Proficiency.deception,
+  Proficiency.diplomacy,
+  Proficiency.intimidation,
+  Proficiency.medicine,
+  Proficiency.nature,
+  Proficiency.occultism,
+  Proficiency.performance,
+  Proficiency.religion,
+  Proficiency.society,
+  Proficiency.stealth,
+  Proficiency.survival,
+  Proficiency.thievery,
+];
 
 export const proficiencies: Proficiency[] = [
   Proficiency.classDC,
@@ -123,9 +221,25 @@ export const proficiencies: Proficiency[] = [
 ];
 
 export const profLevelOptions = [
-  { key: 0, label: "Untrained" },
-  { key: 2, label: "Trained" },
-  { key: 4, label: "Expert" },
-  { key: 6, label: "Master" },
-  { key: 8, label: "Legendary" },
+  { value: 0, label: "+0 Untrained" },
+  { value: 2, label: "+2 Trained" },
+  { value: 4, label: "+4 Expert" },
+  { value: 6, label: "+6 Master" },
+  { value: 8, label: "+8 Legendary" },
+];
+
+export const sizeOptions = [
+  { value: 0, label: "Tiny" },
+  { value: 1, label: "Small" },
+  { value: 2, label: "Medium" },
+  { value: 3, label: "Large" },
+  { value: 4, label: "Huge" },
+  { value: 5, label: "Gargantuan" },
+];
+
+export const entityTypes: EntityType[] = [
+  EntityType.Monster,
+  EntityType.NPC,
+  EntityType.Player,
+  EntityType.Shop,
 ];

@@ -11,15 +11,16 @@ export interface PartialEntity {
   name: string;
   type: EntityType;
   initiative: number;
-  noteId?: number;
+  noteId?: number | null;
   build: IEntityBuild;
   damage: number;
   tempHp: number;
   /** Should not use on player entities, this should be calculated instead */
-  maxHp?: number;
+  maxHp?: number | null;
   conditions: ICondition[];
   id?: number;
   campaignId?: number;
+  pathbuilderId?: string | null;
 }
 
 export interface IEntity extends PartialEntity {
@@ -50,26 +51,29 @@ export interface IEntityBuild {
   age?: string;
   deity?: string;
   size?: number;
-  keyability?: string;
-  languages?: string[];
+  keyability?: Ability;
+  languages: string[];
   attributes: IAttributes;
-  abilities?: TAbilities;
-  proficiencies?: {
+  abilities: TAbilities;
+  proficiencies: {
     [key: string]: number;
   };
-  feats?: Feat[][];
-  specials?: string[];
-  lores?: (number | string)[][];
-  equipment?: (number | string)[][];
-  specificProficiencies?: ISpecificProficiencies;
-  weapons?: IArmor[];
-  money?: IMoney;
-  armor?: IArmor[];
-  focus?: IFocus;
-  spellCasters?: ISpellCaster[];
-  formula?: any[];
-  pets?: IEntity[];
-  acTotal?: IACTotal;
+  feats: Feat[];
+  specials: string[];
+  lores: Lore[];
+  equipment: Equipment[];
+  specificProficiencies: ISpecificProficiencies;
+  weapons: IEquipable[];
+  money: IMoney;
+  armor: IEquipable[];
+  focus: IFocus;
+  spellCasters: ISpellCaster[];
+  formula: any[];
+  pets: string[];
+  acTotal: IACTotal;
+  traits: string[];
+  resistances: string[];
+  immunities: string[];
 }
 
 export enum Ability {
@@ -102,13 +106,13 @@ export interface IACTotal {
   shieldBonus?: string;
 }
 
-export interface IArmor {
+export interface IEquipable {
   name?: string;
   qty?: number;
   prof?: string;
   pot?: number;
   res?: number | string;
-  mat?: null;
+  mat?: string | null;
   display?: string;
   worn?: boolean;
   runes?: any[];
@@ -123,9 +127,17 @@ export interface IAttributes {
   bonushpPerLevel?: number;
   speed?: number;
   speedBonus?: number;
+  fly?: number;
+  burrow?: number;
+  climb?: number;
+  swim?: number;
 }
 
-export type Feat = number | null | string;
+export type Feat = [string, string | null, string, number];
+
+export type Lore = [name: string, proficiency: number];
+
+export type Equipment = [name: string, quantity: number];
 
 export interface IFocus {
   focusPoints?: number;

@@ -1,172 +1,280 @@
 import { Field } from "formik";
-import { PartialEntity } from "src/api/model";
+import { Proficiency } from "../../../api/model";
 import styles from "../Form.module.scss";
+import FormField from "../../formFields/FormField";
 import { IEntityFormChildrenProps } from "../AddEntityForm";
+import { abilityOptions, profLevelOptions, sizeOptions } from "../../../consts";
+import { getAbilityModifier, getProficiencyModifier } from "../../../utilities";
 
 const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
   entity,
   onImageUpload,
+  formProps,
 }) => {
+  const { values } = formProps;
   return (
     <>
-      <label className={styles.formLabel}>Image:</label>
       <div className={styles.formRow}>
-        <Field name="image" type="file" className={styles.formInput} />
+        <FormField name="image" value={values.image} label="Image" />
       </div>
       <div className={styles.formRow}>
-        <p className={styles.formLabel}>Name:</p>
-        <Field name="name" className={styles.formInput} />
-        <p className={styles.formLabel}>Level:</p>
-        <Field name="build.level" type="number" className={styles.formSmall} />
-        <p className={styles.formLabel}>Size:</p>
-        <Field name="build.size" type="number" className={styles.formSmall} />
-      </div>
-      <div className={styles.formRow}>
-        <p className={styles.formLabel}>Traits:</p>
-        <Field name="build.level" className={styles.formInput} />
-      </div>
-      <div className={styles.formRow}>
-        <p className={styles.formLabel}>Perception:</p>
-        <Field
-          name="build.proficiency.perception"
+        <FormField name="name" value={values.name} label="Name" />
+        <FormField
+          name="build.level"
           type="number"
-          className={styles.formInput}
+          value={values.build.level}
+          label="Level"
         />
-        <p className={styles.formLabel}>Languages:</p>
+        <FormField
+          name="build.size"
+          as="select"
+          label="Size"
+          value={values.build.size}
+        >
+          {sizeOptions.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
+        </FormField>
+      </div>
+      {/* <div className={styles.formRow}>
+        <p className={styles.formLabel}>Traits:</p>
+        <Field
+          name="build.traits"
+          className={styles.formInput}
+          value={values.build.traits}
+        />
+      </div> */}
+      <div className={styles.formRow}>
+        <FormField
+          label={`Perception [${getProficiencyModifier(
+            values,
+            Proficiency.perception
+          )}]`}
+          name="build.proficiencies.perception"
+          as="select"
+          value={values.build.proficiencies.perception}
+        >
+          {profLevelOptions.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
+        </FormField>
+        <FormField
+          label="Key Ability"
+          name="build.keyability"
+          as="select"
+          value={values.build.keyability}
+        >
+          {abilityOptions.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
+        </FormField>
+        {/* <p className={styles.formLabel}>Languages:</p>
         <Field name="build.languages" className={styles.formInput} />
         <p className={styles.formLabel}>Skills:</p>
-        <Field name="build.skill" className={styles.formInput} />
+        <Field name="build.skill" className={styles.formInput} /> */}
       </div>
       <div className={styles.formRow}>
-        <p className={styles.formLabel}>STR</p>
-        <p className={styles.formLabel}>DEX</p>
-        <p className={styles.formLabel}>CON</p>
-        <p className={styles.formLabel}>INT</p>
-        <p className={styles.formLabel}>WIS</p>
-        <p className={styles.formLabel}>CHA</p>
+        <FormField
+          name="build.abilities.str"
+          value={values.build.abilities.str}
+          type="number"
+          label={`STR [${getAbilityModifier(values.build.abilities.str)}]`}
+          labelPosition="above"
+          align="center"
+          small
+        />
+        <FormField
+          name="build.abilities.dex"
+          value={values.build.abilities.dex}
+          type="number"
+          label={`DEX [${getAbilityModifier(values.build.abilities.dex)}]`}
+          labelPosition="above"
+          align="center"
+          small
+        />
+        <FormField
+          name="build.abilities.con"
+          value={values.build.abilities.con}
+          type="number"
+          label={`CON [${getAbilityModifier(values.build.abilities.con)}]`}
+          labelPosition="above"
+          align="center"
+          small
+        />
+        <FormField
+          name="build.abilities.int"
+          value={values.build.abilities.int}
+          type="number"
+          label={`INT [${getAbilityModifier(values.build.abilities.int)}]`}
+          labelPosition="above"
+          align="center"
+          small
+        />
+        <FormField
+          name="build.abilities.wis"
+          value={values.build.abilities.wis}
+          type="number"
+          label={`WIS [${getAbilityModifier(values.build.abilities.wis)}]`}
+          labelPosition="above"
+          align="center"
+          small
+        />
+        <FormField
+          name="build.abilities.cha"
+          value={values.build.abilities.cha}
+          type="number"
+          label={`CHA [${getAbilityModifier(values.build.abilities.cha)}]`}
+          labelPosition="above"
+          align="center"
+          small
+        />
       </div>
       <div className={styles.formRow}>
-        <Field
-          name="build.ability.str"
+        <FormField
+          label="AC"
+          labelPosition="above"
+          align="center"
+          name="build.acTotal.acTotal"
+          value={values.build.acTotal.acTotal}
           type="number"
-          className={styles.formSmall}
         />
-        <Field
-          name="build.ability.dex"
+        <FormField
+          label={`DC [${getProficiencyModifier(values, Proficiency.classDC)}]`}
+          labelPosition="above"
+          align="center"
+          name="build.proficiencies.classDC"
+          value={values.build.proficiencies.classDC}
+          as="select"
           type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.ability.con"
-          type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.ability.int"
-          type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.ability.wis"
-          type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.ability.cha"
-          type="number"
-          className={styles.formSmall}
-        />
+        >
+          {profLevelOptions.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
+        </FormField>
       </div>
       <div className={styles.formRow}>
-        <p className={styles.formLabel}>AC</p>
-        <p className={styles.formLabel}>Will</p>
-        <p className={styles.formLabel}>Reflex</p>
-        <p className={styles.formLabel}>Fortitude</p>
-        <p className={styles.formLabel}>DC</p>
-      </div>
-      <div className={styles.formRow}>
-        <Field
-          name="build.acTotal"
+        <FormField
+          label={`Will [${getProficiencyModifier(values, Proficiency.will)}]`}
+          labelPosition="above"
+          align="center"
+          name="build.proficiencies.will"
+          value={values.build.proficiencies.will}
+          as="select"
           type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.proficiency.will"
+        >
+          {profLevelOptions.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
+        </FormField>
+        <FormField
+          label={`Reflex [${getProficiencyModifier(
+            values,
+            Proficiency.reflex
+          )}]`}
+          labelPosition="above"
+          align="center"
+          name="build.proficiencies.reflex"
+          value={values.build.proficiencies.reflex}
+          as="select"
           type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.proficiency.reflex"
+        >
+          {profLevelOptions.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
+        </FormField>
+        <FormField
+          label={`Fortitude [${getProficiencyModifier(
+            values,
+            Proficiency.fortitude
+          )}]`}
+          labelPosition="above"
+          align="center"
+          name="build.proficiencies.fortitude"
+          value={values.build.proficiencies.fortitude}
+          as="select"
           type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.proficiency.fortitude"
-          type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.proficiency.classDC"
-          type="number"
-          className={styles.formSmall}
-        />
+        >
+          {profLevelOptions.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
+        </FormField>
       </div>
       <div className={styles.formRow}>
         {/*multiple hp's may exist in one entity is it is a group. This will be
           based on monster quantity.*/}
         <div className={styles.formGroup}>
-          <p className={styles.formLabel}>HP:</p>
+          <FormField
+            label="Max HP"
+            name="maxHp"
+            value={values.maxHp}
+            type="number"
+          />
+          {/* /
           <Field
             name="build.level"
+            value={values.build.level}
             type="number"
             className={styles.formSmall}
-          />
-          /
-          <Field
-            name="build.level"
-            type="number"
-            className={styles.formSmall}
-          />
+          /> */}
         </div>
       </div>
-      <div className={styles.formRow}>
+      {/* <div className={styles.formRow}>
         <p className={styles.formLabel}>Conditions:</p>
         <Field name="conditions" className={styles.formInput} />
         <p className={styles.formLabel}>Resistances:</p>
         <Field name="resistances" className={styles.formInput} />
         <p className={styles.formLabel}>Immunities:</p>
         <Field name="immunities" className={styles.formInput} />
-      </div>
+      </div> */}
       <div className={styles.formRow}>
-        <p className={styles.formLabel}>Speed:</p>
-        <Field
+        <FormField
+          label="Speed"
           name="build.attributes.speed"
+          value={values.build.attributes.speed}
           type="number"
-          className={styles.formInput}
+          small
         />
-        <p className={styles.formLabel}>Fly:</p>
-        <Field
+        <FormField
+          label="Fly"
           name="build.attributes.fly"
+          value={values.build.attributes.fly}
           type="number"
-          className={styles.formInput}
+          small
         />
-        <p className={styles.formLabel}>Burrow:</p>
-        <Field
+        <FormField
+          label="Burrow"
           name="build.attributes.burrow"
+          value={values.build.attributes.burrow}
           type="number"
-          className={styles.formInput}
+          small
         />
-        <p className={styles.formLabel}>Climb:</p>
-        <Field
+        <FormField
+          label="Climb"
           name="build.attributes.climb"
+          value={values.build.attributes.climb}
           type="number"
-          className={styles.formInput}
+          small
         />
-        <p className={styles.formLabel}>Swim:</p>
-        <Field
+        <FormField
+          label="Swim"
           name="build.attributes.swim"
+          value={values.build.attributes.swim}
           type="number"
-          className={styles.formInput}
+          small
         />
       </div>
     </>

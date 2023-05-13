@@ -15,12 +15,10 @@ function EntitySheet() {
   const [entity, setEntity] = useState(defaultEntity);
 
   useEffect(() => {
-    (async () => {
-      const matchEntity = await getEntityById(Number(entityId));
-      if (matchEntity) {
-        setEntity(matchEntity);
-      }
-    })();
+    const matchEntity = getEntityById(Number(entityId));
+    if (matchEntity) {
+      setEntity(matchEntity);
+    }
   }, [entityId]);
   const handleCancelClick = () => {
     navigate("/");
@@ -31,11 +29,6 @@ function EntitySheet() {
 
   return (
     <div className={styles.sheetsContainer}>
-      {entity?.image && (
-        <div className={styles.imageContainer}>
-          <img src={entity.image} alt={entity.name} />
-        </div>
-      )}
       <div className={styles.header}>
         <h2>{entity?.name}</h2>
         <div className={styles.headerButtons}>
@@ -56,28 +49,14 @@ function EntitySheet() {
           />
         </div>
       </div>
-      <hr />
-      <ul>
-        {/* {entity?.stats && (
-          <li>
-            Stats:
-            <ul>
-              {Object.entries(entity.stats).map(([key, value]) => (
-                <li key={key}>
-                  {key}: {value}
-                </li>
-              ))}
-            </ul>
-          </li>
-        )}
-        {entity?.hp && (
-          <li>
-            HP: {entity.hp[0]}/{entity.hp[1]}
-            {entity.hp[2] && ` (+${entity.hp[2]} temp HP)`}
-          </li>
-        )}
-        {entity?.equipment && <li>Equipment: {entity.equipment.join(", ")}</li>} */}
-      </ul>
+      {entity?.image && (
+        <div className={styles.imageContainer}>
+          <img src={entity.image} alt={entity.name} />
+        </div>
+      )}
+      <div>
+        <pre>{JSON.stringify(entity, null, 2)}</pre>
+      </div>
     </div>
   );
 }
