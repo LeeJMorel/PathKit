@@ -255,6 +255,28 @@ function EntitySheet() {
             ))}
           </CollapsibleHeader>
         )} */}
+        {/* {entity?.build?.feats && (
+          <CollapsibleHeader
+            title="Features"
+            toggle
+            className={styles.sheetRowContainerLeftAlign}
+          >
+            {entity.build.equipment.map((item, index) => (
+              <div className={styles.sheetRowContainerLeftAlign} key={index}>
+                <DataCellDisplay
+                  name={`Equipment ${index + 1}`}
+                  value={item.name}
+                  align="start"
+                />
+                <DataCellDisplay
+                  name={`Equipment ${index + 1}`}
+                  value={item.desc}
+                  align="start"
+                />
+              </div>
+            ))}
+          </CollapsibleHeader>
+        )} */}
         <div className={styles.sheetRowContainerLeftAlign}>
           {entity?.build?.attributes?.speed && (
             <DataCellDisplay
@@ -302,38 +324,6 @@ function EntitySheet() {
             />
           )}
         </div>
-        {/* {entity?.build?.passiveEffect && (
-          <CollapsibleHeader
-            title="Equipment"
-            toggle
-            className={styles.sheetRowContainerLeftAlign}
-          >
-            {entity.build.equipment.map((item, index) => (
-              <div className={styles.sheetRowContainerLeftAlign} key={index}>
-                <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
-                  value={item.name}
-                  align="start"
-                />
-                <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
-                  value={item.bulk}
-                  align="start"
-                />
-                <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
-                  value={item.value}
-                  align="start"
-                />
-                <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
-                  value={item.worn}
-                  align="start"
-                />
-              </div>
-            ))}
-          </CollapsibleHeader>
-        )} */}
         <FilterHeader
           title="Actions"
           toggle
@@ -355,11 +345,68 @@ function EntitySheet() {
             </div>
           }
         >
-          <KeywordDiv keywords={["Two Action", "Melee Action"]}>
-            <p>Content that matches foo or bar</p>
+          <KeywordDiv keywords={["Passive Action"]}>
+            {/* {entity.build.passiveAction.map((item, index) => (
+              <div className={styles.sheetRowContainerLeftAlign} key={index}>
+                <DataCellDisplay
+                  name={`Equipment ${index + 1}`}
+                  value={item.name}
+                  align="start"
+                />
+                <DataCellDisplay
+                  name={`Equipment ${index + 1}`}
+                  value={item.effect}
+                  align="start"
+                />
+              </div>
+            ))} */}
           </KeywordDiv>
           <KeywordDiv keywords={["Reaction"]}>
-            <p>Content that matches baz</p>
+            {/* {entity.build.reaction.map((item, index) => (
+              <div className={styles.sheetRowContainerLeftAlign} key={index}>
+                <DataCellDisplay
+                  name={`Equipment ${index + 1}`}
+                  value={item.name}
+                  align="start"
+                />
+                                <DataCellDisplay
+                  name={`Equipment ${index + 1}`}
+                  value={item.trigger}
+                  align="start"
+                />
+                <DataCellDisplay
+                  name={`Equipment ${index + 1}`}
+                  value={item.effect}
+                  align="start"
+                />
+              </div>
+            ))} */}
+          </KeywordDiv>
+          <KeywordDiv keywords={["Free Action"]}>
+            {/* {entity.build.freeAction.map((item, index) => (
+              <div className={styles.sheetRowContainerLeftAlign} key={index}>
+                <DataCellDisplay
+                  name={`Equipment ${index + 1}`}
+                  value={item.name}
+                  align="start"
+                />
+                                                <DataCellDisplay
+                  name={`Equipment ${index + 1}`}
+                  value={item.frequency}
+                  align="start"
+                />
+                                <DataCellDisplay
+                  name={`Equipment ${index + 1}`}
+                  value={item.trigger}
+                  align="start"
+                />
+                <DataCellDisplay
+                  name={`Equipment ${index + 1}`}
+                  value={item.effect}
+                  align="start"
+                />
+              </div>
+            ))} */}
           </KeywordDiv>
         </FilterHeader>
         <NotesObject />
