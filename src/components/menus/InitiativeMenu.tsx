@@ -34,7 +34,6 @@ export const InitiativeMenu = ({ onClose }: InitiativeMenuProps) => {
             <FontAwesomeIcon icon="close" />
           </div>
         </div>
-        <hr />
         <InitiativeForm onClose={handleClose} />
       </div>
     </div>

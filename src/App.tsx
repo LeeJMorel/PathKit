@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 // Import the necessary CSS and component files
@@ -38,6 +38,7 @@ export enum AppMode {
 }
 
 function App() {
+  console.log(useLocation());
   useEffect(() => {
     // Initialize database on first load
     const asyncInit = async () => await initializeDatabase();
@@ -178,7 +179,9 @@ function App() {
             <Route index element={<NotesSheet />} />
             <Route path="entity/:entityId" element={<EntitySheet />} />
             <Route path="entity/:entityId/edit" element={<EditEntitySheet />} />
-            <Route path="path/:pathId/*" element={<EditPathSheet />} />
+            <Route path="path/:pathId/*" element={<EditPathSheet />}>
+              {/* <Route path=":entityId/edit" element={<EditEntitySheet />} /> */}
+            </Route>
             <Route path="license" element={<LicenseSheet />} />
             <Route path="*" element={<NotesSheet />} />
           </Route>

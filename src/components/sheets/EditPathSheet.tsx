@@ -1,15 +1,28 @@
 import { useMemo, useState, useEffect, useCallback } from "react";
-import { useParams, useNavigate, Routes, Route } from "react-router-dom";
+import {
+  useParams,
+  useNavigate,
+  Routes,
+  Route,
+  useLocation,
+  useSearchParams,
+} from "react-router-dom";
 import uniq from "lodash.uniq";
 import AddEntityForm from "../forms/AddEntityForm";
-import { PartialPath, usePaths, useEntities } from "../../hooks";
+import { usePaths, useEntities } from "../../hooks";
 import styles from "./Sheets.module.scss";
 import { Button, ToggleButton } from "../buttons";
-import { EntityType, PathType, IEntity, PartialEntity } from "../../api/model";
+import {
+  EntityType,
+  PathType,
+  IEntity,
+  PartialEntity,
+  PartialPath,
+} from "../../api/model";
 import BinderObject, { BinderTab } from "../objects/BinderObject";
 import classNames from "classnames";
 import ConfirmMenu from "../menus/ConfirmMenu";
-import { defaultEntity } from "../../consts";
+import { defaultEntity, defaultPath } from "../../consts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const defaultPathData = {
@@ -19,38 +32,39 @@ const defaultPathData = {
 
 function EditPathSheet() {
   const { entityId, pathId } = useParams();
+  const [searchParams, setSear] = useSearchParams();
+  const entityType = searchParams.get("type");
   const navigate = useNavigate();
   const { getPathById, updateOrAddPath } = usePaths();
   const { updateOrAddEntity, getEntityById } = useEntities();
-  const [loading, setLoading] = useState(!!entityId);
+  const [entityLoading, setEntityLoading] = useState(!!entityId);
 
   const [entityData, setEntityData] = useState<PartialEntity>({
     ...defaultEntity,
   });
 
+  // const [path, setPath] = useState<PartialPath>(
+  //   getPathById(pathId) || defaultPathData
+  // );
   const [path, setPath] = useState<PartialPath>(
-    getPathById(pathId) || defaultPathData
+    getPathById(pathId) || defaultPath
   );
+  // console.log(useLocation(), path);
 
   useEffect(() => {
-    (async () => {
-      const p = await getPathById(pathId);
-      // Create path and redirect to this form with the right ID
-      if (pathId === "new") {
-        const newPath = await updateOrAddPath(defaultPathData);
-        navigate(`/path/${newPath?.id}`, {
-          replace: true,
-        });
-      } else if (p) {
-        setPath(p);
-      }
-    })();
+    const matchPath = getPathById(Number(pathId));
+    if (matchPath) {
+      setPath(matchPath);
+    }
+  }, [pathId]);
+
+  useEffect(() => {
     const matchEntity = getEntityById(Number(entityId));
     if (matchEntity) {
       setEntityData(matchEntity);
     }
-    setLoading(false);
-  }, [entityId, pathId]);
+    setEntityLoading(false);
+  }, [entityId]);
 
   const handleCancelClick = () => {
     navigate("/");
@@ -62,12 +76,13 @@ function EditPathSheet() {
   };
 
   const [pathType, setPathType] = useState(PathType.encounter);
-  const handlePathTypeChange = (value: PathType) => {
+  const handlePathTypeChange = (type: PathType) => {
+    console.log(type);
     setPath((prev) => ({
       ...prev,
-      type: value,
+      type,
     }));
-    setPathType(value);
+    setPathType(type);
   };
 
   //We want to show the load menu
@@ -76,14 +91,8 @@ function EditPathSheet() {
   };
 
   // We want to add or edit an entity
-  const handleAddEntity = useCallback(
-    (selectedEntityType: EntityType) => {
-      navigate(`/path/${path.id}/entity/new?type=${selectedEntityType}`);
-    },
-    [path]
-  );
   const handleEditEntity = (entity?: IEntity) => {
-    navigate(`/entity/${entity?.id}/edit`);
+    navigate(`/path/${path.id}/entity/${entity?.id}/edit`);
   };
 
   //we want to remove an entity from our path
@@ -109,13 +118,37 @@ function EditPathSheet() {
 
   const renderAddEntityRow = () => (
     <div className={styles.sheetRowContainer}>
-      <Button onClick={() => navigate(`/entity/new/edit?type=Shop`)}>
+      <Button
+        onClick={() => {
+          setEntityData({
+            ...defaultEntity,
+            type: EntityType.Shop,
+          });
+          navigate(`/path/${pathId}/entity/new/edit?type=Shop`);
+        }}
+      >
         Add Shop
       </Button>
-      <Button onClick={() => navigate(`/entity/new/edit?type=NPC}`)}>
+      <Button
+        onClick={() => {
+          setEntityData({
+            ...defaultEntity,
+            type: EntityType.NPC,
+          });
+          navigate(`/path/${pathId}/entity/new/edit?type=NPC`);
+        }}
+      >
         Add NPC
       </Button>
-      <Button onClick={() => navigate(`/entity/new/edit?type=Monster`)}>
+      <Button
+        onClick={() => {
+          setEntityData({
+            ...defaultEntity,
+            type: EntityType.Monster,
+          });
+          navigate(`/path/${pathId}/entity/new/edit?type=Monster`);
+        }}
+      >
         Add Monster
       </Button>
       <Button onClick={() => handleLoadClick()}>Load</Button>
@@ -147,9 +180,9 @@ function EditPathSheet() {
           />
         ) : ( */}
         <Button
-          title={`Delete ${entity.name}`}
+          title={`Remove ${entity.name} from plan`}
           onClick={() => handleRemoveEntity(entity.id)}
-          icon="trash"
+          icon="circle-minus"
           variant="text"
         />
         {/* )} */}
@@ -169,14 +202,18 @@ function EditPathSheet() {
   return (
     <div className={styles.sheetsContainer}>
       <div className={styles.header}>
-        <h2>{headerText}</h2>
-        <Button onClick={handleBackClick} icon="arrow-left" variant="text" />
+        <div className={styles.title}>
+          <h2 className={styles.heading}>{headerText}</h2>
+        </div>
+        <div className={styles.headerButtons}>
+          <Button onClick={handleBackClick} icon="arrow-left" variant="text" />
+        </div>
       </div>
       <div className={styles.sheetCenterContainer}>
         <ToggleButton
           options={[PathType.encounter, PathType.exploration]}
           value={pathType}
-          onChange={handlePathTypeChange}
+          onChange={(value) => handlePathTypeChange(value)}
         />
       </div>
       {/* TODO only showConfirm if form is dirty */}
@@ -204,29 +241,34 @@ function EditPathSheet() {
         <Routes>
           <Route index element={renderAddEntityRow()} />
           <Route
-            path="entity/:entityId"
+            path="entity/:entityId/edit*"
             element={
               <div className={styles.editEntityContainer}>
                 <div className={styles.header}>
-                  <h2>Edit {entityData.type}</h2>
-                  {/* TODO: goes back to plan, doesnt exit */}
-                  <Button
-                    onClick={handleBackClick}
-                    icon="arrow-left"
-                    variant="text"
-                  />
-                </div>
-                {entityData?.image && (
-                  <div className={styles.imageContainer}>
-                    <img src={entityData.image} alt={entityData.name} />
+                  <div className={styles.title}>
+                    <h2 className={styles.heading}>Edit {entityData.type}</h2>
                   </div>
-                )}
-                {!loading && (
+                  {/* TODO: goes back to plan, doesnt exit */}
+                  <div className={styles.headerButtons}>
+                    <Button
+                      onClick={() => navigate(-1)}
+                      icon="arrow-left"
+                      variant="text"
+                    />
+                  </div>
+                </div>
+                {!entityLoading && (
                   <AddEntityForm
-                    entityData={entityData as IEntity}
-                    onAddEntity={(entity) => {
-                      updateOrAddEntity(entity);
-                      navigate("/");
+                    entityData={{ ...entityData, type: entityType } as IEntity}
+                    onAddEntity={async (entity) => {
+                      const newEntity = await updateOrAddEntity(entity);
+                      if (newEntity) {
+                        setPath((prev) => ({
+                          ...prev,
+                          entities: [...prev.entities, newEntity.id],
+                        }));
+                      }
+                      navigate(-1);
                     }}
                   />
                 )}

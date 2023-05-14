@@ -12,6 +12,25 @@
     margin-bottom: 1em;
   }
 
+  td {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    color: var(--secondaryText);
+  }
+
+  .formSmall {
+    padding: 0.2rem;
+    border: 1px solid var(--primaryText);
+    border-radius: 0.25rem;
+    width: 100%;
+    max-width: 5em;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    background: var(--primaryBackground);
+    color: var(--primaryText);
+  }
+
   .formRow {
     display: flex;
     flex-direction: row;

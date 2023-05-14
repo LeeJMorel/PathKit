@@ -1,4 +1,9 @@
-import { EntityType, PartialEntity } from "../api/model";
+import { EntityType, PartialEntity, PartialPath, PathType } from "../api/model";
+
+export const defaultPath: PartialPath = {
+  type: PathType.exploration,
+  entities: [],
+};
 
 export const defaultEntity: PartialEntity = {
   name: "Unknown",

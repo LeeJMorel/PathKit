@@ -53,7 +53,7 @@ function EntitySheet() {
     <div className={styles.sheetsContainer}>
       <div className={styles.header}>
         <div className={styles.title}>
-          <h2>{entity?.name}</h2>
+          <h2 className={styles.heading}>{entity?.name}</h2>
           {entity?.build?.level && (
             <p>
               ({entity.build.level ? `level: ${entity.build.level}` : ""}

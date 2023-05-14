@@ -32,7 +32,7 @@ END;
 CREATE TABLE IF NOT EXISTS path (
   id INTEGER PRIMARY KEY,
   orderNum INTEGER,
-  type TEXT CHECK( type IN ('exporation','encounter') ) NOT NULL DEFAULT 'exploration',
+  type TEXT CHECK( type IN ('exploration','encounter') ) NOT NULL DEFAULT 'exploration',
   entities TEXT NOT NULL DEFAULT '[]',
   campaignId INTEGER NOT NULL,
   FOREIGN KEY(campaignId) REFERENCES campaign(id) ON UPDATE CASCADE ON DELETE CASCADE

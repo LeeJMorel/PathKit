@@ -36,24 +36,50 @@ const InitiativeForm = ({ onClose }: InitiativeMenuProps) => {
     useEntities();
   const playerEntities = getPlayerEntities();
   const pathEntities = getEntitiesById(currentPath?.entities);
-  const formFields = [...pathEntities, ...playerEntities].map((entity) => (
-    <div key={entity.id} className={styles.formRow}>
-      <label
-        htmlFor={`${entity.id}-initiativeForm`}
-        className={styles.formLabel}
-      >
-        {entity.name}:
-      </label>
-      <input
-        type="number"
-        id={`${entity.id}-initiativeForm`}
-        name={entity.id.toString()}
-        value={entityInitiatives[entity.id] ?? ""}
-        onChange={(e) => handleInitiativeChange(e, entity.id)}
-        className={styles.formSmall}
-      />
-    </div>
-  ));
+  const formFields = (
+    <table>
+      <tbody>
+        {pathEntities.map((entity) => (
+          <tr key={entity.id}>
+            <td>
+              <label htmlFor={`${entity.id}-initiativeForm`}>
+                {entity.name}:
+              </label>
+            </td>
+            <td>
+              <input
+                type="number"
+                id={`${entity.id}-initiativeForm`}
+                name={entity.id.toString()}
+                value={entityInitiatives[entity.id] ?? ""}
+                onChange={(e) => handleInitiativeChange(e, entity.id)}
+                className={styles.formSmall}
+              />
+            </td>
+          </tr>
+        ))}
+        {playerEntities.map((entity) => (
+          <tr key={entity.id}>
+            <td>
+              <label htmlFor={`${entity.id}-initiativeForm`}>
+                {entity.name}:
+              </label>
+            </td>
+            <td>
+              <input
+                type="number"
+                id={`${entity.id}-initiativeForm`}
+                name={entity.id.toString()}
+                value={entityInitiatives[entity.id] ?? ""}
+                onChange={(e) => handleInitiativeChange(e, entity.id)}
+                className={styles.formSmall}
+              />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // prevent default form submission behavior

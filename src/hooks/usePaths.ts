@@ -5,8 +5,9 @@ import { usePreferencesStore } from "./usePreferencesStore";
 import { IPath } from "../api/model";
 import { PartialBy } from "../utilities";
 import useBoolean from "./useBoolean";
+import { PartialPath } from "../api/model";
 
-export type PartialPath = PartialBy<IPath, "id" | "campaignId">;
+// export type PartialPath = PartialBy<IPath, "id" | "campaignId">;
 
 interface IUsePaths {
   paths: IPath[];

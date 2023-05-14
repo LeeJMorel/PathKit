@@ -46,8 +46,12 @@ function EditEntitySheet() {
   return (
     <div className={styles.sheetsContainer}>
       <div className={styles.header}>
-        <h2>Edit {entityData.type}</h2>
-        <Button onClick={handleBackClick} icon="arrow-left" variant="text" />
+        <div className={styles.title}>
+          <h2 className={styles.heading}>Edit {entityData.type}</h2>
+        </div>
+        <div className={styles.headerButtons}>
+          <Button onClick={handleBackClick} icon="arrow-left" variant="text" />
+        </div>
       </div>
       {entityData?.image && (
         <div className={styles.imageContainer}>
