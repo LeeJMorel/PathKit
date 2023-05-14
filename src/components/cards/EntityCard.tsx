@@ -3,13 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import styles from "./Card.module.scss";
-import { IEntity, Proficiency } from "../../api/model";
+import { EntityType, IEntity, Proficiency } from "../../api/model";
 import { usePreferencesStore, useBoolean } from "../../hooks";
-import StatObject from "../objects/StatObject";
-import { IconName } from "@fortawesome/fontawesome-svg-core";
 import ConditionsDropdown from "../dropdowns/ConditionsDropdown";
 import { getProficiencyModifier } from "../../utilities";
 import { StatsDisplay } from "../displays/StatsDisplay";
+import NPC from "../../assets/defaultImage/fighter.png";
+import Player from "../../assets/defaultImage/knight.png";
+import Monster from "../../assets/defaultImage/monster.png";
+import Structure from "../../assets/defaultImage/store.png";
 
 interface EntityCardProps extends React.HTMLProps<HTMLDivElement> {
   entity: IEntity;
@@ -25,14 +27,6 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
     toggleConditionsMenu();
   };
 
-  const cardStats = {
-    ac: entity.build.acTotal.acTotal,
-    fortitude: getProficiencyModifier(entity, Proficiency.fortitude),
-    will: getProficiencyModifier(entity, Proficiency.will),
-    reflex: getProficiencyModifier(entity, Proficiency.reflex),
-    dc: getProficiencyModifier(entity, Proficiency.classDC),
-  };
-
   const handleEntityClick = (id: number) => {
     const selectedSearch = null;
     setPreferences({
@@ -41,7 +35,18 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
     navigate(`/entity/${entity.id}`);
   };
   // const isHPZero = entity.hp && entity.hp[0] === 0;
-  // const stats = entity.stats || {};
+  function getDefaultImage(type: EntityType) {
+    switch (type) {
+      case "Player":
+        return Player;
+      case "NPC":
+        return NPC;
+      case "Shop":
+        return Structure;
+      default:
+        return Monster;
+    }
+  }
 
   return (
     <div className={classNames(styles.card, className)} {...rest}>
@@ -56,7 +61,10 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
             // isHPZero && styles.entityDeadImage
           )}
         >
-          <img src={entity.image} alt={entity.name} />
+          <img
+            src={entity.image ? entity.image : getDefaultImage(entity.type)}
+            alt={entity.name}
+          />
           {/* {isHPZero && (
             <FontAwesomeIcon className={styles.deadIcon} icon="skull" />
           )} */}
@@ -66,7 +74,7 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
           {/* {entity.hp && ( */}
           <>
             <div className={styles.entityHP}>
-              {showConditionsMenu && (
+              {/* {showConditionsMenu && (
                 <ConditionsDropdown
                   onConditionSelect={(condition) => {
                     console.log(condition);
@@ -80,7 +88,7 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
                 onClick={handleConditionsClick}
               >
                 <FontAwesomeIcon icon="plus" />
-              </button>
+              </button> */}
               {/* <div className={styles.entityHPNumbers}>
                   {entity.hp[0]}/{entity.hp[1]}
                 </div> */}
@@ -89,22 +97,6 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
           </>
         </div>
       </div>
-
-      {showConditionsMenu && (
-        <div className={styles.conditionsMenu}>
-          {/* {conditions.map((condition) => (
-            <div
-              key={condition.id}
-              className={styles.conditionsMenuItem}
-              onMouseOver={() => {
-                console.log(`Apply condition ${condition.name}`);
-              }}
-            >
-              {condition.name}
-            </div>
-          ))} */}
-        </div>
-      )}
     </div>
   );
 }
