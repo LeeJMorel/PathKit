@@ -1,4 +1,4 @@
-import { Field } from "formik";
+import { Field, FieldArray } from "formik";
 import { PartialEntity } from "src/api/model";
 import styles from "../Form.module.scss";
 import CollapsibleHeader from "../../headers/CollapsibleHeader";
@@ -10,24 +10,33 @@ import ReactionForm from "./ReactionForm";
 import FreeActionForm from "./FreeActionForm";
 import ActionForm from "./ActionForm";
 
-const EntityActionsForm: React.FC<IEntityFormChildrenProps> = ({ entity }) => {
+const EntityActionsForm: React.FC<IEntityFormChildrenProps> = ({
+  formProps,
+}) => {
   const [passiveEffect, setPassiveEffect] = useState<number[]>([]);
   const [reaction, setReaction] = useState<number[]>([]);
   const [freeAction, setFreeAction] = useState<number[]>([]);
   const [action, setAction] = useState<number[]>([]);
 
   const handlePassiveEffect = () => {
-    setPassiveEffect([...passiveEffect, passiveEffect.length + 1]);
+    setPassiveEffect((prev) => [...prev, passiveEffect.length]);
   };
   const handleReaction = () => {
-    setReaction([...reaction, reaction.length + 1]);
+    setReaction((prev) => [...prev, reaction.length]);
   };
   const handleFreeAction = () => {
-    setFreeAction([...freeAction, freeAction.length + 1]);
+    setFreeAction((prev) => [...prev, freeAction.length]);
   };
   const handleAction = () => {
-    setAction([...action, action.length + 1]);
+    setAction((prev) => [...prev, action.length]);
   };
+
+  console.log("debug: actions", {
+    passiveEffect,
+    reaction,
+    freeAction,
+    action,
+  });
 
   return (
     <>
@@ -37,7 +46,12 @@ const EntityActionsForm: React.FC<IEntityFormChildrenProps> = ({ entity }) => {
         </Button>
       </div>
       {passiveEffect.map((_, index) => (
-        <PassiveEffectsForm entity={entity} key={index} count={index + 1} />
+        <PassiveEffectsForm
+          formProps={formProps}
+          key={index}
+          index={index + 1}
+          onRemove={() => setPassiveEffect(passiveEffect.splice(index, 1))}
+        />
       ))}
       <div className={styles.formCentered}>
         <Button className={styles.formButton} onClick={handleReaction}>
@@ -45,24 +59,66 @@ const EntityActionsForm: React.FC<IEntityFormChildrenProps> = ({ entity }) => {
         </Button>
       </div>
       {reaction.map((_, index) => (
-        <ReactionForm entity={entity} key={index} count={index + 1} />
+        <ReactionForm
+          formProps={formProps}
+          key={index}
+          index={index + 1}
+          onRemove={() => setReaction(reaction.splice(index, 1))}
+        />
       ))}
       <div className={styles.formCentered}>
         <Button className={styles.formButton} onClick={handleFreeAction}>
           Add a Free Action
         </Button>
       </div>
-      {reaction.map((_, index) => (
-        <FreeActionForm entity={entity} key={index} count={index + 1} />
+      {freeAction.map((_, index) => (
+        <FreeActionForm
+          formProps={formProps}
+          key={index}
+          index={index + 1}
+          onRemove={() => setFreeAction(freeAction.splice(index, 1))}
+        />
       ))}
-      <div className={styles.formCentered}>
+      {/* <div className={styles.formCentered}>
         <Button className={styles.formButton} onClick={handleAction}>
           Add a Action
         </Button>
       </div>
       {action.map((_, index) => (
-        <ActionForm entity={entity} key={index} count={index + 1} />
-      ))}
+        <ActionForm
+          formProps={formProps}
+          key={index}
+          index={index + 1}
+          onRemove={() => setAction(action.splice(index, 1))}
+        />
+      ))} */}
+      <FieldArray name="build.actions.action">
+        {({ remove, push }) => (
+          <ActionForm formProps={formProps} />
+          // <div className={styles.formRow}>
+          //   {values.build.traits.map((_, i) => (
+          //     <div className={styles.formRow}>
+          //       <FormField name={`build.traits.${i}`} />
+          //       <FormButton
+          //         variant="text"
+          //         icon="circle-minus"
+          //         onClick={() => remove(i)}
+          //         title="Remove trait"
+          //       />
+          //     </div>
+          //   ))}
+          //   <div className={styles.formCol}>
+          //     <FormButton
+          //       variant="subtle"
+          //       icon="circle-plus"
+          //       onClick={() => push("")}
+          //     >
+          //       Add trait
+          //     </FormButton>
+          //   </div>
+          // </div>
+        )}
+      </FieldArray>
     </>
   );
 };

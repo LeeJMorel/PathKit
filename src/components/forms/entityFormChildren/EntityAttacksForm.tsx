@@ -27,7 +27,7 @@ const EntityAttacksForm: React.FC<IEntityFormChildrenProps> = ({ entity }) => {
         </Button>
       </div>
       {meleeAttacks.map((_, index) => (
-        <MeleeForm entity={entity} key={index} count={index + 1} />
+        <MeleeForm entity={entity} key={index} index={index + 1} />
       ))}
       <div className={styles.formCentered}>
         <Button className={styles.formButton} onClick={handleRangedAttacks}>
@@ -35,7 +35,7 @@ const EntityAttacksForm: React.FC<IEntityFormChildrenProps> = ({ entity }) => {
         </Button>
       </div>
       {rangedAttacks.map((_, index) => (
-        <RangedForm entity={entity} key={index} count={index + 1} />
+        <RangedForm entity={entity} key={index} index={index + 1} />
       ))}
     </>
   );

@@ -21,7 +21,7 @@ const EntitySpellsForm: React.FC<IEntityFormChildrenProps> = ({ entity }) => {
         </Button>
       </div>
       {spellPools.map((_, index) => (
-        <SpellPoolForm entity={entity} key={index} count={index + 1} />
+        <SpellPoolForm entity={entity} key={index} index={index + 1} />
       ))}
     </>
   );

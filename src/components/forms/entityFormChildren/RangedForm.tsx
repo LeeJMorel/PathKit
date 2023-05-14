@@ -4,7 +4,10 @@ import styles from "../Form.module.scss";
 import CollapsibleHeader from "../../headers/CollapsibleHeader";
 import { IEntityFormChildrenProps } from "../AddEntityForm";
 
-const RangedForm: React.FC<IEntityFormChildrenProps> = ({ entity, count }) => {
+const RangedForm: React.FC<IEntityFormChildrenProps> = ({
+  entity,
+  index: count,
+}) => {
   return (
     <>
       <CollapsibleHeader title={`Ranged ${count}`} toggle>

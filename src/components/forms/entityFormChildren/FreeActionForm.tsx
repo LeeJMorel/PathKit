@@ -5,12 +5,17 @@ import CollapsibleHeader from "../../headers/CollapsibleHeader";
 import { IEntityFormChildrenProps } from "../AddEntityForm";
 
 const FreeActionForm: React.FC<IEntityFormChildrenProps> = ({
-  entity,
-  count,
+  formProps,
+  index: count,
+  onRemove,
 }) => {
   return (
     <>
-      <CollapsibleHeader title={`Free Action ${count}`} toggle>
+      <CollapsibleHeader
+        title={`Free Action ${count}`}
+        toggle
+        onRemove={onRemove}
+      >
         <br />
         <div className={styles.formRow}>
           {/*multiple free actionss's may exist in one entity.*/}

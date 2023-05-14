@@ -1,53 +1,29 @@
-import { Field } from "formik";
+import { FieldArray } from "formik";
 import { PartialEntity } from "src/api/model";
 import styles from "../Form.module.scss";
 import CollapsibleHeader from "../../headers/CollapsibleHeader";
 import { IEntityFormChildrenProps } from "../AddEntityForm";
+import FormField from "../../formFields/FormField";
 
-const ActionForm: React.FC<IEntityFormChildrenProps> = ({ entity, count }) => {
+const ActionForm: React.FC<IEntityFormChildrenProps> = ({
+  formProps,
+  index = 0,
+  onRemove,
+}) => {
+  const { values } = formProps;
   return (
     <>
-      <CollapsibleHeader title={`Action ${count}`} toggle>
-        <br />
-        <div className={styles.formRow}>
-          {/*multiple melee's may exist in one entity.*/}
-          <p className={styles.formLabel}>Action Number:</p>
-          <Field
-            name="build.level"
-            type="number"
-            className={styles.formInput}
-          />
-          <p className={styles.formLabel}>Name:</p>
-          <Field
-            name="build.level"
-            type="number"
-            className={styles.formInput}
-          />
-          <p className={styles.formLabel}>Attack/DC:</p>
-          <Field
-            name="build.level"
-            type="number"
-            className={styles.formInput}
-          />
-        </div>
-        <div className={styles.formRow}>
-          {/*multiple melee's may exist in one entity. may have multiple traits.*/}
-          <p className={styles.formLabel}>Traits:</p>
-          <Field
-            name="build.level"
-            type="number"
-            className={styles.formInput}
-          />
-        </div>
-        <div className={styles.formRow}>
-          {/*multiple melee's may exist in one entity. may have multiple traits.*/}
-          <p className={styles.formLabel}>Effect:</p>
-          <Field
-            name="build.level"
-            type="number"
-            className={styles.formInput}
-          />
-        </div>
+      <CollapsibleHeader
+        title={`Action ${index + 1}`}
+        toggle
+        onRemove={onRemove}
+      >
+        {/* <FieldArray name={`build.actions.actions.${index}`}>
+          {({ remove, push }) => values?.build?.actions.actions.map(action => {
+
+          })}
+
+        </FieldArray> */}
       </CollapsibleHeader>
     </>
   );

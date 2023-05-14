@@ -4,7 +4,10 @@ import styles from "../Form.module.scss";
 import CollapsibleHeader from "../../headers/CollapsibleHeader";
 import { IEntityFormChildrenProps } from "../AddEntityForm";
 
-const FeatureForm: React.FC<IEntityFormChildrenProps> = ({ entity, count }) => {
+const FeatureForm: React.FC<IEntityFormChildrenProps> = ({
+  entity,
+  index: count,
+}) => {
   return (
     <>
       <div className={styles.formRow}>

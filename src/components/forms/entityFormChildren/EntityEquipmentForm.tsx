@@ -1,30 +1,81 @@
-import { Field } from "formik";
-import { PartialEntity } from "src/api/model";
+import { FieldArray } from "formik";
 import styles from "../Form.module.scss";
 import { IEntityFormChildrenProps } from "../AddEntityForm";
 import { useState } from "react";
-import { Button } from "../../buttons";
-import EquipmentForm from "./EquipmentForm";
+import FormField from "../../formFields/FormField";
+import FormButton from "../../formFields/FormButton";
+import CollapsibleHeader from "../../headers/CollapsibleHeader";
+import classNames from "classnames";
 
 const EntityEquipmentForm: React.FC<IEntityFormChildrenProps> = ({
-  entity,
+  formProps,
 }) => {
-  const [equipment, setEquipment] = useState<number[]>([]);
+  const { values } = formProps;
 
-  const handleEquipment = () => {
-    setEquipment([...equipment, equipment.length + 1]);
-  };
   return (
-    <>
-      <div className={styles.formCentered}>
-        <Button className={styles.formButton} onClick={handleEquipment}>
-          Add Equipment
-        </Button>
-      </div>
-      {equipment.map((_, index) => (
-        <EquipmentForm entity={entity} key={index} count={index + 1} />
-      ))}
-    </>
+    <CollapsibleHeader
+      toggle
+      title="Equipment"
+      as="h4"
+      className={styles.nestedHeader}
+    >
+      <FieldArray name="build.equipment">
+        {({ remove, push }) => (
+          <div className={styles.formRow}>
+            {values.build.equipment.map((_, i) => {
+              const [name, quantity, bulk, value, worn] =
+                values.build.equipment[i];
+              return (
+                <div className={classNames(styles.formRow, styles.formSection)}>
+                  <div className={styles.formRow}>
+                    <FormField
+                      label={`Name`}
+                      name={`build.equipment.${i}[0]`}
+                    />
+                    <FormField
+                      label={`Quantity`}
+                      name={`build.equipment.${i}[1]`}
+                      type="number"
+                      small
+                    />
+                  </div>
+
+                  <div className={styles.formRow}>
+                    <FormField
+                      label={`Bulk`}
+                      name={`build.equipment.${i}[2]`}
+                      type="number"
+                      small
+                    />
+                    <FormField
+                      label={`Value`}
+                      name={`build.equipment.${i}[3]`}
+                      small
+                    />
+                    <FormField
+                      label={`Worn`}
+                      name={`build.equipment.${i}[4]`}
+                      type="checkbox"
+                    />
+                    <FormButton
+                      variant="text"
+                      icon="circle-minus"
+                      onClick={() => remove(i)}
+                      title="Remove equipment"
+                    />
+                  </div>
+                </div>
+              );
+            })}
+            <div className={styles.formCol}>
+              <FormButton variant="subtle" icon="circle-plus" onClick={push}>
+                Add equipment
+              </FormButton>
+            </div>
+          </div>
+        )}
+      </FieldArray>
+    </CollapsibleHeader>
   );
 };
 

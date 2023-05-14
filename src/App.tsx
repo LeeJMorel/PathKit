@@ -27,6 +27,7 @@ import NotesSheet from "./components/sheets/NotesSheet";
 import CreationDropdown from "./components/dropdowns/CreationDropdown";
 import EditPathSheet from "./components/sheets/EditPathSheet";
 import { initializeDatabase } from "./api/database";
+import LicenseSheet from "./components/sheets/LicenseSheet";
 
 // Load FontAwesome icons
 library.add(fas);
@@ -178,6 +179,7 @@ function App() {
             <Route path="entity/:entityId" element={<EntitySheet />} />
             <Route path="entity/:entityId/edit" element={<EditEntitySheet />} />
             <Route path="path/:pathId/*" element={<EditPathSheet />} />
+            <Route path="license" element={<LicenseSheet />} />
             <Route path="*" element={<NotesSheet />} />
           </Route>
         </Routes>

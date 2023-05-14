@@ -5,12 +5,13 @@ import CollapsibleHeader from "../../headers/CollapsibleHeader";
 import { IEntityFormChildrenProps } from "../AddEntityForm";
 
 const ReactionsForm: React.FC<IEntityFormChildrenProps> = ({
-  entity,
-  count,
+  formProps,
+  index: count,
+  onRemove,
 }) => {
   return (
     <>
-      <CollapsibleHeader title={`Reaction ${count}`} toggle>
+      <CollapsibleHeader title={`Reaction ${count}`} toggle onRemove={onRemove}>
         <br />
         <div className={styles.formRow}>
           {/*multiple reactions's may exist in one entity.*/}

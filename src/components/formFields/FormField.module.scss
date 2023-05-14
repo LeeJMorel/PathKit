@@ -3,9 +3,13 @@
 .fieldContainer {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1em;
+  margin: 0 0.5em 0.5em;
   align-items: flex-start;
   flex: 1;
+
+  // &:last-of-type {
+  //   margin-bottom: 0;
+  // }
 
   .labelContainer {
     display: flex;
@@ -48,7 +52,8 @@
       color: var(--errorText);
       font-size: 0.75em;
       padding: 0 0.2em;
-      position: absolute;
+      position: relative;
+      top: 100%;
       width: 100%;
       z-index: 999;
       border-bottom-left-radius: 4px;
@@ -58,17 +63,25 @@
 
   &.inline {
     flex-direction: row;
+    justify-content: space-between;
 
     .labelContainer {
       justify-content: flex-start;
       margin-right: 0.5em;
       margin-bottom: 0;
     }
+
+    .inputContainer {
+      max-width: 340px;
+    }
   }
 
   &.above {
     .labelContainer {
       width: 100%;
+    }
+    .error {
+      position: initial;
     }
   }
 
@@ -105,19 +118,15 @@
   }
 
   &.small {
-    width: auto;
+    flex: initial;
     .formInput {
-      width: 3.5em;
-      min-width: 3.5em;
+      width: 3em;
+      min-width: auto;
     }
-  }
-
-  + .fieldContainer {
-    margin-left: 1em;
   }
 }
 
-.fileUploader {
+.inputButton {
   flex: initial;
 }
 

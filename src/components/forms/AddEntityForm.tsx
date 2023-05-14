@@ -19,68 +19,115 @@ export interface IEntityFormProps {
   entityData: PartialEntity;
   onAddEntity: (entity: PartialEntity) => void;
   onClose?: () => void;
+  setFormDirty?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface IEntityFormChildrenProps {
-  entity: PartialEntity;
-  count?: number;
-  onImageUpload?: (result: FileReader["result"]) => void;
+  index?: number;
   formProps: FormikProps<PartialEntity>;
+  onRemove?: () => void;
 }
 
 const AddEntityForm: React.FC<IEntityFormProps> = ({
   entityData,
   onAddEntity,
+  setFormDirty,
 }) => {
   const [entity, setEntity] = useState<PartialEntity>(entityData);
+  const [dirty, setDirty] = useState(false);
+
+  useEffect(() => {
+    if (typeof setFormDirty === "function") {
+      setFormDirty(dirty);
+    }
+  }, [dirty, setFormDirty]);
 
   useEffect(() => {
     setEntity(entityData);
   }, [entityData]);
 
-  const handleFileUpload = (name: string, result: FileReader["result"]) => {
-    console.log("debug: handlefileupload", { name, result });
-    setEntity((prev) => ({
-      ...prev,
-      [name]: result,
-    }));
-  };
-
   const tabs = (formProps: FormikProps<PartialEntity>) => [
     {
       id: "general",
       title: "General",
-      content: (
-        //onImageUpload={handleFileUpload}
-        <General entity={entity} formProps={formProps} />
-      ),
+      content: <General formProps={formProps} />,
     },
     {
       id: "equipment",
       title: "Equipment",
-      content: <Equipment entity={entity} formProps={formProps} />,
+      content: <Equipment formProps={formProps} />,
     },
     {
       id: "Actions",
       title: "Actions & Effects",
-      content: <Actions entity={entity} formProps={formProps} />,
+      content: <Actions formProps={formProps} />,
     },
     {
       id: "Attacks",
       title: "Attacks",
-      content: <Attacks entity={entity} formProps={formProps} />,
+      content: <Attacks formProps={formProps} />,
     },
     {
       id: "Spells",
       title: "Spells",
-      content: <Spells entity={entity} formProps={formProps} />,
+      content: <Spells formProps={formProps} />,
     },
     {
       id: "Features",
       title: "Features",
-      content: <Features entity={entity} formProps={formProps} />,
+      content: <Features formProps={formProps} />,
     },
   ];
+
+  const npcTabs = (formProps: FormikProps<PartialEntity>) => [
+    {
+      id: "general",
+      title: "General",
+      content: <General formProps={formProps} />,
+    },
+    {
+      id: "equipment",
+      title: "Equipment",
+      content: <Equipment formProps={formProps} />,
+    },
+    {
+      id: "Spells",
+      title: "Spells",
+      content: <Spells formProps={formProps} />,
+    },
+    {
+      id: "Features",
+      title: "Features",
+      content: <Features formProps={formProps} />,
+    },
+  ];
+
+  const structureTabs = (formProps: FormikProps<PartialEntity>) => [
+    {
+      id: "general",
+      title: "General",
+      content: <General formProps={formProps} />,
+    },
+    {
+      id: "equipment",
+      title: "Equipment",
+      content: <Equipment formProps={formProps} />,
+    },
+  ];
+
+  const renderTabs = (props: FormikProps<PartialEntity>) => {
+    let tabsToRender;
+
+    if (entity.type === "NPC") {
+      tabsToRender = npcTabs(props);
+    } else if (entity.type === "Shop") {
+      tabsToRender = structureTabs(props);
+    } else {
+      tabsToRender = tabs(props);
+    }
+
+    return <Tabs tabs={tabsToRender} className={styles.formTabs} />;
+  };
 
   return (
     <Formik
@@ -93,17 +140,22 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
       validationSchema={entityFormSchema}
     >
       {(props) => {
+        setTimeout(() => {
+          if (!dirty) {
+            setDirty(props.dirty);
+          }
+        }, 1000);
+
         return (
           <Form className={styles.formContainer}>
-            <Tabs tabs={tabs(props)} className={styles.formTabs} />
-            {props.errors.name && <div>{props.errors.name}</div>}
+            {renderTabs(props)}
             <div className={classNames(styles.formRow, styles.actionRow)}>
-              <Button type="submit" variant="primary">
+              <Button type="submit" variant="primary" disabled={!props.isValid}>
                 Save {entity.type}
               </Button>
             </div>
             {/* <div>
-              <pre>{JSON.stringify(props, null, 2)}</pre>
+              <pre>{JSON.stringify(props.errors, null, 2)}</pre>
             </div> */}
           </Form>
         );

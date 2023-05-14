@@ -20,7 +20,7 @@ const EntityFeaturesForm: React.FC<IEntityFormChildrenProps> = ({ entity }) => {
         </Button>
       </div>
       {feature.map((_, index) => (
-        <FeatureForm entity={entity} key={index} count={index + 1} />
+        <FeatureForm entity={entity} key={index} index={index + 1} />
       ))}
     </>
   );

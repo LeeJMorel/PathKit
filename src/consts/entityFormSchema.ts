@@ -20,6 +20,7 @@ import {
 const errMsg = {
   r: "Required",
   noNeg: "Cannot be negative.",
+  noEmpty: "Cannot be empty, remove if not needed.",
 };
 
 const equipable = array().of(
@@ -93,7 +94,7 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
     age: string(),
     deity: string(),
     size: number().min(0).max(6),
-    languages: array().of(string().defined()).default([]),
+    languages: array().of(string().defined(errMsg.noEmpty)).default([]),
     money: object({
       pp: number().default(0),
       gp: number().default(0),
@@ -149,7 +150,15 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
       .of(tuple([string().defined(), number().defined()]).defined())
       .default([]),
     equipment: array()
-      .of(tuple([string().defined(), number().defined()]).defined())
+      // .of(
+      //   tuple([
+      //     string().defined(),
+      //     number().defined(),
+      //     number().optional().default(0),
+      //     string().optional().default("0cp"),
+      //     boolean().optional().default(false),
+      //   ]).defined()
+      // )
       .default([]),
     specificProficiencies: object()
       .shape({
@@ -201,9 +210,56 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
       acTotal: number().default(0).min(0, errMsg.noNeg),
       shieldBonus: string().default(""),
     }).default({}),
-    traits: array().of(string().defined()).default([]),
-    resistances: array().of(string().defined()).default([]),
-    immunities: array().of(string().defined()).default([]),
+    traits: array().of(string().defined(errMsg.noEmpty)).default([]),
+    resistances: array().of(string().defined(errMsg.noEmpty)).default([]),
+    immunities: array().of(string().defined(errMsg.noEmpty)).default([]),
+    actions: object({
+      actions: array()
+        .of(
+          object({
+            name: string().defined(errMsg.noEmpty),
+            actionNumber: number().defined(errMsg.noEmpty),
+            attackDc: number().defined(errMsg.noEmpty),
+            traits: array()
+              .of(string().defined(errMsg.noEmpty))
+              .defined()
+              .default([]),
+            effect: string().defined(errMsg.noEmpty),
+          })
+        )
+        .defined()
+        .default([]),
+      freeActions: array()
+        .of(
+          object({
+            name: string().defined(errMsg.noEmpty),
+            frequency: string().defined(errMsg.noEmpty),
+            trigger: string().defined(errMsg.noEmpty),
+            effect: string().defined(errMsg.noEmpty),
+          })
+        )
+        .defined()
+        .default([]),
+      reactions: array()
+        .of(
+          object({
+            name: string().defined(errMsg.noEmpty),
+            trigger: string().defined(errMsg.noEmpty),
+            effect: string().defined(errMsg.noEmpty),
+          })
+        )
+        .defined()
+        .default([]),
+      passiveActions: array()
+        .of(
+          object({
+            name: string().defined(errMsg.noEmpty),
+            effect: string().defined(errMsg.noEmpty),
+          })
+        )
+        .defined()
+        .default([]),
+    }).defined(),
   }).defined(),
   pathbuilderId: string().nullable().default(null),
 });

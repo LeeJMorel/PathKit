@@ -16,6 +16,7 @@ import BinderObject from "../objects/BinderObject";
 import { IEntity } from "../../api/model";
 import AddEntityForm from "../forms/AddEntityForm";
 import Tabs from "../tabs/tab";
+import { useNavigate } from "react-router-dom";
 
 interface IMainMenuProps {
   onClose: () => void;
@@ -41,6 +42,13 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     setPreferences({
       largeFont: !preferences.largeFont,
     });
+  };
+
+  const navigate = useNavigate();
+
+  const handleViewLicense = () => {
+    navigate(`/license`);
+    onClose();
   };
 
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -307,6 +315,19 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
             </a>{" "}
             to provide suggestions on improving the software's accessibility.
           </div>
+        </div>
+      ),
+    },
+    {
+      id: "about",
+      title: "About",
+      content: (
+        <div className={styles.tabContent}>
+          <div className={styles.tabSubtext}>
+            Wizards of the Coast's OGL is what makes Pathfinder2e and PathKit
+            possible, to read more click the button below.
+          </div>
+          <Button onClick={handleViewLicense}>View Open Game License</Button>
         </div>
       ),
     },

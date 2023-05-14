@@ -74,6 +74,12 @@ export interface IEntityBuild {
   traits: string[];
   resistances: string[];
   immunities: string[];
+  actions: {
+    actions: IAction[];
+    freeActions: IFreeAction[];
+    reactions: IReaction[];
+    passiveActions: IPassiveAction[];
+  };
 }
 
 export enum Ability {
@@ -134,15 +140,22 @@ export interface IAttributes {
 }
 
 export type Feat = [
-  string,
-  string | null | undefined,
-  string | null | undefined,
-  number | undefined
+  name: string,
+  secondary: string | null | undefined,
+  featType: string | null | undefined,
+  level: number | undefined,
+  desc: string | undefined | null
 ];
 
 export type Lore = [name: string, proficiency: number];
 
-export type Equipment = [name: string, quantity: number];
+export type Equipment = [
+  name: string,
+  quantity: number,
+  bulk?: number,
+  value?: string,
+  worn?: boolean
+];
 
 export enum MagicTradition {
   primal = "primal",
@@ -266,4 +279,30 @@ export enum Proficiency {
   stealth = "stealth",
   survival = "survival",
   thievery = "thievery",
+}
+
+export interface IPassiveAction {
+  name: string;
+  effect: string;
+}
+
+export interface IReaction {
+  name: string;
+  trigger: string;
+  effect: string;
+}
+
+export interface IFreeAction {
+  name: string;
+  frequency: string;
+  trigger: string;
+  effect: string;
+}
+
+export interface IAction {
+  actionNumber: number;
+  name: string;
+  attackDc: number;
+  traits: string[];
+  effect: string;
 }

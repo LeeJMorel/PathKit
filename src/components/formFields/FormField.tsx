@@ -6,7 +6,7 @@ import styles from "./FormField.module.scss";
 export interface IFieldProps
   extends Omit<React.HTMLProps<HTMLInputElement>, "as" | "label"> {
   name: string;
-  value: any;
+  value?: any;
   label?: React.ReactNode;
   labelPosition?: "above" | "inline";
   className?: string;
@@ -45,14 +45,13 @@ export const FormField: React.FC<IFieldProps> = ({
         small && styles.small,
         className
       )}
-      style={{ width }}
     >
       {label && (
         <div className={styles.labelContainer}>
           <label className={styles.label}>{label}</label>
         </div>
       )}
-      <div className={styles.inputContainer}>
+      <div className={styles.inputContainer} style={{ maxWidth: width }}>
         {as ? (
           <Field
             className={fieldClassName}
