@@ -1,3 +1,5 @@
+@import "../../styles/variables";
+
 .fieldContainer {
   display: flex;
   flex-direction: column;
@@ -22,7 +24,7 @@
     position: relative;
 
     .formInput {
-      padding: 0.25em 0.4em;
+      padding: $inputPadding;
       border: 1px solid var(--primaryText);
       border-radius: 4px;
       width: 100%;
@@ -34,6 +36,10 @@
       &.hasError {
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
+      }
+
+      &.number {
+        padding-right: 0.1em;
       }
     }
 
@@ -110,3 +116,16 @@
     margin-left: 1em;
   }
 }
+
+.fileUploader {
+  flex: initial;
+}
+
+.hiddenFileInput {
+  display: none;
+}
+
+// .fileUploadButton {
+//   margin-bottom: 1em;
+//   margin-left: 1em;
+// }

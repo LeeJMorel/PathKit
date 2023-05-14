@@ -17,6 +17,18 @@ import DataCellDisplay from "../displays/DataCellDisplay";
 import { StatsDisplay } from "../displays/StatsDisplay";
 import NotesObject from "../objects/NoteObject";
 import CollapsibleHeader from "../headers/CollapsibleHeader";
+import { FilterHeader, KeywordDiv } from "../headers/FilterHeader";
+import {
+  OneAction,
+  TwoAction,
+  ThreeAction,
+  Reaction,
+  PassiveAction,
+  FreeAction,
+  MeleeAction,
+  RangedAction,
+  SpellAction,
+} from "../../assets/iconKey";
 
 function EntitySheet() {
   const { entityId } = useParams();
@@ -290,6 +302,66 @@ function EntitySheet() {
             />
           )}
         </div>
+        {/* {entity?.build?.passiveEffect && (
+          <CollapsibleHeader
+            title="Equipment"
+            toggle
+            className={styles.sheetRowContainerLeftAlign}
+          >
+            {entity.build.equipment.map((item, index) => (
+              <div className={styles.sheetRowContainerLeftAlign} key={index}>
+                <DataCellDisplay
+                  name={`Equipment ${index + 1}`}
+                  value={item.name}
+                  align="start"
+                />
+                <DataCellDisplay
+                  name={`Equipment ${index + 1}`}
+                  value={item.bulk}
+                  align="start"
+                />
+                <DataCellDisplay
+                  name={`Equipment ${index + 1}`}
+                  value={item.value}
+                  align="start"
+                />
+                <DataCellDisplay
+                  name={`Equipment ${index + 1}`}
+                  value={item.worn}
+                  align="start"
+                />
+              </div>
+            ))}
+          </CollapsibleHeader>
+        )} */}
+        <FilterHeader
+          title="Actions"
+          toggle
+          subtle
+          keywords={[
+            { icon: <PassiveAction />, keyword: "Passive Action" },
+            { icon: <Reaction />, keyword: "Reaction" },
+            { icon: <FreeAction />, keyword: "Free Action" },
+            { icon: <OneAction />, keyword: "One Action" },
+            { icon: <TwoAction />, keyword: "Two Action" },
+            { icon: <ThreeAction />, keyword: "Three Action" },
+            { icon: <MeleeAction />, keyword: "Melee Action" },
+            { icon: <RangedAction />, keyword: "Ranged Action" },
+            { icon: <SpellAction />, keyword: "Spell Action" },
+          ]}
+          noMatchFallback={
+            <div>
+              <p>No Actions found that match the selected filters.</p>
+            </div>
+          }
+        >
+          <KeywordDiv keywords={["Two Action", "Melee Action"]}>
+            <p>Content that matches foo or bar</p>
+          </KeywordDiv>
+          <KeywordDiv keywords={["Reaction"]}>
+            <p>Content that matches baz</p>
+          </KeywordDiv>
+        </FilterHeader>
         <NotesObject />
       </div>
       {/* <pre>{JSON.stringify(entity, null, 2)}</pre> */}

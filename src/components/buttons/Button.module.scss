@@ -1,10 +1,13 @@
+@import "../../styles/variables.scss";
+
 .button,
 .roundButton {
   cursor: pointer;
-  padding: 0.2rem 0.6rem;
+  padding: $inputPadding;
   // margin: 0.25em;
   color: var(--secondaryAccentText);
   background-color: var(--secondaryAccentBackground);
+  border: 1px solid var(--secondaryAccentBackground);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border-radius: 4px;
   transition: all 0.2s ease;
@@ -12,9 +15,11 @@
   &.primary {
     color: var(--accentText);
     background-color: var(--accentBackground);
+    border-color: var(--accentBackground);
 
     &:hover {
       background-color: var(--tertiaryAccentBackground);
+      border-color: var(--tertiaryAccentBackground);
     }
   }
 

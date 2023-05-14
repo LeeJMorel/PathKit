@@ -133,26 +133,47 @@ export interface IAttributes {
   swim?: number;
 }
 
-export type Feat = [string, string | null, string, number];
+export type Feat = [
+  string,
+  string | null | undefined,
+  string | null | undefined,
+  number | undefined
+];
 
 export type Lore = [name: string, proficiency: number];
 
 export type Equipment = [name: string, quantity: number];
 
+export enum MagicTradition {
+  primal = "primal",
+  occult = "occult",
+  arcane = "arcane",
+  divine = "divine",
+}
+
+export enum SpellcastingType {
+  spontaneous = "spontaneous",
+  prepared = "prepared",
+}
+
 export interface IFocus {
   focusPoints?: number;
-  primal?: IPrimal;
+  [MagicTradition.arcane]?: TFocusSpellPool;
+  [MagicTradition.divine]?: TFocusSpellPool;
+  [MagicTradition.primal]?: TFocusSpellPool;
+  [MagicTradition.occult]?: TFocusSpellPool;
 }
 
-export interface IPrimal {
-  cha?: ICha;
-}
+export type TFocusSpellPool = {
+  [key in Ability]?: IFocusSpell;
+};
 
-export interface ICha {
+export interface IFocusSpell {
   abilityBonus?: number;
   proficiency?: number;
   itemBonus?: number;
   focusSpells?: string[];
+  focusCantrips?: string[];
 }
 
 export interface IMoney {
@@ -171,16 +192,16 @@ export interface ISpecificProficiencies {
 
 export interface ISpellCaster {
   name?: string;
-  magicTradition?: string;
-  spellcastingType?: string;
-  ability?: string;
+  magicTradition?: MagicTradition;
+  spellcastingType?: SpellcastingType;
+  ability?: Ability;
   proficiency?: number;
   focusPoints?: number;
-  spells?: ISpell[];
+  spells?: ISpellLevel[];
   perDay?: number[];
 }
 
-export interface ISpell {
+export interface ISpellLevel {
   spellLevel?: number;
   list?: string[];
 }

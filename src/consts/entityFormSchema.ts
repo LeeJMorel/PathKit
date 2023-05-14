@@ -8,8 +8,14 @@ import {
   mixed,
   tuple,
 } from "yup";
-import { PartialEntity, EntityType, Ability, Proficiency } from "../api/model";
-import { abilities, entityTypes, proficiencies } from "./buildProperties";
+import { PartialEntity } from "../api/model";
+import {
+  abilities,
+  entityTypes,
+  proficiencies,
+  spellcastingTypes,
+  magicTraditions,
+} from "./buildProperties";
 
 const errMsg = {
   r: "Required",
@@ -32,7 +38,7 @@ const equipable = array().of(
   })
 );
 
-const spell = object().shape({
+const spellLevel = object().shape({
   spellLevel: number(),
   list: array().of(string().defined()),
 });
@@ -129,14 +135,14 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
       )
     ).default({}),
     feats: array()
-      .of(
-        tuple([
-          string().defined(),
-          string().nullable().defined().default(null),
-          string().defined(),
-          number().defined(),
-        ]).defined()
-      )
+      // .of(
+      //   tuple([
+      //     string().defined(),
+      //     string().nullable(),
+      //     string().nullable(),
+      //     number().nullable(),
+      //   ]).defined()
+      // )
       .default([]),
     specials: array().of(string().defined()).default([]),
     lores: array()
@@ -176,12 +182,12 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
       .of(
         object({
           name: string(),
-          magicTradition: string(),
-          spellcastingType: string(),
-          ability: string(),
+          magicTradition: string().oneOf(magicTraditions),
+          spellcastingType: string().oneOf(spellcastingTypes),
+          ability: string().oneOf(abilities),
           proficiency: number(),
           focusPoints: number(),
-          spells: array().of(spell),
+          spells: array().of(spellLevel),
           perDay: array().of(number().defined()),
         })
       )

@@ -4,3 +4,6 @@ export { default as PassiveAction } from "./PassiveAction";
 export { default as OneAction } from "./OneAction";
 export { default as TwoAction } from "./TwoAction";
 export { default as ThreeAction } from "./ThreeAction";
+export { default as MeleeAction } from "./MeleeAction";
+export { default as RangedAction } from "./RangedAction";
+export { default as SpellAction } from "./SpellAction";

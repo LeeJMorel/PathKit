@@ -26,12 +26,14 @@ export const FormField: React.FC<IFieldProps> = ({
   small,
   width,
   as,
+  type,
   ...inputProps
 }) => {
-  const [field, meta] = useField({ as, ...inputProps });
+  const [field, meta] = useField({ as, type, ...inputProps });
   const fieldClassName = classNames(
     styles.formInput,
     meta.error && styles.hasError,
+    type === "number" && styles.number,
     inputClassName
   );
   return (
@@ -54,12 +56,18 @@ export const FormField: React.FC<IFieldProps> = ({
         {as ? (
           <Field
             className={fieldClassName}
+            type={type}
             {...field}
             {...inputProps}
             as={as}
           />
         ) : (
-          <input className={fieldClassName} {...field} {...inputProps} />
+          <input
+            className={fieldClassName}
+            type={type}
+            {...field}
+            {...inputProps}
+          />
         )}
         {meta.touched && meta.error && (
           <div className={styles.error}>{meta.error}</div>

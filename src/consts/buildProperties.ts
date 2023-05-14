@@ -1,4 +1,11 @@
-import { Ability, AbilityLong, Proficiency, EntityType } from "../api/model";
+import {
+  Ability,
+  AbilityLong,
+  Proficiency,
+  EntityType,
+  MagicTradition,
+  SpellcastingType,
+} from "../api/model";
 
 interface AbilityOption {
   value: Ability;
@@ -21,6 +28,18 @@ export const abilityOptions: AbilityOption[] = [
   { value: Ability.int, label: AbilityLong.int },
   { value: Ability.wis, label: AbilityLong.wis },
   { value: Ability.cha, label: AbilityLong.cha },
+];
+
+export const magicTraditions = [
+  MagicTradition.arcane,
+  MagicTradition.divine,
+  MagicTradition.occult,
+  MagicTradition.primal,
+];
+
+export const spellcastingTypes = [
+  SpellcastingType.prepared,
+  SpellcastingType.spontaneous,
 ];
 
 interface IProficiency {
@@ -117,35 +136,35 @@ export const proficiencyMetadata: Record<Proficiency, IProficiency> = {
   // TODO Clarify if these are all keyability proficiencies
   heavy: {
     prof: Proficiency.heavy,
-    ability: "keyability",
+    ability: Ability.dex,
   },
   medium: {
     prof: Proficiency.medium,
-    ability: "keyability",
+    ability: Ability.dex,
   },
   light: {
     prof: Proficiency.light,
-    ability: "keyability",
+    ability: Ability.dex,
   },
   unarmored: {
     prof: Proficiency.unarmored,
-    ability: "keyability",
+    ability: Ability.dex,
   },
   advanced: {
     prof: Proficiency.advanced,
-    ability: "keyability",
+    ability: Ability.str,
   },
   martial: {
     prof: Proficiency.martial,
-    ability: "keyability",
+    ability: Ability.str,
   },
   simple: {
     prof: Proficiency.simple,
-    ability: "keyability",
+    ability: Ability.str,
   },
   unarmed: {
     prof: Proficiency.unarmed,
-    ability: "keyability",
+    ability: Ability.str,
   },
   castingArcane: {
     prof: Proficiency.castingArcane,
