@@ -19,11 +19,11 @@ interface StatInfo {
 }
 
 const statInfo: Record<string, StatInfo> = {
-  ac: { icon: "shield", detailLabel: "AC" },
+  ac: { icon: "shield", label: "ac", detailLabel: "AC" },
   fortitude: { icon: "circle", label: "f", detailLabel: "Fortitude" },
   will: { icon: "circle", label: "w", detailLabel: "Will" },
   reflex: { icon: "circle", label: "r", detailLabel: "Reflex" },
-  dc: { icon: "star", detailLabel: "DC" },
+  dc: { icon: "star", label: "dc", detailLabel: "DC" },
 };
 
 export const StatsDisplay = ({
