@@ -32,7 +32,7 @@ export const FormField: React.FC<IFieldProps> = ({
   const [field, meta] = useField({ as, type, ...inputProps });
   const fieldClassName = classNames(
     styles.formInput,
-    meta.error && styles.hasError,
+    meta.touched && meta.error && styles.hasError,
     type === "number" && styles.number,
     inputClassName
   );

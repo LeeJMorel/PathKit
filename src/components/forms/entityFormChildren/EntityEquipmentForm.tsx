@@ -6,6 +6,7 @@ import FormField from "../../formFields/FormField";
 import FormButton from "../../formFields/FormButton";
 import CollapsibleHeader from "../../headers/CollapsibleHeader";
 import classNames from "classnames";
+import { defaultEquipment } from "../../../consts";
 
 const EntityEquipmentForm: React.FC<IEntityFormChildrenProps> = ({
   formProps,
@@ -13,12 +14,7 @@ const EntityEquipmentForm: React.FC<IEntityFormChildrenProps> = ({
   const { values } = formProps;
 
   return (
-    <CollapsibleHeader
-      toggle
-      title="Equipment"
-      as="h4"
-      className={styles.nestedHeader}
-    >
+    <CollapsibleHeader toggle title="Equipment" as="h4" nested>
       <FieldArray name="build.equipment">
         {({ remove, push }) => (
           <div className={styles.formRow}>
@@ -26,7 +22,7 @@ const EntityEquipmentForm: React.FC<IEntityFormChildrenProps> = ({
               const [name, quantity, bulk, value, worn] =
                 values.build.equipment[i];
               return (
-                <div className={classNames(styles.formRow, styles.formSection)}>
+                <>
                   <div className={styles.formRow}>
                     <FormField
                       label={`Name`}
@@ -50,12 +46,12 @@ const EntityEquipmentForm: React.FC<IEntityFormChildrenProps> = ({
                     <FormField
                       label={`Value`}
                       name={`build.equipment.${i}[3]`}
-                      small
                     />
                     <FormField
                       label={`Worn`}
                       name={`build.equipment.${i}[4]`}
                       type="checkbox"
+                      small
                     />
                     <FormButton
                       variant="text"
@@ -64,11 +60,16 @@ const EntityEquipmentForm: React.FC<IEntityFormChildrenProps> = ({
                       title="Remove equipment"
                     />
                   </div>
-                </div>
+                  <div className={styles.formBreak} />
+                </>
               );
             })}
             <div className={styles.formCol}>
-              <FormButton variant="subtle" icon="circle-plus" onClick={push}>
+              <FormButton
+                variant="subtle"
+                icon="circle-plus"
+                onClick={() => push(defaultEquipment)}
+              >
                 Add equipment
               </FormButton>
             </div>

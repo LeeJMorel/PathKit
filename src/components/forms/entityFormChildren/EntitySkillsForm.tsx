@@ -11,13 +11,7 @@ export const EntitySkillsForm: React.FC<IEntityFormChildrenProps> = ({
 }) => {
   const { values } = formProps;
   return (
-    <CollapsibleHeader
-      toggle
-      title="Skills"
-      as="h4"
-      className={styles.nestedHeader}
-      defaultCollapsed
-    >
+    <CollapsibleHeader toggle title="Skills" as="h4" nested defaultCollapsed>
       <div className={styles.formRow}>
         <FormField
           as="select"

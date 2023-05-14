@@ -9,7 +9,8 @@ import styles from "./Objects.module.scss";
 import { EntityType, PartialEntity } from "../../api/model";
 import { useEntities } from "../../hooks";
 import ConfirmMenu, { IConfirmMenuProps } from "../menus/ConfirmMenu";
-import { defaultEntity } from "../../consts";
+import { defaultEntity, defaultEquipment } from "../../consts";
+import { transformPathbuilderBuild } from "../../utilities";
 
 interface IImportEntityProps {
   entity: PartialEntity;
@@ -35,15 +36,12 @@ export const ImportEntity: React.FC<IImportEntityProps> = ({ entity }) => {
   const { updateOrAddEntity } = useEntities();
 
   const handleSubmit = async (values: PartialEntity): Promise<void> => {
-    console.log("debug: ", { values });
     try {
       const response = await fetch(
         `https://pathbuilder2e.com/json.php?id=${values.pathbuilderId}`
       );
-      console.log("debug: import", { response });
       if (response.ok) {
         const result: PathbuilderResponse = await response.json();
-        console.log("debug: import", { result });
 
         if (result.success) {
           setDialog((prev) => ({
@@ -70,12 +68,13 @@ export const ImportEntity: React.FC<IImportEntityProps> = ({ entity }) => {
                 ...values,
                 type: EntityType.Player,
                 name: result.build.name || values.name || "Unknown",
-                build: merge(values.build, result.build),
+                build: merge(
+                  values.build,
+                  transformPathbuilderBuild(result.build)
+                ),
                 pathbuilderId: values.pathbuilderId,
               };
-              console.log("debug: import", { newEntityData });
               const newEntity = await updateOrAddEntity(newEntityData);
-              console.log("debug: import", { newEntity });
 
               if (newEntity) {
                 setDialog((prev) => ({
@@ -115,7 +114,7 @@ export const ImportEntity: React.FC<IImportEntityProps> = ({ entity }) => {
         }}
         validationSchema={object({
           pathbuilderId: string()
-            .matches(/^[0-9]{0,10}$/, "Incorrect format")
+            .matches(/^[0-9]{6}$/, "Must be 6 digits")
             .required("Required"),
         })}
       >
@@ -132,17 +131,19 @@ export const ImportEntity: React.FC<IImportEntityProps> = ({ entity }) => {
               }
               name="pathbuilderId"
               value={values.pathbuilderId}
-              placeholder="Pathbuilder Character ID"
+              placeholder="Pathbuilder JSON ID"
               className={styles.importField}
             />
-            <Button
-              type="submit"
-              variant="primary"
-              disabled={!isValid}
-              className={styles.submitButton}
-            >
-              Import
-            </Button>
+            <div className={styles.alignTop}>
+              <Button
+                type="submit"
+                variant="primary"
+                disabled={!isValid}
+                className={styles.submitButton}
+              >
+                Import
+              </Button>
+            </div>
           </Form>
         )}
       </Formik>

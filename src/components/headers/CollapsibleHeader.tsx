@@ -13,6 +13,7 @@ interface ICollapsibleHeaderProps
   defaultCollapsed?: boolean;
   as?: React.ElementType;
   onRemove?: () => void;
+  nested?: boolean;
 }
 
 const CollapsibleHeader = ({
@@ -25,6 +26,7 @@ const CollapsibleHeader = ({
   defaultCollapsed = false,
   as = "h3",
   onRemove,
+  nested,
   ...rest
 }: ICollapsibleHeaderProps): JSX.Element => {
   const [collapsed, setIsCollapsed] = useState<boolean>(
@@ -38,8 +40,7 @@ const CollapsibleHeader = ({
       // Set initial height
       setContentHeight(contentContainer.current.scrollHeight);
       setTimeout(() => {
-        // Fix for react rendering changing height, and more for drop shadows
-        setContentHeight((contentContainer?.current?.scrollHeight || 0) + 4);
+        setContentHeight(contentContainer?.current?.scrollHeight || 0);
       }, 100);
     }
   }, [contentContainer.current?.scrollHeight]);
@@ -60,7 +61,11 @@ const CollapsibleHeader = ({
   return (
     <>
       <div
-        className={classNames(styles.header, styles[align])}
+        className={classNames(
+          styles.header,
+          styles[align],
+          nested && styles.nested
+        )}
         onClick={toggle ? toggleCollapsed : undefined}
       >
         <Heading
@@ -88,7 +93,13 @@ const CollapsibleHeader = ({
         )}
       </div>
       <div
-        className={classNames(toggle && styles.collapsible, className)}
+        className={classNames(
+          styles.content,
+          toggle && styles.collapsible,
+          collapsed && styles.collapsed,
+          nested && styles.nested,
+          className
+        )}
         {...rest}
         ref={toggle ? contentContainer : undefined}
         style={

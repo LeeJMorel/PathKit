@@ -31,11 +31,7 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
   };
   return (
     <>
-      <CollapsibleHeader
-        title="General attributes"
-        as="h4"
-        className={styles.nestedHeader}
-      >
+      <CollapsibleHeader title="General attributes" as="h4" nested>
         <div className={styles.formRow}>
           <FormField
             name="image"
@@ -304,13 +300,7 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
         </div>
       </CollapsibleHeader>
 
-      <CollapsibleHeader
-        toggle
-        title="Traits"
-        as="h4"
-        className={styles.nestedHeader}
-        defaultCollapsed
-      >
+      <CollapsibleHeader toggle title="Traits" as="h4" nested defaultCollapsed>
         <FieldArray name="build.traits">
           {({ remove, push }) => (
             <div className={styles.formRow}>
@@ -325,7 +315,7 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
                   />
                 </div>
               ))}
-              <div className={styles.formCol}>
+              <div className={styles.formRow}>
                 <FormButton
                   variant="subtle"
                   icon="circle-plus"
@@ -342,7 +332,7 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
         toggle
         title="Languages"
         as="h4"
-        className={styles.nestedHeader}
+        nested
         defaultCollapsed
       >
         <FieldArray name="build.languages">
@@ -359,7 +349,7 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
                   />
                 </div>
               ))}
-              <div className={styles.formCol}>
+              <div className={styles.formRow}>
                 <FormButton
                   variant="subtle"
                   icon="circle-plus"
@@ -376,7 +366,7 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
         toggle
         title="Resistances & Immunities"
         as="h4"
-        className={styles.nestedHeader}
+        nested
         defaultCollapsed
       >
         <FieldArray name="build.resistances">
@@ -393,7 +383,7 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
                   />
                 </div>
               ))}
-              <div className={styles.formCol}>
+              <div className={styles.formRow}>
                 <FormButton
                   variant="subtle"
                   icon="circle-plus"
@@ -419,7 +409,7 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
                   />
                 </div>
               ))}
-              <div className={styles.formCol}>
+              <div className={styles.formRow}>
                 <FormButton
                   variant="subtle"
                   icon="circle-plus"
@@ -437,7 +427,7 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
         toggle
         title="Conditions"
         as="h4"
-        className={styles.nestedHeader}
+        nested
         defaultCollapsed
       >
         <FieldArray name="conditions">
@@ -468,7 +458,7 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
                   </div>
                 );
               })}
-              <div className={styles.formCol}>
+              <div className={styles.formRow}>
                 <FormButton
                   variant="subtle"
                   icon="circle-plus"

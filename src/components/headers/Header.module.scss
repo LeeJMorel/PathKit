@@ -43,9 +43,30 @@
       margin: 0.2em 1em 0.2em auto;
     }
   }
+  &.nested {
+    margin: 0.5em;
+    position: relative;
+    width: calc(100% - 1em);
+
+    border: 1px solid var(--accentBackground);
+  }
+}
+
+.content {
+  width: 100%;
+
+  &.nested {
+    margin: 0.5em;
+    width: calc(100% - 1em);
+  }
 }
 
 .collapsible {
-  overflow: hidden;
-  transition: height 0.2s ease-in-out;
+  overflow-y: hidden;
+  transition: all 0.2s ease-in-out;
+
+  &.collapsed {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 }

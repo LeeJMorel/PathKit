@@ -1,4 +1,17 @@
-import { EntityType, PartialEntity, PartialPath, PathType } from "../api/model";
+import {
+  EntityType,
+  Equipment,
+  Feat,
+  IAction,
+  IFreeAction,
+  IMelee,
+  IPassiveAction,
+  IRanged,
+  IReaction,
+  PartialEntity,
+  PartialPath,
+  PathType,
+} from "../api/model";
 
 export const defaultPath: PartialPath = {
   type: PathType.exploration,
@@ -77,10 +90,63 @@ export const defaultEntity: PartialEntity = {
       passiveActions: [],
       reactions: [],
       freeActions: [],
+      melee: [],
+      ranged: [],
     },
   },
   conditions: [],
   damage: 0,
   tempHp: 0,
   initiative: 0,
+};
+
+export const defaultFeature: Feat = ["", "", "", 1, ""];
+
+export const defaultEquipment: Equipment = ["", 1, 0, "0cp", false];
+
+export const defaultAction: IAction = {
+  actionNumber: 0,
+  name: "",
+  attackDc: 0,
+  traits: [],
+  effect: "",
+};
+
+export const defaultPassiveAction: IPassiveAction = {
+  name: "",
+  effect: "",
+};
+
+export const defaultReaction: IReaction = {
+  name: "",
+  trigger: "",
+  effect: "",
+};
+
+export const defaultFreeAction: IFreeAction = {
+  name: "",
+  frequency: "",
+  trigger: "",
+  effect: "",
+};
+
+export const defaultMelee: IMelee = {
+  actionNumber: 0,
+  name: "",
+  attackDc: 0,
+  damageType: "",
+  traits: [],
+  damageValue: "1d4",
+  extra: "",
+};
+
+export const defaultRanged: IRanged = {
+  actionNumber: 0,
+  name: "",
+  attackDc: 0,
+  damageType: "",
+  traits: [],
+  damageValue: "1d4",
+  extra: "",
+  range: 0,
 };

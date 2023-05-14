@@ -79,6 +79,7 @@
   &.above {
     .labelContainer {
       width: 100%;
+      text-align-last: left;
     }
     .error {
       position: initial;
@@ -98,6 +99,7 @@
     .labelContainer {
       justify-content: center;
       width: 100%;
+      text-align: center;
     }
     .inputContainer {
       display: flex;
@@ -111,6 +113,7 @@
   &.above.end {
     .labelContainer {
       justify-content: flex-end;
+      text-align: right;
     }
     .formInput {
       text-align: right;

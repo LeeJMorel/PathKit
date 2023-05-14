@@ -79,6 +79,8 @@ export interface IEntityBuild {
     freeActions: IFreeAction[];
     reactions: IReaction[];
     passiveActions: IPassiveAction[];
+    melee: IMelee[];
+    ranged: IRanged[];
   };
 }
 
@@ -305,4 +307,18 @@ export interface IAction {
   attackDc: number;
   traits: string[];
   effect: string;
+}
+
+export interface IMelee {
+  actionNumber: number;
+  name: string;
+  attackDc: number;
+  damageType: string;
+  traits: string[];
+  damageValue: string;
+  extra: string;
+}
+
+export interface IRanged extends IMelee {
+  range: number;
 }

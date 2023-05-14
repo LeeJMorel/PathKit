@@ -16,11 +16,13 @@ import {
   spellcastingTypes,
   magicTraditions,
 } from "./buildProperties";
+import { diceValueRegex } from "../utilities";
 
 const errMsg = {
   r: "Required",
   noNeg: "Cannot be negative.",
   noEmpty: "Cannot be empty, remove if not needed.",
+  dice: "Must be in dice roll format. e.g. 2d6+1d4+8",
 };
 
 const equipable = array().of(
@@ -136,29 +138,30 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
       )
     ).default({}),
     feats: array()
-      // .of(
-      //   tuple([
-      //     string().defined(),
-      //     string().nullable(),
-      //     string().nullable(),
-      //     number().nullable(),
-      //   ]).defined()
-      // )
+      .of(
+        tuple([
+          string().required(),
+          string().optional(),
+          string().optional(),
+          number().optional(),
+          string().optional(),
+        ]).defined()
+      )
       .default([]),
     specials: array().of(string().defined()).default([]),
     lores: array()
       .of(tuple([string().defined(), number().defined()]).defined())
       .default([]),
     equipment: array()
-      // .of(
-      //   tuple([
-      //     string().defined(),
-      //     number().defined(),
-      //     number().optional().default(0),
-      //     string().optional().default("0cp"),
-      //     boolean().optional().default(false),
-      //   ]).defined()
-      // )
+      .of(
+        tuple([
+          string().required(),
+          number().required().default(1),
+          number().optional().default(0),
+          string().optional().default("0cp"),
+          boolean().optional().default(false),
+        ]).defined()
+      )
       .default([]),
     specificProficiencies: object()
       .shape({
@@ -217,14 +220,14 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
       actions: array()
         .of(
           object({
-            name: string().defined(errMsg.noEmpty),
-            actionNumber: number().defined(errMsg.noEmpty),
-            attackDc: number().defined(errMsg.noEmpty),
+            name: string().required(errMsg.r),
+            actionNumber: number().min(0, errMsg.noNeg).defined(),
+            attackDc: number().min(0).required(errMsg.r),
             traits: array()
               .of(string().defined(errMsg.noEmpty))
               .defined()
               .default([]),
-            effect: string().defined(errMsg.noEmpty),
+            effect: string().required(errMsg.r),
           })
         )
         .defined()
@@ -232,10 +235,10 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
       freeActions: array()
         .of(
           object({
-            name: string().defined(errMsg.noEmpty),
-            frequency: string().defined(errMsg.noEmpty),
-            trigger: string().defined(errMsg.noEmpty),
-            effect: string().defined(errMsg.noEmpty),
+            name: string().required(errMsg.r),
+            frequency: string().required(errMsg.r),
+            trigger: string().required(errMsg.r),
+            effect: string().required(errMsg.r),
           })
         )
         .defined()
@@ -243,9 +246,9 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
       reactions: array()
         .of(
           object({
-            name: string().defined(errMsg.noEmpty),
-            trigger: string().defined(errMsg.noEmpty),
-            effect: string().defined(errMsg.noEmpty),
+            name: string().required(errMsg.r),
+            trigger: string().required(errMsg.r),
+            effect: string().required(errMsg.r),
           })
         )
         .defined()
@@ -253,8 +256,49 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
       passiveActions: array()
         .of(
           object({
-            name: string().defined(errMsg.noEmpty),
-            effect: string().defined(errMsg.noEmpty),
+            name: string().required(errMsg.r),
+            effect: string().required(errMsg.r),
+          })
+        )
+        .defined()
+        .default([]),
+      melee: array()
+        .of(
+          object({
+            name: string().required(errMsg.r),
+            actionNumber: number().min(0, errMsg.noNeg).defined(),
+            attackDc: number().min(0).required(errMsg.r),
+            damageType: string().required(errMsg.r),
+            //TODO: regex for dice
+            damageValue: string()
+              .required(errMsg.r)
+              .matches(diceValueRegex, errMsg.dice),
+            extra: string().default(""),
+            traits: array()
+              .of(string().defined(errMsg.noEmpty))
+              .defined()
+              .default([]),
+          })
+        )
+        .defined()
+        .default([]),
+      ranged: array()
+        .of(
+          object({
+            name: string().required(errMsg.r),
+            actionNumber: number().min(0, errMsg.noNeg).defined(),
+            attackDc: number().min(0).required(errMsg.r),
+            range: number().min(0).required(errMsg.r),
+            damageType: string().required(errMsg.r),
+            //TODO: regex for dice
+            damageValue: string()
+              .required(errMsg.r)
+              .matches(diceValueRegex, errMsg.dice),
+            extra: string().default(""),
+            traits: array()
+              .of(string().defined(errMsg.noEmpty))
+              .defined()
+              .default([]),
           })
         )
         .defined()
