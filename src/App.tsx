@@ -128,7 +128,7 @@ function App() {
           {/* </div> */}
           {/* <PathPlannerDropdown onClose={() => setCreateDropdown(false)} /> */}
           {/* if in encounter mode, show a close button to exit it*/}
-          {preferences.selectedPath != undefined ? (
+          {preferences.selectedPath != 0 ? (
             <>
               {showInitiativeMenu && currentPath?.type === "encounter" && (
                 <InitiativeMenu onClose={handleInitiativeMenu} />
