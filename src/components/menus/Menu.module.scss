@@ -27,6 +27,12 @@
 
     .buttonMargin {
       margin: 0.5em;
+      color: var(--tertiaryAccentText);
+      background-color: var(--accentBackground);
+    
+      &:hover {
+        background-color: var(--tertiaryAccentBackground);
+      }
     }
 
     .header {

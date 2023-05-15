@@ -14,7 +14,7 @@ function NotesSheet() {
   const handleChange = (newNote: PartialNote) => {
     updateOrAddNote(newNote);
   };
-
+  
   const handleCreateNoteClick = async () => {
     const newNote = await addNote({
       title: new Date().toLocaleString(),
@@ -41,7 +41,7 @@ function NotesSheet() {
           </Button>
         </div>
       </div>
-    );
+    ); 
   }, [notesExist]);
 
   return (

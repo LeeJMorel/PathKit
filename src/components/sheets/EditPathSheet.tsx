@@ -100,9 +100,9 @@ function EditPathSheet() {
 
   const renderAddEntityRow = () => (
     <div className={styles.sheetRowContainer}>
-      <Button onClick={() => handleAddEntity(EntityType.Shop)}>Add Shop</Button>
-      <Button onClick={() => handleAddEntity(EntityType.NPC)}>Add NPC</Button>
-      <Button onClick={() => handleAddEntity(EntityType.Monster)}>
+      <Button type="submit" variant="primary" onClick={() => handleAddEntity(EntityType.Shop)}>Add Shop</Button>
+      <Button type="submit" variant="primary" onClick={() => handleAddEntity(EntityType.NPC)}>Add NPC</Button>
+      <Button type="submit" variant="primary" onClick={() => handleAddEntity(EntityType.Monster)}>
         Add Monster
       </Button>
       <Button onClick={() => handleLoadClick()}>Load</Button>
