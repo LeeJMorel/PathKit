@@ -56,7 +56,7 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
   initiative: number().defined().default(0),
   noteId: number().nullable(),
   damage: array().of(number().defined().min(0, errMsg.noNeg)).default([]),
-  tempHp: number().default(0),
+  tempHp: array().of(number().defined().min(0, errMsg.noNeg)).default([]),
   quantity: number().default(1),
   maxHp: number().nullable(),
   conditions: array()

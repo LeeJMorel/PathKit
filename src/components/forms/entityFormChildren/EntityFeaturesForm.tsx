@@ -6,7 +6,7 @@ import FormField from "../../formFields/FormField";
 import FormButton from "../../formFields/FormButton";
 import CollapsibleHeader from "../../headers/CollapsibleHeader";
 import classNames from "classnames";
-import { defaultFeature } from "../../../consts";
+import { defaultFeat } from "../../../consts";
 
 const EntityFeaturesForm: React.FC<IEntityFormChildrenProps> = ({
   formProps,
@@ -62,7 +62,7 @@ const EntityFeaturesForm: React.FC<IEntityFormChildrenProps> = ({
               <FormButton
                 variant="subtle"
                 icon="circle-plus"
-                onClick={() => push(defaultFeature)}
+                onClick={() => push(defaultFeat)}
               >
                 Add feature
               </FormButton>

@@ -154,9 +154,9 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
                 Save {entity.type}
               </Button>
             </div>
-            {/* <div>
+            <div>
               <pre>{JSON.stringify(props.errors, null, 2)}</pre>
-            </div> */}
+            </div>
           </Form>
         );
       }}

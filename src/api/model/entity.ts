@@ -14,7 +14,7 @@ export interface PartialEntity {
   noteId?: number | null;
   build: IEntityBuild;
   damage: number[];
-  tempHp: number;
+  tempHp: number[];
   /** Should not use on player entities, this should be calculated instead */
   maxHp?: number | null;
   conditions: ICondition[];

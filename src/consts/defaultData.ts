@@ -97,12 +97,12 @@ export const defaultEntity: PartialEntity = {
     },
   },
   conditions: [],
-  damage: [0],
-  tempHp: 0,
+  damage: [],
+  tempHp: [],
   initiative: 0,
 };
 
-export const defaultFeature: Feat = ["", "", "", 1, ""];
+export const defaultFeat: Feat = ["", "", "", 1, ""];
 
 export const defaultEquipment: Equipment = ["", 1, 0, "0cp", false];
 
