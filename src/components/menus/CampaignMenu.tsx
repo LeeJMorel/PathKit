@@ -70,10 +70,10 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
           ))}
         </div>
         <div className={styles.menuRowContainer}>
-          <Button disabled={!selectedCampaign} onClick={handleLoadClick}>
+          <Button disabled={!selectedCampaign} type="submit" variant="primary" onClick={handleLoadClick}>
             Load
           </Button>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button type="submit" variant="primary" onClick={handleClose}>Cancel</Button>
         </div>
       </>
     );
