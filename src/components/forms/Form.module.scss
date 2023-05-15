@@ -6,7 +6,7 @@
   justify-content: flex-start;
   width: 100%;
   margin: 0 auto;
-  color: var(--primaryText);
+  color: var(--tertiaryText);
 
   .formTabs {
     margin-bottom: 1em;
@@ -122,6 +122,12 @@
 
   .formButton {
     margin: 0.5em;
+    color: var(--tertiaryAccentText);
+    background-color: var(--accentBackground);
+    
+    &:hover {
+      background-color: var(--tertiaryAccentBackground);
+    }
   }
 }
 
