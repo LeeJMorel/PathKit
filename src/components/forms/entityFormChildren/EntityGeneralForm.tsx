@@ -56,6 +56,14 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
         </div>
         <div className={styles.formRow}>
           <FormField
+            label="Description"
+            name={`build.desc`}
+            as="textarea"
+            style={{ resize: "vertical" }}
+          />
+        </div>
+        <div className={styles.formRow}>
+          <FormField
             label={`Perception [${getProficiencyModifier(
               values,
               Proficiency.perception,
@@ -239,23 +247,8 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
               value={values.maxHp}
               type="number"
             />
-            {/* /
-            <Field
-              name="build.level"
-              value={values.build.level}
-              type="number"
-              className={styles.formSmall}
-            /> */}
           </div>
         </div>
-        {/* <div className={styles.formRow}>
-          <p className={styles.formLabel}>Conditions:</p>
-          <Field name="conditions" className={styles.formInput} />
-          <p className={styles.formLabel}>Resistances:</p>
-          <Field name="resistances" className={styles.formInput} />
-          <p className={styles.formLabel}>Immunities:</p>
-          <Field name="immunities" className={styles.formInput} />
-        </div> */}
         <div className={styles.formRow}>
           <FormField
             label="Speed"

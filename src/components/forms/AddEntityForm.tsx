@@ -148,7 +148,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
 
         return (
           <Form className={styles.formContainer}>
-            <Tabs tabs={tabs(props)} className={styles.formTabs} />
+            {renderTabs(props)}
             <div className={classNames(styles.formRow, styles.actionRow)}>
               <Button type="submit" variant="primary" disabled={!props.isValid}>
                 Save {entity.type}

@@ -13,11 +13,12 @@ export interface PartialEntity {
   initiative: number;
   noteId?: number | null;
   build: IEntityBuild;
-  damage: number;
+  damage: number[];
   tempHp: number;
   /** Should not use on player entities, this should be calculated instead */
   maxHp?: number | null;
   conditions: ICondition[];
+  quantity: number;
   id?: number;
   campaignId?: number;
   pathbuilderId?: string | null;
@@ -42,6 +43,7 @@ export interface IRawEntity extends Omit<IEntity, "conditions" | "build"> {
 export interface IEntityBuild {
   name?: string;
   class?: string;
+  desc?: string;
   level: number;
   ancestry?: string;
   heritage?: string;

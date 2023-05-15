@@ -55,8 +55,9 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
   name: string().defined().required(errMsg.r),
   initiative: number().defined().default(0),
   noteId: number().nullable(),
-  damage: number().default(0),
+  damage: array().of(number().defined().min(0, errMsg.noNeg)).default([]),
   tempHp: number().default(0),
+  quantity: number().default(1),
   maxHp: number().nullable(),
   conditions: array()
     .of(
@@ -71,6 +72,7 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
   build: object({
     name: string(),
     class: string(),
+    desc: string(),
     level: number()
       .required()
       .default(1)

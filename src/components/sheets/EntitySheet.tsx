@@ -87,6 +87,23 @@ function EntitySheet() {
             <img src={entity.image} alt={entity.name} />
           </div>
         )}
+        <table className={styles.sheetTable}>
+          <tbody>
+            <tr>
+              {entity?.build?.traits &&
+                entity.build.traits.map((trait, index) => (
+                  <td key={index}>
+                    <DataCellDisplay
+                      name={`Trait ${index + 1}`}
+                      value={trait}
+                      labelPosition="inline"
+                      align="start"
+                    />
+                  </td>
+                ))}
+            </tr>
+          </tbody>
+        </table>
         <div className={styles.sheetRowContainerLeftAlign}>
           {entity?.build?.proficiencies?.perception && (
             <DataCellDisplay
@@ -111,7 +128,7 @@ function EntitySheet() {
               <DataCellDisplay
                 name="damage"
                 label={`HP`}
-                value={getPlayerMaxHp(entity) - entity?.damage}
+                value={getPlayerMaxHp(entity) - entity?.damage[0]}
                 labelPosition="inline"
                 align="start"
                 small
@@ -126,11 +143,11 @@ function EntitySheet() {
               />
             </div>
           )}
-          {/* {entity?.quantity === 1 && entity?.maxHp && (
+          {entity?.quantity === 1 && entity?.maxHp && (
             <div className={styles.entityHp}>
               <DataCellDisplay
                 name="damage"
-                value={entity?.maxHp - entity?.damage}
+                value={entity?.maxHp - entity?.damage[0]}
                 labelPosition="inline"
                 align="start"
                 small
@@ -144,8 +161,47 @@ function EntitySheet() {
                 small
               />
             </div>
-          )} */}
+          )}
         </div>
+        <div className={styles.sheetRowContainerLeftAlign}>
+          {entity?.build?.languages && (
+            <DataCellDisplay
+              name="entity.build.languages"
+              value={entity?.build?.languages.join(", ")}
+              label={`Languages`}
+              labelPosition="inline"
+              align="start"
+            />
+          )}
+          {entity?.conditions && entity.conditions.length > 0 ? (
+            <DataCellDisplay
+              name="conditions"
+              value={entity.conditions}
+              label="Conditions Applied"
+              labelPosition="inline"
+              align="start"
+            />
+          ) : (
+            <DataCellDisplay
+              name="conditions"
+              value="N/A"
+              label="Conditions Applied"
+              labelPosition="inline"
+              align="start"
+            />
+          )}
+        </div>
+        {entity?.build?.desc && (
+          <CollapsibleHeader
+            title="Description"
+            toggle
+            as="h4"
+            nested
+            defaultCollapsed
+          >
+            <p>{entity.build.desc}</p>
+          </CollapsibleHeader>
+        )}
         <hr />
         <div className={styles.sheetRowContainerLeftAlign}>
           <DataCellDisplay
@@ -200,83 +256,101 @@ function EntitySheet() {
         <hr />
         <StatsDisplay entity={entity} labelPosition={"above"} />
         <hr />
-        {/* {entity?.quantity > 1 && (
+        {entity?.quantity > 1 && entity?.maxHp && (
           <div className={styles.sheetRowContainerLeftAlign}>
-            {entity?.maxHp && (
-              <div className={styles.entityHp}>
-                <DataCellDisplay
-                  name="damage"
-                  value={entity?.maxHp - entity?.damage}
-                  labelPosition="inline"
-                  align="start"
-                  small
-                />
-                /
+            {entity.damage.map((damage, index) => (
+              <div key={index} className={styles.entityHp}>
+                {entity.maxHp && (
+                  <>
+                    <DataCellDisplay
+                      name="damage"
+                      value={entity.maxHp - damage}
+                      labelPosition="inline"
+                      align="start"
+                      small
+                    />
+                    /
+                  </>
+                )}
                 <DataCellDisplay
                   name="maxHp"
-                  value={entity?.maxHp}
+                  value={entity?.maxHp ?? ""}
                   labelPosition="inline"
                   align="start"
                   small
                 />
               </div>
-            )}
+            ))}
           </div>
-        )} */}
-        {/* {entity?.build?.equipment && (
+        )}
+        {entity?.build?.equipment && (
           <CollapsibleHeader
             title="Equipment"
             toggle
-            className={styles.sheetRowContainerLeftAlign}
+            as="h4"
+            nested
+            defaultCollapsed
           >
-            {entity.build.equipment.map((item, index) => (
-              <div className={styles.sheetRowContainerLeftAlign} key={index}>
-                <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
-                  value={item.name}
-                  align="start"
-                />
-                <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
-                  value={item.bulk}
-                  align="start"
-                />
-                <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
-                  value={item.value}
-                  align="start"
-                />
-                <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
-                  value={item.worn}
-                  align="start"
-                />
-              </div>
-            ))}
+            <table className={styles.sheetTable}>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                  <th>Bulk</th>
+                  <th>Value</th>
+                  <th>Worn</th>
+                </tr>
+              </thead>
+              <tbody>
+                {entity.build.equipment.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item[0]}</td>
+                    <td>{item[1]}</td>
+                    <td>{item[2]}</td>
+                    <td>{item[3]}</td>
+                    <td>{item[4]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </CollapsibleHeader>
-        )} */}
-        {/* {entity?.build?.feats && (
+        )}
+        {entity?.build?.feats && (
           <CollapsibleHeader
             title="Features"
             toggle
-            className={styles.sheetRowContainerLeftAlign}
+            as="h4"
+            nested
+            defaultCollapsed
           >
-            {entity.build.equipment.map((item, index) => (
-              <div className={styles.sheetRowContainerLeftAlign} key={index}>
-                <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
-                  value={item.name}
-                  align="start"
-                />
-                <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
-                  value={item.desc}
-                  align="start"
-                />
-              </div>
-            ))}
+            <table className={styles.sheetTable}>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Secondary</th>
+                  <th>Feat Type</th>
+                  <th>Level</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {entity.build.feats.map((feat, index) => {
+                  const [name, secondary, featType, level, desc] = feat;
+
+                  return (
+                    <tr key={index}>
+                      <td>{name}</td>
+                      <td>{secondary}</td>
+                      <td>{featType}</td>
+                      <td>{level}</td>
+                      <td>{desc}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </CollapsibleHeader>
-        )} */}
+        )}
         <div className={styles.sheetRowContainerLeftAlign}>
           {entity?.build?.attributes?.speed && (
             <DataCellDisplay
@@ -324,6 +398,28 @@ function EntitySheet() {
             />
           )}
         </div>
+        <div className={styles.sheetRowContainerLeftAlign}>
+          {entity?.build?.resistances &&
+            entity.build.resistances.length > 0 && (
+              <DataCellDisplay
+                name="entity.build.resistances"
+                value={entity.build.resistances.join(", ")}
+                label="Resistances"
+                labelPosition="inline"
+                align="start"
+              />
+            )}
+
+          {entity?.build?.immunities && entity.build.immunities.length > 0 && (
+            <DataCellDisplay
+              name="entity.build.immunities"
+              value={entity.build.immunities.join(", ")}
+              label="Immunities"
+              labelPosition="inline"
+              align="start"
+            />
+          )}
+        </div>
         <FilterHeader
           title="Actions"
           toggle
@@ -346,67 +442,460 @@ function EntitySheet() {
           }
         >
           <KeywordDiv keywords={["Passive Action"]}>
-            {/* {entity.build.passiveAction.map((item, index) => (
+            {entity.build.actions.passiveActions.map((item, index) => (
               <div className={styles.sheetRowContainerLeftAlign} key={index}>
                 <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
+                  name={`Passive Action ${index + 1}`}
                   value={item.name}
                   align="start"
                 />
                 <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
+                  name={`Passive Action ${index + 1}`}
                   value={item.effect}
                   align="start"
                 />
               </div>
-            ))} */}
+            ))}
           </KeywordDiv>
           <KeywordDiv keywords={["Reaction"]}>
-            {/* {entity.build.reaction.map((item, index) => (
+            {entity.build.actions.reactions.map((item, index) => (
               <div className={styles.sheetRowContainerLeftAlign} key={index}>
                 <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
+                  name={`Reaction ${index + 1}`}
                   value={item.name}
                   align="start"
                 />
-                                <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
+                <DataCellDisplay
+                  name={`Reaction ${index + 1}`}
                   value={item.trigger}
                   align="start"
                 />
                 <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
+                  name={`Reaction ${index + 1}`}
                   value={item.effect}
                   align="start"
                 />
               </div>
-            ))} */}
+            ))}
           </KeywordDiv>
           <KeywordDiv keywords={["Free Action"]}>
-            {/* {entity.build.freeAction.map((item, index) => (
+            {entity.build.actions.freeActions.map((item, index) => (
               <div className={styles.sheetRowContainerLeftAlign} key={index}>
                 <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
+                  name={`Free Action ${index + 1}`}
                   value={item.name}
                   align="start"
                 />
-                                                <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
+                <DataCellDisplay
+                  name={`Free Action ${index + 1}`}
                   value={item.frequency}
                   align="start"
                 />
-                                <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
+                <DataCellDisplay
+                  name={`Free Action ${index + 1}`}
                   value={item.trigger}
                   align="start"
                 />
                 <DataCellDisplay
-                  name={`Equipment ${index + 1}`}
+                  name={`Free Action ${index + 1}`}
                   value={item.effect}
                   align="start"
                 />
               </div>
-            ))} */}
+            ))}
+          </KeywordDiv>
+          <KeywordDiv keywords={["One Action"]}>
+            {entity.build.actions.actions.map(
+              (item, index) =>
+                item.actionNumber === 1 && (
+                  <div
+                    className={styles.sheetRowContainerLeftAlign}
+                    key={index}
+                  >
+                    <DataCellDisplay
+                      name={`Action ${index + 1}`}
+                      value={item.actionNumber}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Action ${index + 1}`}
+                      value={item.name}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Action ${index + 1}`}
+                      value={item.attackDc}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Action ${index + 1}`}
+                      value={item.traits.join(", ")}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Action ${index + 1}`}
+                      value={item.effect}
+                      align="start"
+                    />
+                  </div>
+                )
+            )}
+          </KeywordDiv>
+          <KeywordDiv keywords={["Two Action"]}>
+            {entity.build.actions.actions.map(
+              (item, index) =>
+                item.actionNumber === 2 && (
+                  <div
+                    className={styles.sheetRowContainerLeftAlign}
+                    key={index}
+                  >
+                    <DataCellDisplay
+                      name={`Action ${index + 1}`}
+                      value={item.actionNumber}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Action ${index + 1}`}
+                      value={item.name}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Action ${index + 1}`}
+                      value={item.attackDc}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Action ${index + 1}`}
+                      value={item.traits.join(", ")}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Action ${index + 1}`}
+                      value={item.effect}
+                      align="start"
+                    />
+                  </div>
+                )
+            )}
+          </KeywordDiv>
+          <KeywordDiv keywords={["Three Action"]}>
+            {entity.build.actions.actions.map(
+              (item, index) =>
+                item.actionNumber === 3 && (
+                  <div
+                    className={styles.sheetRowContainerLeftAlign}
+                    key={index}
+                  >
+                    <DataCellDisplay
+                      name={`Action ${index + 1}`}
+                      value={item.actionNumber}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Action ${index + 1}`}
+                      value={item.name}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Action ${index + 1}`}
+                      value={item.attackDc}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Action ${index + 1}`}
+                      value={item.traits.join(", ")}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Action ${index + 1}`}
+                      value={item.effect}
+                      align="start"
+                    />
+                  </div>
+                )
+            )}
+          </KeywordDiv>
+          <KeywordDiv keywords={["One Action, Melee Action"]}>
+            {entity.build.actions.melee.map(
+              (item, index) =>
+                item.actionNumber === 1 && (
+                  <div
+                    className={styles.sheetRowContainerLeftAlign}
+                    key={index}
+                  >
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.actionNumber}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.name}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.attackDc}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.damageType}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.traits.join(", ")}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.damageValue}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.extra}
+                      align="start"
+                    />
+                  </div>
+                )
+            )}
+          </KeywordDiv>
+          <KeywordDiv keywords={["Two Action, Melee Action"]}>
+            {entity.build.actions.melee.map(
+              (item, index) =>
+                item.actionNumber === 2 && (
+                  <div
+                    className={styles.sheetRowContainerLeftAlign}
+                    key={index}
+                  >
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.actionNumber}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.name}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.attackDc}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.damageType}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.traits.join(", ")}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.damageValue}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.extra}
+                      align="start"
+                    />
+                  </div>
+                )
+            )}
+          </KeywordDiv>
+          <KeywordDiv keywords={["Three Action, Melee Action"]}>
+            {entity.build.actions.melee.map(
+              (item, index) =>
+                item.actionNumber === 3 && (
+                  <div
+                    className={styles.sheetRowContainerLeftAlign}
+                    key={index}
+                  >
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.actionNumber}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.name}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.attackDc}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.damageType}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.traits.join(", ")}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.damageValue}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Melee Action ${index + 1}`}
+                      value={item.extra}
+                      align="start"
+                    />
+                  </div>
+                )
+            )}
+          </KeywordDiv>
+          <KeywordDiv keywords={["One Action, Ranged Action"]}>
+            {entity.build.actions.ranged.map(
+              (item, index) =>
+                item.actionNumber === 1 && (
+                  <div
+                    className={styles.sheetRowContainerLeftAlign}
+                    key={index}
+                  >
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.actionNumber}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.name}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.attackDc}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.damageType}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.traits.join(", ")}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.damageValue}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.extra}
+                      align="start"
+                    />
+                  </div>
+                )
+            )}
+          </KeywordDiv>
+          <KeywordDiv keywords={["Two Action, Ranged Action"]}>
+            {entity.build.actions.ranged.map(
+              (item, index) =>
+                item.actionNumber === 2 && (
+                  <div
+                    className={styles.sheetRowContainerLeftAlign}
+                    key={index}
+                  >
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.actionNumber}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.name}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.attackDc}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.damageType}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.traits.join(", ")}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.damageValue}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.extra}
+                      align="start"
+                    />
+                  </div>
+                )
+            )}
+          </KeywordDiv>
+          <KeywordDiv keywords={["Three Action, Ranged Action"]}>
+            {entity.build.actions.ranged.map(
+              (item, index) =>
+                item.actionNumber === 3 && (
+                  <div
+                    className={styles.sheetRowContainerLeftAlign}
+                    key={index}
+                  >
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.actionNumber}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.name}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.attackDc}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.damageType}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.traits.join(", ")}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.damageValue}
+                      align="start"
+                    />
+                    <DataCellDisplay
+                      name={`Ranged Action ${index + 1}`}
+                      value={item.extra}
+                      align="start"
+                    />
+                  </div>
+                )
+            )}
           </KeywordDiv>
         </FilterHeader>
         <NotesObject />

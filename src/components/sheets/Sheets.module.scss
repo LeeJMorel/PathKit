@@ -138,4 +138,27 @@
       margin: 0 0.5em;
     }
   }
+
+  .sheetTable {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--primaryText);
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid var(--primaryBackground);
+      color: var(--bodyText);
+    }
+
+    th {
+      background-color: var(--primaryBackground);
+      color: var(--primaryText);
+    }
+
+    tr:nth-child(even) {
+      background-color: var(--secondaryAccentBackground);
+    }
+  }
 }

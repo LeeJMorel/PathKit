@@ -21,9 +21,11 @@ export const defaultPath: PartialPath = {
 export const defaultEntity: PartialEntity = {
   name: "Unknown",
   image: "",
+  quantity: 1,
   type: EntityType.none,
   build: {
     level: 1,
+    desc: "",
     attributes: {},
     proficiencies: {
       classDC: 0,
@@ -95,7 +97,7 @@ export const defaultEntity: PartialEntity = {
     },
   },
   conditions: [],
-  damage: 0,
+  damage: [0],
   tempHp: 0,
   initiative: 0,
 };
