@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
 import styles from "./Modules.module.scss";
 import { Unity, useUnityContext } from "react-unity-webgl";
-import { useResources } from "../../hooks";
 
 function DiceModule() {
-  const { loaderPath, dataPath, frameworkPath, wasmPath } = useResources();
 
+  // loads the unity components, do not change the ordering
   const { unityProvider } = useUnityContext({
-    loaderUrl: loaderPath,
-    dataUrl: dataPath,
-    frameworkUrl: frameworkPath,
-    codeUrl: wasmPath,
+     loaderUrl: "dice-resources/diceroller.loader.js",
+     dataUrl: "dice-resources/webgl.data",
+     frameworkUrl: "dice-resources/build.framework.js",
+     codeUrl: "dice-resources/build.wasm",
   });
 
   //this checks if the unity component loaded, if not we show an error message
   const [hasError, setHasError] = useState(false);
   useEffect(() => {
-    fetch(frameworkPath)
+    fetch("dice-resources/diceroller.loader.js")
       .then((response) => {
         if (!response.ok) {
           setHasError(true);
@@ -41,7 +40,7 @@ function DiceModule() {
   return (
     <div className={styles.moduleContainer}>
       <div className={styles.moduleContent}>
-        <Unity unityProvider={unityProvider} />
+        <Unity unityProvider={unityProvider}/>
       </div>
     </div>
   );
