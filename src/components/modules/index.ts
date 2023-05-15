@@ -18,6 +18,7 @@ export interface IModule {
   id: Module;
   label: string;
   ModuleComponent: React.ElementType;
+  collapsible: boolean;
 }
 
 // Create a mapping of module names to corresponding component references
@@ -26,32 +27,46 @@ const Modules: Record<Module, IModule> = {
     id: Module.TipModule,
     label: "Show Tutorial Tips",
     ModuleComponent: TipModule,
+    collapsible: false,
   },
   DiceModule: {
     id: Module.DiceModule,
     label: "Dice Roller",
     ModuleComponent: DiceModule,
+    collapsible: false,
   },
   NotesModule: {
     id: Module.NotesModule,
-    label: "Notes Module",
+    label: "Notes",
     ModuleComponent: NotesModule,
+    collapsible: true,
   },
   BinderModule: {
     id: Module.BinderModule,
-    label: "Binder Module",
+    label: "Binder",
     ModuleComponent: BinderModule,
+    collapsible: true,
   },
   DCModule: {
     id: Module.DCModule,
     label: "DC Adjustments Table",
     ModuleComponent: DCModule,
+    collapsible: true,
   },
   IncomeModule: {
     id: Module.IncomeModule,
     label: "Income Earned Table",
     ModuleComponent: IncomeModule,
+    collapsible: true,
   },
 };
 
-export { TipModule, DCModule, IncomeModule, DiceModule, NotesModule, BinderModule, Modules };
+export {
+  TipModule,
+  DCModule,
+  IncomeModule,
+  DiceModule,
+  NotesModule,
+  BinderModule,
+  Modules,
+};

@@ -97,8 +97,8 @@ export const defaultEntity: PartialEntity = {
     },
   },
   conditions: [],
-  damage: [],
-  tempHp: [],
+  damage: [0],
+  tempHp: [0],
   initiative: 0,
 };
 

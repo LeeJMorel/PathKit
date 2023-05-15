@@ -29,13 +29,65 @@ export const FormField: React.FC<IFieldProps> = ({
   type,
   ...inputProps
 }) => {
-  const [field, meta] = useField({ as, type, ...inputProps });
+  const [field, meta, helpers] = useField({ as, type, ...inputProps });
   const fieldClassName = classNames(
     styles.formInput,
     meta.touched && meta.error && styles.hasError,
     type === "number" && styles.number,
+    type === "checkbox" && styles.checkbox,
     inputClassName
   );
+
+  const handleCheck = () => {
+    if (type === "checkbox" || type === "radio") {
+      helpers.setValue(!field.checked);
+      helpers.setTouched(true);
+    }
+  };
+
+  const renderInput = () => {
+    if (as) {
+      return (
+        <Field
+          className={fieldClassName}
+          type={type}
+          {...field}
+          {...inputProps}
+          as={as}
+        />
+      );
+    }
+    if (type === "checkbox") {
+      return (
+        <>
+          <div
+            className={classNames(
+              styles.checkboxBack,
+              field.checked && styles.checked
+            )}
+            role="checkbox"
+            aria-checked={field.checked}
+          >
+            <div className={styles.checkboxFront} />
+          </div>
+          <input
+            className={fieldClassName}
+            type={type}
+            {...field}
+            {...inputProps}
+          />
+        </>
+      );
+    }
+    return (
+      <input
+        className={fieldClassName}
+        type={type}
+        {...field}
+        {...inputProps}
+      />
+    );
+  };
   return (
     <div
       className={classNames(
@@ -43,8 +95,11 @@ export const FormField: React.FC<IFieldProps> = ({
         styles[labelPosition],
         styles[align],
         small && styles.small,
+        type === "checkbox" && styles.isCheckbox,
+        type === "radio" && styles.isRadio,
         className
       )}
+      onClick={handleCheck}
     >
       {label && (
         <div className={styles.labelContainer}>
@@ -52,25 +107,8 @@ export const FormField: React.FC<IFieldProps> = ({
         </div>
       )}
       <div className={styles.inputContainer} style={{ maxWidth: width }}>
-        {as ? (
-          <Field
-            className={fieldClassName}
-            type={type}
-            {...field}
-            {...inputProps}
-            as={as}
-          />
-        ) : (
-          <input
-            className={fieldClassName}
-            type={type}
-            {...field}
-            {...inputProps}
-          />
-        )}
-        {meta.touched && meta.error && (
-          <div className={styles.error}>{meta.error}</div>
-        )}
+        {renderInput()}
+        <ErrorMessage {...field} component="div" className={styles.error} />
       </div>
     </div>
   );

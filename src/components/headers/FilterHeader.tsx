@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import styles from "./Header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
@@ -6,16 +6,23 @@ import FilterDropdown from "../dropdowns/FilterDropdown";
 
 interface IKeywordDivProps extends React.HTMLProps<HTMLDivElement> {
   keywords: string[];
+  children: React.ReactNode;
 }
 
 const KeywordDiv = ({
   keywords,
   children,
+  className,
   ...rest
 }: IKeywordDivProps): JSX.Element => {
   const keywordString = keywords.join(", ");
+  console.log({ keywords, children, className, rest });
   return (
-    <div data-keywords={keywordString} {...rest}>
+    <div
+      data-keywords={keywordString}
+      className={styles.filteredColumn}
+      {...rest}
+    >
       {children}
     </div>
   );

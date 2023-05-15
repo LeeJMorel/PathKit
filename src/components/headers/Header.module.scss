@@ -62,11 +62,16 @@
 }
 
 .collapsible {
-  overflow-y: hidden;
+  overflow-y: auto;
   transition: all 0.2s ease-in-out;
-
-  &.collapsed {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
+}
+.collapsing {
+  overflow: hidden; // Hides scroll bar while animating
+}
+.collapsed {
+  padding-top: 0;
+  padding-bottom: 0;
+  flex: 0;
+  min-height: auto;
+  overflow: hidden;
 }

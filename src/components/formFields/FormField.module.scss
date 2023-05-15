@@ -6,11 +6,11 @@
   margin: 0 0.5em 0.5em;
   align-items: flex-start;
   flex: 1;
+  position: relative;
 
   // &:last-of-type {
   //   margin-bottom: 0;
   // }
-
   .labelContainer {
     display: flex;
     align-items: center;
@@ -25,7 +25,7 @@
   .inputContainer {
     flex: 1;
     width: 100%;
-    position: relative;
+    // position: relative;
 
     .formInput {
       padding: $inputPadding;
@@ -127,6 +127,11 @@
       min-width: auto;
     }
   }
+
+  &.isCheckbox,
+  &.isRadio {
+    cursor: pointer;
+  }
 }
 
 .inputButton {
@@ -141,3 +146,40 @@
 //   margin-bottom: 1em;
 //   margin-left: 1em;
 // }
+
+.formInput.checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.checkboxBack {
+  background: var(--primaryBackground);
+  width: 1.1em;
+  height: 1.1em;
+  position: relative;
+  border: 1px solid var(--primaryText);
+
+  transform: rotate(45deg) translate(0.25em, 0.25em);
+
+  .checkboxFront {
+    background: var(--primaryText);
+    width: 0.6em;
+    height: 0.6em;
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+  }
+  &:not(.checked) {
+    .checkboxFront {
+      opacity: 0;
+    }
+  }
+}
+.checkboxClickTarget {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0.1;
+}

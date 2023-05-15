@@ -1,17 +1,23 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import styles from "./Card.module.scss";
-import { EntityType, IEntity, Proficiency } from "../../api/model";
-import { usePreferencesStore, useBoolean } from "../../hooks";
+import {
+  EntityType,
+  IEntity,
+  PartialEntity,
+  Proficiency,
+} from "../../api/model";
+import { usePreferencesStore, useBoolean, useEntities } from "../../hooks";
 import ConditionsDropdown from "../dropdowns/ConditionsDropdown";
-import { getProficiencyModifier } from "../../utilities";
+import { getPlayerMaxHp, getProficiencyModifier } from "../../utilities";
 import { StatsDisplay } from "../displays/StatsDisplay";
 import NPC from "../../assets/defaultImage/fighter.png";
 import Player from "../../assets/defaultImage/knight.png";
 import Monster from "../../assets/defaultImage/monster.png";
 import Structure from "../../assets/defaultImage/store.png";
+import { defaultEntity } from "../../consts";
 
 interface EntityCardProps extends React.HTMLProps<HTMLDivElement> {
   entity: IEntity;
@@ -22,9 +28,41 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
     useBoolean(false);
   const { preferences, setPreferences } = usePreferencesStore();
   const navigate = useNavigate();
+  const { updateOrAddEntity, getEntityById } = useEntities();
+  const [loading, setLoading] = useState(!!entity.id);
+  const [maxHp, setMaxHp] = useState<number>(0);
 
-  const handleConditionsClick = () => {
+  const [entityData, setEntityData] = useState<PartialEntity>({
+    ...entity,
+  });
+
+  useEffect(() => {
+    const matchEntity = getEntityById(Number(entity.id));
+    if (matchEntity) {
+      setEntityData(matchEntity);
+      if (entity.type === EntityType.Player) {
+        const calculateMaxHp = async () => {
+          const playerMaxHp = getPlayerMaxHp(matchEntity);
+          setMaxHp(playerMaxHp);
+        };
+
+        calculateMaxHp();
+      }
+    }
+    setLoading(false);
+  }, [entity.id]);
+
+  const handleConditionsClick = async (condition: string) => {
     toggleConditionsMenu();
+    console.log(condition);
+    setEntityData((prevEntityData) => ({
+      ...prevEntityData,
+      conditions: [
+        ...prevEntityData.conditions,
+        { name: condition, isValued: false },
+      ],
+    }));
+    updateOrAddEntity(entityData);
   };
 
   const handleEntityClick = (id: number) => {
@@ -34,7 +72,12 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
     });
     navigate(`/entity/${entity.id}`);
   };
-  // const isHPZero = entity.hp && entity.hp[0] === 0;
+
+  const isHPZero =
+    entityData.type === EntityType.Player
+      ? maxHp - (entityData?.damage[0] || 0) <= 0
+      : (entityData.maxHp || 0) - (entityData?.damage[0] || 0) <= 0;
+
   function getDefaultImage(type: EntityType) {
     switch (type) {
       case "Player":
@@ -57,44 +100,52 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
       >
         <div
           className={classNames(
-            styles.cardImage
-            // isHPZero && styles.entityDeadImage
+            styles.cardImage,
+            isHPZero && styles.entityDeadImage
           )}
         >
           <img
             src={entity.image ? entity.image : getDefaultImage(entity.type)}
             alt={entity.name}
           />
-          {/* {isHPZero && (
+          {isHPZero && (
             <FontAwesomeIcon className={styles.deadIcon} icon="skull" />
-          )} */}
+          )}
         </div>
         <div className={styles.entityContent}>
           <div className={styles.entityName}>{entity.name}</div>
-          {/* {entity.hp && ( */}
-          <>
-            <div className={styles.entityHP}>
-              {/* {showConditionsMenu && (
-                <ConditionsDropdown
-                  onConditionSelect={(condition) => {
-                    console.log(condition);
-                    handleConditionsClick(); // call handleConditionsClick to hide the menu
-                  }}
-                  onClose={toggleConditionsMenu}
-                />
-              )}
-              <button
-                className={styles.entityHPButton}
-                onClick={handleConditionsClick}
-              >
-                <FontAwesomeIcon icon="plus" />
-              </button> */}
-              {/* <div className={styles.entityHPNumbers}>
-                  {entity.hp[0]}/{entity.hp[1]}
-                </div> */}
-            </div>
-            <StatsDisplay entity={entity} />
-          </>
+          {((entity.maxHp != null && entity.maxHp != undefined) ||
+            maxHp > 0) && (
+            <>
+              <div className={styles.entityHP}>
+                {showConditionsMenu && (
+                  <ConditionsDropdown
+                    onConditionSelect={(condition) => {
+                      handleConditionsClick(condition); // call handleConditionsClick to hide the menu
+                    }}
+                    onClose={toggleConditionsMenu}
+                  />
+                )}
+                <button
+                  className={styles.entityHPButton}
+                  onClick={toggleConditionsMenu}
+                >
+                  <FontAwesomeIcon icon="plus" />
+                </button>
+                {entityData.type === EntityType.Player ? (
+                  <div className={styles.entityHPNumbers}>
+                    {maxHp - (entityData?.damage[0] || 0)}/{maxHp}
+                  </div>
+                ) : (
+                  <div className={styles.entityHPNumbers}>
+                    {(entityData?.maxHp ?? 0) - (entityData?.damage[0] || 0)}/
+                    {entityData?.maxHp ?? 0}
+                  </div>
+                )}
+              </div>
+              <StatsDisplay entity={entity} />
+            </>
+          )}
         </div>
       </div>
     </div>

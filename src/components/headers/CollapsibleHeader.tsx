@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import styles from "./Header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
@@ -13,6 +13,7 @@ interface ICollapsibleHeaderProps
   defaultCollapsed?: boolean;
   as?: React.ElementType;
   onRemove?: () => void;
+  onCollapsed?: (collapased: boolean) => void;
   nested?: boolean;
 }
 
@@ -26,14 +27,17 @@ const CollapsibleHeader = ({
   defaultCollapsed = false,
   as = "h3",
   onRemove,
+  onCollapsed,
   nested,
   ...rest
 }: ICollapsibleHeaderProps): JSX.Element => {
-  const [collapsed, setIsCollapsed] = useState<boolean>(
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(
     toggle && defaultCollapsed
   );
+  const [isCollapsing, setIsCollapsing] = useState<boolean>(false);
   const contentContainer = useRef<HTMLDivElement | null>(null);
   const [contentHeight, setContentHeight] = useState(0);
+  const timer = useRef<NodeJS.Timer | null>(null);
 
   useEffect(() => {
     if (contentContainer.current) {
@@ -45,9 +49,16 @@ const CollapsibleHeader = ({
     }
   }, [contentContainer.current?.scrollHeight]);
 
-  const toggleCollapsed = (): void => {
-    setIsCollapsed(!collapsed);
-  };
+  const toggleCollapsed = useCallback(() => {
+    if (typeof onCollapsed === "function") {
+      onCollapsed(!isCollapsed);
+    }
+    setIsCollapsing(true);
+    timer.current = setTimeout(() => {
+      setIsCollapsing(false);
+    }, 200);
+    setIsCollapsed(!isCollapsed);
+  }, [timer, isCollapsed, isCollapsing]);
 
   const handleRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -87,7 +98,7 @@ const CollapsibleHeader = ({
             icon="angle-double-down"
             className={classNames(
               styles.headerIcon,
-              collapsed && styles.collapsed
+              isCollapsed && styles.collapsed
             )}
           />
         )}
@@ -96,7 +107,8 @@ const CollapsibleHeader = ({
         className={classNames(
           styles.content,
           toggle && styles.collapsible,
-          collapsed && styles.collapsed,
+          isCollapsing && styles.collapsing,
+          isCollapsed && styles.collapsed,
           nested && styles.nested,
           className
         )}
@@ -105,7 +117,7 @@ const CollapsibleHeader = ({
         style={
           toggle
             ? {
-                height: collapsed ? "0px" : `${contentHeight}px`,
+                height: isCollapsed ? "0px" : `${contentHeight}px`,
               }
             : undefined
         }

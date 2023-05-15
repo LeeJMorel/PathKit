@@ -24,6 +24,7 @@ export interface IEntityFormProps {
 
 export interface IEntityFormChildrenProps {
   index?: number;
+  entityData?: PartialEntity;
   formProps: FormikProps<PartialEntity>;
   onRemove?: () => void;
 }
@@ -50,7 +51,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
     {
       id: "general",
       title: "General",
-      content: <General formProps={formProps} />,
+      content: <General formProps={formProps} entityData={entityData} />,
     },
     {
       id: "equipment",
@@ -71,6 +72,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
       id: "Spells",
       title: "Spells",
       content: <Spells formProps={formProps} />,
+      disabled: true,
     },
     {
       id: "Features",
@@ -94,6 +96,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
       id: "Spells",
       title: "Spells",
       content: <Spells formProps={formProps} />,
+      disabled: true,
     },
     {
       id: "Features",
@@ -154,9 +157,9 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
                 Save {entity.type}
               </Button>
             </div>
-            <div>
+            {/* <div>
               <pre>{JSON.stringify(props.errors, null, 2)}</pre>
-            </div>
+            </div> */}
           </Form>
         );
       }}

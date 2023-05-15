@@ -162,3 +162,15 @@
     }
   }
 }
+
+.actionRow {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 1;
+  flex-direction: row;
+  width: 100%;
+  .child-element {
+    flex: 1; // Add flex: 1 to expand the child elements
+  }
+}

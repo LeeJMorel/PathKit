@@ -35,6 +35,11 @@
       box-shadow: none;
       font-weight: bold;
     }
+
+    &.disabled {
+      color: #999999; // Greyed out color for disabled tabs
+      cursor: not-allowed;
+    }
   }
 
   .close {

@@ -7,6 +7,7 @@ interface IPreferences {
   largeFont: boolean;
   theme: string;
   visibleModules: Record<Module, boolean>;
+  collapsedModules: Record<Module, boolean>;
 
   selectedPath: number;
   selectedNoteSheet: number;
@@ -31,6 +32,14 @@ export const defaultPreferences: IPreferences = {
     DiceModule: true,
     NotesModule: false,
     BinderModule: true,
+  },
+  collapsedModules: {
+    TipModule: false,
+    DCModule: false,
+    IncomeModule: false,
+    DiceModule: false,
+    NotesModule: false,
+    BinderModule: false,
   },
   selectedPath: 0,
   selectedNoteSheet: 0,

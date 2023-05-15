@@ -285,6 +285,12 @@ export enum Proficiency {
   thievery = "thievery",
 }
 
+export enum ActionNumber {
+  One = 1,
+  Two = 2,
+  Three = 3,
+  Zero = 0,
+}
 export interface IPassiveAction {
   name: string;
   effect: string;
@@ -304,7 +310,7 @@ export interface IFreeAction {
 }
 
 export interface IAction {
-  actionNumber: number;
+  actionNumber: ActionNumber;
   name: string;
   attackDc: number;
   traits: string[];
@@ -312,7 +318,7 @@ export interface IAction {
 }
 
 export interface IMelee {
-  actionNumber: number;
+  actionNumber: ActionNumber;
   name: string;
   attackDc: number;
   damageType: string;
