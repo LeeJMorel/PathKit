@@ -18,8 +18,9 @@ export enum BinderTab {
   Players = "Players",
   Notes = "Notes",
   NPCs = "NPCs",
-  Shops = "Shops",
-  Monsters = "Monsters",
+  Structures = "Structures",
+  Hazards = "Hazards",
+  Bestiary = "Bestiary",
 }
 
 interface IBinderProps {
@@ -37,8 +38,9 @@ const BinderObject: React.FC<IBinderProps> = ({
     BinderTab.Players,
     BinderTab.Notes,
     BinderTab.NPCs,
-    BinderTab.Shops,
-    BinderTab.Monsters,
+    BinderTab.Structures,
+    BinderTab.Hazards,
+    BinderTab.Bestiary,
   ],
   showTabMenu = true,
 }: IBinderProps) => {
@@ -74,7 +76,10 @@ const BinderObject: React.FC<IBinderProps> = ({
   const monsters = filteredEntities.filter(
     (e) => e.type === EntityType.Monster
   );
-  const shops = filteredEntities.filter((e) => e.type === EntityType.Shop);
+  const structures = filteredEntities.filter(
+    (e) => e.type === EntityType.Structure
+  );
+  const hazards = filteredEntities.filter((e) => e.type === EntityType.Hazard);
 
   //placeholder until store can delete
   const [showDeleteMenu, setShowDeleteMenu] = useState<boolean>(false);
@@ -242,10 +247,13 @@ const BinderObject: React.FC<IBinderProps> = ({
       case "NPCs":
         return npcs.map((npc) => renderEntityRow(npc));
 
-      case "Shops":
-        return shops.map((shop) => renderEntityRow(shop));
+      case "Structures":
+        return structures.map((structure) => renderEntityRow(structure));
 
-      case "Monsters":
+      case "Hazards":
+        return hazards.map((hazard) => renderEntityRow(hazard));
+
+      case "Bestiary":
         return monsters.map((monster) => renderEntityRow(monster));
 
       default:

@@ -4,6 +4,7 @@ import { IEntityFormChildrenProps } from "../AddEntityForm";
 import FormField from "../../formFields/FormField";
 import FormButton from "../../formFields/FormButton";
 import styles from "../Form.module.scss";
+import { defaultTrait, traitOptions } from "../../../consts";
 
 const ActionsForm: React.FC<IEntityFormChildrenProps> = ({
   formProps,
@@ -58,8 +59,19 @@ const ActionsForm: React.FC<IEntityFormChildrenProps> = ({
                   {values.build.actions.actions[index].traits.map((_, tI) => (
                     <div className={styles.formRow}>
                       <FormField
-                        name={`build.actions.actions.${index}.traits.${tI}`}
+                        name={`build.actions.actions.${index}.traits.${tI}[0]`}
                       />
+                      <FormField
+                        label="Tag"
+                        name={`build.actions.actions.${index}.traits.${tI}[1]`}
+                        as="select"
+                      >
+                        {traitOptions.map((o) => (
+                          <option key={o.tag} value={o.tag}>
+                            {o.tag}
+                          </option>
+                        ))}
+                      </FormField>
                       <FormButton
                         icon="circle-minus"
                         onClick={() => remove(tI)}
@@ -68,7 +80,7 @@ const ActionsForm: React.FC<IEntityFormChildrenProps> = ({
                   ))}
                   <FormButton
                     icon="circle-plus"
-                    onClick={() => push("")}
+                    onClick={() => push(defaultTrait)}
                     variant="text"
                   >
                     Add trait

@@ -5,13 +5,13 @@ import { useCallback, useState, useEffect } from "react";
 
 import { Button } from "../buttons";
 import classNames from "classnames";
-import { defaultEntity } from "../../consts";
+import { defaultEntity, sizeOptions } from "../../consts";
 import {
   getAbilityModifier,
   getPlayerMaxHp,
   getProficiencyModifier,
 } from "../../utilities";
-import { EntityType, Proficiency, INote } from "../../api/model";
+import { EntityType, Proficiency, INote, TraitType } from "../../api/model";
 import DataCellDisplay from "../displays/DataCellDisplay";
 import { StatsDisplay } from "../displays/StatsDisplay";
 import NotesObject from "../objects/NoteObject";
@@ -67,16 +67,14 @@ function EntitySheet() {
     setImageExpanded((prev) => !prev);
   };
 
+  const size = sizeOptions.find((o) => o.value === entity.build.size);
+
   return (
     <div className={styles.sheetsContainer}>
       <SheetHeader
         title={entity?.name}
         subtitle={
-          <>
-            ({entity.build.level ? `level: ${entity.build.level}` : ""}
-            {/*if both exist, put a comma between*/}
-            {entity.build.size ? `, size: ${entity.build.size}` : ""})
-          </>
+          <>{entity.build.level ? `level: ${entity.build.level}` : ""}</>
         }
         onEditClick={handleEditClick}
         onCloseClick={handleCancelClick}
@@ -99,23 +97,31 @@ function EntitySheet() {
             />
           </div>
         )}
-        <table className={styles.sheetTable}>
-          <tbody>
-            <tr>
-              {entity?.build?.traits &&
-                entity.build.traits.map((trait, index) => (
-                  <td key={index}>
-                    <DataCellDisplay
-                      name={`Trait ${index + 1}`}
-                      value={trait}
-                      labelPosition="inline"
-                      align="start"
-                    />
-                  </td>
-                ))}
-            </tr>
-          </tbody>
-        </table>
+        <div className={styles.sheetRowContainerLeftAlign}>
+          {size && (
+            <div>
+              <DataCellDisplay
+                name={size.label} // Use the label as the name
+                value={size.label} // Displaying the name
+                align="center"
+                labelPosition="above"
+                tag={TraitType.Size}
+              />
+            </div>
+          )}
+          {entity?.build?.traits &&
+            entity.build.traits.map((trait, index) => (
+              <div key={index}>
+                <DataCellDisplay
+                  name={`Trait ${index + 1}`}
+                  value={trait[0]} // Displaying the name
+                  align="center"
+                  labelPosition="above"
+                  tag={trait[1]} // Passing the tag value
+                />
+              </div>
+            ))}
+        </div>
         <div className={styles.sheetRowContainerLeftAlign}>
           {entity?.build?.proficiencies?.perception && (
             <DataCellDisplay
@@ -139,11 +145,10 @@ function EntitySheet() {
               align="start"
             />
           )}
-          {entity?.type === "Player" && (
+          {entity?.quantity === 1 && (
             <div className={styles.entityHp}>
               <DataCellDisplay
                 name="damage"
-                label={`HP`}
                 value={maxHp - (entity?.damage[0] || 0)}
                 labelPosition="inline"
                 align="start"
@@ -153,25 +158,6 @@ function EntitySheet() {
               <DataCellDisplay
                 name="maxHp"
                 value={maxHp}
-                labelPosition="inline"
-                align="start"
-                small
-              />
-            </div>
-          )}
-          {entity?.quantity === 1 && entity?.maxHp && (
-            <div className={styles.entityHp}>
-              <DataCellDisplay
-                name="damage"
-                value={entity?.maxHp - (entity?.damage[0] || 0)}
-                labelPosition="inline"
-                align="start"
-                small
-              />
-              /
-              <DataCellDisplay
-                name="maxHp"
-                value={entity?.maxHp}
                 labelPosition="inline"
                 align="start"
                 small

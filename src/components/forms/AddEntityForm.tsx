@@ -81,6 +81,19 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
     },
   ];
 
+  const hazardTabs = (formProps: FormikProps<PartialEntity>) => [
+    {
+      id: "general",
+      title: "General",
+      content: <General formProps={formProps} />,
+    },
+    {
+      id: "Actions",
+      title: "Actions",
+      content: <Actions formProps={formProps} />,
+    },
+  ];
+
   const npcTabs = (formProps: FormikProps<PartialEntity>) => [
     {
       id: "general",
@@ -123,8 +136,10 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
 
     if (entity.type === "NPC") {
       tabsToRender = npcTabs(props);
-    } else if (entity.type === "Shop") {
+    } else if (entity.type === "Structure") {
       tabsToRender = structureTabs(props);
+    } else if (entity.type === "Hazard") {
+      tabsToRender = hazardTabs(props);
     } else {
       tabsToRender = tabs(props);
     }

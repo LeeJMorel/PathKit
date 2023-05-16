@@ -13,7 +13,7 @@ const ReactionsForm: React.FC<IEntityFormChildrenProps> = ({
   const { values } = formProps;
   return (
     <CollapsibleHeader
-      title={`Reaction ${index + 1}`}
+      title={`Free action ${index + 1}`}
       toggle
       onRemove={onRemove}
       as="h4"
@@ -27,8 +27,8 @@ const ReactionsForm: React.FC<IEntityFormChildrenProps> = ({
       </div>
       <div className={styles.formRow}>
         <FormField
-          label="Frequency"
-          name={`build.actions.reactions.${index}.frequency`}
+          label="Trigger"
+          name={`build.actions.reactions.${index}.trigger`}
         />
       </div>
       <div className={styles.formRow}>
