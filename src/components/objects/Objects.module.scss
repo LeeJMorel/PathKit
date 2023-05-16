@@ -162,6 +162,8 @@
   .tabContainer {
     //this is our menu that we select from
     display: flex;
+    overflow-x: hidden; /* Disable horizontal scroll on tab title length */
+    overflow-y: auto; /* Add overflow property to enable vertical tab title scrollbar */
     flex-direction: column;
     align-items: flex-start;
     padding: 0 0.25em;

@@ -34,6 +34,7 @@ export const defaultPreferences: IPreferences = {
     // DiceModule: true,
     NotesModule: false,
     BinderModule: true,
+    ConditionModule: false,
   },
   collapsedModules: {
     TipModule: false,
@@ -42,6 +43,7 @@ export const defaultPreferences: IPreferences = {
     // DiceModule: false,
     NotesModule: false,
     BinderModule: false,
+    ConditionModule: false,
   },
   selectedPath: 0,
   selectedNoteSheet: 0,

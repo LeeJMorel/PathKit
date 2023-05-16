@@ -4,6 +4,7 @@ import DiceModule from "./DiceModule";
 import NotesModule from "./NotesModule";
 import BinderModule from "./BinderModule";
 import TipModule from "./TipModule";
+import ConditionModule from "./ConditionModule";
 
 export enum Module {
   TipModule = "TipModule",
@@ -12,6 +13,7 @@ export enum Module {
   // DiceModule = "DiceModule",
   NotesModule = "NotesModule",
   BinderModule = "BinderModule",
+  ConditionModule = "ConditionModule",
 }
 
 export interface IModule {
@@ -47,6 +49,12 @@ const Modules: Record<Module, IModule> = {
     ModuleComponent: BinderModule,
     collapsible: true,
   },
+  ConditionModule: {
+    id: Module.ConditionModule,
+    label: "Conditions",
+    ModuleComponent: ConditionModule,
+    collapsible: true,
+  },
   DCModule: {
     id: Module.DCModule,
     label: "DC Adjustments Table",
@@ -64,6 +72,7 @@ const Modules: Record<Module, IModule> = {
 export {
   TipModule,
   DCModule,
+  ConditionModule,
   IncomeModule,
   // DiceModule,
   NotesModule,
