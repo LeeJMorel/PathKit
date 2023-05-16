@@ -1,44 +1,76 @@
-import { Field } from "formik";
-import { PartialEntity } from "src/api/model";
+import { Field, FieldArray } from "formik";
+import { PartialEntity } from "../../../api/model";
 import styles from "../Form.module.scss";
 import CollapsibleHeader from "../../headers/CollapsibleHeader";
 import { IEntityFormChildrenProps } from "../AddEntityForm";
-import { Button } from "../../buttons";
-import MeleeForm from "./MeleeForm";
 import { useState } from "react";
-import RangedForm from "./RangedForm";
+import { Button } from "../../buttons";
+import MeleeForm from "./EntityAttacksForm.Melee";
+import RangedForm from "./EntityAttacksForm.Ranged";
+import FormButton from "../../formFields/FormButton";
+import { defaultMelee, defaultRanged } from "../../../consts";
 
-const EntityAttacksForm: React.FC<IEntityFormChildrenProps> = ({ entity }) => {
-  const [meleeAttacks, setMeleeAttacks] = useState<number[]>([]);
-  const [rangedAttacks, setRangedAttacks] = useState<number[]>([]);
-
-  const handleMeleeAttacks = () => {
-    setMeleeAttacks([...meleeAttacks, meleeAttacks.length + 1]);
-  };
-  const handleRangedAttacks = () => {
-    setRangedAttacks([...rangedAttacks, rangedAttacks.length + 1]);
-  };
+const EntityActionsForm: React.FC<IEntityFormChildrenProps> = ({
+  formProps,
+}) => {
+  const { values } = formProps;
 
   return (
     <>
-      <div className={styles.formCentered}>
-        <Button className={styles.formButton} onClick={handleMeleeAttacks}>
-          Add a Melee Attack
-        </Button>
-      </div>
-      {meleeAttacks.map((_, index) => (
-        <MeleeForm entity={entity} key={index} count={index + 1} />
-      ))}
-      <div className={styles.formCentered}>
-        <Button className={styles.formButton} onClick={handleRangedAttacks}>
-          Add a Ranged Attack
-        </Button>
-      </div>
-      {rangedAttacks.map((_, index) => (
-        <RangedForm entity={entity} key={index} count={index + 1} />
-      ))}
+      <CollapsibleHeader title="Melee Attacks" toggle nested>
+        <FieldArray name="build.actions.melee">
+          {({ remove, push }) => (
+            <>
+              <div className={styles.formRow}>
+                {values.build.actions.melee.map((_, i) => (
+                  <MeleeForm
+                    formProps={formProps}
+                    index={i}
+                    onRemove={() => remove(i)}
+                  />
+                ))}
+              </div>
+              <div className={styles.formRow}>
+                <FormButton
+                  variant="subtle"
+                  icon="circle-plus"
+                  onClick={() => push(defaultMelee)}
+                >
+                  Add a melee attack
+                </FormButton>
+              </div>
+            </>
+          )}
+        </FieldArray>
+      </CollapsibleHeader>
+      <CollapsibleHeader title="Ranged Attacks" toggle nested>
+        <FieldArray name="build.actions.ranged">
+          {({ remove, push }) => (
+            <>
+              <div className={styles.formRow}>
+                {values.build.actions.ranged.map((_, i) => (
+                  <RangedForm
+                    formProps={formProps}
+                    index={i}
+                    onRemove={() => remove(i)}
+                  />
+                ))}
+              </div>
+              <div className={styles.formRow}>
+                <FormButton
+                  variant="subtle"
+                  icon="circle-plus"
+                  onClick={() => push(defaultRanged)}
+                >
+                  Add a ranged attack
+                </FormButton>
+              </div>
+            </>
+          )}
+        </FieldArray>
+      </CollapsibleHeader>
     </>
   );
 };
 
-export default EntityAttacksForm;
+export default EntityActionsForm;

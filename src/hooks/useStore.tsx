@@ -20,7 +20,7 @@ import {
   deleteRow,
   updateRow,
 } from "../api/database/database";
-import { tranformRawEntity } from "../utilities";
+import { transformRawEntity } from "../utilities";
 
 export interface State {
   currentCampaignId: number;
@@ -100,12 +100,19 @@ export const useStore = create<IStore>()(
       },
 
       insertCampaign: async (campaign) => {
+        const { refreshCampaigns } = get();
         const result = await insertRow("campaign", campaign);
-        if (result?.lastInsertId) {
-          return {
-            id: result.lastInsertId,
-            ...campaign,
-          };
+        if (result?.rowsAffected && result.rowsAffected > 0) {
+          await refreshCampaigns();
+          const id = result.lastInsertId || campaign.id;
+          if (id) {
+            const newResult = await selectRowWhere<ICampaign>("campaign", {
+              key: "id",
+              oper: "=",
+              value: id,
+            });
+            return newResult && newResult.length > 0 ? newResult[0] : undefined;
+          }
         }
       },
 
@@ -141,14 +148,19 @@ export const useStore = create<IStore>()(
             campaignId: currentCampaignId,
           };
           const result = await insertRow("entity", entity);
-          if (result?.lastInsertId) {
-            refreshEntities();
-            const newResult = await selectRowWhere<IEntity>("entity", {
-              key: "id",
-              oper: "=",
-              value: result.lastInsertId,
-            });
-            return newResult && newResult.length > 0 ? newResult[0] : undefined;
+          if (result?.rowsAffected && result.rowsAffected > 0) {
+            await refreshEntities();
+            const id = result.lastInsertId || entity.id;
+            if (id) {
+              const newResult = await selectRowWhere<IEntity>("entity", {
+                key: "id",
+                oper: "=",
+                value: id,
+              });
+              return newResult && newResult.length > 0
+                ? newResult[0]
+                : undefined;
+            }
           }
         }
       },
@@ -187,7 +199,7 @@ export const useStore = create<IStore>()(
         });
 
         if (response) {
-          const entities: IEntity[] = response.map(tranformRawEntity);
+          const entities: IEntity[] = response.map(transformRawEntity);
           set({ entities });
         }
         set({ entitiesLoading: false });
@@ -200,7 +212,7 @@ export const useStore = create<IStore>()(
           value: id,
         });
         if (response) {
-          return tranformRawEntity(response[0]);
+          return transformRawEntity(response[0]);
         }
       },
 
@@ -211,14 +223,17 @@ export const useStore = create<IStore>()(
           campaignId: currentCampaignId,
         };
         const result = await insertRow("path", path);
-        if (result?.lastInsertId) {
-          refreshPaths();
-          const newResult = await selectRowWhere<IPath>("path", {
-            key: "id",
-            oper: "=",
-            value: result.lastInsertId,
-          });
-          return newResult && newResult.length > 0 ? newResult[0] : undefined;
+        if (result?.rowsAffected && result.rowsAffected > 0) {
+          await refreshPaths();
+          const id = result.lastInsertId || path.id;
+          if (id) {
+            const newResult = await selectRowWhere<IPath>("path", {
+              key: "id",
+              oper: "=",
+              value: result.lastInsertId,
+            });
+            return newResult && newResult.length > 0 ? newResult[0] : undefined;
+          }
         }
       },
 
@@ -273,14 +288,19 @@ export const useStore = create<IStore>()(
             campaignId: currentCampaignId,
           };
           const result = await insertRow("note", note);
-          if (result?.lastInsertId) {
-            refreshNotes();
-            const newResult = await selectRowWhere<INote>("note", {
-              key: "id",
-              oper: "=",
-              value: result.lastInsertId,
-            });
-            return newResult && newResult.length > 0 ? newResult[0] : undefined;
+          if (result?.rowsAffected && result.rowsAffected > 0) {
+            await refreshNotes();
+            const id = result.lastInsertId || note.id;
+            if (id) {
+              const newResult = await selectRowWhere<INote>("note", {
+                key: "id",
+                oper: "=",
+                value: result.lastInsertId,
+              });
+              return newResult && newResult.length > 0
+                ? newResult[0]
+                : undefined;
+            }
           }
         }
       },

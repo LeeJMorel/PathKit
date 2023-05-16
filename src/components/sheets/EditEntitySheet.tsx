@@ -6,6 +6,8 @@ import styles from "./Sheets.module.scss";
 import { Button } from "../buttons";
 import { EntityType, IEntity, PartialEntity } from "../../api/model";
 import { defaultEntity } from "../../consts";
+import ImportEntity from "../objects/ImportEntity";
+import ConfirmMenu from "../menus/ConfirmMenu";
 
 function EditEntitySheet() {
   const { entityId } = useParams();
@@ -13,47 +15,77 @@ function EditEntitySheet() {
   const navigate = useNavigate();
   const { updateOrAddEntity, getEntityById } = useEntities();
   const type = (searchParams.get("type") as EntityType) || EntityType.none;
+  const [loading, setLoading] = useState(!!entityId);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const [entityData, setEntityData] = useState<PartialEntity>({
     ...defaultEntity,
     type,
   });
 
-  // TODO popup confirm if unsaved changes.
-  // const [confirmCancel, setConfirmCancel] = useState(false);
-
   useEffect(() => {
-    (async () => {
-      const matchEntity = await getEntityById(Number(entityId));
-      if (matchEntity) {
-        setEntityData(matchEntity);
-      }
-    })();
+    const matchEntity = getEntityById(Number(entityId));
+    if (matchEntity) {
+      setEntityData(matchEntity);
+    }
+    setLoading(false);
   }, [entityId, type]);
 
   const handleCancelClick = () => {
     navigate(-1);
   };
 
+  const handleConfirm = () => {
+    setShowConfirm(false);
+  };
+
+  const handleBackClick = () => {
+    setShowConfirm(true);
+  };
+
   return (
     <div className={styles.sheetsContainer}>
+      <div className={styles.header}>
+        <div className={styles.title}>
+          <h2 className={styles.heading}>Edit {entityData.type}</h2>
+        </div>
+        <div className={styles.headerButtons}>
+          <Button onClick={handleBackClick} icon="arrow-left" variant="text" />
+        </div>
+      </div>
       {entityData?.image && (
         <div className={styles.imageContainer}>
           <img src={entityData.image} alt={entityData.name} />
         </div>
       )}
-      <div className={styles.header}>
-        <h2>Edit {entityData.type}</h2>
-        <Button onClick={handleCancelClick} icon="arrow-left" variant="text" />
-      </div>
-      <hr />
-      <AddEntityForm
-        entityData={entityData as IEntity}
-        onAddEntity={(entity) => {
-          updateOrAddEntity(entity);
-          navigate("/");
-        }}
-      />
+      {entityData.type === EntityType.Player && (
+        <ImportEntity entity={entityData} />
+      )}
+      {!loading && (
+        <AddEntityForm
+          entityData={entityData as IEntity}
+          onAddEntity={(entity) => {
+            updateOrAddEntity(entity);
+            navigate("/");
+          }}
+        />
+      )}
+      {/* TODO only showConfirm if form is dirty */}
+      {showConfirm && (
+        <ConfirmMenu
+          title="Unsaved changes will be lost"
+          onClose={() => setShowConfirm(false)}
+          onCancel={handleCancelClick}
+          onConfirm={handleConfirm}
+          cancelText="Leave anyway"
+          confirmText="Stay"
+        >
+          <p>
+            Do you really want to leave the editor? All unsaved changes will be
+            lost.
+          </p>
+        </ConfirmMenu>
+      )}
     </div>
   );
 }

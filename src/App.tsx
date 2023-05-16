@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 // Import the necessary CSS and component files
@@ -27,6 +27,7 @@ import NotesSheet from "./components/sheets/NotesSheet";
 import CreationDropdown from "./components/dropdowns/CreationDropdown";
 import EditPathSheet from "./components/sheets/EditPathSheet";
 import { initializeDatabase } from "./api/database";
+import LicenseSheet from "./components/sheets/LicenseSheet";
 
 // Load FontAwesome icons
 library.add(fas);
@@ -37,6 +38,7 @@ export enum AppMode {
 }
 
 function App() {
+  console.log(useLocation());
   useEffect(() => {
     // Initialize database on first load
     const asyncInit = async () => await initializeDatabase();
@@ -126,7 +128,7 @@ function App() {
           {/* </div> */}
           {/* <PathPlannerDropdown onClose={() => setCreateDropdown(false)} /> */}
           {/* if in encounter mode, show a close button to exit it*/}
-          {preferences.selectedPath != undefined ? (
+          {preferences.selectedPath != 0 ? (
             <>
               {showInitiativeMenu && currentPath?.type === "encounter" && (
                 <InitiativeMenu onClose={handleInitiativeMenu} />
@@ -177,7 +179,10 @@ function App() {
             <Route index element={<NotesSheet />} />
             <Route path="entity/:entityId" element={<EntitySheet />} />
             <Route path="entity/:entityId/edit" element={<EditEntitySheet />} />
-            <Route path="path/:pathId/*" element={<EditPathSheet />} />
+            <Route path="path/:pathId/*" element={<EditPathSheet />}>
+              {/* <Route path=":entityId/edit" element={<EditEntitySheet />} /> */}
+            </Route>
+            <Route path="license" element={<LicenseSheet />} />
             <Route path="*" element={<NotesSheet />} />
           </Route>
         </Routes>

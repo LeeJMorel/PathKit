@@ -4,13 +4,10 @@ import styles from "../Form.module.scss";
 import CollapsibleHeader from "../../headers/CollapsibleHeader";
 import { IEntityFormChildrenProps } from "../AddEntityForm";
 
-const AddSpellForm: React.FC<IEntityFormChildrenProps> = ({
-  entity,
-  count,
-}) => {
+const AddSpellForm: React.FC<IEntityFormChildrenProps> = ({ index: count }) => {
   return (
     <>
-      <CollapsibleHeader title={`Spell ${count}`} toggle>
+      <CollapsibleHeader title={`Spell ${count}`} toggle onRemove={() => {}}>
         <br />
         <div className={styles.formRow}>
           {/*multiple melee's may exist in one entity.*/}

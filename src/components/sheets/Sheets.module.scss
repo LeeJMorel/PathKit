@@ -8,14 +8,21 @@
   .imageContainer {
     display: flex;
     justify-content: center;
-    padding-right: 1em;
-    padding-left: 1em;
-    padding-bottom: 1em;
+    max-height: 250px;
+    position: relative;
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    .import {
+      position: absolute;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.6);
+      width: 100%;
+      padding: 1em;
     }
   }
 
@@ -24,15 +31,25 @@
     align-items: center;
     margin-bottom: 1rem;
 
-    h2 {
-      font-size: 1.5rem;
+    .title {
       margin: 0 auto 0 0;
-      color: var(--bodyText);
+      display: flex;
+      flex-direction: row;
+
+      h2 {
+        font-size: 1.5rem;
+        color: var(--primaryText);
+      }
+
+      p {
+        margin-left: 0.2em;
+        font-style: italic;
+      }
     }
 
     .headerButton {
       margin: 0 0 0 0.5em;
-      color: var(--secondaryText);
+      // color: var(--secondaryText);
     }
     .closeButton {
       &:hover {
@@ -74,6 +91,20 @@
     align-items: center;
   }
 
+  .sheetRowContainerLeftAlign {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex: 1;
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .entityHp {
+    display: flex;
+    justify-content: flex-start;
+  }
+
   .editEntityContainer {
     width: 100%;
   }
@@ -107,5 +138,40 @@
     > * {
       margin: 0 0.5em;
     }
+  }
+
+  .sheetTable {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--primaryText);
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid var(--primaryBackground);
+      color: var(--bodyText);
+    }
+
+    th {
+      background-color: var(--primaryBackground);
+      color: var(--primaryText);
+    }
+
+    tr:nth-child(even) {
+      background-color: var(--secondaryAccentBackground);
+    }
+  }
+}
+
+.actionRow {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 1;
+  flex-direction: row;
+  width: 100%;
+  .child-element {
+    flex: 1; // Add flex: 1 to expand the child elements
   }
 }

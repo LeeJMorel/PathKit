@@ -46,38 +46,30 @@ function NotesModule() {
   }, [notesExist]);
 
   return (
-    <>
-      <CollapsibleHeader
-        className={styles.moduleContainer}
-        title="Notes"
-        toggle
-      >
-        <div className={styles.moduleContent}>
-          {!preferences.selectedNoteModule ? (
-            renderCreateNote()
-          ) : (
-            <NoteObject
-              onChange={handleChange}
-              onClose={() =>
-                setPreferences({
-                  selectedNoteModule: 0,
-                })
-              }
-              noteId={preferences.selectedNoteModule}
-            />
-          )}
-          {notesExist && !preferences.selectedNoteModule && (
-            <div className={styles.notesBinder}>
-              <BinderObject
-                showTabs={[BinderTab.Notes]}
-                showTabMenu={false}
-                onLoad={handleLoadNote}
-              />
-            </div>
-          )}
+    <div className={styles.moduleContent}>
+      {!preferences.selectedNoteModule ? (
+        renderCreateNote()
+      ) : (
+        <NoteObject
+          onChange={handleChange}
+          onClose={() =>
+            setPreferences({
+              selectedNoteModule: 0,
+            })
+          }
+          noteId={preferences.selectedNoteModule}
+        />
+      )}
+      {notesExist && !preferences.selectedNoteModule && (
+        <div className={styles.notesBinder}>
+          <BinderObject
+            showTabs={[BinderTab.Notes]}
+            showTabMenu={false}
+            onLoad={handleLoadNote}
+          />
         </div>
-      </CollapsibleHeader>
-    </>
+      )}
+    </div>
   );
 }
 

@@ -1,174 +1,507 @@
-import { Field } from "formik";
-import { PartialEntity } from "src/api/model";
+import { FieldArray } from "formik";
+import { EntityType, Proficiency } from "../../../api/model";
 import styles from "../Form.module.scss";
+import FormField from "../../formFields/FormField";
+import FileUploader from "../../formFields/FileUploader";
+import FormButton from "../../formFields/FormButton";
+import { Button } from "../../buttons";
 import { IEntityFormChildrenProps } from "../AddEntityForm";
+import {
+  abilityOptions,
+  profLevelOptions,
+  sizeOptions,
+  skills,
+} from "../../../consts";
+import {
+  getAbilityModifier,
+  getProficiencyModifier,
+  toSentenceCase,
+} from "../../../utilities";
+import CollapsibleHeader from "../../headers/CollapsibleHeader";
+import { EntitySkillsForm } from "./EntitySkillsForm";
+import classNames from "classnames";
 
 const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
-  entity,
-  onImageUpload,
+  formProps,
+  entityData,
 }) => {
+  const { values, setFieldValue } = formProps;
+  const handleFileChange = (value: any) => {
+    console.log("debug: handleFileChange", { value });
+    setFieldValue("image", value);
+  };
   return (
     <>
-      <label className={styles.formLabel}>Image:</label>
-      <div className={styles.formRow}>
-        <Field name="image" type="file" className={styles.formInput} />
-      </div>
-      <div className={styles.formRow}>
-        <p className={styles.formLabel}>Name:</p>
-        <Field name="name" className={styles.formInput} />
-        <p className={styles.formLabel}>Level:</p>
-        <Field name="build.level" type="number" className={styles.formSmall} />
-        <p className={styles.formLabel}>Size:</p>
-        <Field name="build.size" type="number" className={styles.formSmall} />
-      </div>
-      <div className={styles.formRow}>
-        <p className={styles.formLabel}>Traits:</p>
-        <Field name="build.level" className={styles.formInput} />
-      </div>
-      <div className={styles.formRow}>
-        <p className={styles.formLabel}>Perception:</p>
-        <Field
-          name="build.proficiency.perception"
-          type="number"
-          className={styles.formInput}
-        />
-        <p className={styles.formLabel}>Languages:</p>
-        <Field name="build.languages" className={styles.formInput} />
-        <p className={styles.formLabel}>Skills:</p>
-        <Field name="build.skill" className={styles.formInput} />
-      </div>
-      <div className={styles.formRow}>
-        <p className={styles.formLabel}>STR</p>
-        <p className={styles.formLabel}>DEX</p>
-        <p className={styles.formLabel}>CON</p>
-        <p className={styles.formLabel}>INT</p>
-        <p className={styles.formLabel}>WIS</p>
-        <p className={styles.formLabel}>CHA</p>
-      </div>
-      <div className={styles.formRow}>
-        <Field
-          name="build.ability.str"
-          type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.ability.dex"
-          type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.ability.con"
-          type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.ability.int"
-          type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.ability.wis"
-          type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.ability.cha"
-          type="number"
-          className={styles.formSmall}
-        />
-      </div>
-      <div className={styles.formRow}>
-        <p className={styles.formLabel}>AC</p>
-        <p className={styles.formLabel}>Will</p>
-        <p className={styles.formLabel}>Reflex</p>
-        <p className={styles.formLabel}>Fortitude</p>
-        <p className={styles.formLabel}>DC</p>
-      </div>
-      <div className={styles.formRow}>
-        <Field
-          name="build.acTotal"
-          type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.proficiency.will"
-          type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.proficiency.reflex"
-          type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.proficiency.fortitude"
-          type="number"
-          className={styles.formSmall}
-        />
-        <Field
-          name="build.proficiency.classDC"
-          type="number"
-          className={styles.formSmall}
-        />
-      </div>
-      <div className={styles.formRow}>
-        {/*multiple hp's may exist in one entity is it is a group. This will be
-          based on monster quantity.*/}
-        <div className={styles.formGroup}>
-          <p className={styles.formLabel}>HP:</p>
-          <Field
-            name="build.level"
-            type="number"
-            className={styles.formSmall}
+      <CollapsibleHeader title="General attributes" as="h4" nested>
+        <div className={styles.formRow}>
+          <FormField
+            name="image"
+            label="Image"
+            placeholder="Image URL or Base64"
           />
-          /
-          <Field
-            name="build.level"
-            type="number"
-            className={styles.formSmall}
+          <FileUploader
+            defaultValue={values.image}
+            onUpload={handleFileChange}
           />
         </div>
-      </div>
-      <div className={styles.formRow}>
-        <p className={styles.formLabel}>Conditions:</p>
-        <Field name="conditions" className={styles.formInput} />
-        <p className={styles.formLabel}>Resistances:</p>
-        <Field name="resistances" className={styles.formInput} />
-        <p className={styles.formLabel}>Immunities:</p>
-        <Field name="immunities" className={styles.formInput} />
-      </div>
-      <div className={styles.formRow}>
-        <p className={styles.formLabel}>Speed:</p>
-        <Field
-          name="build.attributes.speed"
-          type="number"
-          className={styles.formInput}
-        />
-        <p className={styles.formLabel}>Fly:</p>
-        <Field
-          name="build.attributes.fly"
-          type="number"
-          className={styles.formInput}
-        />
-        <p className={styles.formLabel}>Burrow:</p>
-        <Field
-          name="build.attributes.burrow"
-          type="number"
-          className={styles.formInput}
-        />
-        <p className={styles.formLabel}>Climb:</p>
-        <Field
-          name="build.attributes.climb"
-          type="number"
-          className={styles.formInput}
-        />
-        <p className={styles.formLabel}>Swim:</p>
-        <Field
-          name="build.attributes.swim"
-          type="number"
-          className={styles.formInput}
-        />
-      </div>
+        <div className={styles.formRow}>
+          <FormField name="name" label="Name" />
+          {(entityData?.type === EntityType.Player ||
+            entityData?.type === EntityType.Monster ||
+            entityData?.type === EntityType.NPC) && (
+            <>
+              <FormField name="build.level" type="number" label="Level" />
+              <FormField name="build.size" as="select" label="Size">
+                {sizeOptions.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </FormField>
+            </>
+          )}
+        </div>
+        <div className={styles.formRow}>
+          <FormField
+            label="Description"
+            name={`build.desc`}
+            as="textarea"
+            style={{ resize: "vertical" }}
+          />
+        </div>
+        {(entityData?.type === EntityType.Player ||
+          entityData?.type === EntityType.Monster ||
+          entityData?.type === EntityType.NPC) && (
+          <>
+            <div className={styles.formRow}>
+              <FormField
+                label={`Perception [${getProficiencyModifier(
+                  values,
+                  Proficiency.perception,
+                  true
+                )}]`}
+                name="build.proficiencies.perception"
+                as="select"
+              >
+                {profLevelOptions.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </FormField>
+              <FormField
+                label="Key Ability"
+                name="build.keyability"
+                as="select"
+              >
+                {abilityOptions.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </FormField>
+            </div>
+            <div className={styles.formRow}>
+              <FormField
+                name="build.abilities.str"
+                type="number"
+                label={`STR [${getAbilityModifier(
+                  values.build.abilities.str,
+                  true
+                )}]`}
+                labelPosition="above"
+                align="center"
+                small
+              />
+              <FormField
+                name="build.abilities.dex"
+                type="number"
+                label={`DEX [${getAbilityModifier(
+                  values.build.abilities.dex,
+                  true
+                )}]`}
+                labelPosition="above"
+                align="center"
+                small
+              />
+              <FormField
+                name="build.abilities.con"
+                type="number"
+                label={`CON [${getAbilityModifier(
+                  values.build.abilities.con,
+                  true
+                )}]`}
+                labelPosition="above"
+                align="center"
+                small
+              />
+              <FormField
+                name="build.abilities.int"
+                type="number"
+                label={`INT [${getAbilityModifier(
+                  values.build.abilities.int,
+                  true
+                )}]`}
+                labelPosition="above"
+                align="center"
+                small
+              />
+              <FormField
+                name="build.abilities.wis"
+                type="number"
+                label={`WIS [${getAbilityModifier(
+                  values.build.abilities.wis,
+                  true
+                )}]`}
+                labelPosition="above"
+                align="center"
+                small
+              />
+              <FormField
+                name="build.abilities.cha"
+                type="number"
+                label={`CHA [${getAbilityModifier(
+                  values.build.abilities.cha,
+                  true
+                )}]`}
+                labelPosition="above"
+                align="center"
+                small
+              />
+            </div>
+            <div className={styles.formRow}>
+              <FormField
+                label="AC"
+                labelPosition="above"
+                align="center"
+                name="build.acTotal.acTotal"
+                type="number"
+              />
+              <FormField
+                label={`DC [${getProficiencyModifier(
+                  values,
+                  Proficiency.classDC,
+                  true
+                )}]`}
+                labelPosition="above"
+                align="center"
+                name="build.proficiencies.classDC"
+                as="select"
+                type="number"
+              >
+                {profLevelOptions.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </FormField>
+            </div>
+            <div className={styles.formRow}>
+              <FormField
+                label={`Will [${getProficiencyModifier(
+                  values,
+                  Proficiency.will,
+                  true
+                )}]`}
+                labelPosition="above"
+                align="center"
+                name="build.proficiencies.will"
+                as="select"
+                type="number"
+              >
+                {profLevelOptions.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </FormField>
+              <FormField
+                label={`Reflex [${getProficiencyModifier(
+                  values,
+                  Proficiency.reflex,
+                  true
+                )}]`}
+                labelPosition="above"
+                align="center"
+                name="build.proficiencies.reflex"
+                as="select"
+                type="number"
+              >
+                {profLevelOptions.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </FormField>
+              <FormField
+                label={`Fortitude [${getProficiencyModifier(
+                  values,
+                  Proficiency.fortitude,
+                  true
+                )}]`}
+                labelPosition="above"
+                align="center"
+                name="build.proficiencies.fortitude"
+                as="select"
+                type="number"
+              >
+                {profLevelOptions.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </FormField>
+            </div>
+            <div className={styles.formRow}>
+              {/*multiple hp's may exist in one entity is it is a group. This will be
+      based on monster quantity.*/}
+              <div className={styles.formGroup}>
+                <FormField
+                  label="Max HP"
+                  name="maxHp"
+                  value={values.maxHp}
+                  type="number"
+                />
+              </div>
+            </div>
+            <div className={styles.formRow}>
+              <FormField
+                label="Speed"
+                name="build.attributes.speed"
+                type="number"
+                small
+                labelPosition="above"
+                align="center"
+              />
+              <FormField
+                label="Fly"
+                name="build.attributes.fly"
+                type="number"
+                small
+                labelPosition="above"
+                align="center"
+              />
+              <FormField
+                label="Burrow"
+                name="build.attributes.burrow"
+                type="number"
+                small
+                labelPosition="above"
+                align="center"
+              />
+              <FormField
+                label="Climb"
+                name="build.attributes.climb"
+                type="number"
+                small
+                labelPosition="above"
+                align="center"
+              />
+              <FormField
+                label="Swim"
+                name="build.attributes.swim"
+                type="number"
+                small
+                labelPosition="above"
+                align="center"
+              />
+            </div>
+          </>
+        )}
+      </CollapsibleHeader>
+
+      {(entityData?.type === EntityType.Player ||
+        entityData?.type === EntityType.Monster ||
+        entityData?.type === EntityType.NPC) && (
+        <>
+          <CollapsibleHeader
+            toggle
+            title="Traits"
+            as="h4"
+            nested
+            defaultCollapsed
+          >
+            <FieldArray name="build.traits">
+              {({ remove, push }) => (
+                <div className={styles.formRow}>
+                  {values.build.traits.map((_, i) => (
+                    <div className={styles.formRow}>
+                      <FormField name={`build.traits.${i}`} />
+                      <FormButton
+                        variant="text"
+                        icon="circle-minus"
+                        onClick={() => remove(i)}
+                        title="Remove trait"
+                      />
+                    </div>
+                  ))}
+                  <div className={styles.formRow}>
+                    <FormButton
+                      variant="subtle"
+                      icon="circle-plus"
+                      onClick={() => push("")}
+                    >
+                      Add trait
+                    </FormButton>
+                  </div>
+                </div>
+              )}
+            </FieldArray>
+          </CollapsibleHeader>
+          <CollapsibleHeader
+            toggle
+            title="Languages"
+            as="h4"
+            nested
+            defaultCollapsed
+          >
+            <FieldArray name="build.languages">
+              {({ remove, push }) => (
+                <div className={styles.formRow}>
+                  {values.build.languages.map((_, i) => (
+                    <div className={styles.formRow}>
+                      <FormField name={`build.languages.${i}`} />
+                      <FormButton
+                        variant="text"
+                        icon="circle-minus"
+                        onClick={() => remove(i)}
+                        title="Remove language"
+                      />
+                    </div>
+                  ))}
+                  <div className={styles.formRow}>
+                    <FormButton
+                      variant="subtle"
+                      icon="circle-plus"
+                      onClick={() => push("")}
+                    >
+                      Add language
+                    </FormButton>
+                  </div>
+                </div>
+              )}
+            </FieldArray>
+          </CollapsibleHeader>
+        </>
+      )}
+      {(entityData?.type === EntityType.Player ||
+        entityData?.type === EntityType.Monster) && (
+        <CollapsibleHeader
+          toggle
+          title="Resistances & Immunities"
+          as="h4"
+          nested
+          defaultCollapsed
+        >
+          <FieldArray name="build.resistances">
+            {({ remove, push }) => (
+              <div className={classNames(styles.formRow, styles.formSection)}>
+                {values.build.resistances.map((_, i) => (
+                  <div className={styles.formRow}>
+                    <FormField name={`build.resistances.${i}`} />
+                    <FormButton
+                      variant="text"
+                      icon="circle-minus"
+                      onClick={() => remove(i)}
+                      title="Remove resistance"
+                    />
+                  </div>
+                ))}
+                <div className={styles.formRow}>
+                  <FormButton
+                    variant="subtle"
+                    icon="circle-plus"
+                    onClick={() => push("")}
+                  >
+                    Add resistance
+                  </FormButton>
+                </div>
+              </div>
+            )}
+          </FieldArray>
+          <FieldArray name="build.immunities">
+            {({ remove, push }) => (
+              <div className={classNames(styles.formRow, styles.formSection)}>
+                {values.build.immunities.map((_, i) => (
+                  <div className={styles.formRow}>
+                    <FormField name={`build.immunities.${i}`} />
+                    <FormButton
+                      variant="text"
+                      icon="circle-minus"
+                      onClick={() => remove(i)}
+                      title="Remove immunity"
+                    />
+                  </div>
+                ))}
+                <div className={styles.formRow}>
+                  <FormButton
+                    variant="subtle"
+                    icon="circle-plus"
+                    onClick={() => push("")}
+                  >
+                    Add immunity
+                  </FormButton>
+                </div>
+              </div>
+            )}
+          </FieldArray>
+        </CollapsibleHeader>
+      )}
+      {(entityData?.type === EntityType.Player ||
+        entityData?.type === EntityType.Monster ||
+        entityData?.type === EntityType.NPC) && (
+        <>
+          <EntitySkillsForm formProps={formProps} />
+          <CollapsibleHeader
+            toggle
+            title="Conditions"
+            as="h4"
+            nested
+            defaultCollapsed
+          >
+            <FieldArray name="conditions">
+              {({ remove, push }) => (
+                <div className={styles.formRow}>
+                  {values.conditions.map((_, i) => {
+                    return (
+                      <div className={styles.formRow}>
+                        <FormField name={`conditions.${i}.name`} />
+                        <FormField
+                          label="Has value?"
+                          name={`conditions.${i}.isValued`}
+                          type="checkbox"
+                          small
+                        />
+                        <FormField
+                          label="Value"
+                          name={`conditions.${i}.value`}
+                          type="number"
+                          small
+                        />
+                        <FormButton
+                          variant="text"
+                          icon="circle-minus"
+                          onClick={() => remove(i)}
+                          title="Remove condition"
+                        />
+                      </div>
+                    );
+                  })}
+                  <div className={styles.formRow}>
+                    <FormButton
+                      variant="subtle"
+                      icon="circle-plus"
+                      onClick={() => push("")}
+                    >
+                      Add condition
+                    </FormButton>
+                  </div>
+                </div>
+              )}
+            </FieldArray>
+          </CollapsibleHeader>
+        </>
+      )}
     </>
   );
 };

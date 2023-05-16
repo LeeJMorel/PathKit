@@ -1,6 +1,6 @@
 [package]
 name = "pathkit"
-version = "0.0.2"
+version = "0.0.3"
 description = "PathKit is a virtual GM (Game Master) screen for the tabletop role-playing game Pathfinder 2e. It provides a set of tools and features to assist GMs in running their game sessions smoothly and efficiently."
 authors = ["you"]
 license = ""

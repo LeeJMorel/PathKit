@@ -15,6 +15,7 @@ const NewCampaignForm = ({ onSubmit }: INewCampaignFormProps) => {
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
+    console.log(e);
   };
 
   const handleDescriptionChange = (

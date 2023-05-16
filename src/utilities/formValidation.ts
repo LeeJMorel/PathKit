@@ -16,3 +16,8 @@ export async function isBase64UrlImage(base64String: string): Promise<boolean> {
   });
   return isValid;
 }
+
+export const diceValueRegex = new RegExp(
+  /(?<operator>[+\-])?(?:(?<dice>(?<numberOfDice>[\d]+)?[dD](?<faces>[\d]+)(?<explode>![\d]*)?(?<implode>¡[\d]*)?(?<selective>[kd][\d]+)?)|(?<constant>[\d]+))/,
+  "gm"
+);

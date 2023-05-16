@@ -1,0 +1,185 @@
+@import "../../styles/variables";
+
+.fieldContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0.5em 0.5em;
+  align-items: flex-start;
+  flex: 1;
+  position: relative;
+
+  // &:last-of-type {
+  //   margin-bottom: 0;
+  // }
+  .labelContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.25em;
+
+    .label {
+      font-size: 1rem;
+      padding: 0.25em 0;
+    }
+  }
+
+  .inputContainer {
+    flex: 1;
+    width: 100%;
+    // position: relative;
+
+    .formInput {
+      padding: $inputPadding;
+      border: 1px solid var(--primaryText);
+      border-radius: 4px;
+      width: 100%;
+      min-width: 100px;
+      font-size: 1em;
+      background: var(--primaryBackground);
+      color: var(--primaryText);
+
+      &.hasError {
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+      }
+
+      &.number {
+        padding-right: 0.1em;
+      }
+    }
+
+    .error {
+      background: var(--errorBackground);
+      color: var(--errorText);
+      font-size: 0.75em;
+      padding: 0 0.2em;
+      position: relative;
+      top: 100%;
+      width: 100%;
+      z-index: 999;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+  }
+
+  &.inline {
+    flex-direction: row;
+    justify-content: space-between;
+
+    .labelContainer {
+      justify-content: flex-start;
+      margin-right: 0.5em;
+      margin-bottom: 0;
+    }
+
+    .inputContainer {
+      max-width: 340px;
+    }
+  }
+
+  &.above {
+    .labelContainer {
+      width: 100%;
+      text-align-last: left;
+    }
+    .error {
+      position: initial;
+    }
+  }
+
+  &.above.start {
+    .labelContainer {
+      justify-content: flex-start;
+    }
+    .formInput {
+      text-align: left;
+    }
+  }
+
+  &.above.center {
+    .labelContainer {
+      justify-content: center;
+      width: 100%;
+      text-align: center;
+    }
+    .inputContainer {
+      display: flex;
+      justify-content: center;
+    }
+    .formInput {
+      text-align: center;
+    }
+  }
+
+  &.above.end {
+    .labelContainer {
+      justify-content: flex-end;
+      text-align: right;
+    }
+    .formInput {
+      text-align: right;
+    }
+  }
+
+  &.small {
+    flex: initial;
+    .formInput {
+      width: 3em;
+      min-width: auto;
+    }
+  }
+
+  &.isCheckbox,
+  &.isRadio {
+    cursor: pointer;
+  }
+}
+
+.inputButton {
+  flex: initial;
+}
+
+.hiddenFileInput {
+  display: none;
+}
+
+// .fileUploadButton {
+//   margin-bottom: 1em;
+//   margin-left: 1em;
+// }
+
+.formInput.checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.checkboxBack {
+  background: var(--primaryBackground);
+  width: 1.1em;
+  height: 1.1em;
+  position: relative;
+  border: 1px solid var(--primaryText);
+
+  transform: rotate(45deg) translate(0.25em, 0.25em);
+
+  .checkboxFront {
+    background: var(--primaryText);
+    width: 0.6em;
+    height: 0.6em;
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+  }
+  &:not(.checked) {
+    .checkboxFront {
+      opacity: 0;
+    }
+  }
+}
+.checkboxClickTarget {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0.1;
+}

@@ -55,7 +55,6 @@ export const useCampaigns = (): IUseCampaigns => {
     if (result) {
       loadCampaign(result.id);
     }
-    console.log("addCampaign", { result });
   };
 
   return {

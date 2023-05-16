@@ -152,6 +152,11 @@
     padding: 0.2em;
     cursor: pointer;
     border-right: 1px solid var(--accentBackground);
+    transition: all 0.1s ease-in-out;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
   }
 
   .tabContainer {
@@ -268,5 +273,21 @@
     bottom: 0;
     right: 0;
     transform: translate(-50%, 50%);
+  }
+}
+
+.importObject {
+  .inlineForm {
+    display: flex;
+    align-items: center;
+    padding: 1em;
+
+    .importField {
+      margin-bottom: 0;
+    }
+
+    .submitButton {
+      margin-left: 1em;
+    }
   }
 }

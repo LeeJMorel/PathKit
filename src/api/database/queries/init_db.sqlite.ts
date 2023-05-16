@@ -32,7 +32,7 @@ END;
 CREATE TABLE IF NOT EXISTS path (
   id INTEGER PRIMARY KEY,
   orderNum INTEGER,
-  type TEXT CHECK( type IN ('exporation','encounter') ) NOT NULL DEFAULT 'exploration',
+  type TEXT CHECK( type IN ('exploration','encounter') ) NOT NULL DEFAULT 'exploration',
   entities TEXT NOT NULL DEFAULT '[]',
   campaignId INTEGER NOT NULL,
   FOREIGN KEY(campaignId) REFERENCES campaign(id) ON UPDATE CASCADE ON DELETE CASCADE
@@ -47,10 +47,12 @@ CREATE TABLE IF NOT EXISTS entity (
   initiative INTEGER CHECK( initiative >= 0 ) NOT NULL DEFAULT 0,
   noteId INTEGER,
   build TEXT NOT NULL DEFAULT '{}',
-  damage INTEGER NOT NULL DEFAULT 0,
-  tempHp INTEGER NOT NULL DEFAULT 0,
+  damage TEXT NOT NULL DEFAULT '[0]',
+  tempHp TEXT NOT NULL DEFAULT '[0]',
   maxHp INTEGER,
   conditions TEXT NOT NULL DEFAULT '[]',
+  quantity INTEGER DEFAULT 1,
+  pathbuilderId TEXT,
   FOREIGN KEY(campaignId) REFERENCES campaign(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY(noteId) REFERENCES note(id) ON UPDATE CASCADE ON DELETE SET NULL
 );

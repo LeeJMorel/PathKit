@@ -11,15 +11,17 @@ export interface PartialEntity {
   name: string;
   type: EntityType;
   initiative: number;
-  noteId?: number;
+  noteId?: number | null;
   build: IEntityBuild;
-  damage: number;
-  tempHp: number;
+  damage: number[];
+  tempHp: number[];
   /** Should not use on player entities, this should be calculated instead */
-  maxHp?: number;
+  maxHp?: number | null;
   conditions: ICondition[];
+  quantity: number;
   id?: number;
   campaignId?: number;
+  pathbuilderId?: string | null;
 }
 
 export interface IEntity extends PartialEntity {
@@ -41,6 +43,7 @@ export interface IRawEntity extends Omit<IEntity, "conditions" | "build"> {
 export interface IEntityBuild {
   name?: string;
   class?: string;
+  desc?: string;
   level: number;
   ancestry?: string;
   heritage?: string;
@@ -50,26 +53,37 @@ export interface IEntityBuild {
   age?: string;
   deity?: string;
   size?: number;
-  keyability?: string;
-  languages?: string[];
+  keyability?: Ability;
+  languages: string[];
   attributes: IAttributes;
-  abilities?: TAbilities;
-  proficiencies?: {
+  abilities: TAbilities;
+  proficiencies: {
     [key: string]: number;
   };
-  feats?: Feat[][];
-  specials?: string[];
-  lores?: (number | string)[][];
-  equipment?: (number | string)[][];
-  specificProficiencies?: ISpecificProficiencies;
-  weapons?: IArmor[];
-  money?: IMoney;
-  armor?: IArmor[];
-  focus?: IFocus;
-  spellCasters?: ISpellCaster[];
-  formula?: any[];
-  pets?: IEntity[];
-  acTotal?: IACTotal;
+  feats: Feat[];
+  specials: string[];
+  lores: Lore[];
+  equipment: Equipment[];
+  specificProficiencies: ISpecificProficiencies;
+  weapons: IEquipable[];
+  money: IMoney;
+  armor: IEquipable[];
+  focus: IFocus;
+  spellCasters: ISpellCaster[];
+  formula: any[];
+  pets: string[];
+  acTotal: IACTotal;
+  traits: string[];
+  resistances: string[];
+  immunities: string[];
+  actions: {
+    actions: IAction[];
+    freeActions: IFreeAction[];
+    reactions: IReaction[];
+    passiveActions: IPassiveAction[];
+    melee: IMelee[];
+    ranged: IRanged[];
+  };
 }
 
 export enum Ability {
@@ -102,13 +116,13 @@ export interface IACTotal {
   shieldBonus?: string;
 }
 
-export interface IArmor {
+export interface IEquipable {
   name?: string;
   qty?: number;
   prof?: string;
   pot?: number;
   res?: number | string;
-  mat?: null;
+  mat?: string | null;
   display?: string;
   worn?: boolean;
   runes?: any[];
@@ -123,24 +137,60 @@ export interface IAttributes {
   bonushpPerLevel?: number;
   speed?: number;
   speedBonus?: number;
+  fly?: number;
+  burrow?: number;
+  climb?: number;
+  swim?: number;
 }
 
-export type Feat = number | null | string;
+export type Feat = [
+  name: string,
+  secondary: string | null | undefined,
+  featType: string | null | undefined,
+  level: number | undefined,
+  desc: string | undefined | null
+];
+
+export type Lore = [name: string, proficiency: number];
+
+export type Equipment = [
+  name: string,
+  quantity: number,
+  bulk?: number,
+  value?: string,
+  worn?: boolean
+];
+
+export enum MagicTradition {
+  primal = "primal",
+  occult = "occult",
+  arcane = "arcane",
+  divine = "divine",
+}
+
+export enum SpellcastingType {
+  spontaneous = "spontaneous",
+  prepared = "prepared",
+}
 
 export interface IFocus {
   focusPoints?: number;
-  primal?: IPrimal;
+  [MagicTradition.arcane]?: TFocusSpellPool;
+  [MagicTradition.divine]?: TFocusSpellPool;
+  [MagicTradition.primal]?: TFocusSpellPool;
+  [MagicTradition.occult]?: TFocusSpellPool;
 }
 
-export interface IPrimal {
-  cha?: ICha;
-}
+export type TFocusSpellPool = {
+  [key in Ability]?: IFocusSpell;
+};
 
-export interface ICha {
+export interface IFocusSpell {
   abilityBonus?: number;
   proficiency?: number;
   itemBonus?: number;
   focusSpells?: string[];
+  focusCantrips?: string[];
 }
 
 export interface IMoney {
@@ -159,16 +209,16 @@ export interface ISpecificProficiencies {
 
 export interface ISpellCaster {
   name?: string;
-  magicTradition?: string;
-  spellcastingType?: string;
-  ability?: string;
+  magicTradition?: MagicTradition;
+  spellcastingType?: SpellcastingType;
+  ability?: Ability;
   proficiency?: number;
   focusPoints?: number;
-  spells?: ISpell[];
+  spells?: ISpellLevel[];
   perDay?: number[];
 }
 
-export interface ISpell {
+export interface ISpellLevel {
   spellLevel?: number;
   list?: string[];
 }
@@ -233,4 +283,50 @@ export enum Proficiency {
   stealth = "stealth",
   survival = "survival",
   thievery = "thievery",
+}
+
+export enum ActionNumber {
+  One = 1,
+  Two = 2,
+  Three = 3,
+  Zero = 0,
+}
+export interface IPassiveAction {
+  name: string;
+  effect: string;
+}
+
+export interface IReaction {
+  name: string;
+  trigger: string;
+  effect: string;
+}
+
+export interface IFreeAction {
+  name: string;
+  frequency: string;
+  trigger: string;
+  effect: string;
+}
+
+export interface IAction {
+  actionNumber: ActionNumber;
+  name: string;
+  attackDc: number;
+  traits: string[];
+  effect: string;
+}
+
+export interface IMelee {
+  actionNumber: ActionNumber;
+  name: string;
+  attackDc: number;
+  damageType: string;
+  traits: string[];
+  damageValue: string;
+  extra: string;
+}
+
+export interface IRanged extends IMelee {
+  range: number;
 }
