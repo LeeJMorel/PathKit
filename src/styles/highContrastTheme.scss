@@ -22,6 +22,7 @@ $highContrastTheme: (
   linkText: map-get($colorPalette, blueDarker),
   close: map-get($colorPalette, redLight),
   buttonHover: map-get($colorPalette, white),
+  buttonHoverText: map-get($colorPalette, black),
 );
 
 $theme: map-merge($fonts, $highContrastTheme);

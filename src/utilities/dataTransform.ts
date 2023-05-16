@@ -8,8 +8,8 @@ export const transformRawEntity = (rawEntity: IRawEntity): IEntity =>
     ...rawEntity,
     build: JSON.parse(rawEntity.build || "{}"),
     conditions: JSON.parse(rawEntity.conditions || "[]"),
-    damage: JSON.parse(rawEntity.conditions || "[]"),
-    tempHp: JSON.parse(rawEntity.conditions || "[]"),
+    damage: JSON.parse(rawEntity.damage || "[]"),
+    tempHp: JSON.parse(rawEntity.tempHp || "[]"),
   } as IEntity);
 
 export const transformPathbuilderBuild = (

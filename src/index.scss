@@ -10,13 +10,18 @@
 html {
   box-sizing: border-box;
   height: 100%;
+  font-size: 16px;
 }
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.4;
   font-weight: 400;
-  font-size: 1em;
+  // font-size: 16px;
+
+  // & .largeFont {
+  //   font-size: 20px;
+  // }
 
   color-scheme: light dark;
   color: var(--bodyText);

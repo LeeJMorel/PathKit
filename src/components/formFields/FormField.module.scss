@@ -8,16 +8,13 @@
   flex: 1;
   position: relative;
 
-  // &:last-of-type {
-  //   margin-bottom: 0;
-  // }
   .labelContainer {
     display: flex;
     align-items: center;
     margin-bottom: 0.25em;
 
     .label {
-      font-size: 1rem;
+      font-size: 1em;
       padding: 0.25em 0;
     }
   }
@@ -25,7 +22,6 @@
   .inputContainer {
     flex: 1;
     width: 100%;
-    // position: relative;
 
     .formInput {
       padding: $inputPadding;
@@ -71,9 +67,16 @@
       margin-bottom: 0;
     }
 
-    .inputContainer {
-      max-width: 340px;
-    }
+    // .inputContainer {
+    //   max-width: 340px;
+    // }
+  }
+  &.inline.end {
+    justify-content: flex-end;
+  }
+
+  &.inline.center {
+    justify-content: center;
   }
 
   &.above {

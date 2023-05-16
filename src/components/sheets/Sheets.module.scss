@@ -8,8 +8,11 @@
   .imageContainer {
     display: flex;
     justify-content: center;
+    align-items: center;
     max-height: 250px;
     position: relative;
+    flex: 1 0 auto;
+    overflow: hidden;
 
     img {
       width: 100%;
@@ -17,12 +20,16 @@
       object-fit: cover;
     }
 
-    .import {
+    .fullSizeButton {
       position: absolute;
-      bottom: 0;
-      background: rgba(255, 255, 255, 0.6);
-      width: 100%;
-      padding: 1em;
+      bottom: 0.5rem;
+      right: 0.5rem;
+      color: var(--accentText);
+      background: var(--accentBackground);
+      opacity: 0.5;
+    }
+    &.imageExpanded {
+      max-height: unset;
     }
   }
 
@@ -36,13 +43,14 @@
       display: flex;
       flex-direction: row;
 
-      h2 {
+      .heading {
         font-size: 1.5rem;
         color: var(--primaryText);
+        margin: 0;
       }
 
       p {
-        margin-left: 0.2em;
+        margin-left: 0 0 0 0.5em;
         font-style: italic;
       }
     }
@@ -94,7 +102,8 @@
   .sheetRowContainerLeftAlign {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
+    // align-items: center;
     flex: 1;
     flex-direction: row;
     width: 100%;
@@ -174,4 +183,9 @@
   .child-element {
     flex: 1; // Add flex: 1 to expand the child elements
   }
+}
+
+.caption {
+  font-size: 0.6em;
+  text-align: center;
 }

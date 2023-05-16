@@ -14,7 +14,7 @@ function NotesSheet() {
   const handleChange = (newNote: PartialNote) => {
     updateOrAddNote(newNote);
   };
-  
+
   const handleCreateNoteClick = async () => {
     const newNote = await addNote({
       title: new Date().toLocaleString(),
@@ -41,7 +41,7 @@ function NotesSheet() {
           </Button>
         </div>
       </div>
-    ); 
+    );
   }, [notesExist]);
 
   return (
@@ -49,15 +49,26 @@ function NotesSheet() {
       {!preferences.selectedNoteSheet ? (
         renderCreateNote()
       ) : (
-        <NoteObject
-          onChange={handleChange}
-          onClose={() =>
-            setPreferences({
-              selectedNoteSheet: 0,
-            })
-          }
-          noteId={preferences.selectedNoteSheet}
-        />
+        <>
+          <NoteObject
+            onChange={handleChange}
+            onClose={() =>
+              setPreferences({
+                selectedNoteSheet: 0,
+              })
+            }
+            noteId={preferences.selectedNoteSheet}
+          />
+          <span className={styles.caption}>
+            <a
+              href="https://www.markdownguide.org/cheat-sheet/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              What is Markdown?
+            </a>
+          </span>
+        </>
       )}
       {notesExist && !preferences.selectedNoteSheet && (
         <div className={styles.notesBinder}>

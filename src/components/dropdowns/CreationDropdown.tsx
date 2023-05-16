@@ -19,7 +19,7 @@ const CreationDropdown: React.FC<CreationDropdownProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(isOpenProp);
   const { setPreferences } = usePreferencesStore();
-  const { updateOrAddNote } = useNotes();
+  const { addNote } = useNotes();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ const CreationDropdown: React.FC<CreationDropdownProps> = ({
     {
       label: "Create a Note",
       onClick: async () => {
-        const newNote = await updateOrAddNote({ title: "", body: "" });
+        const newNote = await addNote({ title: "", body: "" });
         setPreferences({
           selectedNoteSheet: newNote?.id,
         });

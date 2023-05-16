@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEntities } from "../../hooks";
+import { useEntities, useNotes } from "../../hooks";
 import styles from "./Sheets.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useState, useEffect } from "react";
@@ -11,8 +11,9 @@ import {
   getAbilityModifier,
   getPlayerMaxHp,
   getProficiencyModifier,
+  toSentenceCase,
 } from "../../utilities";
-import { EntityType, Proficiency } from "../../api/model/entity";
+import { EntityType, Proficiency, INote } from "../../api/model";
 import DataCellDisplay from "../displays/DataCellDisplay";
 import { StatsDisplay } from "../displays/StatsDisplay";
 import NotesObject from "../objects/NoteObject";
@@ -22,8 +23,10 @@ import ActionsFilter from "./EntitySheet.ActionsFilter";
 function EntitySheet() {
   const { entityId } = useParams();
   const navigate = useNavigate();
-  const { getEntityById } = useEntities();
+  const { getEntityById, updateEntityById, entities } = useEntities();
+  const { updateOrAddNote } = useNotes();
   const [entity, setEntity] = useState(defaultEntity);
+  const [imageExpanded, setImageExpanded] = useState(false);
   const [maxHp, setMaxHp] = useState<number>(entity.maxHp || 0);
 
   useEffect(() => {
@@ -31,7 +34,8 @@ function EntitySheet() {
     if (matchEntity) {
       setEntity(matchEntity);
     }
-  }, [entityId]);
+  }, [entityId, entities]);
+
   useEffect(() => {
     if (entity.type === EntityType.Player) {
       const playerMaxHp = getPlayerMaxHp(entity);
@@ -39,12 +43,30 @@ function EntitySheet() {
       setMaxHp(playerMaxHp);
     }
   }, [entity]);
+
   const handleCancelClick = () => {
     navigate("/");
   };
+
   const handleEditClick = useCallback(() => {
     navigate(`/entity/${entityId}/edit`);
   }, [entity]);
+
+  const handleUpdatingNote = async (note: INote) => {
+    if (entity.id && note.id) {
+      const updatedEntity = await updateEntityById({
+        id: entity.id,
+        noteId: note.id,
+      });
+      if (updatedEntity) {
+        setEntity(updatedEntity);
+      }
+    }
+  };
+
+  const handleImageExpand = () => {
+    setImageExpanded((prev) => !prev);
+  };
 
   return (
     <div className={styles.sheetsContainer}>
@@ -55,8 +77,7 @@ function EntitySheet() {
             <p>
               ({entity.build.level ? `level: ${entity.build.level}` : ""}
               {/*if both exist, put a comma between*/}
-              {entity.build.size ? ", " : ""}
-              {entity.build.size ? `size: ${entity.build.size}` : ""})
+              {entity.build.size ? `, size: ${entity.build.size}` : ""})
             </p>
           )}
         </div>
@@ -80,8 +101,20 @@ function EntitySheet() {
       </div>
       <div className={styles.sheetContent}>
         {entity?.image && (
-          <div className={styles.imageContainer}>
+          <div
+            className={classNames(
+              styles.imageContainer,
+              imageExpanded && styles.imageExpanded
+            )}
+          >
             <img src={entity.image} alt={entity.name} />
+            <Button
+              icon={imageExpanded ? "compress" : "expand"}
+              onClick={handleImageExpand}
+              variant="text"
+              className={styles.fullSizeButton}
+              title={imageExpanded ? "Compress image" : "Expand image"}
+            />
           </div>
         )}
         <table className={styles.sheetTable}>
@@ -105,7 +138,11 @@ function EntitySheet() {
           {entity?.build?.proficiencies?.perception && (
             <DataCellDisplay
               name="build.proficiencies.perception"
-              value={getProficiencyModifier(entity, Proficiency.perception)}
+              value={getProficiencyModifier(
+                entity,
+                Proficiency.perception,
+                true
+              )}
               label={`Perception`}
               labelPosition="inline"
               align="start"
@@ -114,7 +151,7 @@ function EntitySheet() {
           {entity?.build?.keyability && (
             <DataCellDisplay
               name="build.keyability"
-              value={getProficiencyModifier(entity, Proficiency.perception)}
+              value={entity.build.keyability.toUpperCase()}
               label={`Key Ability`}
               labelPosition="inline"
               align="start"
@@ -204,7 +241,10 @@ function EntitySheet() {
           <DataCellDisplay
             name="build.abilities.str"
             value={entity.build.abilities.str}
-            label={`STR [${getAbilityModifier(entity.build.abilities.str)}]`}
+            label={`STR [${getAbilityModifier(
+              entity.build.abilities.str,
+              true
+            )}]`}
             labelPosition="above"
             align="center"
             small
@@ -212,7 +252,10 @@ function EntitySheet() {
           <DataCellDisplay
             name="build.abilities.dex"
             value={entity.build.abilities.dex}
-            label={`DEX [${getAbilityModifier(entity.build.abilities.dex)}]`}
+            label={`DEX [${getAbilityModifier(
+              entity.build.abilities.dex,
+              true
+            )}]`}
             labelPosition="above"
             align="center"
             small
@@ -220,7 +263,10 @@ function EntitySheet() {
           <DataCellDisplay
             name="build.abilities.con"
             value={entity.build.abilities.con}
-            label={`CON [${getAbilityModifier(entity.build.abilities.con)}]`}
+            label={`CON [${getAbilityModifier(
+              entity.build.abilities.con,
+              true
+            )}]`}
             labelPosition="above"
             align="center"
             small
@@ -228,7 +274,10 @@ function EntitySheet() {
           <DataCellDisplay
             name="build.abilities.int"
             value={entity.build.abilities.int}
-            label={`INT [${getAbilityModifier(entity.build.abilities.int)}]`}
+            label={`INT [${getAbilityModifier(
+              entity.build.abilities.int,
+              true
+            )}]`}
             labelPosition="above"
             align="center"
             small
@@ -236,7 +285,10 @@ function EntitySheet() {
           <DataCellDisplay
             name="build.abilities.wis"
             value={entity.build.abilities.wis}
-            label={`WIS [${getAbilityModifier(entity.build.abilities.wis)}]`}
+            label={`WIS [${getAbilityModifier(
+              entity.build.abilities.wis,
+              true
+            )}]`}
             labelPosition="above"
             align="center"
             small
@@ -244,7 +296,10 @@ function EntitySheet() {
           <DataCellDisplay
             name="build.abilities.cha"
             value={entity.build.abilities.cha}
-            label={`CHA [${getAbilityModifier(entity.build.abilities.cha)}]`}
+            label={`CHA [${getAbilityModifier(
+              entity.build.abilities.cha,
+              true
+            )}]`}
             labelPosition="above"
             align="center"
             small
@@ -418,7 +473,18 @@ function EntitySheet() {
           )}
         </div>
         <ActionsFilter entity={entity} />
-        <NotesObject />
+        {entity.id && (
+          <NotesObject
+            defaultTitle={`Notes for ${entity.name} (${entity.id})`}
+            noteId={entity.noteId || undefined}
+            onChange={(note) => {
+              updateOrAddNote(
+                { ...note, entityId: entity.id },
+                handleUpdatingNote
+              );
+            }}
+          />
+        )}
       </div>
       {/* <pre>{JSON.stringify(entity, null, 2)}</pre> */}
     </div>

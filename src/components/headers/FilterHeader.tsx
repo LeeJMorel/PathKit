@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { useState } from "react";
 import styles from "./Header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
@@ -17,7 +17,6 @@ const KeywordDiv = ({
   ...rest
 }: IKeywordDivProps): JSX.Element => {
   const keywordString = keywords.join(", ");
-  console.log({ keywords, children, className, rest });
   return (
     <div
       data-keywords={keywordString}
