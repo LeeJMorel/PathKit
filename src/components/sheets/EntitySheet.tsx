@@ -17,18 +17,6 @@ import DataCellDisplay from "../displays/DataCellDisplay";
 import { StatsDisplay } from "../displays/StatsDisplay";
 import NotesObject from "../objects/NoteObject";
 import CollapsibleHeader from "../headers/CollapsibleHeader";
-import { FilterHeader, KeywordDiv } from "../headers/FilterHeader";
-import {
-  OneAction,
-  TwoAction,
-  ThreeAction,
-  Reaction,
-  PassiveAction,
-  FreeAction,
-  MeleeAction,
-  RangedAction,
-  SpellAction,
-} from "../../assets/iconKey";
 import ActionsFilter from "./EntitySheet.ActionsFilter";
 
 function EntitySheet() {
@@ -432,7 +420,7 @@ function EntitySheet() {
         <ActionsFilter entity={entity} />
         <NotesObject />
       </div>
-      <pre>{JSON.stringify(entity, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(entity, null, 2)}</pre> */}
     </div>
   );
 }

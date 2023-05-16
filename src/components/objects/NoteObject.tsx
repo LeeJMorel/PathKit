@@ -58,7 +58,11 @@ function NotesObject({ noteId, onChange, onClose }: INotesObjectProps) {
             <Button onClick={onClose} icon="close" variant="text" />
           )}
         </div>
-        <Button type="submit" variant="primary" onClick={() => setEditMode(!editMode)}>
+        <Button
+          type="submit"
+          variant="primary"
+          onClick={() => setEditMode(!editMode)}
+        >
           {editMode ? "Preview" : "Edit"} Note
         </Button>
       </div>
