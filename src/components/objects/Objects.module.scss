@@ -4,7 +4,7 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  white-space: pre-wrap;
+  // white-space: pre-wrap;
   word-wrap: break-word;
   border: none;
   outline: none;
@@ -185,52 +185,52 @@
     //whatever spawns from the menu
     width: 100%;
     overflow-y: auto;
+  }
+}
 
-    //tables
-    .pathsTable {
-      border-collapse: collapse;
-      width: 100%;
+//tables
+.binderTable {
+  border-collapse: collapse;
+  width: 100%;
 
-      .pathsTableRow {
-        border-bottom: 1px solid var(--primaryBackground);
-        display: flex;
-        align-items: center;
-        font-size: 0.8em;
+  .binderTableRow {
+    border-bottom: 1px solid var(--primaryBackground);
+    display: flex;
+    align-items: center;
+    font-size: 0.8em;
 
-        &:nth-child(even) {
-          background-color: var(--secondaryAccentBackground);
-          color: var(--primaryText);
-        }
-      }
-
-      .pathsTableAction,
-      .pathsTablePathType,
-      .pathsTableEntities,
-      .pathsTableSpan {
-        padding: 0.3em;
-        text-align: left;
-      }
-
-      .pathsTableAction {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        height: 100%;
-      }
-
-      .pathsTablePathType {
-        width: 25%;
-      }
-
-      .pathsTableEntities,
-      .pathsTableSpan {
-        flex: 1;
-      }
-
-      .deleteButton {
-        cursor: pointer;
-      }
+    &:nth-child(even) {
+      background-color: var(--secondaryAccentBackground);
+      color: var(--primaryText);
     }
+  }
+
+  .binderTableAction,
+  .binderTableName,
+  .binderTableEntities,
+  .binderTableSpan {
+    padding: 0.3em;
+    text-align: left;
+  }
+
+  .binderTableAction {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+  }
+
+  .binderTableName {
+    flex: 1;
+  }
+
+  .binderTableEntities,
+  .binderTableSpan {
+    flex: 3;
+  }
+
+  .deleteButton {
+    cursor: pointer;
   }
 }
 

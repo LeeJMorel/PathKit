@@ -29,7 +29,7 @@
       margin: 0.5em;
       color: var(--tertiaryAccentText);
       background-color: var(--accentBackground);
-    
+
       &:hover {
         background-color: var(--tertiaryAccentBackground);
       }
@@ -94,11 +94,16 @@
     .menuRowContainer {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      // align-items: center;
       flex: 1;
       flex-direction: row;
       width: 100%;
       margin-bottom: 0.2em;
+    }
+
+    .menuColumnContainer {
+      display: flex;
+      flex-direction: column;
     }
 
     .menuEndContainer {

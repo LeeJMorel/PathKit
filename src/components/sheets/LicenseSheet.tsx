@@ -1,7 +1,6 @@
-import { useCallback } from "react";
 import styles from "./Sheets.module.scss";
-import { Button } from "../buttons";
 import { useNavigate } from "react-router-dom";
+import { SheetHeader } from "./SheetHeader";
 
 function LicenseSheet() {
   const navigate = useNavigate();
@@ -12,18 +11,10 @@ function LicenseSheet() {
 
   return (
     <div className={styles.sheetsContainer}>
-      <div className={styles.header}>
-        <div className={styles.title}>
-          <h2 className={styles.heading}>Open Game License v1.0</h2>
-        </div>
-        <div className={styles.headerButtons}>
-          <Button
-            onClick={handleCancelClick}
-            icon="arrow-left"
-            variant="text"
-          />
-        </div>
-      </div>
+      <SheetHeader
+        title="Open Game License v1.0"
+        onCloseClick={handleCancelClick}
+      />
       <div className={styles.sheetContent}>
         <p>
           The following text is the property of Wizards of the Coast, Inc. and

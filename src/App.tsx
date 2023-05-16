@@ -105,6 +105,20 @@ function App() {
     setShowInitiativeMenu((prevState) => !prevState);
   };
 
+  useEffect(() => {
+    switch (preferences.theme) {
+      case "dark":
+      case "highContrastDark":
+        document.documentElement.setAttribute("data-color-mode", "dark");
+        break;
+      case "parchment":
+      case "highContrastParchment":
+      default:
+        document.documentElement.setAttribute("data-color-mode", "light");
+        break;
+    }
+  }, [preferences.theme]);
+
   return (
     // Main container for the app
     <div
