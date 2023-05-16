@@ -11,6 +11,8 @@ import {
   PartialEntity,
   PartialPath,
   PathType,
+  Trait,
+  TraitType,
 } from "../api/model";
 
 export const defaultPath: PartialPath = {
@@ -103,6 +105,8 @@ export const defaultEntity: PartialEntity = {
 };
 
 export const defaultFeat: Feat = ["", "", "", 1, ""];
+
+export const defaultTrait: Trait = ["", TraitType.Keyword];
 
 export const defaultEquipment: Equipment = ["", 1, 0, "0cp", false];
 

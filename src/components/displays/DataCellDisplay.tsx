@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import styles from "./Display.module.scss";
+import { TraitType } from "../../api/model";
 
 export interface IDataCellProps {
   name: string;
@@ -11,6 +12,7 @@ export interface IDataCellProps {
   small?: boolean;
   width?: number | string;
   align?: "start" | "center" | "end";
+  tag?: TraitType;
 }
 
 export const DataCellDisplay: React.FC<IDataCellProps> = ({
@@ -21,6 +23,7 @@ export const DataCellDisplay: React.FC<IDataCellProps> = ({
   small,
   width,
   value,
+  tag = TraitType.none,
 }) => {
   return (
     <div
@@ -28,6 +31,7 @@ export const DataCellDisplay: React.FC<IDataCellProps> = ({
         styles.displayContainer,
         styles[labelPosition],
         styles[align],
+        styles[tag],
         small && styles.small,
         className
       )}

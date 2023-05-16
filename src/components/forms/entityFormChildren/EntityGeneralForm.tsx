@@ -5,7 +5,13 @@ import FormField from "../../formFields/FormField";
 import FileUploader from "../../formFields/FileUploader";
 import FormButton from "../../formFields/FormButton";
 import { IEntityFormChildrenProps } from "../AddEntityForm";
-import { abilityOptions, profLevelOptions, sizeOptions } from "../../../consts";
+import {
+  abilityOptions,
+  defaultTrait,
+  profLevelOptions,
+  sizeOptions,
+  traitOptions,
+} from "../../../consts";
 import { getAbilityModifier, getProficiencyModifier } from "../../../utilities";
 import CollapsibleHeader from "../../headers/CollapsibleHeader";
 import { EntitySkillsForm } from "./EntitySkillsForm";
@@ -56,6 +62,7 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
             style={{ resize: "vertical" }}
           />
         </div>
+
         {[EntityType.Player, EntityType.Monster, EntityType.NPC].includes(
           values.type
         ) && (
@@ -156,6 +163,15 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
                 small
               />
             </div>
+          </>
+        )}
+        {[
+          EntityType.Player,
+          EntityType.Monster,
+          EntityType.NPC,
+          EntityType.Hazard,
+        ].includes(values.type) && (
+          <>
             <div className={styles.formRow}>
               <FormField
                 label="AC"
@@ -272,6 +288,12 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
                 labelPosition="above"
               />
             </div>
+          </>
+        )}
+        {[EntityType.Player, EntityType.Monster, EntityType.NPC].includes(
+          values.type
+        ) && (
+          <>
             <div className={styles.formRow}>
               <FormField
                 label="Speed"
@@ -318,9 +340,12 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
         )}
       </CollapsibleHeader>
 
-      {[EntityType.Player, EntityType.Monster, EntityType.NPC].includes(
-        values.type
-      ) && (
+      {[
+        EntityType.Player,
+        EntityType.Monster,
+        EntityType.NPC,
+        EntityType.Hazard,
+      ].includes(values.type) && (
         <>
           <CollapsibleHeader
             toggle
@@ -334,7 +359,18 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
                 <div className={styles.formRow}>
                   {values.build.traits.map((_, i) => (
                     <div className={styles.formRow}>
-                      <FormField name={`build.traits.${i}`} />
+                      <FormField name={`build.traits.${i}[0]`} />
+                      <FormField
+                        label="Tag"
+                        name={`build.traits.${i}[1]`}
+                        as="select"
+                      >
+                        {traitOptions.map((o) => (
+                          <option key={o.tag} value={o.tag}>
+                            {o.tag}
+                          </option>
+                        ))}
+                      </FormField>
                       <FormButton
                         variant="text"
                         icon="circle-minus"
@@ -347,7 +383,7 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
                     <FormButton
                       variant="subtle"
                       icon="circle-plus"
-                      onClick={() => push("")}
+                      onClick={() => push(defaultTrait)}
                     >
                       Add trait
                     </FormButton>
@@ -356,6 +392,12 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
               )}
             </FieldArray>
           </CollapsibleHeader>
+        </>
+      )}
+      {[EntityType.Player, EntityType.Monster, EntityType.NPC].includes(
+        values.type
+      ) && (
+        <>
           <CollapsibleHeader
             toggle
             title="Languages"
@@ -392,7 +434,9 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
           </CollapsibleHeader>
         </>
       )}
-      {[EntityType.Player, EntityType.Monster].includes(values.type) && (
+      {[EntityType.Player, EntityType.Monster, EntityType.Hazard].includes(
+        values.type
+      ) && (
         <CollapsibleHeader
           toggle
           title="Resistances & Immunities"
@@ -454,9 +498,12 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
           </FieldArray>
         </CollapsibleHeader>
       )}
-      {[EntityType.Player, EntityType.Monster, EntityType.NPC].includes(
-        values.type
-      ) && (
+      {[
+        EntityType.Player,
+        EntityType.Monster,
+        EntityType.NPC,
+        EntityType.Hazard,
+      ].includes(values.type) && (
         <>
           <EntitySkillsForm formProps={formProps} />
           <CollapsibleHeader

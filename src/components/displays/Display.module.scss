@@ -59,6 +59,51 @@
     }
   }
 
+  &.Keyword {
+    background: var(--keyword);
+    border: 3px solid var(--primaryBackground);
+    color: white;
+    font-weight: bold;
+    width: fit-content;
+    margin-left: 0.2em;
+  }
+
+  &.Size {
+    background: var(--size);
+    border: 3px solid var(--primaryBackground);
+    color: white;
+    font-weight: bold;
+    width: fit-content;
+    margin-left: 0.2em;
+  }
+
+  &.Unique {
+    background: var(--unique);
+    border: 3px solid var(--primaryBackground);
+    color: white;
+    font-weight: bold;
+    width: fit-content;
+    margin-left: 0.2em;
+  }
+
+  &.Uncommon {
+    background: var(--uncommon);
+    border: 3px solid var(--primaryBackground);
+    color: white;
+    font-weight: bold;
+    width: fit-content;
+    margin-left: 0.2em;
+  }
+
+  &.Rare {
+    background: var(--rare);
+    border: 3px solid var(--primaryBackground);
+    color: white;
+    font-weight: bold;
+    width: fit-content;
+    margin-left: 0.2em;
+  }
+
   &.above {
     .labelContainer {
       width: 100%;
