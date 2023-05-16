@@ -22,6 +22,7 @@ $parchmentTheme: (
   linkText: map-get($colorPalette, redDark),
   close: map-get($colorPalette, redLight),
   buttonHover: map-get($colorPalette, brownAlt),
+  buttonHoverText: map-get($colorPalette, parchmentLight),
 );
 
 $theme: map-merge($fonts, $parchmentTheme);

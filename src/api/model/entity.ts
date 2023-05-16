@@ -33,10 +33,14 @@ export interface IUpdateEntity extends Partial<IEntity> {
   id: number;
 }
 
+type EntityJsonStringKeys = "conditions" | "build" | "damage" | "tempHp";
+
 /** Raw entity with JSON stringified data for storage in DB */
-export interface IRawEntity extends Omit<IEntity, "conditions" | "build"> {
+export interface IRawEntity extends Omit<IEntity, EntityJsonStringKeys> {
   conditions?: string;
   build?: string;
+  damage?: string;
+  tempHp?: string;
 }
 
 //entity builds are based on the JSON string import from PathBuilder 2e

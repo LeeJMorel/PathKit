@@ -72,7 +72,6 @@ function EditPathSheet() {
 
   const [pathType, setPathType] = useState(PathType.encounter);
   const handlePathTypeChange = (type: PathType) => {
-    console.log(type);
     setPath((prev) => ({
       ...prev,
       type,

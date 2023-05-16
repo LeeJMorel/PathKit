@@ -16,7 +16,6 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
 }) => {
   const { values, setFieldValue } = formProps;
   const handleFileChange = (value: any) => {
-    console.log("debug: handleFileChange", { value });
     setFieldValue("image", value);
   };
   return (
