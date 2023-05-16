@@ -123,12 +123,23 @@ function EditPathSheet() {
         onClick={() => {
           setEntityData({
             ...defaultEntity,
-            type: EntityType.Shop,
+            type: EntityType.Structure,
           });
-          navigate(`/path/${pathId}/entity/new/edit?type=Shop`);
+          navigate(`/path/${pathId}/entity/new/edit?type=Structure`);
         }}
       >
-        Add Shop
+        Add Structure
+      </Button>
+      <Button
+        onClick={() => {
+          setEntityData({
+            ...defaultEntity,
+            type: EntityType.Hazard,
+          });
+          navigate(`/path/${pathId}/entity/new/edit?type=Hazard`);
+        }}
+      >
+        Add Hazard
       </Button>
       <Button
         onClick={() => {
@@ -279,8 +290,9 @@ function EditPathSheet() {
                     filterEntities={path.entities}
                     showTabs={[
                       BinderTab.NPCs,
-                      BinderTab.Shops,
-                      BinderTab.Monsters,
+                      BinderTab.Structures,
+                      BinderTab.Hazards,
+                      BinderTab.Bestiary,
                     ]}
                   />
                 </div>

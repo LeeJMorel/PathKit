@@ -5,7 +5,27 @@ import {
   EntityType,
   MagicTradition,
   SpellcastingType,
+  TraitType,
 } from "../api/model";
+
+interface TraitOption {
+  tag: TraitType;
+}
+
+export const traitTypes = [
+  TraitType.Uncommon,
+  TraitType.Rare,
+  TraitType.Unique,
+  TraitType.Size,
+  TraitType.Keyword,
+];
+
+export const traitOptions: TraitOption[] = [
+  { tag: TraitType.Uncommon },
+  { tag: TraitType.Rare },
+  { tag: TraitType.Unique },
+  { tag: TraitType.Keyword },
+];
 
 interface AbilityOption {
   value: Ability;
@@ -260,5 +280,6 @@ export const entityTypes: EntityType[] = [
   EntityType.Monster,
   EntityType.NPC,
   EntityType.Player,
-  EntityType.Shop,
+  EntityType.Structure,
+  EntityType.Hazard,
 ];
