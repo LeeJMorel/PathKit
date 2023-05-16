@@ -44,6 +44,12 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     });
   };
 
+  const handlePreferenceChange = (key: string, value: any) => {
+    setPreferences({
+      [key]: value,
+    });
+  };
+
   const navigate = useNavigate();
 
   const handleViewLicense = () => {
@@ -129,6 +135,8 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     ));
   };
 
+  const renderCustomModuleCheckboxes = () => <p>Custom modules coming soon!</p>;
+
   const tabs = [
     {
       id: "campaign",
@@ -177,9 +185,9 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
             </Button>
           </div>
           <div className={styles.menuRowContainer}>
-            <h2 title={"Players"} className={styles.tabHeader}>
+            <h3 title={"Players"} className={styles.tabHeader}>
               Players
-            </h2>
+            </h3>
             <h4 title={"Indicate if a player is present"}>is Present</h4>
           </div>
           <hr className={styles.tabHorizontalLine} />
@@ -230,78 +238,107 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
       content: (
         <div className={styles.tabContent}>
           <div className={styles.menuRowContainer}>
-            <h2 className={styles.tabHeader} title={"Visible Modules"}>
+            <h3 className={styles.tabHeader} title={"Visible Modules"}>
               Visible Modules
-            </h2>
+            </h3>
           </div>
           <hr className={styles.tabHorizontalLine} />
-          <div className={styles.tabCheckboxContainer}>
-            {renderModuleCheckboxes()}
+          <div className={styles.menuRowContainer}>
+            <div className={styles.menuColumnContainer}>
+              <h4>Built-in</h4>
+              {renderModuleCheckboxes()}
+            </div>
+            <div className={styles.menuColumnContainer}>
+              <h4>Custom</h4>
+              {renderCustomModuleCheckboxes()}
+            </div>
           </div>
         </div>
       ),
     },
     {
       id: "options",
-      title: "Options",
+      title: "Settings",
       content: (
         <div className={styles.tabContent}>
-          <h2 className={styles.tabHeader} title={"Accessibility"}>
-            Accessibility
-          </h2>
+          <h3 className={styles.tabHeader}>Options</h3>
           <hr className={styles.tabHorizontalLine} />
-          <div className={styles.tabCheckboxContainer}>
-            <MenuInput
-              label="Large Font"
-              title={"Large Font"}
-              checked={preferences.largeFont}
-              type={"checkbox"}
-              name="largeFont"
-              value="Large Font"
-              onChange={handleLargeFontChange}
-            />
+          <div className={styles.menuRowContainer}>
+            <div className={styles.menuColumnContainer}>
+              <MenuInput
+                label="Enable fancy editor"
+                checked={preferences.enableFancyEditor}
+                type={"checkbox"}
+                name="enableFancyEditor"
+                onChange={() =>
+                  handlePreferenceChange(
+                    "enableFancyEditor",
+                    !preferences.enableFancyEditor
+                  )
+                }
+              />
+            </div>
           </div>
-          <h2 className={styles.tabHeader} title={"Color Themes"}>
-            Color Themes
-          </h2>
+          <h3 className={styles.tabHeader}>Accessibility</h3>
           <hr className={styles.tabHorizontalLine} />
-          <div className={styles.tabCheckboxContainer}>
-            <MenuInput
-              label="Parchment (Light)"
-              title={"Parchment Color Theme"}
-              checked={preferences.theme === "parchment"}
-              type={"radio"}
-              name="theme"
-              value="parchment"
-              onChange={handleThemeChange}
-            />
-            <MenuInput
-              label="Dark"
-              title={"Dark Color Theme"}
-              checked={preferences.theme === "dark"}
-              type={"radio"}
-              name="theme"
-              value="dark"
-              onChange={handleThemeChange}
-            />
-            <MenuInput
-              label="High Contrast Parchment"
-              title={"High Contrast Theme: Parchment"}
-              checked={preferences.theme === "highContrast"}
-              type={"radio"}
-              name="theme"
-              value="highContrast"
-              onChange={handleThemeChange}
-            />
-            <MenuInput
-              label="High Contrast Dark"
-              title={"High Contrast Theme: Dark"}
-              checked={preferences.theme === "highContrastDark"}
-              type={"radio"}
-              name="theme"
-              value="highContrastDark"
-              onChange={handleThemeChange}
-            />
+          <div className={styles.menuRowContainer}>
+            <div className={styles.menuColumnContainer}>
+              <MenuInput
+                label="Large Font"
+                title={"Large Font"}
+                checked={preferences.largeFont}
+                type={"checkbox"}
+                name="largeFont"
+                value="Large Font"
+                onChange={() =>
+                  handlePreferenceChange("largeFont", !preferences.largeFont)
+                }
+              />
+            </div>
+          </div>
+          <h3 className={styles.tabHeader}>Color Themes</h3>
+          <hr className={styles.tabHorizontalLine} />
+          <div className={styles.menuRowContainer}>
+            <div className={styles.menuColumnContainer}>
+              <MenuInput
+                label="Parchment (Light)"
+                title={"Parchment Color Theme"}
+                checked={preferences.theme === "parchment"}
+                type={"radio"}
+                name="theme"
+                value="parchment"
+                onChange={handleThemeChange}
+              />
+              <MenuInput
+                label="Dark"
+                title={"Dark Color Theme"}
+                checked={preferences.theme === "dark"}
+                type={"radio"}
+                name="theme"
+                value="dark"
+                onChange={handleThemeChange}
+              />
+            </div>
+            <div className={styles.menuColumnContainer}>
+              <MenuInput
+                label="High Contrast Parchment"
+                title={"High Contrast Theme: Parchment"}
+                checked={preferences.theme === "highContrast"}
+                type={"radio"}
+                name="theme"
+                value="highContrast"
+                onChange={handleThemeChange}
+              />
+              <MenuInput
+                label="High Contrast Dark"
+                title={"High Contrast Theme: Dark"}
+                checked={preferences.theme === "highContrastDark"}
+                type={"radio"}
+                name="theme"
+                value="highContrastDark"
+                onChange={handleThemeChange}
+              />
+            </div>
           </div>
           <hr className={styles.tabHorizontalLine} />
           <div className={styles.tabSubtext}>

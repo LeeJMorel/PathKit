@@ -1,0 +1,23 @@
+// .w-md-editor-text-pre > code,
+// .w-md-editor-text-input {
+//   font-size: 1em !important;
+//   line-height: 1.2 !important;
+// }
+.wmde-markdown,
+.wmde-markdown-var,
+.w-md-editor-toolbar {
+  color: inhert;
+  background-color: inherit;
+  background: inherit;
+}
+.w-md-editor-toolbar {
+  background-color: var(--primaryBackground);
+  background: var(--primaryBackground);
+}
+.w-md-editor-toolbar li > button {
+  color: var(--primaryText);
+  fill: currentColor;
+}
+.w-md-editor {
+  border: 1px solid var(--primaryBackground);
+}

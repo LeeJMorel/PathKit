@@ -14,6 +14,8 @@ interface IPreferences {
   selectedNoteModule: number;
   selectedSearch: string | number | null;
   absentPlayers: number[];
+
+  enableFancyEditor: boolean;
 }
 
 interface IPreferencesStore {
@@ -46,6 +48,8 @@ export const defaultPreferences: IPreferences = {
   selectedNoteModule: 0,
   selectedSearch: null,
   absentPlayers: [],
+
+  enableFancyEditor: true,
 };
 
 export const usePreferencesStore = create(
