@@ -58,7 +58,7 @@ export const StatsDisplay = ({
                 <label className={styles.label}>{detailLabel}</label>
               </div>
             )}
-            <StatObject icon={icon} number={stat || 0} label={label} />
+            <StatObject icon={icon} number={Number(stat) || 0} label={label} />
           </div>
         );
       })}

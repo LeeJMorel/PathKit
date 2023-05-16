@@ -3,6 +3,7 @@ import styles from "./Header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
 import FilterDropdown from "../dropdowns/FilterDropdown";
+import classNames from "classnames";
 
 interface IKeywordDivProps extends React.HTMLProps<HTMLDivElement> {
   keywords: string[];
@@ -33,18 +34,25 @@ type IconProp =
   | JSX.Element
   | ((props: React.SVGProps<SVGSVGElement>) => JSX.Element);
 
-interface IFilterHeaderProps extends React.HTMLProps<HTMLDivElement> {
+interface IFilterHeaderProps
+  extends Omit<React.HTMLProps<HTMLDivElement>, "as"> {
   title: string;
   toggle?: boolean;
   keywords: { icon?: IconProp; keyword: string }[];
   subtle?: boolean;
   noMatchFallback?: JSX.Element;
+  headingProps?: React.HTMLProps<HTMLHeadingElement>;
+  align?: "start" | "center" | "end";
+  as?: React.ElementType;
 }
 
 const FilterHeader = ({
   title,
   toggle,
   keywords,
+  headingProps,
+  align = "start",
+  as = "h3",
   children,
   className,
   subtle = false,
@@ -80,10 +88,18 @@ const FilterHeader = ({
     return null;
   });
 
+  const Heading = as;
+
   return (
     <>
-      <div className={styles.header} onClick={toggle ? toggleOpen : undefined}>
-        <h3>
+      <div
+        className={classNames(styles.header, styles[align])}
+        onClick={toggle ? toggleOpen : undefined}
+      >
+        <Heading
+          {...headingProps}
+          className={classNames(styles.heading, headingProps?.className)}
+        >
           {title}:
           {activeKeywords.length > 0
             ? keywords
@@ -120,10 +136,12 @@ const FilterHeader = ({
                   </span>
                 ))
             : "No Keywords Selected"}
-        </h3>
+        </Heading>
+
         {toggle && (
           <FontAwesomeIcon
             icon={isOpen ? "angle-double-down" : "angle-double-up"}
+            className={styles.headerIcon}
           />
         )}
       </div>

@@ -9,7 +9,7 @@ export enum Module {
   TipModule = "TipModule",
   DCModule = "DCModule",
   IncomeModule = "IncomeModule",
-  DiceModule = "DiceModule",
+  // DiceModule = "DiceModule",
   NotesModule = "NotesModule",
   BinderModule = "BinderModule",
 }
@@ -29,12 +29,12 @@ const Modules: Record<Module, IModule> = {
     ModuleComponent: TipModule,
     collapsible: false,
   },
-  DiceModule: {
-    id: Module.DiceModule,
-    label: "Dice Roller",
-    ModuleComponent: DiceModule,
-    collapsible: false,
-  },
+  // DiceModule: {
+  //   id: Module.DiceModule,
+  //   label: "Dice Roller",
+  //   ModuleComponent: DiceModule,
+  //   collapsible: false,
+  // },
   NotesModule: {
     id: Module.NotesModule,
     label: "Notes",
@@ -65,7 +65,7 @@ export {
   TipModule,
   DCModule,
   IncomeModule,
-  DiceModule,
+  // DiceModule,
   NotesModule,
   BinderModule,
   Modules,

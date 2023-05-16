@@ -13,8 +13,16 @@ function LicenseSheet() {
   return (
     <div className={styles.sheetsContainer}>
       <div className={styles.header}>
-        <h2>Open Game License v1.0</h2>
-        <Button onClick={handleCancelClick} icon="arrow-left" variant="text" />
+        <div className={styles.title}>
+          <h2 className={styles.heading}>Open Game License v1.0</h2>
+        </div>
+        <div className={styles.headerButtons}>
+          <Button
+            onClick={handleCancelClick}
+            icon="arrow-left"
+            variant="text"
+          />
+        </div>
       </div>
       <div className={styles.sheetContent}>
         <p>

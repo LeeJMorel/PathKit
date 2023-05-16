@@ -28,33 +28,28 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
     useBoolean(false);
   const { preferences, setPreferences } = usePreferencesStore();
   const navigate = useNavigate();
-  const { updateOrAddEntity, getEntityById } = useEntities();
-  const [loading, setLoading] = useState(!!entity.id);
-  const [maxHp, setMaxHp] = useState<number>(0);
+  const { updateOrAddEntity } = useEntities();
+  const [maxHp, setMaxHp] = useState<number>(entity.maxHp || 0);
 
   const [entityData, setEntityData] = useState<PartialEntity>({
     ...entity,
   });
 
   useEffect(() => {
-    const matchEntity = getEntityById(Number(entity.id));
-    if (matchEntity) {
-      setEntityData(matchEntity);
-      if (entity.type === EntityType.Player) {
-        const calculateMaxHp = async () => {
-          const playerMaxHp = getPlayerMaxHp(matchEntity);
-          setMaxHp(playerMaxHp);
-        };
+    if (entity.type === EntityType.Player) {
+      const calculateMaxHp = async () => {
+        const playerMaxHp = getPlayerMaxHp(entity);
+        setMaxHp(playerMaxHp);
+      };
 
-        calculateMaxHp();
-      }
+      calculateMaxHp();
     }
-    setLoading(false);
-  }, [entity.id]);
+  }, [entity]);
 
   const handleConditionsClick = async (condition: string) => {
     toggleConditionsMenu();
     console.log(condition);
+
     setEntityData((prevEntityData) => ({
       ...prevEntityData,
       conditions: [

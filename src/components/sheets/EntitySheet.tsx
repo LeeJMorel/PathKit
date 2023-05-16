@@ -12,7 +12,7 @@ import {
   getPlayerMaxHp,
   getProficiencyModifier,
 } from "../../utilities";
-import { Proficiency } from "../../api/model/entity";
+import { EntityType, Proficiency } from "../../api/model/entity";
 import DataCellDisplay from "../displays/DataCellDisplay";
 import { StatsDisplay } from "../displays/StatsDisplay";
 import NotesObject from "../objects/NoteObject";
@@ -36,6 +36,7 @@ function EntitySheet() {
   const navigate = useNavigate();
   const { getEntityById } = useEntities();
   const [entity, setEntity] = useState(defaultEntity);
+  const [maxHp, setMaxHp] = useState<number>(entity.maxHp || 0);
 
   useEffect(() => {
     const matchEntity = getEntityById(Number(entityId));
@@ -43,6 +44,13 @@ function EntitySheet() {
       setEntity(matchEntity);
     }
   }, [entityId]);
+  useEffect(() => {
+    if (entity.type === EntityType.Player) {
+      const playerMaxHp = getPlayerMaxHp(entity);
+      console.log({ entity, playerMaxHp });
+      setMaxHp(playerMaxHp);
+    }
+  }, [entity]);
   const handleCancelClick = () => {
     navigate("/");
   };
@@ -129,7 +137,7 @@ function EntitySheet() {
               <DataCellDisplay
                 name="damage"
                 label={`HP`}
-                value={getPlayerMaxHp(entity) - entity?.damage[0]}
+                value={maxHp - (entity?.damage[0] || 0)}
                 labelPosition="inline"
                 align="start"
                 small
@@ -137,7 +145,7 @@ function EntitySheet() {
               /
               <DataCellDisplay
                 name="maxHp"
-                value={getPlayerMaxHp(entity)}
+                value={maxHp}
                 labelPosition="inline"
                 align="start"
                 small
@@ -148,7 +156,7 @@ function EntitySheet() {
             <div className={styles.entityHp}>
               <DataCellDisplay
                 name="damage"
-                value={entity?.maxHp - entity?.damage[0]}
+                value={entity?.maxHp - (entity?.damage[0] || 0)}
                 labelPosition="inline"
                 align="start"
                 small
@@ -177,7 +185,7 @@ function EntitySheet() {
           {entity?.conditions && entity.conditions.length > 0 ? (
             <DataCellDisplay
               name="conditions"
-              value={entity.conditions}
+              value={entity?.conditions.map((c) => c.name).join(", ")}
               label="Conditions Applied"
               labelPosition="inline"
               align="start"
@@ -424,7 +432,7 @@ function EntitySheet() {
         <ActionsFilter entity={entity} />
         <NotesObject />
       </div>
-      {/* <pre>{JSON.stringify(entity, null, 2)}</pre> */}
+      <pre>{JSON.stringify(entity, null, 2)}</pre>
     </div>
   );
 }
