@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEntities, useNotes } from "../../hooks";
 import styles from "./Sheets.module.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useState, useEffect } from "react";
 
 import { Button } from "../buttons";
@@ -11,7 +10,6 @@ import {
   getAbilityModifier,
   getPlayerMaxHp,
   getProficiencyModifier,
-  toSentenceCase,
 } from "../../utilities";
 import { EntityType, Proficiency, INote } from "../../api/model";
 import DataCellDisplay from "../displays/DataCellDisplay";
@@ -19,6 +17,7 @@ import { StatsDisplay } from "../displays/StatsDisplay";
 import NotesObject from "../objects/NoteObject";
 import CollapsibleHeader from "../headers/CollapsibleHeader";
 import ActionsFilter from "./EntitySheet.ActionsFilter";
+import { SheetHeader } from "./SheetHeader";
 
 function EntitySheet() {
   const { entityId } = useParams();
@@ -70,35 +69,18 @@ function EntitySheet() {
 
   return (
     <div className={styles.sheetsContainer}>
-      <div className={styles.header}>
-        <div className={styles.title}>
-          <h2 className={styles.heading}>{entity?.name}</h2>
-          {entity?.build?.level && (
-            <p>
-              ({entity.build.level ? `level: ${entity.build.level}` : ""}
-              {/*if both exist, put a comma between*/}
-              {entity.build.size ? `, size: ${entity.build.size}` : ""})
-            </p>
-          )}
-        </div>
-        <div className={styles.headerButtons}>
-          <Button
-            className={styles.headerButton}
-            variant="text"
-            onClick={handleEditClick}
-            icon="pencil"
-          >
-            Edit
-          </Button>
-          <Button
-            className={classNames(styles.headerButton, styles.closeButton)}
-            variant="text"
-            onClick={handleCancelClick}
-            icon="close"
-            title="Close entity"
-          />
-        </div>
-      </div>
+      <SheetHeader
+        title={entity?.name}
+        subtitle={
+          <>
+            ({entity.build.level ? `level: ${entity.build.level}` : ""}
+            {/*if both exist, put a comma between*/}
+            {entity.build.size ? `, size: ${entity.build.size}` : ""})
+          </>
+        }
+        onEditClick={handleEditClick}
+        onCloseClick={handleCancelClick}
+      />
       <div className={styles.sheetContent}>
         {entity?.image && (
           <div

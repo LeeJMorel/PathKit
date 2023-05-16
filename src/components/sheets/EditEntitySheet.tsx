@@ -8,6 +8,7 @@ import { EntityType, IEntity, PartialEntity } from "../../api/model";
 import { defaultEntity } from "../../consts";
 import ImportEntity from "../objects/ImportEntity";
 import ConfirmMenu from "../menus/ConfirmMenu";
+import { SheetHeader } from "./SheetHeader";
 
 function EditEntitySheet() {
   const { entityId } = useParams();
@@ -51,14 +52,11 @@ function EditEntitySheet() {
 
   return (
     <div className={styles.sheetsContainer}>
-      <div className={styles.header}>
-        <div className={styles.title}>
-          <h2 className={styles.heading}>Edit {entityData.type}</h2>
-        </div>
-        <div className={styles.headerButtons}>
-          <Button onClick={handleBackClick} icon="arrow-left" variant="text" />
-        </div>
-      </div>
+      <SheetHeader
+        title={`Edit ${entityData.name || entityData.type}`}
+        subtitle={`(${entityData.type})`}
+        onBackClick={handleBackClick}
+      />
       {entityData?.image && (
         <div className={styles.imageContainer}>
           <img src={entityData.image} alt={entityData.name} />
