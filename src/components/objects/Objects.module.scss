@@ -279,7 +279,7 @@
 .importObject {
   .inlineForm {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     padding: 1em;
 
     .importField {
@@ -288,6 +288,13 @@
 
     .submitButton {
       margin-left: 1em;
+    }
+
+    .alignTop {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 }

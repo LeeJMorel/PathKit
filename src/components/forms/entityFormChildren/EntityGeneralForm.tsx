@@ -4,26 +4,15 @@ import styles from "../Form.module.scss";
 import FormField from "../../formFields/FormField";
 import FileUploader from "../../formFields/FileUploader";
 import FormButton from "../../formFields/FormButton";
-import { Button } from "../../buttons";
 import { IEntityFormChildrenProps } from "../AddEntityForm";
-import {
-  abilityOptions,
-  profLevelOptions,
-  sizeOptions,
-  skills,
-} from "../../../consts";
-import {
-  getAbilityModifier,
-  getProficiencyModifier,
-  toSentenceCase,
-} from "../../../utilities";
+import { abilityOptions, profLevelOptions, sizeOptions } from "../../../consts";
+import { getAbilityModifier, getProficiencyModifier } from "../../../utilities";
 import CollapsibleHeader from "../../headers/CollapsibleHeader";
 import { EntitySkillsForm } from "./EntitySkillsForm";
 import classNames from "classnames";
 
 const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
   formProps,
-  entityData,
 }) => {
   const { values, setFieldValue } = formProps;
   const handleFileChange = (value: any) => {
@@ -44,23 +33,22 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
             onUpload={handleFileChange}
           />
         </div>
-        <div className={styles.formRow}>
-          <FormField name="name" label="Name" />
-          {(entityData?.type === EntityType.Player ||
-            entityData?.type === EntityType.Monster ||
-            entityData?.type === EntityType.NPC) && (
-            <>
-              <FormField name="build.level" type="number" label="Level" />
-              <FormField name="build.size" as="select" label="Size">
-                {sizeOptions.map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {o.label}
-                  </option>
-                ))}
-              </FormField>
-            </>
-          )}
-        </div>
+        <div className={styles.formRow}></div>
+        <FormField name="name" label="Name" />
+        {[EntityType.Player, EntityType.Monster, EntityType.NPC].includes(
+          values.type
+        ) && (
+          <div className={styles.formRow}>
+            <FormField name="build.level" type="number" label="Level" />
+            <FormField name="build.size" as="select" label="Size">
+              {sizeOptions.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </FormField>
+          </div>
+        )}
         <div className={styles.formRow}>
           <FormField
             label="Description"
@@ -69,9 +57,9 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
             style={{ resize: "vertical" }}
           />
         </div>
-        {(entityData?.type === EntityType.Player ||
-          entityData?.type === EntityType.Monster ||
-          entityData?.type === EntityType.NPC) && (
+        {[EntityType.Player, EntityType.Monster, EntityType.NPC].includes(
+          values.type
+        ) && (
           <>
             <div className={styles.formRow}>
               <FormField
@@ -255,14 +243,35 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
             <div className={styles.formRow}>
               {/*multiple hp's may exist in one entity is it is a group. This will be
       based on monster quantity.*/}
-              <div className={styles.formGroup}>
-                <FormField
-                  label="Max HP"
-                  name="maxHp"
-                  value={values.maxHp}
-                  type="number"
-                />
-              </div>
+              <FormField
+                label="Max HP"
+                name="maxHp"
+                type="number"
+                labelPosition="above"
+                disabled={values.type === EntityType.Player}
+                title={
+                  values.type === EntityType.Player
+                    ? "Calculated for players"
+                    : ""
+                }
+              />
+              <FormField
+                label={
+                  <span>
+                    Bonus HP{" "}
+                    <span style={{ fontSize: "0.67em" }}>per level</span>
+                  </span>
+                }
+                name="build.attributes.bonushpPerLevel"
+                type="number"
+                labelPosition="above"
+              />
+              <FormField
+                label="Bonus HP"
+                name="build.attributes.bonushp"
+                type="number"
+                labelPosition="above"
+              />
             </div>
             <div className={styles.formRow}>
               <FormField
@@ -310,9 +319,9 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
         )}
       </CollapsibleHeader>
 
-      {(entityData?.type === EntityType.Player ||
-        entityData?.type === EntityType.Monster ||
-        entityData?.type === EntityType.NPC) && (
+      {[EntityType.Player, EntityType.Monster, EntityType.NPC].includes(
+        values.type
+      ) && (
         <>
           <CollapsibleHeader
             toggle
@@ -384,8 +393,7 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
           </CollapsibleHeader>
         </>
       )}
-      {(entityData?.type === EntityType.Player ||
-        entityData?.type === EntityType.Monster) && (
+      {[EntityType.Player, EntityType.Monster].includes(values.type) && (
         <CollapsibleHeader
           toggle
           title="Resistances & Immunities"
@@ -447,9 +455,9 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
           </FieldArray>
         </CollapsibleHeader>
       )}
-      {(entityData?.type === EntityType.Player ||
-        entityData?.type === EntityType.Monster ||
-        entityData?.type === EntityType.NPC) && (
+      {[EntityType.Player, EntityType.Monster, EntityType.NPC].includes(
+        values.type
+      ) && (
         <>
           <EntitySkillsForm formProps={formProps} />
           <CollapsibleHeader

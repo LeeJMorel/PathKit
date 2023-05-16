@@ -1,10 +1,9 @@
-import { useMemo, useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
   useParams,
   useNavigate,
   Routes,
   Route,
-  useLocation,
   useSearchParams,
 } from "react-router-dom";
 import uniq from "lodash.uniq";
@@ -32,7 +31,7 @@ const defaultPathData = {
 
 function EditPathSheet() {
   const { entityId, pathId } = useParams();
-  const [searchParams, setSear] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const entityType = searchParams.get("type");
   const navigate = useNavigate();
   const { getPathById, updateOrAddPath } = usePaths();
@@ -43,13 +42,9 @@ function EditPathSheet() {
     ...defaultEntity,
   });
 
-  // const [path, setPath] = useState<PartialPath>(
-  //   getPathById(pathId) || defaultPathData
-  // );
   const [path, setPath] = useState<PartialPath>(
     getPathById(pathId) || defaultPath
   );
-  // console.log(useLocation(), path);
 
   useEffect(() => {
     const matchPath = getPathById(Number(pathId));

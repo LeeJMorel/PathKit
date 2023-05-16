@@ -17,6 +17,7 @@ function EditEntitySheet() {
   const type = (searchParams.get("type") as EntityType) || EntityType.none;
   const [loading, setLoading] = useState(!!entityId);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [formDirty, setFormDirty] = useState<boolean>(false);
 
   const [entityData, setEntityData] = useState<PartialEntity>({
     ...defaultEntity,
@@ -41,6 +42,11 @@ function EditEntitySheet() {
 
   const handleBackClick = () => {
     setShowConfirm(true);
+    if (formDirty) {
+      setShowConfirm(true);
+    } else {
+      handleCancelClick();
+    }
   };
 
   return (
@@ -68,6 +74,7 @@ function EditEntitySheet() {
             updateOrAddEntity(entity);
             navigate("/");
           }}
+          setFormDirty={setFormDirty}
         />
       )}
       {/* TODO only showConfirm if form is dirty */}

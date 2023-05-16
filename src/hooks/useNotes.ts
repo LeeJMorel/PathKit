@@ -10,7 +10,10 @@ interface IUseNotes {
   getNoteById: (noteId: number) => INote | undefined;
   deleteNote: (noteId: number) => void;
   addNote: (note: PartialNote) => Promise<INote | undefined>;
-  updateOrAddNote: (note: PartialNote) => Promise<INote | undefined>;
+  updateOrAddNote: (
+    note: PartialNote,
+    onNoteUpdate?: (note: INote) => void
+  ) => Promise<void>;
   getLatestNote: () => INote | undefined;
 }
 export const useNotes = (): IUseNotes => {
@@ -49,19 +52,26 @@ export const useNotes = (): IUseNotes => {
     return await insertNote(note);
   };
 
-  const debouncedUpdateOrAdd = debounce(async (newNote: PartialNote) => {
-    return await insertNote(newNote);
-  }, 500);
+  const debouncedUpdateOrAdd = debounce(
+    async (newNote: PartialNote, onNoteUpdate?: (note: INote) => void) => {
+      const updatedNote = await insertNote(newNote);
+      if (typeof onNoteUpdate === "function" && updatedNote) {
+        onNoteUpdate(updatedNote);
+      }
+    },
+    1000
+  );
 
   const updateOrAddNote = async (
-    newNote: PartialNote
-  ): Promise<INote | undefined> => {
+    newNote: PartialNote,
+    onNoteUpdate?: (note: INote) => void
+  ): Promise<void> => {
     const note = {
       ...newNote,
       title:
         newNote.title.length > 0 ? newNote.title : new Date().toLocaleString(),
     };
-    return await debouncedUpdateOrAdd(note);
+    debouncedUpdateOrAdd(note, onNoteUpdate);
   };
 
   const getLatestNote = (): INote | undefined => {

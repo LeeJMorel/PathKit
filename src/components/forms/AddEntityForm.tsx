@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import styles from "./Form.module.scss";
-import { PartialEntity } from "../../api/model";
+import { EntityType, PartialEntity } from "../../api/model";
 import { Button } from "../buttons";
 import classNames from "classnames";
 import { Formik, Form, FormikProps } from "formik";
@@ -14,6 +14,7 @@ import {
   Features,
 } from "./entityFormChildren";
 import entityFormSchema from "../../consts/entityFormSchema";
+import { getPlayerMaxHp } from "../../utilities";
 
 export interface IEntityFormProps {
   entityData: PartialEntity;
@@ -24,7 +25,6 @@ export interface IEntityFormProps {
 
 export interface IEntityFormChildrenProps {
   index?: number;
-  entityData?: PartialEntity;
   formProps: FormikProps<PartialEntity>;
   onRemove?: () => void;
 }
@@ -51,7 +51,7 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
     {
       id: "general",
       title: "General",
-      content: <General formProps={formProps} entityData={entityData} />,
+      content: <General formProps={formProps} />,
     },
     {
       id: "equipment",
@@ -144,8 +144,15 @@ const AddEntityForm: React.FC<IEntityFormProps> = ({
     >
       {(props) => {
         setTimeout(() => {
+          // Form value side effects
           if (!dirty) {
             setDirty(props.dirty);
+          }
+          if (props.values.type === EntityType.Player) {
+            const newMaxHp = getPlayerMaxHp(props.values);
+            if (newMaxHp !== props.values.maxHp) {
+              props.setFieldValue("maxHp", getPlayerMaxHp(props.values));
+            }
           }
         }, 1000);
 

@@ -58,7 +58,7 @@ export const FileUploader: React.FC<IFileUploaderProps> = ({
   };
 
   return (
-    <div className={classNames(styles.fieldContainer, styles.fileUploader)}>
+    <div className={classNames(styles.fieldContainer, styles.inputButton)}>
       <div className={styles.inputContainer}>
         <input
           type="file"

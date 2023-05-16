@@ -9,10 +9,19 @@ export interface INotesObjectProps {
   noteId?: number;
   onChange?: (note: PartialNote) => void;
   onClose?: () => void;
+  defaultTitle?: string;
 }
 
-function NotesObject({ noteId, onChange, onClose }: INotesObjectProps) {
-  const [note, setNote] = useState<PartialNote>({ title: "", body: "" });
+function NotesObject({
+  noteId,
+  onChange,
+  onClose,
+  defaultTitle = "",
+}: INotesObjectProps) {
+  const [note, setNote] = useState<PartialNote>({
+    title: defaultTitle,
+    body: "",
+  });
   const [editMode, setEditMode] = useState(true);
   const { getNoteById } = useNotes();
 
@@ -20,12 +29,13 @@ function NotesObject({ noteId, onChange, onClose }: INotesObjectProps) {
     if (noteId) {
       const selectedNote = getNoteById(noteId);
       if (selectedNote) {
-        setNote(selectedNote);
+        return setNote(selectedNote);
       }
     }
+    setNote({ title: defaultTitle, body: "" });
   }, [noteId, getNoteById]);
 
-  const handleChange = (
+  const handleChange = async (
     event: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target;
@@ -58,11 +68,7 @@ function NotesObject({ noteId, onChange, onClose }: INotesObjectProps) {
             <Button onClick={onClose} icon="close" variant="text" />
           )}
         </div>
-        <Button
-          type="submit"
-          variant="primary"
-          onClick={() => setEditMode(!editMode)}
-        >
+        <Button onClick={() => setEditMode(!editMode)}>
           {editMode ? "Preview" : "Edit"} Note
         </Button>
       </div>
@@ -79,15 +85,6 @@ function NotesObject({ noteId, onChange, onClose }: INotesObjectProps) {
           <Markdown>{note.body}</Markdown>
         </div>
       )}
-      <span className={styles.caption}>
-        <a
-          href="https://www.markdownguide.org/cheat-sheet/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          What is Markdown?
-        </a>
-      </span>
     </div>
   );
 }

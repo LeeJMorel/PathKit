@@ -7,7 +7,7 @@ type ValidIconName = IconName;
 
 interface Props {
   icon: IconName;
-  number: number;
+  number: string | number;
   label?: string;
 }
 

@@ -122,9 +122,6 @@ export const useStore = create<IStore>()(
           unloadCampaign();
         }
         deleteRow("campaign", "id", id);
-        deleteRow("entity", "campaignId", id);
-        deleteRow("path", "campaignId", id);
-        deleteRow("note", "campaignId", id);
       },
 
       refreshCampaigns: async () => {
@@ -152,13 +149,13 @@ export const useStore = create<IStore>()(
             await refreshEntities();
             const id = result.lastInsertId || entity.id;
             if (id) {
-              const newResult = await selectRowWhere<IEntity>("entity", {
+              const newResult = await selectRowWhere<IRawEntity>("entity", {
                 key: "id",
                 oper: "=",
                 value: id,
               });
               return newResult && newResult.length > 0
-                ? newResult[0]
+                ? transformRawEntity(newResult[0])
                 : undefined;
             }
           }
@@ -182,9 +179,10 @@ export const useStore = create<IStore>()(
       // },
 
       deleteEntity: async (id) => {
-        const { refreshEntities } = get();
+        const { refreshEntities, refreshNotes } = get();
         deleteRow("entity", "id", id);
         refreshEntities();
+        refreshNotes(); // notes have dependent entityIds
       },
 
       refreshEntities: async () => {
@@ -322,9 +320,10 @@ export const useStore = create<IStore>()(
       // },
 
       deleteNote: async (id) => {
-        const { refreshNotes } = get();
+        const { refreshNotes, refreshEntities } = get();
         deleteRow("note", "id", id);
         refreshNotes();
+        refreshEntities(); // Entities have dependent noteIds
       },
 
       refreshNotes: async () => {
