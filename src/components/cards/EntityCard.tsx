@@ -90,14 +90,16 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
         <div
           className={classNames(
             styles.cardImage,
-            isHPZero && styles.entityDeadImage
+            isHPZero &&
+              entity.type !== EntityType.Shop &&
+              styles.entityDeadImage
           )}
         >
           <img
             src={entity.image ? entity.image : getDefaultImage(entity.type)}
             alt={entity.name}
           />
-          {isHPZero && (
+          {isHPZero && entity.type !== EntityType.Shop && (
             <FontAwesomeIcon className={styles.deadIcon} icon="skull" />
           )}
         </div>
