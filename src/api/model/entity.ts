@@ -1,8 +1,9 @@
 export enum EntityType {
-  Shop = "Shop",
+  Structure = "Structure",
   Monster = "Monster",
   Player = "Player",
   NPC = "NPC",
+  Hazard = "Hazard",
   none = "none",
 }
 
@@ -77,7 +78,7 @@ export interface IEntityBuild {
   formula: any[];
   pets: string[];
   acTotal: IACTotal;
-  traits: string[];
+  traits: Trait[];
   resistances: string[];
   immunities: string[];
   actions: {
@@ -156,6 +157,17 @@ export type Feat = [
 ];
 
 export type Lore = [name: string, proficiency: number];
+
+export enum TraitType {
+  Uncommon = "Uncommon",
+  Rare = "Rare",
+  Unique = "Unique",
+  Size = "Size",
+  Keyword = "Keyword",
+  none = "none",
+}
+
+export type Trait = [name: string, tag?: TraitType];
 
 export type Equipment = [
   name: string,
@@ -317,7 +329,7 @@ export interface IAction {
   actionNumber: ActionNumber;
   name: string;
   attackDc: number;
-  traits: string[];
+  traits: Trait[];
   effect: string;
 }
 
@@ -326,7 +338,7 @@ export interface IMelee {
   name: string;
   attackDc: number;
   damageType: string;
-  traits: string[];
+  traits: Trait[];
   damageValue: string;
   extra: string;
 }

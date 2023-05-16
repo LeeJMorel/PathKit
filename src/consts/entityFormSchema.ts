@@ -15,6 +15,7 @@ import {
   proficiencies,
   spellcastingTypes,
   magicTraditions,
+  traitTypes,
 } from "./buildProperties";
 import { diceValueRegex } from "../utilities";
 
@@ -219,7 +220,14 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
       acTotal: number().default(0).min(0, errMsg.noNeg),
       shieldBonus: string().default(""),
     }).default({}),
-    traits: array().of(string().defined(errMsg.noEmpty)).default([]),
+    traits: array()
+      .of(
+        tuple([
+          string().required(),
+          string().optional().oneOf(traitTypes),
+        ]).defined()
+      )
+      .default([]),
     resistances: array().of(string().defined(errMsg.noEmpty)).default([]),
     immunities: array().of(string().defined(errMsg.noEmpty)).default([]),
     actions: object({
@@ -230,8 +238,12 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
             actionNumber: number().min(0, errMsg.noNeg).defined(),
             attackDc: number().min(0).required(errMsg.r),
             traits: array()
-              .of(string().defined(errMsg.noEmpty))
-              .defined()
+              .of(
+                tuple([
+                  string().required(),
+                  string().optional().oneOf(traitTypes),
+                ]).defined()
+              )
               .default([]),
             effect: string().required(errMsg.r),
           })
@@ -281,8 +293,12 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
               .matches(diceValueRegex, errMsg.dice),
             extra: string().default(""),
             traits: array()
-              .of(string().defined(errMsg.noEmpty))
-              .defined()
+              .of(
+                tuple([
+                  string().required(),
+                  string().optional().oneOf(traitTypes),
+                ]).defined()
+              )
               .default([]),
           })
         )
@@ -302,8 +318,12 @@ const entityFormSchema: ObjectSchema<PartialEntity> = object({
               .matches(diceValueRegex, errMsg.dice),
             extra: string().default(""),
             traits: array()
-              .of(string().defined(errMsg.noEmpty))
-              .defined()
+              .of(
+                tuple([
+                  string().required(),
+                  string().optional().oneOf(traitTypes),
+                ]).defined()
+              )
               .default([]),
           })
         )

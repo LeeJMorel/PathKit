@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS entity (
   campaignId INTEGER NOT NULL,
   name TEXT NOT NULL DEFAULT 'Unknown',
   image TEXT,
-  type TEXT CHECK( type IN ('Shop','Monster','Player','NPC','none') ) NOT NULL DEFAULT 'none',
+  type TEXT CHECK( type IN ('Structure','Monster','Player','NPC','Hazard','none') ) NOT NULL DEFAULT 'none',
   initiative INTEGER CHECK( initiative >= 0 ) NOT NULL DEFAULT 0,
   noteId INTEGER,
   build TEXT NOT NULL DEFAULT '{}',

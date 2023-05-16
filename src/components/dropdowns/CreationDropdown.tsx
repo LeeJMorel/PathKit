@@ -47,12 +47,16 @@ const CreationDropdown: React.FC<CreationDropdownProps> = ({
       onClick: () => navigate("/entity/new/edit?type=NPC"),
     },
     {
-      label: "Create a Shop",
-      onClick: () => navigate("/entity/new/edit?type=Shop"),
+      label: "Create a Structure",
+      onClick: () => navigate("/entity/new/edit?type=Structure"),
     },
     {
       label: "Create a Monster",
       onClick: () => navigate("/entity/new/edit?type=Monster"),
+    },
+    {
+      label: "Create a Hazard",
+      onClick: () => navigate("/entity/new/edit?type=Hazard"),
     },
   ];
 

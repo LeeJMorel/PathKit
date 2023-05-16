@@ -8,6 +8,7 @@ import NPC from "../../assets/defaultImage/fighter.png";
 import Player from "../../assets/defaultImage/knight.png";
 import Monster from "../../assets/defaultImage/monster.png";
 import Structure from "../../assets/defaultImage/store.png";
+import Hazard from "../../assets/defaultImage/hazard.png";
 
 export interface PathObjectProps {
   path: IPath;
@@ -31,8 +32,10 @@ function PathObject({ path }: PathObjectProps) {
         return Player;
       case "NPC":
         return NPC;
-      case "Shop":
+      case "Structure":
         return Structure;
+      case "Hazard":
+        return Hazard;
       default:
         return Monster;
     }

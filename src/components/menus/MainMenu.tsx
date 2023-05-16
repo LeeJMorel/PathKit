@@ -365,6 +365,17 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
             possible, to read more click the button below.
           </div>
           <Button onClick={handleViewLicense}>View Open Game License</Button>
+          <div className={styles.tabSubtext}>
+            Default images provided by artists on Flaticon.
+          </div>
+          <Button
+            onClick={() =>
+              window.open("https://www.flaticon.com/free-icons/risk")
+            }
+            title="risk icons"
+          >
+            Icons created by Uniconlabs - Flaticon
+          </Button>
         </div>
       ),
     },
