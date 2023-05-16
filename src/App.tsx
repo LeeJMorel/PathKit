@@ -164,13 +164,13 @@ function App() {
           {/* Header over sheets view, runs our search*/}
           {/* When you want to use meilisearch use this component instead of the input below
           <Search></Search> */}
-          <input
+          {/* <input
             className={styles.searchBar}
             type="text"
             placeholder={"Search"}
             value={searchTerm}
             onChange={handleSearch}
-          />
+          /> */}
         </div>
         <div className={styles.headerSection}>
           <div className={styles.spacer}></div>

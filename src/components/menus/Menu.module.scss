@@ -25,14 +25,15 @@
     position: relative;
     transition: all 0.2s ease-in-out;
 
+    .menuAboutContainer {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      width: 100%;
+    }
+
     .buttonMargin {
       margin: 0.5em;
-      color: var(--tertiaryAccentText);
-      background-color: var(--accentBackground);
-
-      &:hover {
-        background-color: var(--tertiaryAccentBackground);
-      }
     }
 
     .header {
