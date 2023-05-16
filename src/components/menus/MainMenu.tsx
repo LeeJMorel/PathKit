@@ -161,6 +161,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
           <br />
           <div className={styles.menuRowContainer}>
             <Button
+              variant={"primary"}
               title={"Delete Campaign"}
               className={styles.buttonMargin}
               onClick={() =>
@@ -170,6 +171,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
               Delete Campaign
             </Button>
             <Button
+              variant={"primary"}
               title={"Load Campaign"}
               className={styles.buttonMargin}
               onClick={() => handleCampaign("Load")}
@@ -177,6 +179,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
               Load Campaign
             </Button>
             <Button
+              variant={"primary"}
               title={"Start New Campaign"}
               className={styles.buttonMargin}
               onClick={() => handleCampaign("New")}
@@ -360,19 +363,71 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
       title: "About",
       content: (
         <div className={styles.tabContent}>
+          <h3 className={styles.tabHeader}>Credits</h3>
+          <hr className={styles.tabHorizontalLine} />
+          <div className={styles.tabSubtext}>
+            PathKit was built thanks to our amazing team of students at
+            University of Washington.
+          </div>
+          <Button
+            variant={"text"}
+            className={styles.buttonMargin}
+            onClick={() => window.open("https://github.com/LeeJMorel")}
+          >
+            Lee Janzen-Morel - Project Owner, Full Stack Dev
+          </Button>
+          <Button
+            variant={"text"}
+            className={styles.buttonMargin}
+            onClick={() => window.open("https://github.com/Panadero1")}
+          >
+            Jacob Anderson - Full Stack Testing Dev
+          </Button>
+          <Button
+            variant={"text"}
+            className={styles.buttonMargin}
+            onClick={() => window.open("https://github.com/neonsigh")}
+          >
+            Christopher Bendix - Full Stack Dev
+          </Button>
+          <Button
+            variant={"text"}
+            className={styles.buttonMargin}
+            onClick={() => window.open("https://github.com/Dreammob")}
+          >
+            Kevin Zhang - Game Developer (Unity)
+          </Button>
+          <Button
+            variant={"text"}
+            className={styles.buttonMargin}
+            onClick={() => window.open("https://github.com/Puggernauts")}
+          >
+            Luke Evans - UI Designer
+          </Button>
+          <br />
+          <h3 className={styles.tabHeader}>Licenses</h3>
+          <hr className={styles.tabHorizontalLine} />
           <div className={styles.tabSubtext}>
             Wizards of the Coast's OGL is what makes Pathfinder2e and PathKit
             possible, to read more click the button below.
           </div>
-          <Button onClick={handleViewLicense}>View Open Game License</Button>
+          <Button
+            variant={"primary"}
+            className={styles.buttonMargin}
+            onClick={handleViewLicense}
+          >
+            View Open Game License
+          </Button>
+          <br />
           <div className={styles.tabSubtext}>
             Default images provided by artists on Flaticon.
           </div>
           <Button
+            variant={"primary"}
+            className={styles.buttonMargin}
             onClick={() =>
               window.open("https://www.flaticon.com/free-icons/risk")
             }
-            title="risk icons"
           >
             Icons created by Uniconlabs - Flaticon
           </Button>

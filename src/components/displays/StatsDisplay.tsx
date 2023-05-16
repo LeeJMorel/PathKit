@@ -53,12 +53,20 @@ export const StatsDisplay = ({
             )}
             title={`${label}: ${stat}`}
           >
-            {labelPosition && (
-              <div className={styles.labelContainer}>
-                <label className={styles.label}>{detailLabel}</label>
-              </div>
+            {labelPosition ? (
+              <>
+                <div className={styles.labelContainer}>
+                  <label className={styles.label}>{detailLabel}</label>
+                </div>
+                <StatObject icon={icon} number={Number(stat) || 0} />
+              </>
+            ) : (
+              <StatObject
+                icon={icon}
+                number={Number(stat) || 0}
+                label={label}
+              />
             )}
-            <StatObject icon={icon} number={Number(stat) || 0} label={label} />
           </div>
         );
       })}
