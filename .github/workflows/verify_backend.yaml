@@ -23,7 +23,7 @@ jobs:
       - name: npm install and build (needed for tauri)
         run: |
           npm install
-          npm run build
+          npm run tauri build
 
       - name: install dependencies
         run: |
