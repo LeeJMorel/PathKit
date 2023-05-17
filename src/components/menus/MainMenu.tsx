@@ -17,7 +17,6 @@ import { IEntity } from "../../api/model";
 import AddEntityForm from "../forms/AddEntityForm";
 import Tabs from "../tabs/tab";
 import { useNavigate } from "react-router-dom";
-import { tutorialCampaignId } from "../../utilities";
 
 interface IMainMenuProps {
   onClose: () => void;
@@ -120,14 +119,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   };
 
   const renderModuleCheckboxes = () => {
-    const modulesToRender =
-      currentCampaignId === tutorialCampaignId()
-        ? Object.values(Modules)
-        : Object.values(Modules).filter(
-            (module) => module.id !== "TutorialModule"
-          );
-
-    return modulesToRender.map((module) => (
+    return Object.values(Modules).map((module) => (
       <MenuInput
         key={module.id}
         title={
