@@ -34,6 +34,7 @@ const EntityGeneralForm: React.FC<IEntityFormChildrenProps> = ({
             placeholder="Image URL or Base64"
           />
           <FileUploader
+            name="image"
             defaultValue={values.image}
             onUpload={handleFileChange}
           />

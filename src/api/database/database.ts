@@ -136,7 +136,7 @@ export const insertRows = async <T extends {}>(
 export const updateRow = async (
   table: string,
   data: any,
-  id: number
+  id: string
 ): Promise<QueryResult | undefined> => {
   const db = await database;
   try {
@@ -148,7 +148,7 @@ export const updateRow = async (
     const query = `
       UPDATE ${table}
       SET ${getUpdateValuesFromObject(data)}
-      WHERE id = ${id}
+      WHERE id = ${saneSqlValue(id)}
       ;`;
 
     const result = await db.execute(query);
@@ -193,10 +193,25 @@ export const deleteRow = async (
   try {
     const query = `
       DELETE FROM ${table}
-      WHERE ${whereColumn} = ${whereValue}
+      WHERE ${whereColumn} = ${saneSqlValue(whereValue)}
       ;`;
 
     const result = await db.execute(query);
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const executeWithoutForeignKeyConstraint = async (
+  query: () => Promise<QueryResult | undefined>,
+  disableForeignKey?: boolean
+): Promise<QueryResult | undefined> => {
+  const db = await database;
+  try {
+    if (disableForeignKey) await db.execute("PRAGMA foreign_keys = off;");
+    const result = await query();
+    if (disableForeignKey) await db.execute("PRAGMA foreign_keys = on;");
     return result;
   } catch (error) {
     console.error(error);

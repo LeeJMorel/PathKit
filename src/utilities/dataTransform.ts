@@ -20,15 +20,15 @@ export const transformRawEntity = (rawEntity: IRawEntity): IEntity =>
 export const transformPathbuilderBuild = (
   result: PartialEntity["build"]
 ): PartialEntity["build"] => {
-  const resultEquipment = result.equipment.map((e) => {
+  const resultEquipment = result?.equipment?.map((e) => {
     const newEquipment = [...merge(defaultEquipment, e)];
     return newEquipment;
   });
-  const resultTraits = result.traits.map((e) => {
+  const resultTraits = result?.traits?.map((e) => {
     const newTrait = [...merge(defaultTrait, e)];
     return newTrait;
   });
-  const resultFeats = result.feats.map((f) => {
+  const resultFeats = result?.feats?.map((f) => {
     const newFeat = [...merge(defaultFeat, f)].map((v) =>
       v === null ? "" : v
     );

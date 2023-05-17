@@ -7,8 +7,8 @@ import useBoolean from "./useBoolean";
 
 interface IUseNotes {
   notes: INote[];
-  getNoteById: (noteId: number) => INote | undefined;
-  deleteNote: (noteId: number) => void;
+  getNoteById: (noteId: string) => INote | undefined;
+  deleteNote: (noteId: string) => void;
   addNote: (note: PartialNote) => Promise<INote | undefined>;
   updateOrAddNote: (
     note: PartialNote,
@@ -84,16 +84,16 @@ export const useNotes = (): IUseNotes => {
   };
 
   const deleteNote = useCallback(
-    (id: number): void => {
+    (id: string): void => {
       deleteNoteFromDb(id);
       if (id === preferences.selectedNoteSheet) {
         setPreferences({
-          selectedNoteSheet: 0,
+          selectedNoteSheet: "",
         });
       }
       if (id === preferences.selectedNoteModule) {
         setPreferences({
-          selectedNoteModule: 0,
+          selectedNoteModule: "",
         });
       }
     },

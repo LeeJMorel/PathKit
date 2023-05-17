@@ -8,6 +8,7 @@ import {
   useStore,
   useEntities,
   useCampaigns,
+  useMigrate,
 } from "../../hooks";
 import DeleteMenu from "./DeleteMenu";
 import CampaignMenu from "./CampaignMenu";
@@ -28,22 +29,19 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   const { getPlayerEntities, updateOrAddEntity: updateEntity } = useEntities();
   const players = getPlayerEntities();
   const { currentCampaign, currentCampaignId } = useCampaigns();
+  const { exportCampaignToJSON, importCampaignFromJSON } = useMigrate();
 
   //placeholder until store can delete
   const [showDeleteMenu, setShowDeleteMenu] = useState<boolean>(false);
   const [deleteType, setDeleteType] = useState<"entity" | "path" | "campaign">(
     "entity"
   );
-  const [deleteId, setDeleteId] = useState<number>();
+  const [deleteId, setDeleteId] = useState<string>();
 
   const [showCampaignMenu, setShowCampaignMenu] = useState<boolean>(false);
-  const [campaignType, setCampaignType] = useState<"Load" | "New">("Load");
-
-  const handleLargeFontChange = () => {
-    setPreferences({
-      largeFont: !preferences.largeFont,
-    });
-  };
+  const [campaignType, setCampaignType] = useState<"Load" | "New" | "Import">(
+    "Load"
+  );
 
   const handlePreferenceChange = (key: string, value: any) => {
     setPreferences({
@@ -82,7 +80,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     });
   };
 
-  const handleDelete = (type: "entity" | "path" | "campaign", id: number) => {
+  const handleDelete = (type: "entity" | "path" | "campaign", id: string) => {
     setShowDeleteMenu(true);
     setDeleteType(type);
     setDeleteId(id);
@@ -96,7 +94,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     setShowCampaignMenu(false);
   };
 
-  const handleCampaign = (type: "Load" | "New") => {
+  const handleCampaign = (type: "Load" | "New" | "Import") => {
     setShowCampaignMenu(true);
     setCampaignType(type);
   };
@@ -108,7 +106,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   //We don't want this player to be active this session
   const handleAbsent = (
     event: React.ChangeEvent<HTMLInputElement>,
-    playerId: number
+    playerId: string
   ) => {
     const { checked } = event.target;
 
@@ -192,6 +190,22 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
               onClick={() => handleCampaign("New")}
             >
               Start New Campaign
+            </Button>
+          </div>
+          <div className={styles.menuRowContainer}>
+            <Button
+              title={"Export Campaign"}
+              className={styles.buttonMargin}
+              onClick={() => exportCampaignToJSON()}
+            >
+              Export Campaign
+            </Button>
+            <Button
+              title={"Import Campaign"}
+              className={styles.buttonMargin}
+              onClick={() => handleCampaign("Import")}
+            >
+              Import Campaign
             </Button>
           </div>
           <div className={styles.menuRowContainer}>

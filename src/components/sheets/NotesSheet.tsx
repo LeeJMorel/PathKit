@@ -21,11 +21,11 @@ function NotesSheet() {
       body: "",
     });
     setPreferences({
-      selectedNoteSheet: newNote?.id || 0,
+      selectedNoteSheet: newNote?.id || "",
     });
   };
 
-  const handleLoadNote = (id: number) => {
+  const handleLoadNote = (id: string) => {
     setPreferences({
       selectedNoteSheet: id,
     });
@@ -54,7 +54,7 @@ function NotesSheet() {
             onChange={handleChange}
             onClose={() =>
               setPreferences({
-                selectedNoteSheet: 0,
+                selectedNoteSheet: "",
               })
             }
             noteId={preferences.selectedNoteSheet}
