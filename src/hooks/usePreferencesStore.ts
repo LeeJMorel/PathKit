@@ -28,8 +28,8 @@ export const defaultPreferences: IPreferences = {
   largeFont: false,
   theme: "parchment",
   visibleModules: {
-    TipModule: true,
-    TutorialModule: false,
+    TipModule: false,
+    TutorialModule: true,
     DCModule: false,
     IncomeModule: false,
     // DiceModule: true,

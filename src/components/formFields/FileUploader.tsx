@@ -45,7 +45,7 @@ export const FileUploader: React.FC<IFileUploaderProps> = ({
         }
         setLoading(false);
       };
-      if (_file.size <= maxSize) {
+      if (maxSizeInMB > 0 && _file.size <= maxSize) {
         setLoading(true);
         setError(undefined);
         if (toBase64) {

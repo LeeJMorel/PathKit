@@ -118,11 +118,12 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   };
 
   const renderModuleCheckboxes = () => {
-    const modulesToRender = tutorialCampaignId()
+    const modulesToRender = tutorialCampaignId(currentCampaignId)
       ? Object.values(Modules)
-      : Object.values(Modules).filter(
-          (module) => module.id !== "TutorialModule"
-        );
+      : Object.values(Modules);
+    // : Object.values(Modules).filter(
+    //     (module) => module.id !== "TutorialModule"
+    //   );
 
     return modulesToRender.map((module) => (
       <MenuInput

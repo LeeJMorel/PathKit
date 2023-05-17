@@ -40,6 +40,7 @@ const ImportCampaignForm = ({ onSubmit }: INewCampaignFormProps) => {
           <div className={styles.formRow}>
             <FileUploader
               label="Upload PathKit JSON"
+              maxSizeInMB={100}
               name="campaignJson"
               onUpload={(value) => props.setFieldValue("campaignJson", value)}
               labelPosition="inline"
