@@ -18,7 +18,7 @@ const downloadLinks: Record<Platform, string> = {
   [Platform.Tar]:
     "https://github.com/LeeJMorel/PathKit/releases/download/v0.0.3-alpha/PathKit_x64.app.tar.gz",
   [Platform.Tutorial]:
-    "https://github.com/LeeJMorel/PathKit/releases/download/tutorial/",
+    "https://github.com/LeeJMorel/PathKit/releases/download/tutorial/pathkit-campaign-PathKit.Tutorial.Demo.json",
 };
 
 const getPlatform = (): Platform => {

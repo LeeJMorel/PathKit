@@ -3,9 +3,10 @@ import classNames from "classnames";
 import styles from "./Menu.module.scss";
 import Button from "../buttons/Button";
 import NewCampaignForm from "../forms/NewCampaignForm";
-import { useCampaigns } from "../../hooks";
+import { useCampaigns, usePreferencesStore } from "../../hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ImportCampaignForm from "../forms/ImportCampaignForm";
+import { tutorialCampaignId } from "../../utilities";
 
 interface ICampaignMenuProps {
   type: "Load" | "New" | "Import";
@@ -14,6 +15,7 @@ interface ICampaignMenuProps {
 
 const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
   const { campaigns, loadCampaign, refreshCampaigns } = useCampaigns();
+  const { preferences, setPreferences } = usePreferencesStore();
 
   useEffect(() => {
     refreshCampaigns();
@@ -28,6 +30,22 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
   const handleLoadClick = () => {
     if (selectedCampaign) {
       loadCampaign(selectedCampaign);
+      let visibleModules = { ...preferences.visibleModules };
+
+      if (tutorialCampaignId(selectedCampaign)) {
+        visibleModules = {
+          ...visibleModules,
+          TutorialModule: true,
+          TipModule: false,
+        };
+      }
+
+      console.log("Updated visibleModules:", visibleModules);
+
+      setPreferences({
+        ...preferences,
+        visibleModules,
+      });
       handleClose();
     }
   };
