@@ -61,7 +61,7 @@ function App() {
           <div className={styles.header}>
             <div className={styles.headerEnd}>
               <img
-                src={"Logo"}
+                src={Logo}
                 alt="PathKit Logo"
                 className={styles.responsiveImage}
               />
