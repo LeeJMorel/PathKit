@@ -6,8 +6,12 @@ import { Module } from "../components/modules";
 interface IPreferences {
   largeFont: boolean;
   theme: string;
-  visibleModules: Record<Module, boolean>;
-  collapsedModules: Record<Module, boolean>;
+  visibleModules: {
+    [key in Module]?: boolean;
+  };
+  collapsedModules: {
+    [key in Module]?: boolean;
+  };
 
   selectedPath: string;
   selectedNoteSheet: string;
@@ -28,25 +32,11 @@ export const defaultPreferences: IPreferences = {
   largeFont: false,
   theme: "parchment",
   visibleModules: {
-    TipModule: false,
     TutorialModule: true,
-    DCModule: false,
-    IncomeModule: false,
     // DiceModule: true,
-    NotesModule: false,
     BinderModule: true,
-    ConditionModule: false,
   },
-  collapsedModules: {
-    TipModule: false,
-    TutorialModule: false,
-    DCModule: false,
-    IncomeModule: false,
-    // DiceModule: false,
-    NotesModule: false,
-    BinderModule: false,
-    ConditionModule: false,
-  },
+  collapsedModules: {},
   selectedPath: "",
   selectedNoteSheet: "",
   selectedNoteModule: "",

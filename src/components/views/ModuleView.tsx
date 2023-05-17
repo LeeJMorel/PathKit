@@ -23,7 +23,8 @@ function ModuleView() {
     }
     return Object.entries(visibleModules).map(([moduleName, moduleVisible]) => {
       // Check if the module name is available in the mapping
-      if (moduleVisible) {
+      const module = Modules[moduleName as Module];
+      if (module && moduleVisible) {
         const { ModuleComponent, label, collapsible } =
           Modules[moduleName as Module];
         if (ModuleComponent) {
