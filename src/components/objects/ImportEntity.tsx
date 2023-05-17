@@ -34,11 +34,12 @@ export const ImportEntity: React.FC<IImportEntityProps> = ({ entity }) => {
   };
   const [dialog, setDialog] = useState<IConfirmMenuProps>(initialDialog);
   const { updateOrAddEntity } = useEntities();
+  const [pathbuilderId, setPathbuilderId] = useState("");
 
   const handleSubmit = async (values: PartialEntity): Promise<void> => {
     try {
       const response = await fetch(
-        `https://pathbuilder2e.com/json.php?id=${values.pathbuilderId}`
+        `https://pathbuilder2e.com/json.php?id=${pathbuilderId}`
       );
       if (response.ok) {
         const result: PathbuilderResponse = await response.json();
@@ -72,7 +73,6 @@ export const ImportEntity: React.FC<IImportEntityProps> = ({ entity }) => {
                   values.build,
                   transformPathbuilderBuild(result.build)
                 ),
-                pathbuilderId: values.pathbuilderId,
               };
               const newEntity = await updateOrAddEntity(newEntityData);
 
@@ -109,14 +109,14 @@ export const ImportEntity: React.FC<IImportEntityProps> = ({ entity }) => {
       <Formik
         initialValues={entity}
         onSubmit={async (values) => {
-          const { pathbuilderId } = values;
+          // const { pathbuilderId } = values;
           if (pathbuilderId) return handleSubmit(values);
         }}
-        validationSchema={object({
-          pathbuilderId: string()
-            .matches(/^[0-9]{6}$/, "Must be 6 digits")
-            .required("Required"),
-        })}
+        // validationSchema={object({
+        //   pathbuilderId: string()
+        //     .matches(/^[0-9]{6}$/, "Must be 6 digits")
+        //     .required("Required"),
+        // })}
       >
         {({ values, dirty, isValid }) => (
           <Form className={styles.inlineForm}>
@@ -130,9 +130,12 @@ export const ImportEntity: React.FC<IImportEntityProps> = ({ entity }) => {
                 </span>
               }
               name="pathbuilderId"
-              value={values.pathbuilderId}
+              value={pathbuilderId}
               placeholder="Pathbuilder JSON ID"
               className={styles.importField}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setPathbuilderId(e.target.value)
+              }
             />
             <div className={styles.alignTop}>
               <Button

@@ -17,7 +17,7 @@ const InitiativeForm = ({ onClose }: InitiativeMenuProps) => {
 
   const handleInitiativeChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    entityId: number
+    entityId: string
   ) => {
     const newInitiative = parseInt(e.target.value, 10) || 0;
     setEntityInitiatives({ ...entityInitiatives, [entityId]: newInitiative });
@@ -102,7 +102,7 @@ const InitiativeForm = ({ onClose }: InitiativeMenuProps) => {
       // Update the initiatives for each entity
       Object.keys(entityInitiatives).forEach((entityId) => {
         updateEntityById({
-          id: Number(entityId),
+          id: entityId,
           initiative: entityInitiatives[entityId],
         });
       });

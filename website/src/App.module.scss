@@ -117,6 +117,11 @@ This consists of two main objects, the header and the content*/
           margin-left: 2em;
           margin-right: 2em;
           width: 100px;
+
+          .responsiveImage {
+            max-width: calc($headerHeight - 0.5em);
+            max-height: calc($headerHeight - 0.5em);
+          }
         }
 
         .headerContent {

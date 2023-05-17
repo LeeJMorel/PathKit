@@ -26,7 +26,7 @@ function EditEntitySheet() {
   });
 
   useEffect(() => {
-    const matchEntity = getEntityById(Number(entityId));
+    const matchEntity = getEntityById(entityId);
     if (matchEntity) {
       setEntityData(matchEntity);
     }

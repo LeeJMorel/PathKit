@@ -12,7 +12,7 @@ import { PartialPath } from "../api/model";
 interface IUsePaths {
   paths: IPath[];
   getPathById: (pathId?: string | number) => IPath | undefined;
-  deletePath: (pathId: number) => void;
+  deletePath: (pathId: string) => void;
   updateOrAddPath: (path: PartialPath) => Promise<IPath | undefined>;
 }
 export const usePaths = (): IUsePaths => {
@@ -37,7 +37,7 @@ export const usePaths = (): IUsePaths => {
 
   const debouncedUpdateOrAdd = debounce(async (newPath: PartialPath) => {
     return await insertPath(newPath);
-  }, 500);
+  }, 1000);
 
   const updateOrAddPath = async (
     newPath: PartialPath
@@ -53,11 +53,11 @@ export const usePaths = (): IUsePaths => {
   );
 
   const deletePath = useCallback(
-    (id: number): void => {
+    (id: string): void => {
       deletePathFromDb(id);
       if (id === preferences.selectedPath) {
         setPreferences({
-          selectedPath: 0,
+          selectedPath: "",
         });
       }
     },

@@ -8,7 +8,7 @@ import SheetView from "./components/views/SheetView";
 import CardView from "./components/views/CardView";
 import ModuleView from "./components/views/ModuleView";
 import MainMenu from "./components/menus/MainMenu";
-import { IEntity, IPath } from "./api/model";
+import { IPath } from "./api/model";
 import classNames from "classnames";
 import {
   usePreferencesStore,
@@ -45,10 +45,8 @@ function App() {
     asyncInit();
   }, []);
   //control at a high level the campaign that we load
-  const { currentCampaignId, deleteCampaign, unloadCampaign } = useCampaigns();
-  const handleDeleteCampaign = (campaignId: number) => {
-    deleteCampaign(campaignId);
-  };
+  const { currentCampaignId } = useCampaigns();
+
   // Define the props for the Header component
   const [mode, setMode] = useState<AppMode>(AppMode.exploration);
   const [menu, setMenu] = useState(false);
@@ -83,7 +81,7 @@ function App() {
 
   const { resetInitiative } = useEntities();
   const cancelPath = () => {
-    const selectedPath = 0;
+    const selectedPath = "";
     setPreferences({
       ...preferences,
       selectedPath,
@@ -142,7 +140,7 @@ function App() {
           {/* </div> */}
           {/* <PathPlannerDropdown onClose={() => setCreateDropdown(false)} /> */}
           {/* if in encounter mode, show a close button to exit it*/}
-          {preferences.selectedPath != 0 ? (
+          {preferences.selectedPath !== "" ? (
             <>
               {showInitiativeMenu && currentPath?.type === "encounter" && (
                 <InitiativeMenu onClose={handleInitiativeMenu} />

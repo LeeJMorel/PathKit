@@ -5,7 +5,6 @@ import { PartialNote } from "../../api/model";
 import { Button } from "../buttons";
 import NoteObject from "../objects/NoteObject";
 import BinderObject, { BinderTab } from "../objects/BinderObject";
-import CollapsibleHeader from "../headers/CollapsibleHeader";
 
 function NotesModule() {
   const { addNote, updateOrAddNote, notes } = useNotes();
@@ -22,11 +21,11 @@ function NotesModule() {
       body: "",
     });
     setPreferences({
-      selectedNoteModule: newNote?.id || 0,
+      selectedNoteModule: newNote?.id || "",
     });
   };
 
-  const handleLoadNote = (id: number) => {
+  const handleLoadNote = (id: string) => {
     setPreferences({
       selectedNoteModule: id,
     });
@@ -54,7 +53,7 @@ function NotesModule() {
           onChange={handleChange}
           onClose={() =>
             setPreferences({
-              selectedNoteModule: 0,
+              selectedNoteModule: "",
             })
           }
           noteId={preferences.selectedNoteModule}

@@ -5,10 +5,10 @@ import useBoolean from "./useBoolean";
 
 interface IUseCampaigns {
   campaigns: ICampaign[];
-  currentCampaignId: number;
+  currentCampaignId: string;
   addCampaign: (campaign: Omit<ICampaign, "id">) => void;
-  deleteCampaign: (campaignId: number) => void;
-  loadCampaign: (campaignId: number) => Promise<void>;
+  deleteCampaign: (campaignId: string) => void;
+  loadCampaign: (campaignId: string) => Promise<void>;
   unloadCampaign: () => void;
   getCurrentCampaign: () => Promise<ICampaign | undefined>;
   currentCampaign: ICampaign | undefined;

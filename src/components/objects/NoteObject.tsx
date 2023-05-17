@@ -8,7 +8,7 @@ import { useNotes, usePreferencesStore } from "../../hooks";
 import "./NoteEditor.scss";
 
 export interface INotesObjectProps {
-  noteId?: number;
+  noteId?: string;
   onChange?: (note: PartialNote) => void;
   onClose?: () => void;
   defaultTitle?: string;

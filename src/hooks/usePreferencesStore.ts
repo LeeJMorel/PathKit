@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import deepMerge from "deepmerge";
 import { Module } from "../components/modules";
-import { tutorialCampaignId } from "../utilities";
 
 interface IPreferences {
   largeFont: boolean;
@@ -10,11 +9,11 @@ interface IPreferences {
   visibleModules: Record<Module, boolean>;
   collapsedModules: Record<Module, boolean>;
 
-  selectedPath: number;
-  selectedNoteSheet: number;
-  selectedNoteModule: number;
+  selectedPath: string;
+  selectedNoteSheet: string;
+  selectedNoteModule: string;
   selectedSearch: string | number | null;
-  absentPlayers: number[];
+  absentPlayers: string[];
 
   enableFancyEditor: boolean;
 }
@@ -29,8 +28,8 @@ export const defaultPreferences: IPreferences = {
   largeFont: false,
   theme: "parchment",
   visibleModules: {
-    TipModule: !tutorialCampaignId(),
-    TutorialModule: tutorialCampaignId(),
+    TipModule: true,
+    TutorialModule: false,
     DCModule: false,
     IncomeModule: false,
     // DiceModule: true,
@@ -48,9 +47,9 @@ export const defaultPreferences: IPreferences = {
     BinderModule: false,
     ConditionModule: false,
   },
-  selectedPath: 0,
-  selectedNoteSheet: 0,
-  selectedNoteModule: 0,
+  selectedPath: "",
+  selectedNoteSheet: "",
+  selectedNoteModule: "",
   selectedSearch: null,
   absentPlayers: [],
 

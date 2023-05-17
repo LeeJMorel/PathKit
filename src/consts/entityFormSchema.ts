@@ -48,14 +48,14 @@ const spellLevel = object().shape({
 });
 
 const entityFormSchema: ObjectSchema<PartialEntity> = object({
-  id: number(),
-  campaignId: number(),
+  id: string(),
+  campaignId: string(),
   type: string().defined().oneOf(entityTypes, "Invalid entity type"),
 
   image: string(),
   name: string().defined().required(errMsg.r),
   initiative: number().defined().default(0),
-  noteId: number().nullable(),
+  noteId: string().nullable(),
   damage: array()
     .of(number().defined().min(0))
     .default(() => [0]),

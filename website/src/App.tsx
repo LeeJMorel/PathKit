@@ -6,6 +6,7 @@ import useDownload, { Platform } from "./hooks/useDownload";
 import dark from "./assets/dark.png";
 import light from "./assets/light.png";
 import YouTube, { YouTubeProps } from "react-youtube";
+import Logo from "./assets/bigPKIcon.png";
 
 function App() {
   const { isDarkMode, enable, disable } = useDarkMode();
@@ -58,7 +59,13 @@ function App() {
       <div className={styles.grid}>
         <div className={styles.heroBackground}>
           <div className={styles.header}>
-            <div className={styles.headerEnd}>Logo</div>
+            <div className={styles.headerEnd}>
+              <img
+                src="/src/assets/bigPKIcon.png"
+                alt="PathKit Logo"
+                className={styles.responsiveImage}
+              />
+            </div>
             <div className={styles.headerContent}>
               <a
                 href="#download"

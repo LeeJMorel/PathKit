@@ -45,7 +45,6 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
         { name: condition, isValued: false },
       ];
       const uniqConditions = uniqby(conditions, "name");
-      console.log({ condition, conditions, uniqConditions });
       toggleConditionsMenu();
       const newEntity = await updateEntityById({
         id: entity.id,
@@ -55,7 +54,7 @@ function EntityCard({ entity, className, ...rest }: EntityCardProps) {
     [entity]
   );
 
-  const handleEntityClick = (id: number) => {
+  const handleEntityClick = (id: string) => {
     const selectedSearch = null;
     setPreferences({
       selectedSearch,

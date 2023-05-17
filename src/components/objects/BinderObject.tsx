@@ -24,8 +24,8 @@ export enum BinderTab {
 }
 
 interface IBinderProps {
-  onLoad?: (id: number) => void;
-  filterEntities?: (string | number)[];
+  onLoad?: (id: string) => void;
+  filterEntities?: string[];
   showTabs?: BinderTab[];
   showTabMenu?: boolean;
 }
@@ -86,11 +86,11 @@ const BinderObject: React.FC<IBinderProps> = ({
   const [deleteType, setDeleteType] = useState<
     "entity" | "path" | "campaign" | "note"
   >("entity");
-  const [deleteId, setDeleteId] = useState<number>(0);
+  const [deleteId, setDeleteId] = useState<string>("");
 
   const handleDelete = (
     type: "entity" | "path" | "campaign" | "note",
-    id: number
+    id: string
   ) => {
     setShowDeleteMenu(true);
     setDeleteType(type);
@@ -101,7 +101,7 @@ const BinderObject: React.FC<IBinderProps> = ({
     setShowDeleteMenu(false);
   };
 
-  const handleEditPath = (pathId: number) => {
+  const handleEditPath = (pathId: string) => {
     navigate(`/path/${pathId}`);
   };
 

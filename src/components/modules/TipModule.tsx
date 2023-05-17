@@ -3,7 +3,7 @@ import styles from "./Modules.module.scss";
 import { Button, RoundButton } from "../buttons";
 
 interface ITip {
-  id: number | number;
+  id: number;
   header: string;
   description: string;
 }
