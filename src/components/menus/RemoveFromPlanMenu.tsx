@@ -3,8 +3,8 @@ import MenuButton from "../buttons/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface IRemoveMenuProps {
-  pathId: number;
-  entityId: number;
+  pathId: string;
+  entityId: string;
   onRemove: () => void;
   onClose: () => void;
 }
@@ -36,8 +36,8 @@ const RemoveMenu: React.FC<IRemoveMenuProps> = ({
           </div>
           <p>
             Are you sure you wish to permanently remove this from your path? The
-            NPC, Monster, or Shop will still exist so you can load them back on
-            by editing the path.
+            NPC, Monster, Hazard, or Structure will still exist so you can load
+            them back on by editing the path.
           </p>
           <div className={styles.menuRowContainer}>
             <MenuButton onClick={handleClose}>No</MenuButton>

@@ -6,15 +6,15 @@ export enum PathType {
 export interface PartialPath {
   type: PathType;
   // Array of entity Ids
-  entities: number[];
+  entities: string[];
   orderNum?: number;
-  id?: number;
-  campaignId?: number;
+  id?: string;
+  campaignId?: string;
 }
 
 export interface IPath extends PartialPath {
-  id: number;
-  campaignId: number;
+  id: string;
+  campaignId: string;
 }
 
 export interface IRawPath extends Omit<IPath, "entities"> {

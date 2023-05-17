@@ -12,6 +12,7 @@ export const getPlayerMaxHp = (entity: PartialEntity): number => {
     bonushp = 0,
     bonushpPerLevel = 0,
   } = attributes;
-  result = level * (bonushpPerLevel + classhp + con) + ancestryhp + bonushp;
+  result =
+    level * (bonushpPerLevel + classhp + Number(con)) + ancestryhp + bonushp;
   return result;
 };

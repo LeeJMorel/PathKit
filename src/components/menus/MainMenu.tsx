@@ -8,6 +8,7 @@ import {
   useStore,
   useEntities,
   useCampaigns,
+  useMigrate,
 } from "../../hooks";
 import DeleteMenu from "./DeleteMenu";
 import CampaignMenu from "./CampaignMenu";
@@ -16,6 +17,8 @@ import BinderObject from "../objects/BinderObject";
 import { IEntity } from "../../api/model";
 import AddEntityForm from "../forms/AddEntityForm";
 import Tabs from "../tabs/tab";
+import { useNavigate } from "react-router-dom";
+import { tutorialCampaignId } from "../../utilities";
 
 interface IMainMenuProps {
   onClose: () => void;
@@ -26,21 +29,31 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   const { getPlayerEntities, updateOrAddEntity: updateEntity } = useEntities();
   const players = getPlayerEntities();
   const { currentCampaign, currentCampaignId } = useCampaigns();
+  const { exportCampaignToJSON, importCampaignFromJSON } = useMigrate();
 
   //placeholder until store can delete
   const [showDeleteMenu, setShowDeleteMenu] = useState<boolean>(false);
   const [deleteType, setDeleteType] = useState<"entity" | "path" | "campaign">(
     "entity"
   );
-  const [deleteId, setDeleteId] = useState<number>();
+  const [deleteId, setDeleteId] = useState<string>();
 
   const [showCampaignMenu, setShowCampaignMenu] = useState<boolean>(false);
-  const [campaignType, setCampaignType] = useState<"Load" | "New">("Load");
+  const [campaignType, setCampaignType] = useState<"Load" | "New" | "Import">(
+    "Load"
+  );
 
-  const handleLargeFontChange = () => {
+  const handlePreferenceChange = (key: string, value: any) => {
     setPreferences({
-      largeFont: !preferences.largeFont,
+      [key]: value,
     });
+  };
+
+  const navigate = useNavigate();
+
+  const handleViewLicense = () => {
+    navigate(`/license`);
+    onClose();
   };
 
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +80,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     });
   };
 
-  const handleDelete = (type: "entity" | "path" | "campaign", id: number) => {
+  const handleDelete = (type: "entity" | "path" | "campaign", id: string) => {
     setShowDeleteMenu(true);
     setDeleteType(type);
     setDeleteId(id);
@@ -81,7 +94,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
     setShowCampaignMenu(false);
   };
 
-  const handleCampaign = (type: "Load" | "New") => {
+  const handleCampaign = (type: "Load" | "New" | "Import") => {
     setShowCampaignMenu(true);
     setCampaignType(type);
   };
@@ -93,7 +106,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   //We don't want this player to be active this session
   const handleAbsent = (
     event: React.ChangeEvent<HTMLInputElement>,
-    playerId: number
+    playerId: string
   ) => {
     const { checked } = event.target;
 
@@ -105,7 +118,12 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   };
 
   const renderModuleCheckboxes = () => {
-    return Object.values(Modules).map((module) => (
+    const modulesToRender = Object.values(Modules);
+    // : Object.values(Modules).filter(
+    //     (module) => module.id !== "TutorialModule"
+    //   );
+
+    return modulesToRender.map((module) => (
       <MenuInput
         key={module.id}
         title={
@@ -120,6 +138,8 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
       />
     ));
   };
+
+  const renderCustomModuleCheckboxes = () => <p>Custom modules coming soon!</p>;
 
   const tabs = [
     {
@@ -145,6 +165,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
           <br />
           <div className={styles.menuRowContainer}>
             <Button
+              variant={"primary"}
               title={"Delete Campaign"}
               className={styles.buttonMargin}
               onClick={() =>
@@ -154,6 +175,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
               Delete Campaign
             </Button>
             <Button
+              variant={"primary"}
               title={"Load Campaign"}
               className={styles.buttonMargin}
               onClick={() => handleCampaign("Load")}
@@ -161,6 +183,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
               Load Campaign
             </Button>
             <Button
+              variant={"primary"}
               title={"Start New Campaign"}
               className={styles.buttonMargin}
               onClick={() => handleCampaign("New")}
@@ -169,9 +192,25 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
             </Button>
           </div>
           <div className={styles.menuRowContainer}>
-            <h2 title={"Players"} className={styles.tabHeader}>
+            <Button
+              title={"Export Campaign"}
+              className={styles.buttonMargin}
+              onClick={() => exportCampaignToJSON()}
+            >
+              Export Campaign
+            </Button>
+            <Button
+              title={"Import Campaign"}
+              className={styles.buttonMargin}
+              onClick={() => handleCampaign("Import")}
+            >
+              Import Campaign
+            </Button>
+          </div>
+          <div className={styles.menuRowContainer}>
+            <h3 title={"Players"} className={styles.tabHeader}>
               Players
-            </h2>
+            </h3>
             <h4 title={"Indicate if a player is present"}>is Present</h4>
           </div>
           <hr className={styles.tabHorizontalLine} />
@@ -222,78 +261,107 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
       content: (
         <div className={styles.tabContent}>
           <div className={styles.menuRowContainer}>
-            <h2 className={styles.tabHeader} title={"Visible Modules"}>
+            <h3 className={styles.tabHeader} title={"Visible Modules"}>
               Visible Modules
-            </h2>
+            </h3>
           </div>
           <hr className={styles.tabHorizontalLine} />
-          <div className={styles.tabCheckboxContainer}>
-            {renderModuleCheckboxes()}
+          <div className={styles.menuRowContainer}>
+            <div className={styles.menuColumnContainer}>
+              <h4>Built-in</h4>
+              {renderModuleCheckboxes()}
+            </div>
+            <div className={styles.menuColumnContainer}>
+              <h4>Custom</h4>
+              {renderCustomModuleCheckboxes()}
+            </div>
           </div>
         </div>
       ),
     },
     {
       id: "options",
-      title: "Options",
+      title: "Settings",
       content: (
         <div className={styles.tabContent}>
-          <h2 className={styles.tabHeader} title={"Accessibility"}>
-            Accessibility
-          </h2>
+          <h3 className={styles.tabHeader}>Options</h3>
           <hr className={styles.tabHorizontalLine} />
-          <div className={styles.tabCheckboxContainer}>
-            <MenuInput
-              label="Large Font"
-              title={"Large Font"}
-              checked={preferences.largeFont}
-              type={"checkbox"}
-              name="largeFont"
-              value="Large Font"
-              onChange={handleLargeFontChange}
-            />
+          <div className={styles.menuRowContainer}>
+            <div className={styles.menuColumnContainer}>
+              <MenuInput
+                label="Enable fancy editor"
+                checked={preferences.enableFancyEditor}
+                type={"checkbox"}
+                name="enableFancyEditor"
+                onChange={() =>
+                  handlePreferenceChange(
+                    "enableFancyEditor",
+                    !preferences.enableFancyEditor
+                  )
+                }
+              />
+            </div>
           </div>
-          <h2 className={styles.tabHeader} title={"Color Themes"}>
-            Color Themes
-          </h2>
+          <h3 className={styles.tabHeader}>Accessibility</h3>
           <hr className={styles.tabHorizontalLine} />
-          <div className={styles.tabCheckboxContainer}>
-            <MenuInput
-              label="Parchment (Light)"
-              title={"Parchment Color Theme"}
-              checked={preferences.theme === "parchment"}
-              type={"radio"}
-              name="theme"
-              value="parchment"
-              onChange={handleThemeChange}
-            />
-            <MenuInput
-              label="Dark"
-              title={"Dark Color Theme"}
-              checked={preferences.theme === "dark"}
-              type={"radio"}
-              name="theme"
-              value="dark"
-              onChange={handleThemeChange}
-            />
-            <MenuInput
-              label="High Contrast Parchment"
-              title={"High Contrast Theme: Parchment"}
-              checked={preferences.theme === "highContrast"}
-              type={"radio"}
-              name="theme"
-              value="highContrast"
-              onChange={handleThemeChange}
-            />
-            <MenuInput
-              label="High Contrast Dark"
-              title={"High Contrast Theme: Dark"}
-              checked={preferences.theme === "highContrastDark"}
-              type={"radio"}
-              name="theme"
-              value="highContrastDark"
-              onChange={handleThemeChange}
-            />
+          <div className={styles.menuRowContainer}>
+            <div className={styles.menuColumnContainer}>
+              <MenuInput
+                label="Large Font"
+                title={"Large Font"}
+                checked={preferences.largeFont}
+                type={"checkbox"}
+                name="largeFont"
+                value="Large Font"
+                onChange={() =>
+                  handlePreferenceChange("largeFont", !preferences.largeFont)
+                }
+              />
+            </div>
+          </div>
+          <h3 className={styles.tabHeader}>Color Themes</h3>
+          <hr className={styles.tabHorizontalLine} />
+          <div className={styles.menuRowContainer}>
+            <div className={styles.menuColumnContainer}>
+              <MenuInput
+                label="Parchment (Light)"
+                title={"Parchment Color Theme"}
+                checked={preferences.theme === "parchment"}
+                type={"radio"}
+                name="theme"
+                value="parchment"
+                onChange={handleThemeChange}
+              />
+              <MenuInput
+                label="Dark"
+                title={"Dark Color Theme"}
+                checked={preferences.theme === "dark"}
+                type={"radio"}
+                name="theme"
+                value="dark"
+                onChange={handleThemeChange}
+              />
+            </div>
+            <div className={styles.menuColumnContainer}>
+              <MenuInput
+                label="High Contrast Parchment"
+                title={"High Contrast Theme: Parchment"}
+                checked={preferences.theme === "highContrast"}
+                type={"radio"}
+                name="theme"
+                value="highContrast"
+                onChange={handleThemeChange}
+              />
+              <MenuInput
+                label="High Contrast Dark"
+                title={"High Contrast Theme: Dark"}
+                checked={preferences.theme === "highContrastDark"}
+                type={"radio"}
+                name="theme"
+                value="highContrastDark"
+                onChange={handleThemeChange}
+              />
+            </div>
           </div>
           <hr className={styles.tabHorizontalLine} />
           <div className={styles.tabSubtext}>
@@ -307,6 +375,82 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
             </a>{" "}
             to provide suggestions on improving the software's accessibility.
           </div>
+        </div>
+      ),
+    },
+    {
+      id: "about",
+      title: "About",
+      content: (
+        <div className={styles.tabContent}>
+          <h3 className={styles.tabHeader}>Credits</h3>
+          <hr className={styles.tabHorizontalLine} />
+          <div className={styles.tabSubtext}>
+            PathKit was built thanks to our amazing team of students at
+            University of Washington.
+          </div>
+          <Button
+            variant={"text"}
+            className={styles.buttonMargin}
+            onClick={() => window.open("https://github.com/LeeJMorel")}
+          >
+            Lee Janzen-Morel - Project Owner, Full Stack Dev
+          </Button>
+          <Button
+            variant={"text"}
+            className={styles.buttonMargin}
+            onClick={() => window.open("https://github.com/Panadero1")}
+          >
+            Jacob Anderson - Full Stack Testing Dev
+          </Button>
+          <Button
+            variant={"text"}
+            className={styles.buttonMargin}
+            onClick={() => window.open("https://github.com/neonsigh")}
+          >
+            Christopher Bendix - Full Stack Dev
+          </Button>
+          <Button
+            variant={"text"}
+            className={styles.buttonMargin}
+            onClick={() => window.open("https://github.com/Dreammob")}
+          >
+            Kevin Zhang - Game Developer (Unity)
+          </Button>
+          <Button
+            variant={"text"}
+            className={styles.buttonMargin}
+            onClick={() => window.open("https://github.com/Puggernauts")}
+          >
+            Luke Evans - UI Designer
+          </Button>
+          <br />
+          <h3 className={styles.tabHeader}>Licenses</h3>
+          <hr className={styles.tabHorizontalLine} />
+          <div className={styles.tabSubtext}>
+            Wizards of the Coast's OGL is what makes Pathfinder2e and PathKit
+            possible, to read more click the button below.
+          </div>
+          <Button
+            variant={"primary"}
+            className={styles.buttonMargin}
+            onClick={handleViewLicense}
+          >
+            View Open Game License
+          </Button>
+          <br />
+          <div className={styles.tabSubtext}>
+            Default images provided by artists on Flaticon.
+          </div>
+          <Button
+            variant={"primary"}
+            className={styles.buttonMargin}
+            onClick={() =>
+              window.open("https://www.flaticon.com/free-icons/risk")
+            }
+          >
+            Icons created by Uniconlabs - Flaticon
+          </Button>
         </div>
       ),
     },

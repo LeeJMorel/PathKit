@@ -8,8 +8,8 @@ import { Button } from "../../buttons";
 import { IEntityFormChildrenProps } from "../AddEntityForm";
 
 const SpellPoolForm: React.FC<IEntityFormChildrenProps> = ({
-  entity,
-  count,
+  formProps,
+  index: count,
 }) => {
   const [spells, setSpells] = useState<number[]>([]);
 
@@ -66,7 +66,7 @@ const SpellPoolForm: React.FC<IEntityFormChildrenProps> = ({
           </Button>
         </div>
         {spells.map((_, index) => (
-          <AddSpellForm entity={entity} key={index} count={index + 1} />
+          <AddSpellForm formProps={formProps} key={index} index={index + 1} />
         ))}
       </CollapsibleHeader>
     </>

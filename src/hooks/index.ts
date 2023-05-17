@@ -9,4 +9,4 @@ export * from "./useEventListener";
 export * from "./useIsomorphicLayoutEffect";
 export * from "./useOnClickOutside";
 export * from "./useIsMounted";
-export * from "./useResources";
+export * from "./useMigrate";

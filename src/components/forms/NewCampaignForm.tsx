@@ -65,7 +65,7 @@ const NewCampaignForm = ({ onSubmit }: INewCampaignFormProps) => {
           className={styles.formTextarea}
         />
       </div>
-      <Button type="submit" className={styles.formButton}>
+      <Button type="submit" variant="primary" className={styles.formButton}>
         Create Campaign
       </Button>
     </form>

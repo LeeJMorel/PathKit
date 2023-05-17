@@ -5,17 +5,20 @@ export enum Platform {
   MacOS = "macos",
   Linux = "linux",
   Tar = "tar",
+  Tutorial = "Tutorial",
 }
 
 const downloadLinks: Record<Platform, string> = {
   [Platform.Windows]:
-    "https://github.com/LeeJMorel/PathKit/releases/download/v0.0.1-alpha/PathKit_0.0.1_x64_en-US.msi",
+    "https://github.com/LeeJMorel/PathKit/releases/download/v0.1.2-beta/PathKit_0.1.2_x64_en-US.msi",
   [Platform.MacOS]:
-    "https://github.com/LeeJMorel/PathKit/releases/download/v0.0.1-alpha/PathKit_0.0.1_x64.dmg",
+    "https://github.com/LeeJMorel/PathKit/releases/download/v0.1.2-beta/PathKit_0.1.2_x64.dmg",
   [Platform.Linux]:
-    "https://github.com/LeeJMorel/PathKit/releases/download/v0.0.1-alpha/path-kit_0.0.1_amd64.deb",
+    "https://github.com/LeeJMorel/PathKit/releases/download/v0.1.2-beta/path-kit_0.1.2_amd64.deb",
   [Platform.Tar]:
-    "https://github.com/LeeJMorel/PathKit/releases/download/v0.0.1-alpha/PathKit_x64.app.tar.gz",
+    "https://github.com/LeeJMorel/PathKit/releases/download/v0.1.2-beta/PathKit_x64.app.tar.gz",
+  [Platform.Tutorial]:
+    "https://github.com/LeeJMorel/PathKit/releases/download/tutorial/pathkit-campaign-PathKit.Tutorial.Demo.json",
 };
 
 const getPlatform = (): Platform => {

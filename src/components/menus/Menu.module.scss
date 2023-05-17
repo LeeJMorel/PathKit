@@ -25,6 +25,13 @@
     position: relative;
     transition: all 0.2s ease-in-out;
 
+    .menuAboutContainer {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      width: 100%;
+    }
+
     .buttonMargin {
       margin: 0.5em;
     }
@@ -88,11 +95,16 @@
     .menuRowContainer {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      // align-items: center;
       flex: 1;
       flex-direction: row;
       width: 100%;
       margin-bottom: 0.2em;
+    }
+
+    .menuColumnContainer {
+      display: flex;
+      flex-direction: column;
     }
 
     .menuEndContainer {

@@ -21,11 +21,11 @@ function NotesSheet() {
       body: "",
     });
     setPreferences({
-      selectedNoteSheet: newNote?.id || 0,
+      selectedNoteSheet: newNote?.id || "",
     });
   };
 
-  const handleLoadNote = (id: number) => {
+  const handleLoadNote = (id: string) => {
     setPreferences({
       selectedNoteSheet: id,
     });
@@ -49,15 +49,26 @@ function NotesSheet() {
       {!preferences.selectedNoteSheet ? (
         renderCreateNote()
       ) : (
-        <NoteObject
-          onChange={handleChange}
-          onClose={() =>
-            setPreferences({
-              selectedNoteSheet: 0,
-            })
-          }
-          noteId={preferences.selectedNoteSheet}
-        />
+        <>
+          <NoteObject
+            onChange={handleChange}
+            onClose={() =>
+              setPreferences({
+                selectedNoteSheet: "",
+              })
+            }
+            noteId={preferences.selectedNoteSheet}
+          />
+          <span className={styles.caption}>
+            <a
+              href="https://www.markdownguide.org/cheat-sheet/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              What is Markdown?
+            </a>
+          </span>
+        </>
       )}
       {notesExist && !preferences.selectedNoteSheet && (
         <div className={styles.notesBinder}>

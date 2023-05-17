@@ -6,7 +6,9 @@ import { Button } from "../../buttons";
 import SpellPoolForm from "./SpellPoolForm";
 import { IEntityFormChildrenProps } from "../AddEntityForm";
 
-const EntitySpellsForm: React.FC<IEntityFormChildrenProps> = ({ entity }) => {
+const EntitySpellsForm: React.FC<IEntityFormChildrenProps> = ({
+  formProps,
+}) => {
   const [spellPools, setSpellPools] = useState<number[]>([]);
 
   const handleAddSpellPool = () => {
@@ -21,7 +23,7 @@ const EntitySpellsForm: React.FC<IEntityFormChildrenProps> = ({ entity }) => {
         </Button>
       </div>
       {spellPools.map((_, index) => (
-        <SpellPoolForm entity={entity} key={index} count={index + 1} />
+        <SpellPoolForm formProps={formProps} key={index} index={index + 1} />
       ))}
     </>
   );

@@ -8,15 +8,15 @@ interface Tab {
   id: string;
   title: string;
   content: JSX.Element;
+  disabled?: boolean;
 }
 
-interface TabsProps {
+interface TabsProps extends React.HTMLProps<HTMLDivElement> {
   tabs: Tab[];
   onClose?: () => void;
-  className?: string;
 }
 
-const Tabs: React.FC<TabsProps> = ({ tabs, onClose, className }) => {
+const Tabs: React.FC<TabsProps> = ({ tabs, onClose, className, ...rest }) => {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
 
   const handleClose = () => {
@@ -26,15 +26,17 @@ const Tabs: React.FC<TabsProps> = ({ tabs, onClose, className }) => {
   };
 
   return (
-    <div className={classNames(styles.tabContainer, className)}>
+    <div className={classNames(styles.tabContainer, className)} {...rest}>
       <div className={styles.tabRow}>
         {tabs.map((tab) => (
           <div
             key={tab.id}
-            className={`${styles.tab} ${
-              activeTab === tab.id ? styles.active : ""
-            }`}
-            onClick={() => setActiveTab(tab.id)}
+            className={classNames(styles.tab, {
+              [styles.active]: activeTab === tab.id,
+              [styles.disabled]: tab.disabled,
+            })}
+            onClick={() => !tab.disabled && setActiveTab(tab.id)}
+            title={tab.disabled ? "Coming soon!" : undefined}
           >
             {tab.title}
           </div>

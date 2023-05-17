@@ -6,10 +6,10 @@ export const saneSqlValue = (value: any): string | number | null => {
     // Returns "0" or "1" for bools
     return Number(value).toString();
   }
-  if (typeof value === "object") {
-    return `'${JSON.stringify(value)}'`;
-  }
   let val = value;
+  if (typeof val === "object") {
+    val = JSON.stringify(value);
+  }
   if (typeof val === "string") {
     val = val.replaceAll("'", "''");
     return (val = `'${val}'`);

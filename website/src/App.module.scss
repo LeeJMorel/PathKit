@@ -117,6 +117,11 @@ This consists of two main objects, the header and the content*/
           margin-left: 2em;
           margin-right: 2em;
           width: 100px;
+
+          .responsiveImage {
+            max-width: calc($headerHeight - 0.5em);
+            max-height: calc($headerHeight - 0.5em);
+          }
         }
 
         .headerContent {
@@ -199,6 +204,23 @@ This consists of two main objects, the header and the content*/
         margin: 0.2em;
       }
 
+      .buttonTutorial {
+        margin-top: 0.2em;
+        margin-bottom: 2em;
+      }
+
+      p {
+        margin: 2em;
+      }
+
+      /* Media query for large screen sizes */
+      @media (min-width: 1200px) {
+        p {
+          margin-left: 18em;
+          margin-right: 18em;
+        }
+      }
+
       .downloadSection {
         width: 100%;
         height: 100%;
@@ -214,87 +236,6 @@ This consists of two main objects, the header and the content*/
           flex-direction: column;
           align-items: center;
           justify-content: flex-start;
-        }
-      }
-
-      .exploreSection {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-around;
-        text-align: center;
-
-        .exploreItem {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: flex-start;
-          margin: 1em;
-        }
-
-        .exploreItemRow {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: flex-start;
-          margin: 1em;
-
-          .exploreText {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            margin: 1em;
-          }
-        }
-      }
-
-      .supportSection {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-around;
-        text-align: center;
-
-        .supportItem {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: flex-start;
-
-          .supportText {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex: 3;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            margin: 1em;
-          }
-
-          .supportTextEnd {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            margin: 1em;
-          }
         }
       }
     }

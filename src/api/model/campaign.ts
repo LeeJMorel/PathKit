@@ -1,9 +1,9 @@
 export interface PartialCampaign {
   name: string;
   desc: string;
-  id?: number;
+  id?: string;
 }
 
 export interface ICampaign extends PartialCampaign {
-  id: number;
+  id: string;
 }
