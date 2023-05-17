@@ -118,9 +118,7 @@ const MainMenu: React.FC<IMainMenuProps> = ({ onClose }: IMainMenuProps) => {
   };
 
   const renderModuleCheckboxes = () => {
-    const modulesToRender = tutorialCampaignId(currentCampaignId)
-      ? Object.values(Modules)
-      : Object.values(Modules);
+    const modulesToRender = Object.values(Modules);
     // : Object.values(Modules).filter(
     //     (module) => module.id !== "TutorialModule"
     //   );
