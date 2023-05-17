@@ -9,13 +9,13 @@ export enum Platform {
 
 const downloadLinks: Record<Platform, string> = {
   [Platform.Windows]:
-    "https://github.com/LeeJMorel/PathKit/releases/download/v0.0.1-alpha/PathKit_0.0.1_x64_en-US.msi",
+    "https://github.com/LeeJMorel/PathKit/releases/download/v0.0.3-alpha/PathKit_0.0.3_x64_en-US.msi",
   [Platform.MacOS]:
-    "https://github.com/LeeJMorel/PathKit/releases/download/v0.0.1-alpha/PathKit_0.0.1_x64.dmg",
+    "https://github.com/LeeJMorel/PathKit/releases/download/v0.0.3-alpha/PathKit_0.0.3_x64.dmg",
   [Platform.Linux]:
-    "https://github.com/LeeJMorel/PathKit/releases/download/v0.0.1-alpha/path-kit_0.0.1_amd64.deb",
+    "https://github.com/LeeJMorel/PathKit/releases/download/v0.0.3-alpha/path-kit_0.0.3_amd64.deb",
   [Platform.Tar]:
-    "https://github.com/LeeJMorel/PathKit/releases/download/v0.0.1-alpha/PathKit_x64.app.tar.gz",
+    "https://github.com/LeeJMorel/PathKit/releases/download/v0.0.3-alpha/PathKit_x64.app.tar.gz",
 };
 
 const getPlatform = (): Platform => {
