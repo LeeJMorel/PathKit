@@ -2,6 +2,10 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import deepMerge from "deepmerge";
 import { Module } from "../components/modules";
+import { useCampaigns } from "./useCampaigns";
+import { tutorialCampaignId } from "../utilities";
+
+const { currentCampaignId } = useCampaigns();
 
 interface IPreferences {
   largeFont: boolean;
@@ -29,6 +33,7 @@ export const defaultPreferences: IPreferences = {
   theme: "parchment",
   visibleModules: {
     TipModule: true,
+    TutorialModule: currentCampaignId === tutorialCampaignId(),
     DCModule: false,
     IncomeModule: false,
     // DiceModule: true,
@@ -38,6 +43,7 @@ export const defaultPreferences: IPreferences = {
   },
   collapsedModules: {
     TipModule: false,
+    TutorialModule: false,
     DCModule: false,
     IncomeModule: false,
     // DiceModule: false,
