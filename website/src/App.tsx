@@ -14,6 +14,7 @@ function App() {
   const downloadMac = useDownload(Platform.MacOS);
   const downloadTar = useDownload(Platform.Tar);
   const downloadLinux = useDownload(Platform.Linux);
+  const downloadTutorial = useDownload(Platform.Tutorial);
 
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
@@ -123,6 +124,15 @@ function App() {
       <div className={styles.grid}>
         <section id="download" className={styles.sectionContent}>
           <h2>Download</h2>
+          <p>
+            New to playing Pathfinder? We recommend you download our tutorial
+            campaign by selecting the button below. Once you have installed
+            PathKit select Import Campaign and select the tutorial campaign from
+            your downloads.
+          </p>
+          <Button className={styles.buttonTutorial} onClick={downloadTutorial}>
+            Download Tutorial Campaign
+          </Button>
           <div className={styles.downloadSection}>
             <div className={styles.downloadItem}>
               <h3>Linux</h3>
@@ -149,54 +159,31 @@ function App() {
         </section>
         <section id="explore" className={styles.sectionContent}>
           <h2>Explore</h2>
-          <div className={styles.exploreSection}>
-            <div className={styles.exploreItem}>
-              <YouTube
-                videoId="HHFSkAdBkdI"
-                opts={opts}
-                onReady={onPlayerReady}
-              />
-            </div>
-            <div className={styles.exploreItemRow}>
-              <div className={styles.exploreText}></div>
-              <div className={styles.exploreText}>
-                <h3>Demo</h3>
-                <p>
-                  You can check out a demo of Pathkit to see if you think the
-                  tool may work for your party! Add players, paths to explore,
-                  monsters, and mayhem! For full feature's press download above.
-                </p>
-                <Button className={styles.buttonMargin} onClick={handleDemo}>
-                  Demo
-                </Button>
-              </div>
-              <div className={styles.exploreText}></div>
-            </div>
-          </div>
+          <YouTube videoId="HHFSkAdBkdI" opts={opts} onReady={onPlayerReady} />
+          <h3>Demo</h3>
+          <p>
+            You can check out a demo of Pathkit to see if you think the tool may
+            work for your party! Add players, paths to explore, monsters, and
+            mayhem! For full feature's press download above.
+          </p>
+          <Button className={styles.buttonMargin} onClick={handleDemo}>
+            Demo
+          </Button>
         </section>
         <section id="support" className={styles.sectionContent}>
           <h2>Support</h2>
-          <div className={styles.supportSection}>
-            <div className={styles.supportItem}>
-              <div className={styles.supportTextEnd}></div>
-              <div className={styles.supportText}>
-                <p>
-                  Looking for a way to connect with the developers of PathKit
-                  and offer your support? Look no further than our Github page!
-                  By following us on Github, you'll be able to stay up-to-date
-                  on all the latest developments and get involved in the
-                  conversation. Whether you're an experienced developer or just
-                  starting out, there's a place for you on our team. So why
-                  wait? Head over to our Github page today and start connecting
-                  with the PathKit community!
-                </p>
-                <Button className={styles.buttonMargin} onClick={handleGithub}>
-                  Checkout our github!
-                </Button>
-              </div>
-              <div className={styles.supportTextEnd}></div>
-            </div>
-          </div>
+          <p>
+            Looking for a way to connect with the developers of PathKit and
+            offer your support? Look no further than our Github page! By
+            following us on Github, you'll be able to stay up-to-date on all the
+            latest developments and get involved in the conversation. Whether
+            you're an experienced developer or just starting out, there's a
+            place for you on our team. So why wait? Head over to our Github page
+            today and start connecting with the PathKit community!
+          </p>
+          <Button className={styles.buttonMargin} onClick={handleGithub}>
+            Checkout our github!
+          </Button>
         </section>
       </div>
     </div>
