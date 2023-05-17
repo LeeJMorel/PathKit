@@ -61,7 +61,7 @@ function App() {
           <div className={styles.header}>
             <div className={styles.headerEnd}>
               <img
-                src="/src/assets/bigPKIcon.png"
+                src={"Logo"}
                 alt="PathKit Logo"
                 className={styles.responsiveImage}
               />
