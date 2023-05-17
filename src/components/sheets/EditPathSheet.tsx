@@ -56,7 +56,7 @@ function EditPathSheet() {
   }, [pathId]);
 
   useEffect(() => {
-    const matchEntity = getEntityById(Number(entityId));
+    const matchEntity = getEntityById(entityId);
     if (matchEntity) {
       setEntityData(matchEntity);
     }
@@ -92,7 +92,7 @@ function EditPathSheet() {
   };
 
   //we want to remove an entity from our path
-  const handleRemoveEntity = (id: number) => {
+  const handleRemoveEntity = (id: string) => {
     setPath((prev) => ({
       ...prev,
       entities: uniq(prev.entities.filter((i) => i !== id)),
@@ -109,7 +109,7 @@ function EditPathSheet() {
       ? ` +${pathEntities.slice(4).length}`
       : "");
 
-  const handleLoadEntity = (entityId: number) => {
+  const handleLoadEntity = (entityId: string) => {
     setPath((prev) => ({
       ...prev,
       entities: uniq([...prev.entities, entityId]),

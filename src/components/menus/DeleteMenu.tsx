@@ -13,7 +13,7 @@ import { useState, useCallback } from "react";
 
 interface IDeleteMenuProps {
   type: "entity" | "path" | "campaign" | "note";
-  id: number;
+  id: string;
   onClose: () => void;
 }
 
@@ -38,7 +38,7 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
       case "path":
         if (preferences.selectedPath === id) {
           setPreferences({
-            selectedPath: 0,
+            selectedPath: "",
           });
         }
         deletePath(id);
@@ -57,12 +57,12 @@ const DeleteMenu: React.FC<IDeleteMenuProps> = ({
       case "note":
         if (preferences.selectedNoteSheet === id) {
           setPreferences({
-            selectedNoteSheet: 0,
+            selectedNoteSheet: "",
           });
         }
         if (preferences.selectedNoteModule === id) {
           setPreferences({
-            selectedNoteModule: 0,
+            selectedNoteModule: "",
           });
         }
         deleteNote(id);

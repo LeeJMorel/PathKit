@@ -3,32 +3,56 @@ import classNames from "classnames";
 import styles from "./Menu.module.scss";
 import Button from "../buttons/Button";
 import NewCampaignForm from "../forms/NewCampaignForm";
-import { useCampaigns } from "../../hooks";
+import { useCampaigns, usePreferencesStore } from "../../hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ImportCampaignForm from "../forms/ImportCampaignForm";
+import { tutorialCampaignId } from "../../utilities";
 
 interface ICampaignMenuProps {
-  type: "Load" | "New";
+  type: "Load" | "New" | "Import";
   onClose: () => void;
 }
 
 const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
   const { campaigns, loadCampaign, refreshCampaigns } = useCampaigns();
+  const { preferences, setPreferences } = usePreferencesStore();
 
   useEffect(() => {
     refreshCampaigns();
   }, []);
 
-  const [selectedCampaign, setSelectedCampaign] = useState<number>();
+  const [selectedCampaign, setSelectedCampaign] = useState<string>();
 
-  const handleCampaignSelect = (campaignId: number) => {
+  const handleCampaignSelect = (campaignId: string) => {
     setSelectedCampaign(campaignId);
   };
 
   const handleLoadClick = () => {
     if (selectedCampaign) {
       loadCampaign(selectedCampaign);
+      let visibleModules = { ...preferences.visibleModules };
+
+      if (tutorialCampaignId(selectedCampaign)) {
+        visibleModules = {
+          ...visibleModules,
+          TutorialModule: true,
+          TipModule: false,
+        };
+      }
+
+      console.log("Updated visibleModules:", visibleModules);
+
+      setPreferences({
+        ...preferences,
+        visibleModules,
+      });
       handleClose();
     }
+  };
+
+  const handleImport = (campaignId: string) => {
+    loadCampaign(campaignId);
+    handleClose();
   };
 
   const handleClose = () => {
@@ -36,19 +60,20 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
   };
 
   const renderHeaderTitle = () => {
-    if (type === "Load") {
-      return (
-        <>
-          <h2>Select Campaign</h2>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <h2>Start a new campaign</h2>
-        </>
-      );
+    let result;
+    switch (type) {
+      case "Import":
+        result = <h2>Import Campaign</h2>;
+        break;
+      case "Load":
+        result = <h2>Select Campaign</h2>;
+        break;
+      case "New":
+      default:
+        result = <h2>Start a new campaign</h2>;
+        break;
     }
+    return result;
   };
 
   const renderLoadContent = () => {
@@ -70,10 +95,17 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
           ))}
         </div>
         <div className={styles.menuRowContainer}>
-          <Button disabled={!selectedCampaign} type="submit" variant="primary" onClick={handleLoadClick}>
+          <Button
+            disabled={!selectedCampaign}
+            type="submit"
+            variant="primary"
+            onClick={handleLoadClick}
+          >
             Load
           </Button>
-          <Button type="submit" variant="primary" onClick={handleClose}>Cancel</Button>
+          <Button type="submit" variant="primary" onClick={handleClose}>
+            Cancel
+          </Button>
         </div>
       </>
     );
@@ -87,6 +119,27 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
     );
   };
 
+  const renderImportContent = () => {
+    return <ImportCampaignForm onSubmit={handleImport} />;
+  };
+
+  const renderContent = () => {
+    let content = <></>;
+    switch (type) {
+      case "Import":
+        content = renderImportContent();
+        break;
+      case "Load":
+        content = renderLoadContent();
+        break;
+      case "New":
+      default:
+        content = renderNewContent();
+        break;
+    }
+    return content;
+  };
+
   return (
     <div className={styles.menuOverlay}>
       <div className={styles.mainMenu}>
@@ -96,7 +149,7 @@ const CampaignMenu: React.FC<ICampaignMenuProps> = ({ type, onClose }) => {
             <FontAwesomeIcon icon="close" />
           </div>
         </div>
-        {type === "Load" ? renderLoadContent() : renderNewContent()}
+        {renderContent()}
       </div>
     </div>
   );

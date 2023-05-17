@@ -29,7 +29,7 @@ function EntitySheet() {
   const [maxHp, setMaxHp] = useState<number>(entity.maxHp || 0);
 
   useEffect(() => {
-    const matchEntity = getEntityById(Number(entityId));
+    const matchEntity = getEntityById(entityId);
     if (matchEntity) {
       setEntity(matchEntity);
     }
@@ -38,7 +38,6 @@ function EntitySheet() {
   useEffect(() => {
     if (entity.type === EntityType.Player) {
       const playerMaxHp = getPlayerMaxHp(entity);
-      console.log({ entity, playerMaxHp });
       setMaxHp(playerMaxHp);
     }
   }, [entity]);
@@ -443,7 +442,7 @@ function EntitySheet() {
         <ActionsFilter entity={entity} />
         {entity.id && (
           <NotesObject
-            defaultTitle={`Notes for ${entity.name} (${entity.id})`}
+            defaultTitle={`Notes for ${entity.name} (${entity.id.slice(-5)})`}
             noteId={entity.noteId || undefined}
             onChange={(note) => {
               updateOrAddNote(

@@ -12,7 +12,7 @@ export interface PartialEntity {
   name: string;
   type: EntityType;
   initiative: number;
-  noteId?: number | null;
+  noteId?: string | null;
   build: IEntityBuild;
   damage: number[];
   tempHp: number[];
@@ -20,18 +20,17 @@ export interface PartialEntity {
   maxHp?: number | null;
   conditions: ICondition[];
   quantity: number;
-  id?: number;
-  campaignId?: number;
-  pathbuilderId?: string | null;
+  id?: string;
+  campaignId?: string;
 }
 
 export interface IEntity extends PartialEntity {
-  id: number;
-  campaignId: number;
+  id: string;
+  campaignId: string;
 }
 
 export interface IUpdateEntity extends Partial<IEntity> {
-  id: number;
+  id: string;
 }
 
 type EntityJsonStringKeys = "conditions" | "build" | "damage" | "tempHp";

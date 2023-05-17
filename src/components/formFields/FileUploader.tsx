@@ -8,6 +8,11 @@ export interface IFileUploaderProps extends Omit<IButtonProps, "defaultValue"> {
   defaultValue?: FileReader["result"];
   accept?: string;
   maxSizeInMB?: number;
+  label?: string;
+  labelPosition?: "above" | "inline";
+  align?: "start" | "center" | "end";
+  small?: boolean;
+  toBase64?: boolean;
 }
 
 export const FileUploader: React.FC<IFileUploaderProps> = ({
@@ -17,6 +22,11 @@ export const FileUploader: React.FC<IFileUploaderProps> = ({
   accept = "image/*",
   maxSizeInMB = 1,
   children = "Upload Image",
+  label,
+  labelPosition = "inline",
+  align = "start",
+  small,
+  toBase64,
   ...rest
 }) => {
   const [file, setFile] = useState<FileReader["result"]>(defaultValue);
@@ -35,10 +45,14 @@ export const FileUploader: React.FC<IFileUploaderProps> = ({
         }
         setLoading(false);
       };
-      if (_file.size <= maxSize) {
+      if (maxSizeInMB > 0 && _file.size <= maxSize) {
         setLoading(true);
         setError(undefined);
-        reader.readAsDataURL(_file);
+        if (toBase64) {
+          reader.readAsDataURL(_file);
+        } else if (_file.type === "application/json") {
+          reader.readAsText(_file);
+        }
       } else {
         setError(`Please upload an image less than ${maxSizeInMB}MB.`);
       }
@@ -58,7 +72,20 @@ export const FileUploader: React.FC<IFileUploaderProps> = ({
   };
 
   return (
-    <div className={classNames(styles.fieldContainer, styles.inputButton)}>
+    <div
+      className={classNames(
+        styles.fieldContainer,
+        styles[labelPosition],
+        styles[align],
+        small && styles.small,
+        className
+      )}
+    >
+      {label && (
+        <div className={styles.labelContainer}>
+          <label className={styles.label}>{label}</label>
+        </div>
+      )}
       <div className={styles.inputContainer}>
         <input
           type="file"

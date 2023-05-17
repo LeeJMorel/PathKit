@@ -1,16 +1,16 @@
 export interface PartialNote {
   title: string;
   body: string;
-  id?: number;
-  campaignId?: number;
+  id?: string;
+  campaignId?: string;
   createDate?: string;
   modifiedDate?: string;
-  entityId?: number;
+  entityId?: string;
 }
 
 export interface INote extends PartialNote {
-  id: number;
-  campaignId: number;
+  id: string;
+  campaignId: string;
   createDate: string;
   modifiedDate?: string;
 }
