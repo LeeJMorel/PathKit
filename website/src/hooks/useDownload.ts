@@ -5,6 +5,7 @@ export enum Platform {
   MacOS = "macos",
   Linux = "linux",
   Tar = "tar",
+  Tutorial = "Tutorial",
 }
 
 const downloadLinks: Record<Platform, string> = {
@@ -16,6 +17,8 @@ const downloadLinks: Record<Platform, string> = {
     "https://github.com/LeeJMorel/PathKit/releases/download/v0.0.3-alpha/path-kit_0.0.3_amd64.deb",
   [Platform.Tar]:
     "https://github.com/LeeJMorel/PathKit/releases/download/v0.0.3-alpha/PathKit_x64.app.tar.gz",
+  [Platform.Tutorial]:
+    "https://github.com/LeeJMorel/PathKit/releases/download/tutorial/",
 };
 
 const getPlatform = (): Platform => {
