@@ -38,6 +38,7 @@ jobs:
           libayatana-appindicator3-dev \
           librsvg2-dev
         if: matrix.os == 'ubuntu-latest'
+        
       - name: run tests
         run: |
           cd src-tauri
