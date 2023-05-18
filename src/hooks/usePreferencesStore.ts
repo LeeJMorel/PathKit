@@ -6,13 +6,20 @@ import { Module } from "../components/modules";
 interface IPreferences {
   largeFont: boolean;
   theme: string;
-  visibleModules: Record<Module, boolean>;
+  visibleModules: {
+    [key in Module]?: boolean;
+  };
+  collapsedModules: {
+    [key in Module]?: boolean;
+  };
 
-  selectedPath: number;
-  selectedNoteSheet: number;
-  selectedNoteModule: number;
+  selectedPath: string;
+  selectedNoteSheet: string;
+  selectedNoteModule: string;
   selectedSearch: string | number | null;
-  absentPlayers: number[];
+  absentPlayers: string[];
+
+  enableFancyEditor: boolean;
 }
 
 interface IPreferencesStore {
@@ -25,17 +32,18 @@ export const defaultPreferences: IPreferences = {
   largeFont: false,
   theme: "parchment",
   visibleModules: {
-    TipModule: true,
-    DCModule: false,
-    DiceModule: true,
-    NotesModule: false,
+    TutorialModule: true,
+    // DiceModule: true,
     BinderModule: true,
   },
-  selectedPath: 0,
-  selectedNoteSheet: 0,
-  selectedNoteModule: 0,
+  collapsedModules: {},
+  selectedPath: "",
+  selectedNoteSheet: "",
+  selectedNoteModule: "",
   selectedSearch: null,
   absentPlayers: [],
+
+  enableFancyEditor: true,
 };
 
 export const usePreferencesStore = create(

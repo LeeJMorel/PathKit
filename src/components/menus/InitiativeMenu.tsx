@@ -16,7 +16,7 @@ export const InitiativeMenu = ({ onClose }: InitiativeMenuProps) => {
   const { preferences, setPreferences } = usePreferencesStore();
   const { resetInitiative: resetEntities } = useEntities();
   const cancelPath = () => {
-    const selectedPath = 0;
+    const selectedPath = "";
     setPreferences({
       ...preferences,
       selectedPath,
@@ -34,7 +34,6 @@ export const InitiativeMenu = ({ onClose }: InitiativeMenuProps) => {
             <FontAwesomeIcon icon="close" />
           </div>
         </div>
-        <hr />
         <InitiativeForm onClose={handleClose} />
       </div>
     </div>

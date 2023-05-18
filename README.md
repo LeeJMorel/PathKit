@@ -11,7 +11,7 @@ PathKit is a virtual GM (Game Master) screen for the tabletop role-playing game 
 [View a demo for the Alpha Release](https://youtu.be/HHFSkAdBkdI)
 ### Functional use-cases
 1. **Click on planned encounters:** You can select an encounter you have planned to run the initiative screen and organize initiative for you.
-2. **Add Players, NPCs, Shops, and Monsters:** You can create custom entities by using the creation menu in the upper left corner of the header.
+2. **Add Players, NPCs, Structures, Hazards, and Monsters:** You can create custom entities by using the creation menu in the upper left corner of the header.
 3. **Add Planned Encounters or Exploration Paths:** You can create custom plans by using the creation menu in the upper left corner of the header.
 
 ## Major Features

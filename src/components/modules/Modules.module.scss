@@ -29,18 +29,17 @@
       margin: 0.2em auto;
     }
   }
-
-  .moduleContent {
-    padding: 1rem;
-    overflow: auto; /* Add overflow property to enable scrollbar */
-    display: flex;
-    flex: 1;
-    justify-content: flex-start;
-    align-items: stretch;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-  }
+}
+.moduleContent {
+  padding: 1rem;
+  overflow: auto; /* Add overflow property to enable scrollbar */
+  display: flex;
+  flex: 1;
+  justify-content: flex-start;
+  align-items: stretch;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
 }
 
 .dcTable {

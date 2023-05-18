@@ -12,9 +12,9 @@ import useBoolean from "./useBoolean";
 
 interface IUseEntities {
   entities: IEntity[];
-  getEntityById: (entityId?: string | number) => IEntity | undefined;
-  getEntitiesById: (entityIds?: (string | number)[]) => IEntity[];
-  deleteEntity: (entityId: number) => void;
+  getEntityById: (entityId?: string) => IEntity | undefined;
+  getEntitiesById: (entityIds?: string[]) => IEntity[];
+  deleteEntity: (entityId: string) => void;
   getPlayerEntities: () => IEntity[];
   getActivePlayerEntities: () => IEntity[];
   updateOrAddEntity: (entity: PartialEntity) => Promise<IEntity | undefined>;
@@ -30,6 +30,7 @@ export const useEntities = (): IUseEntities => {
       insertEntity: store.insertEntity,
       deleteEntity: store.deleteEntity,
       refreshEntities: store.refreshEntities,
+      getEntityById: store.getEntityById,
       currentCampaignId: store.currentCampaignId,
     })
   );
@@ -44,7 +45,7 @@ export const useEntities = (): IUseEntities => {
   }, [mounted, entities]);
 
   const getEntityById = useCallback(
-    (entityId?: string | number): IEntity | undefined => {
+    (entityId?: string): IEntity | undefined => {
       const match = entities.find((e) => e.id === entityId);
       return match;
     },
@@ -52,7 +53,7 @@ export const useEntities = (): IUseEntities => {
   );
 
   const getEntitiesById = useCallback(
-    (entityIds?: (string | number)[]): IEntity[] => {
+    (entityIds?: string[]): IEntity[] => {
       return entities.filter((e) => entityIds?.includes(e.id));
     },
     [entities]

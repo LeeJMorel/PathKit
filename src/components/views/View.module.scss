@@ -24,8 +24,13 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  max-height: 50%;
+  // max-height: 50%;
   width: 100%; /* Add this property to set width to 100% */
+  overflow-y: auto;
+}
+
+.moduleViewEmpty {
+  padding: 1rem;
 }
 
 .cardView {

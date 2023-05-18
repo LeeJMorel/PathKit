@@ -5,16 +5,19 @@ import CampaignMenu from "./CampaignMenu";
 
 export const WelcomeMenu = () => {
   const [showCampaignMenu, setShowCampaignMenu] = useState<boolean>(false);
-  const [campaignType, setCampaignType] = useState<"Load" | "New">("Load");
+  const [campaignType, setCampaignType] = useState<"Load" | "New" | "Import">(
+    "Load"
+  );
 
   const handleCampaignClose = () => {
     setShowCampaignMenu(false);
   };
 
-  const handleCampaign = (type: "Load" | "New") => {
+  const handleCampaign = (type: "Load" | "New" | "Import") => {
     setShowCampaignMenu(true);
     setCampaignType(type);
   };
+
   return (
     <div className={styles.menuOverlay}>
       <div className={styles.mainMenu}>
@@ -26,13 +29,14 @@ export const WelcomeMenu = () => {
           <hr className={styles.tabHorizontalLine} />
           <div className={styles.tabSubtext}>
             To get started either select Start New Campaign, or Load an already
-            existing one.
+            existing one. If you have an exported
           </div>
           <br />
           <div className={styles.menuRowContainer}>
             <Button
               className={styles.buttonMargin}
               onClick={() => handleCampaign("New")}
+              variant="primary"
             >
               Start New Campaign
             </Button>
@@ -41,6 +45,12 @@ export const WelcomeMenu = () => {
               onClick={() => handleCampaign("Load")}
             >
               Load Existing Campaign
+            </Button>
+            <Button
+              className={styles.buttonMargin}
+              onClick={() => handleCampaign("Import")}
+            >
+              Import Campaign
             </Button>
           </div>
         </div>

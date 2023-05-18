@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { v4 as uuid } from "uuid";
 import {
   IEntity,
   IPath,
@@ -19,10 +20,12 @@ import {
   selectRowWhere,
   deleteRow,
   updateRow,
+  executeWithoutForeignKeyConstraint,
 } from "../api/database/database";
+import { transformRawEntity } from "../utilities";
 
 export interface State {
-  currentCampaignId: number;
+  currentCampaignId: string;
   campaigns: ICampaign[];
   campaignsLoading: boolean;
   entities: IEntity[];
@@ -35,33 +38,44 @@ export interface State {
 
 export interface Actions {
   unloadCampaign: () => void;
-  loadCampaign: (campaignId: number) => Promise<void>;
+  loadCampaign: (campaignId: string) => Promise<void>;
   insertCampaign: (campaign: PartialCampaign) => Promise<ICampaign | undefined>;
-  deleteCampaign: (id: number) => Promise<void>;
+  deleteCampaign: (id: string) => Promise<void>;
   refreshCampaigns: () => Promise<void>;
 
   insertEntity: (
-    entity: PartialEntity | IUpdateEntity
+    entity: PartialEntity | IUpdateEntity,
+    campaignId?: string,
+    ignoreForeignKeyConstraint?: boolean
   ) => Promise<IEntity | undefined>;
   // updateEntity: (entity: PartialEntity) => Promise<IEntity | undefined>;
-  deleteEntity: (id: number) => Promise<void>;
+  deleteEntity: (id: string) => Promise<void>;
   refreshEntities: () => Promise<void>;
+  getEntityById: (id: string) => Promise<IEntity | undefined>;
 
-  insertPath: (path: PartialPath) => Promise<IPath | undefined>;
-  // updatePlan: (path: PartialPlan) => Promise<IPath | undefined>;
-  deletePath: (id: number) => Promise<void>;
+  insertPath: (
+    path: PartialPath,
+    campaignId?: string,
+    ignoreForeignKeyConstraint?: boolean
+  ) => Promise<IPath | undefined>;
+  // updatePath: (path: PartialPath) => Promise<IPath | undefined>;
+  deletePath: (id: string) => Promise<void>;
   refreshPaths: () => Promise<void>;
 
-  insertNote: (note: Partial<INote>) => Promise<INote | undefined>;
+  insertNote: (
+    note: Partial<INote>,
+    campaignId?: string,
+    ignoreForeignKeyConstraint?: boolean
+  ) => Promise<INote | undefined>;
   // updateNote: (note: PartialNote) => Promise<INote | undefined>;
-  deleteNote: (id: number) => Promise<void>;
+  deleteNote: (id: string) => Promise<void>;
   refreshNotes: () => Promise<void>;
 }
 
 type IStore = State & Actions;
 
 const initialState: State = {
-  currentCampaignId: 0,
+  currentCampaignId: "",
   campaigns: [],
   campaignsLoading: false,
   entities: [],
@@ -98,12 +112,20 @@ export const useStore = create<IStore>()(
       },
 
       insertCampaign: async (campaign) => {
-        const result = await insertRow("campaign", campaign);
-        if (result?.lastInsertId) {
-          return {
-            id: result.lastInsertId,
-            ...campaign,
-          };
+        const { refreshCampaigns } = get();
+        const id = campaign.id || uuid();
+        const result = await insertRow("campaign", {
+          id,
+          ...campaign,
+        });
+        if (result?.rowsAffected && result.rowsAffected > 0) {
+          await refreshCampaigns();
+          const newResult = await selectRowWhere<ICampaign>("campaign", {
+            key: "id",
+            oper: "=",
+            value: id,
+          });
+          return newResult && newResult.length > 0 ? newResult[0] : undefined;
         }
       },
 
@@ -113,9 +135,6 @@ export const useStore = create<IStore>()(
           unloadCampaign();
         }
         deleteRow("campaign", "id", id);
-        deleteRow("entity", "campaignId", id);
-        deleteRow("path", "campaignId", id);
-        deleteRow("note", "campaignId", id);
       },
 
       refreshCampaigns: async () => {
@@ -131,22 +150,31 @@ export const useStore = create<IStore>()(
         set({ campaignsLoading: false });
       },
 
-      insertEntity: async (newEntity) => {
+      insertEntity: async (newEntity, cId, ignore) => {
         const { currentCampaignId, refreshEntities } = get();
-        if (currentCampaignId) {
+        const campaignId = cId || currentCampaignId;
+        if (campaignId) {
+          const id = newEntity.id || uuid();
           const entity = {
+            id,
             ...newEntity,
-            campaignId: currentCampaignId,
+            campaignId,
           };
-          const result = await insertRow("entity", entity);
-          if (result?.lastInsertId) {
-            refreshEntities();
-            const newResult = await selectRowWhere<IEntity>("entity", {
+
+          const result = await executeWithoutForeignKeyConstraint(
+            () => insertRow("entity", entity),
+            ignore
+          );
+          if (result?.rowsAffected && result.rowsAffected > 0) {
+            await refreshEntities();
+            const newResult = await selectRowWhere<IRawEntity>("entity", {
               key: "id",
               oper: "=",
-              value: result.lastInsertId,
+              value: id,
             });
-            return newResult && newResult.length > 0 ? newResult[0] : undefined;
+            return newResult && newResult.length > 0
+              ? transformRawEntity(newResult[0])
+              : undefined;
           }
         }
       },
@@ -160,7 +188,7 @@ export const useStore = create<IStore>()(
       //       const newResult = await selectRowWhere<IEntity>("entity", {
       //         key: "id",
       //         oper: "=",
-      //         value: result.lastInsertId,
+      //         value: id,
       //       });
       //       return newResult && newResult.length > 0 ? newResult[0] : undefined;
       //     }
@@ -168,9 +196,10 @@ export const useStore = create<IStore>()(
       // },
 
       deleteEntity: async (id) => {
-        const { refreshEntities } = get();
+        const { refreshEntities, refreshNotes } = get();
         deleteRow("entity", "id", id);
         refreshEntities();
+        refreshNotes(); // notes have dependent entityIds
       },
 
       refreshEntities: async () => {
@@ -185,44 +214,58 @@ export const useStore = create<IStore>()(
         });
 
         if (response) {
-          const entities: IEntity[] = response.map((e) => ({
-            ...e,
-            build: JSON.parse(e.build || "{}"),
-            conditions: JSON.parse(e.conditions || "[]"),
-          }));
+          const entities: IEntity[] = response.map(transformRawEntity);
           set({ entities });
         }
         set({ entitiesLoading: false });
       },
 
-      insertPath: async (newPath) => {
+      getEntityById: async (id) => {
+        const response = await selectRowWhere<IRawEntity>("entity", {
+          key: "id",
+          oper: "=",
+          value: id,
+        });
+        if (response) {
+          return transformRawEntity(response[0]);
+        }
+      },
+
+      insertPath: async (newPath, cId, ignore) => {
         const { currentCampaignId, refreshPaths } = get();
+        const campaignId = cId || currentCampaignId;
+        const id = newPath.id || uuid();
         const path = {
+          id,
           ...newPath,
-          campaignId: currentCampaignId,
+          campaignId,
         };
-        const result = await insertRow("path", path);
-        if (result?.lastInsertId) {
-          refreshPaths();
+        const result = await executeWithoutForeignKeyConstraint(
+          () => insertRow("path", path),
+          ignore
+        );
+        // const result = await insertRow("path", path);
+        if (result?.rowsAffected && result.rowsAffected > 0) {
+          await refreshPaths();
           const newResult = await selectRowWhere<IPath>("path", {
             key: "id",
             oper: "=",
-            value: result.lastInsertId,
+            value: id,
           });
           return newResult && newResult.length > 0 ? newResult[0] : undefined;
         }
       },
 
-      // updatePlan: async (path) => {
-      //   const { refreshPlans } = get();
+      // updatePath: async (path) => {
+      //   const { refreshPaths } = get();
       //   if (path.id) {
       //     const result = await updateRow("path", path, path.id);
       //     if (result?.rowsAffected && result.rowsAffected > 0) {
-      //       refreshPlans();
+      //       refreshPaths();
       //       const newResult = await selectRowWhere<IPath>("path", {
       //         key: "id",
       //         oper: "=",
-      //         value: result.lastInsertId,
+      //         value: id,
       //       });
       //       return newResult && newResult.length > 0 ? newResult[0] : undefined;
       //     }
@@ -256,20 +299,28 @@ export const useStore = create<IStore>()(
         set({ pathsLoading: false });
       },
 
-      insertNote: async (newNote) => {
+      insertNote: async (newNote, cId, ignore) => {
         const { currentCampaignId, refreshNotes } = get();
-        if (currentCampaignId) {
+        const campaignId = cId || currentCampaignId;
+        if (campaignId) {
+          const id = newNote.id || uuid();
           const note = {
+            id,
             ...newNote,
-            campaignId: currentCampaignId,
+            campaignId,
           };
-          const result = await insertRow("note", note);
-          if (result?.lastInsertId) {
-            refreshNotes();
+
+          const result = await executeWithoutForeignKeyConstraint(
+            () => insertRow("note", note),
+            ignore
+          );
+          // const result = await insertRow("note", note);
+          if (result?.rowsAffected && result.rowsAffected > 0) {
+            await refreshNotes();
             const newResult = await selectRowWhere<INote>("note", {
               key: "id",
               oper: "=",
-              value: result.lastInsertId,
+              value: id,
             });
             return newResult && newResult.length > 0 ? newResult[0] : undefined;
           }
@@ -293,9 +344,10 @@ export const useStore = create<IStore>()(
       // },
 
       deleteNote: async (id) => {
-        const { refreshNotes } = get();
+        const { refreshNotes, refreshEntities } = get();
         deleteRow("note", "id", id);
         refreshNotes();
+        refreshEntities(); // Entities have dependent noteIds
       },
 
       refreshNotes: async () => {

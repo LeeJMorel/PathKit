@@ -1,28 +1,42 @@
 import React, { useState, useEffect } from "react";
-import Markdown from "markdown-to-jsx";
+import MDEditor, { MDEditorProps } from "@uiw/react-md-editor";
+import rehypeSanitize from "rehype-sanitize";
 import { Button } from "../buttons";
 import styles from "./Objects.module.scss";
 import { PartialNote } from "../../api/model";
-import { useNotes } from "../../hooks";
+import { useNotes, usePreferencesStore } from "../../hooks";
+import "./NoteEditor.scss";
 
 export interface INotesObjectProps {
-  noteId?: number;
+  noteId?: string;
   onChange?: (note: PartialNote) => void;
   onClose?: () => void;
+  defaultTitle?: string;
 }
 
-function NotesObject({ noteId, onChange, onClose }: INotesObjectProps) {
-  const [note, setNote] = useState<PartialNote>({ title: "", body: "" });
+function NotesObject({
+  noteId,
+  onChange,
+  onClose,
+  defaultTitle = "",
+}: INotesObjectProps) {
+  const [note, setNote] = useState<PartialNote>({
+    title: defaultTitle,
+    body: "",
+  });
   const [editMode, setEditMode] = useState(true);
   const { getNoteById } = useNotes();
+  const { preferences } = usePreferencesStore();
+  const { enableFancyEditor } = preferences;
 
   useEffect(() => {
     if (noteId) {
       const selectedNote = getNoteById(noteId);
       if (selectedNote) {
-        setNote(selectedNote);
+        return setNote(selectedNote);
       }
     }
+    setNote({ title: defaultTitle, body: "" });
   }, [noteId, getNoteById]);
 
   const handleChange = (
@@ -43,6 +57,50 @@ function NotesObject({ noteId, onChange, onClose }: INotesObjectProps) {
     }
   };
 
+  const handleEditorChange: MDEditorProps["onChange"] = (value) => {
+    setNote((prev) => {
+      const newNote = {
+        ...prev,
+        body: value || "",
+      };
+      if (typeof onChange === "function") {
+        onChange(newNote);
+      }
+      return newNote;
+    });
+  };
+
+  const renderEditor = () => {
+    if (enableFancyEditor) {
+      return (
+        <MDEditor
+          value={note.body}
+          onChange={handleEditorChange}
+          preview="edit"
+          previewOptions={{
+            rehypePlugins: [[rehypeSanitize]],
+          }}
+          visibleDragbar={false}
+          height="100%"
+          style={{ background: "transparent" }}
+        />
+      );
+    }
+    return editMode ? (
+      <textarea
+        className={styles.notesEdit}
+        value={note.body}
+        name="body"
+        onChange={handleChange}
+        placeholder="Type your notes here. I support Markdown syntax."
+      />
+    ) : (
+      <div className={styles.notesContainer}>
+        <MDEditor.Markdown source={note.body}></MDEditor.Markdown>
+      </div>
+    );
+  };
+
   return (
     <div className={styles.notes}>
       <div className={styles.noteHeader}>
@@ -58,32 +116,13 @@ function NotesObject({ noteId, onChange, onClose }: INotesObjectProps) {
             <Button onClick={onClose} icon="close" variant="text" />
           )}
         </div>
-        <Button onClick={() => setEditMode(!editMode)}>
-          {editMode ? "Preview" : "Edit"} Note
-        </Button>
+        {!enableFancyEditor && (
+          <Button onClick={() => setEditMode(!editMode)}>
+            {editMode ? "Preview" : "Edit"} Note
+          </Button>
+        )}
       </div>
-      {editMode ? (
-        <textarea
-          className={styles.notesEdit}
-          value={note.body}
-          name="body"
-          onChange={handleChange}
-          placeholder="Type your notes here. I support Markdown syntax."
-        />
-      ) : (
-        <div className={styles.notesContainer}>
-          <Markdown>{note.body}</Markdown>
-        </div>
-      )}
-      <span className={styles.caption}>
-        <a
-          href="https://www.markdownguide.org/cheat-sheet/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          What is Markdown?
-        </a>
-      </span>
+      {renderEditor()}
     </div>
   );
 }

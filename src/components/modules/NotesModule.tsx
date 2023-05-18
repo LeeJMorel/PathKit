@@ -21,11 +21,11 @@ function NotesModule() {
       body: "",
     });
     setPreferences({
-      selectedNoteModule: newNote?.id || 0,
+      selectedNoteModule: newNote?.id || "",
     });
   };
 
-  const handleLoadNote = (id: number) => {
+  const handleLoadNote = (id: string) => {
     setPreferences({
       selectedNoteModule: id,
     });
@@ -45,34 +45,29 @@ function NotesModule() {
   }, [notesExist]);
 
   return (
-    <div className={styles.moduleContainer}>
-      <div className={styles.moduleHeader}>
-        <h4>Notes</h4>
-      </div>
-      <div className={styles.moduleContent}>
-        {!preferences.selectedNoteModule ? (
-          renderCreateNote()
-        ) : (
-          <NoteObject
-            onChange={handleChange}
-            onClose={() =>
-              setPreferences({
-                selectedNoteModule: 0,
-              })
-            }
-            noteId={preferences.selectedNoteModule}
+    <div className={styles.moduleContent}>
+      {!preferences.selectedNoteModule ? (
+        renderCreateNote()
+      ) : (
+        <NoteObject
+          onChange={handleChange}
+          onClose={() =>
+            setPreferences({
+              selectedNoteModule: "",
+            })
+          }
+          noteId={preferences.selectedNoteModule}
+        />
+      )}
+      {notesExist && !preferences.selectedNoteModule && (
+        <div className={styles.notesBinder}>
+          <BinderObject
+            showTabs={[BinderTab.Notes]}
+            showTabMenu={false}
+            onLoad={handleLoadNote}
           />
-        )}
-        {notesExist && !preferences.selectedNoteModule && (
-          <div className={styles.notesBinder}>
-            <BinderObject
-              showTabs={[BinderTab.Notes]}
-              showTabMenu={false}
-              onLoad={handleLoadNote}
-            />
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

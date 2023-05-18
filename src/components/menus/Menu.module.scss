@@ -9,210 +9,127 @@
   transition: opacity 500ms;
   z-index: 9999; /* Set a high z-index to ensure it appears on top */
   display: flex;
-}
 
-.mainMenu {
-  margin: auto;
-  padding: 20px;
-  background: var(--secondaryBackground);
-  color: var(--secondaryText);
-  border-radius: 5px;
-  width: 30%;
-  min-width: 380px;
-  max-width: 680px;
-  max-height: 50vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  transition: all 0.2s ease-in-out;
-
-  .buttonMargin {
-    margin: 0.5em;
-  }
-
-  .header {
+  .mainMenu {
+    margin: auto;
+    padding: 12px;
+    background: var(--secondaryBackground);
+    color: var(--secondaryText);
+    border-radius: 5px;
+    width: 30%;
+    min-width: 380px;
+    max-width: 680px;
+    max-height: 80vh;
     display: flex;
-    flex: 1;
-    width: 100%;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
+    flex-direction: column;
+    position: relative;
+    transition: all 0.2s ease-in-out;
 
-    .tabs {
+    .menuAboutContainer {
       display: flex;
-      flex-wrap: wrap;
-
-      .tab {
-        padding: 10px;
-        cursor: pointer;
-
-        &:not(:last-child) {
-          margin-right: 10px;
-        }
-
-        &.active {
-          font-weight: bold;
-          // Apply styles for the active tab
-        }
-      }
-    }
-  }
-
-  h2 {
-    margin-top: 0;
-  }
-
-  h4 {
-    margin-bottom: 0;
-  }
-
-  .close {
-    margin-top: 0;
-    transition: all 200ms;
-    font-size: 2em;
-    font-weight: bold;
-    text-decoration: none;
-    cursor: "pointer";
-
-    &:hover {
-      color: var(--close);
-    }
-  }
-
-  .content {
-    // max-height: 30%;
-    overflow: auto;
-    margin-bottom: 1em;
-  }
-
-  .tabContent {
-    // Apply styles for the tab's content
-
-    .tabHeader {
-      font-weight: bold;
-      margin: 0;
+      justify-content: center;
+      flex-direction: column;
+      width: 100%;
     }
 
-    .tabHorizontalLine {
-      background: var(--secondaryText);
-      border-color: var(--secondaryText);
-      height: "3px";
+    .buttonMargin {
+      margin: 0.5em;
     }
 
-    .tabCheckboxContainer {
+    .header {
       display: flex;
+      flex: 1;
+      width: 100%;
       flex-direction: row;
-      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
 
-      > * {
-        flex: 1 1 calc(50% - 1em);
+    h2 {
+      margin-top: 0;
+    }
+
+    h4 {
+      margin-bottom: 0;
+    }
+
+    .close {
+      margin-top: 0;
+      transition: all 200ms;
+      font-size: 2em;
+      font-weight: bold;
+      text-decoration: none;
+      cursor: "pointer";
+
+      &:hover {
+        color: var(--close);
       }
     }
 
-    .tabSubtext {
-      font-style: italic;
-      font-size: small;
-      text-align: center;
+    .content {
+      // max-height: 30%;
+      overflow: auto;
+      margin-bottom: 1em;
     }
-  }
 
-  .entityTitle {
-    display: flex;
-    align-items: center;
-    > * {
-      margin-right: 1em;
+    .entityTitle {
+      display: flex;
+      align-items: center;
+      > * {
+        margin-right: 1em;
+      }
     }
-  }
 
-  .input {
-    margin: 0.5em;
-  }
-  .inputLarge {
-    margin: 0.1em;
-    transform: scale(1.5);
-  }
-  .largeCheck {
-    min-height: 2em;
-    min-width: 2em;
-  }
-}
+    .input {
+      margin: 0.5em;
+    }
+    .inputLarge {
+      margin: 0.1em;
+      transform: scale(1.5);
+    }
+    .largeCheck {
+      min-height: 2em;
+      min-width: 2em;
+    }
 
-.menuRowContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex: 1;
-  flex-direction: row;
-  width: 100%;
-  margin-bottom: 1em;
-}
+    .menuRowContainer {
+      display: flex;
+      justify-content: space-between;
+      // align-items: center;
+      flex: 1;
+      flex-direction: row;
+      width: 100%;
+      margin-bottom: 0.2em;
+    }
 
-.largeCheck {
-  min-height: 2em;
-  min-width: 2em;
-}
+    .menuColumnContainer {
+      display: flex;
+      flex-direction: column;
+    }
 
-.menuEndContainer {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
+    .menuEndContainer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
 
-.menuColumnContainer {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex: 1;
-  flex-direction: column;
-}
+    .menuScrollContainer {
+      overflow: auto;
+      max-height: 8em;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex: 1;
+      flex-direction: column;
+      padding-top: 0.5em;
+    }
 
-.menuScrollContainer {
-  overflow: auto;
-  max-height: 8em;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex: 1;
-  flex-direction: column;
-  padding-top: 0.5em;
-}
-
-.tipsMenu {
-  position: fixed;
-  z-index: 9999; /* Set a high z-index to ensure it appears on top */
-  margin: 70px auto;
-  padding: 20px;
-  background: var(--secondaryBackground);
-  color: var(--secondaryText);
-  border-radius: 5px;
-  width: 30%;
-  transition: all 0.2s ease-in-out;
-
-  h2 {
-    margin-top: 0;
-  }
-
-  .tipArrowContainer {
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-  }
-
-  .tipBody {
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-.campaignName {
-  cursor: pointer;
-  &.selectedCampaign {
-    font-weight: 700;
-    border-bottom: 1px solid currentColor;
+    .campaignName {
+      cursor: pointer;
+      &.selectedCampaign {
+        font-weight: 700;
+        border-bottom: 1px solid currentColor;
+      }
+    }
   }
 }

@@ -5,7 +5,7 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
 
-export interface IButtonProps extends React.HTMLProps<HTMLButtonElement> {
+export interface IButtonProps extends React.ComponentProps<"button"> {
   icon?: IconName | JSX.Element;
   primary?: boolean;
   subtle?: boolean;
@@ -40,10 +40,11 @@ const Button: React.FC<IButtonProps> = ({
     <button
       className={classNames(styles.button, styles[variant], className)}
       onClick={onClick}
+      type={type}
       {...rest}
     >
-      {iconElement}
-      {children}
+      {icon && iconElement}
+      {children && <span className={styles.buttonContent}>{children}</span>}
     </button>
   );
 };

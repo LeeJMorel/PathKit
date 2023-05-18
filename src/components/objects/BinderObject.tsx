@@ -18,13 +18,14 @@ export enum BinderTab {
   Players = "Players",
   Notes = "Notes",
   NPCs = "NPCs",
-  Shops = "Shops",
-  Monsters = "Monsters",
+  Structures = "Structures",
+  Hazards = "Hazards",
+  Bestiary = "Bestiary",
 }
 
 interface IBinderProps {
-  onLoad?: (id: number) => void;
-  filterEntities?: (string | number)[];
+  onLoad?: (id: string) => void;
+  filterEntities?: string[];
   showTabs?: BinderTab[];
   showTabMenu?: boolean;
 }
@@ -37,8 +38,9 @@ const BinderObject: React.FC<IBinderProps> = ({
     BinderTab.Players,
     BinderTab.Notes,
     BinderTab.NPCs,
-    BinderTab.Shops,
-    BinderTab.Monsters,
+    BinderTab.Structures,
+    BinderTab.Hazards,
+    BinderTab.Bestiary,
   ],
   showTabMenu = true,
 }: IBinderProps) => {
@@ -74,18 +76,21 @@ const BinderObject: React.FC<IBinderProps> = ({
   const monsters = filteredEntities.filter(
     (e) => e.type === EntityType.Monster
   );
-  const shops = filteredEntities.filter((e) => e.type === EntityType.Shop);
+  const structures = filteredEntities.filter(
+    (e) => e.type === EntityType.Structure
+  );
+  const hazards = filteredEntities.filter((e) => e.type === EntityType.Hazard);
 
   //placeholder until store can delete
   const [showDeleteMenu, setShowDeleteMenu] = useState<boolean>(false);
   const [deleteType, setDeleteType] = useState<
     "entity" | "path" | "campaign" | "note"
   >("entity");
-  const [deleteId, setDeleteId] = useState<number>(0);
+  const [deleteId, setDeleteId] = useState<string>("");
 
   const handleDelete = (
     type: "entity" | "path" | "campaign" | "note",
-    id: number
+    id: string
   ) => {
     setShowDeleteMenu(true);
     setDeleteType(type);
@@ -96,7 +101,7 @@ const BinderObject: React.FC<IBinderProps> = ({
     setShowDeleteMenu(false);
   };
 
-  const handleEditPath = (pathId: number) => {
+  const handleEditPath = (pathId: string) => {
     navigate(`/path/${pathId}`);
   };
 
@@ -111,8 +116,8 @@ const BinderObject: React.FC<IBinderProps> = ({
   };
 
   const renderEntityRow = (entity: IEntity) => (
-    <tr key={entity.id} className={styles.pathsTableRow}>
-      <td className={styles.pathsTableAction}>
+    <tr key={entity.id} className={styles.binderTableRow}>
+      <td className={styles.binderTableAction}>
         <Button
           variant="text"
           title={`Edit ${entity.name}`}
@@ -121,11 +126,11 @@ const BinderObject: React.FC<IBinderProps> = ({
           <FontAwesomeIcon icon="pencil" />
         </Button>
       </td>
-      <td className={styles.pathsTablePathType} title={`${entity.name}`}>
+      <td className={styles.binderTableName} title={`${entity.name}`}>
         {entity.name}
       </td>
-      <td className={styles.pathsTableEntities}></td>
-      <td className={styles.pathsTableAction}>
+      {/* <td className={styles.binderTableEntities}></td> */}
+      <td className={styles.binderTableAction}>
         {typeof onLoad === "function" ? (
           <Button
             title={`Load ${entity.name}`}
@@ -164,8 +169,8 @@ const BinderObject: React.FC<IBinderProps> = ({
         return paths.map((path) => {
           const pathEntities = getEntitiesById(path.entities);
           return (
-            <tr key={path.id} className={styles.pathsTableRow}>
-              <td className={styles.pathsTableAction}>
+            <tr key={path.id} className={styles.binderTableRow}>
+              <td className={styles.binderTableAction}>
                 <Button
                   variant="text"
                   title={"Edit path"}
@@ -174,11 +179,11 @@ const BinderObject: React.FC<IBinderProps> = ({
                   <FontAwesomeIcon icon="pencil" />
                 </Button>
               </td>
-              <td className={styles.pathsTablePathType} title={path.type}>
+              <td className={styles.binderTableName} title={path.type}>
                 {path.type}
               </td>
               <td
-                className={styles.pathsTableEntities}
+                className={styles.binderTableEntities}
                 title={`${pathEntities
                   .map((entity) => entity.name)
                   .join(", ")}`}
@@ -186,7 +191,7 @@ const BinderObject: React.FC<IBinderProps> = ({
                 {getEntitiesText(pathEntities)}
               </td>
 
-              <td className={styles.pathsTableAction}>
+              <td className={styles.binderTableAction}>
                 <Button
                   title={"Delete path"}
                   onClick={() => handleDelete("path", path.id)}
@@ -200,8 +205,8 @@ const BinderObject: React.FC<IBinderProps> = ({
 
       case "Notes":
         return notes.map((note) => (
-          <tr key={note.id} className={styles.pathsTableRow}>
-            <td className={styles.pathsTableAction}>
+          <tr key={note.id} className={styles.binderTableRow}>
+            <td className={styles.binderTableAction}>
               {typeof onLoad === "function" ? (
                 <Button
                   title={`Load ${note.title}`}
@@ -221,11 +226,11 @@ const BinderObject: React.FC<IBinderProps> = ({
                 </Button>
               )}
             </td>
-            <td className={styles.pathsTableSpan} title={note.title}>
+            <td className={styles.binderTableSpan} title={note.title}>
               {note.title}
             </td>
 
-            <td className={styles.pathsTableAction}>
+            <td className={styles.binderTableAction}>
               <Button
                 title={"Delete Note"}
                 onClick={() => handleDelete("note", note.id)}
@@ -242,10 +247,13 @@ const BinderObject: React.FC<IBinderProps> = ({
       case "NPCs":
         return npcs.map((npc) => renderEntityRow(npc));
 
-      case "Shops":
-        return shops.map((shop) => renderEntityRow(shop));
+      case "Structures":
+        return structures.map((structure) => renderEntityRow(structure));
 
-      case "Monsters":
+      case "Hazards":
+        return hazards.map((hazard) => renderEntityRow(hazard));
+
+      case "Bestiary":
         return monsters.map((monster) => renderEntityRow(monster));
 
       default:
@@ -289,7 +297,7 @@ const BinderObject: React.FC<IBinderProps> = ({
         />
       </div>
       <div className={styles.content}>
-        <table className={styles.pathsTable}>
+        <table className={styles.binderTable}>
           <tbody>{renderTabContent()}</tbody>
         </table>
       </div>
