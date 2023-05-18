@@ -18,6 +18,7 @@ import NotesObject from "../objects/NoteObject";
 import CollapsibleHeader from "../headers/CollapsibleHeader";
 import ActionsFilter from "./EntitySheet.ActionsFilter";
 import { SheetHeader } from "./SheetHeader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function EntitySheet() {
   const { entityId } = useParams();
@@ -96,7 +97,10 @@ function EntitySheet() {
             />
           </div>
         )}
-        <div className={styles.sheetRowContainerLeftAlign}>
+        <div
+          className={styles.sheetRowContainerLeftAlign}
+          style={{ marginTop: "1em" }}
+        >
           {size && (
             <div>
               <DataCellDisplay
@@ -149,6 +153,7 @@ function EntitySheet() {
               <DataCellDisplay
                 name="damage"
                 value={maxHp - (entity?.damage[0] || 0)}
+                label={`Hit Points`}
                 labelPosition="inline"
                 align="start"
                 small
@@ -327,7 +332,9 @@ function EntitySheet() {
                     <td>{item[1]}</td>
                     <td>{item[2]}</td>
                     <td>{item[3]}</td>
-                    <td>{item[4]}</td>
+                    <td>
+                      {item[4] && <FontAwesomeIcon icon="circle-check" />}
+                    </td>
                   </tr>
                 ))}
               </tbody>
