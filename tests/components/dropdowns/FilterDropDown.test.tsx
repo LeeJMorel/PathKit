@@ -21,7 +21,7 @@ describe("FilterDropdown tests", () => {
     let works = false;
     render(<FilterDropdown keywords={["a", "b", "c"]} activeKeywords={[]} onKeywordToggle={(option) => { console.log("OPTION: " + option); works = true; }}></FilterDropdown>);
 
-    const elmt_a = screen.getByText("a");
+    const elmt_a = screen.getByLabelText("a");
 
     userEvent.click(elmt_a);
 
