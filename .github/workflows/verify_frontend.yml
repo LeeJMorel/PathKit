@@ -3,6 +3,7 @@ on:
     paths:
     - 'src/**'
     - 'tests/**'
+    - '.github/workflows/verify_frontend.yml'
     branches:
     - main
 

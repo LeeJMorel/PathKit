@@ -2,6 +2,7 @@ on:
   pull_request:
     paths:
     - "src-tauri/**"
+    - '.github/workflows/verify_backend.yaml'
     branches:
     - main
 
