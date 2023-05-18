@@ -19,13 +19,6 @@ jobs:
       - name: install Rust and cargo
         uses: brndnmtthws/rust-action-rustup@v1
 
-      - name: install node
-        uses: actions/setup-node@v3
-      - name: npm install and build (needed for tauri)
-        run: |
-          npm install
-          npm run tauri build
-
       - name: install dependencies
         run: |
           sudo apt update
@@ -38,6 +31,13 @@ jobs:
           libayatana-appindicator3-dev \
           librsvg2-dev
         if: matrix.os == 'ubuntu-latest'
+
+      - name: install node
+        uses: actions/setup-node@v3
+      - name: npm install and build (needed for tauri)
+        run: |
+          npm install
+          npm run tauri build
         
       - name: run tests
         run: |
