@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 // Import the necessary CSS and component files
@@ -8,7 +8,7 @@ import SheetView from "./components/views/SheetView";
 import CardView from "./components/views/CardView";
 import ModuleView from "./components/views/ModuleView";
 import MainMenu from "./components/menus/MainMenu";
-import { IEntity, IPath } from "./api/model";
+import { IPath } from "./api/model";
 import classNames from "classnames";
 import {
   usePreferencesStore,
@@ -27,6 +27,7 @@ import NotesSheet from "./components/sheets/NotesSheet";
 import CreationDropdown from "./components/dropdowns/CreationDropdown";
 import EditPathSheet from "./components/sheets/EditPathSheet";
 import { initializeDatabase } from "./api/database";
+import LicenseSheet from "./components/sheets/LicenseSheet";
 
 // Load FontAwesome icons
 library.add(fas);
@@ -37,16 +38,15 @@ export enum AppMode {
 }
 
 function App() {
+  console.log(useLocation());
   useEffect(() => {
     // Initialize database on first load
     const asyncInit = async () => await initializeDatabase();
     asyncInit();
   }, []);
   //control at a high level the campaign that we load
-  const { currentCampaignId, deleteCampaign, unloadCampaign } = useCampaigns();
-  const handleDeleteCampaign = (campaignId: number) => {
-    deleteCampaign(campaignId);
-  };
+  const { currentCampaignId } = useCampaigns();
+
   // Define the props for the Header component
   const [mode, setMode] = useState<AppMode>(AppMode.exploration);
   const [menu, setMenu] = useState(false);
@@ -81,7 +81,7 @@ function App() {
 
   const { resetInitiative } = useEntities();
   const cancelPath = () => {
-    const selectedPath = 0;
+    const selectedPath = "";
     setPreferences({
       ...preferences,
       selectedPath,
@@ -102,6 +102,20 @@ function App() {
   const handleInitiativeMenu = () => {
     setShowInitiativeMenu((prevState) => !prevState);
   };
+
+  useEffect(() => {
+    switch (preferences.theme) {
+      case "dark":
+      case "highContrastDark":
+        document.documentElement.setAttribute("data-color-mode", "dark");
+        break;
+      case "parchment":
+      case "highContrastParchment":
+      default:
+        document.documentElement.setAttribute("data-color-mode", "light");
+        break;
+    }
+  }, [preferences.theme]);
 
   return (
     // Main container for the app
@@ -126,7 +140,7 @@ function App() {
           {/* </div> */}
           {/* <PathPlannerDropdown onClose={() => setCreateDropdown(false)} /> */}
           {/* if in encounter mode, show a close button to exit it*/}
-          {preferences.selectedPath != undefined ? (
+          {preferences.selectedPath !== "" ? (
             <>
               {showInitiativeMenu && currentPath?.type === "encounter" && (
                 <InitiativeMenu onClose={handleInitiativeMenu} />
@@ -148,13 +162,13 @@ function App() {
           {/* Header over sheets view, runs our search*/}
           {/* When you want to use meilisearch use this component instead of the input below
           <Search></Search> */}
-          <input
+          {/* <input
             className={styles.searchBar}
             type="text"
             placeholder={"Search"}
             value={searchTerm}
             onChange={handleSearch}
-          />
+          /> */}
         </div>
         <div className={styles.headerSection}>
           <div className={styles.spacer}></div>
@@ -177,7 +191,10 @@ function App() {
             <Route index element={<NotesSheet />} />
             <Route path="entity/:entityId" element={<EntitySheet />} />
             <Route path="entity/:entityId/edit" element={<EditEntitySheet />} />
-            <Route path="path/:pathId/*" element={<EditPathSheet />} />
+            <Route path="path/:pathId/*" element={<EditPathSheet />}>
+              {/* <Route path=":entityId/edit" element={<EditEntitySheet />} /> */}
+            </Route>
+            <Route path="license" element={<LicenseSheet />} />
             <Route path="*" element={<NotesSheet />} />
           </Route>
         </Routes>

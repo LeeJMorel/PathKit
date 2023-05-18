@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import classNames from "classnames";
 import styles from "./Objects.module.scss";
-import { IPath, PathType } from "../../api/model";
+import { EntityType, IPath, PathType } from "../../api/model";
 import { usePreferencesStore, useEntities } from "../../hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import NPC from "../../assets/defaultImage/fighter.png";
+import Player from "../../assets/defaultImage/knight.png";
+import Monster from "../../assets/defaultImage/monster.png";
+import Structure from "../../assets/defaultImage/store.png";
+import Hazard from "../../assets/defaultImage/hazard.png";
 
 export interface PathObjectProps {
   path: IPath;
@@ -21,6 +26,21 @@ function PathObject({ path }: PathObjectProps) {
   };
   const tooltipId = `tooltip-${path.id}`;
 
+  function getDefaultImage(type: EntityType) {
+    switch (type) {
+      case "Player":
+        return Player;
+      case "NPC":
+        return NPC;
+      case "Structure":
+        return Structure;
+      case "Hazard":
+        return Hazard;
+      default:
+        return Monster;
+    }
+  }
+
   return (
     <div
       className={styles.path}
@@ -34,7 +54,7 @@ function PathObject({ path }: PathObjectProps) {
           return (
             <img
               key={entity.id}
-              src={entity.image}
+              src={entity.image ? entity.image : getDefaultImage(entity.type)}
               alt={entity.name}
               className={classNames(pathEntities.length > 1 && styles.grid)}
             />

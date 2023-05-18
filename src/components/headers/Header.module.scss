@@ -1,0 +1,77 @@
+.header {
+  flex-direction: row;
+  cursor: pointer;
+  border-bottom: 1px solid var(--accentBackground);
+  display: flex;
+  align-items: center;
+  // justify-content: center;
+  padding: 0 0.5em;
+  width: 100%;
+
+  .removeButton {
+    padding: 0.25em;
+  }
+
+  .headerIcon {
+    transform: rotate(0deg);
+    transition: transform 0.2s ease-in-out;
+    margin-left: 0.5em;
+
+    &.collapsed {
+      transform: rotate(180deg);
+    }
+  }
+
+  &.start {
+    justify-content: flex-start;
+
+    .heading {
+      margin: 0.2em auto 0.2em 0;
+    }
+  }
+  &.center {
+    justify-content: center;
+
+    .heading {
+      margin: 0.2em auto;
+    }
+  }
+  &.end {
+    justify-content: flex-end;
+
+    .heading {
+      margin: 0.2em 1em 0.2em auto;
+    }
+  }
+  &.nested {
+    margin: 0.5em;
+    position: relative;
+    width: calc(100% - 1em);
+
+    border: 1px solid var(--accentBackground);
+  }
+}
+
+.content {
+  width: 100%;
+
+  &.nested {
+    margin: 0.5em;
+    width: calc(100% - 1em);
+  }
+}
+
+.collapsible {
+  overflow-y: auto;
+  transition: all 0.2s ease-in-out;
+}
+.collapsing {
+  overflow: hidden; // Hides scroll bar while animating
+}
+.collapsed {
+  padding-top: 0;
+  padding-bottom: 0;
+  flex: 0;
+  min-height: auto;
+  overflow: hidden;
+}

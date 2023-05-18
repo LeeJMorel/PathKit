@@ -2,8 +2,9 @@ on:
   pull_request:
     paths:
     - 'src/**'
+    - 'tests/**'
     branches:
-    - main
+      - main
 
 jobs:
   test_frontend:
@@ -12,15 +13,18 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
-    
+
     steps:
     - uses: actions/checkout@v3
     - name: install node
       uses: actions/setup-node@v3
+
+    - name: install Rust and cargo
+      uses: brndnmtthws/rust-action-rustup@v1
     
     - name: npm install, build and test
       run: |
-        cd PathKit
         npm install
         npm run build
+        npm run tauri build
         npm run test run

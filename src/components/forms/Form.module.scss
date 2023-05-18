@@ -4,10 +4,32 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 1rem;
   width: 100%;
   margin: 0 auto;
-  color: var(--primaryText);
+  color: var(--tertiaryText);
+
+  .formTabs {
+    margin-bottom: 1em;
+  }
+
+  td {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    color: var(--secondaryText);
+  }
+
+  .formSmall {
+    padding: 0.2rem;
+    border: 1px solid var(--primaryText);
+    border-radius: 0.25rem;
+    width: 100%;
+    max-width: 5em;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    background: var(--primaryBackground);
+    color: var(--primaryText);
+  }
 
   .formRow {
     display: flex;
@@ -15,6 +37,8 @@
     // flex: 1;
     width: 100%;
     justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 0.5em;
 
     .formLabel {
       font-size: 1rem;
@@ -44,26 +68,74 @@
     &.actionRow {
       justify-content: flex-end;
     }
+
+    .formGroup {
+      display: flex;
+      flex-direction: row;
+      // flex: 1;
+      justify-content: flex-start;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    p {
+      margin-left: 1em;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+
+    > label {
+      margin-left: 0.5em;
+    }
+  }
+
+  .formBreak {
+    border-bottom: 1px solid var(--secondaryBackground);
+    border-left: 1px solid var(--secondaryBackground);
+    border-right: 1px solid var(--secondaryBackground);
+    width: 100%;
+    height: 0.25em;
+    position: relative;
+    margin-bottom: 1.25em;
+
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: calc(100% + 2px);
+      top: 100%;
+      left: -1px;
+      border-left: 1px solid var(--secondaryBackground);
+      border-right: 1px solid var(--secondaryBackground);
+      height: 0.25em;
+    }
+  }
+
+  .formCentered {
+    display: flex;
+    flex-direction: row;
+    // flex: 1;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
   }
 
   .formButton {
-    padding: 0.2rem 0.5rem;
-    border: none;
-    border-radius: 0.25rem;
+    margin: 0.5em;
+    color: var(--tertiaryAccentText);
     background-color: var(--accentBackground);
-    color: var(--accentText);
-    font-size: 1rem;
-    align-items: center;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
 
     &:hover {
-      background-color: var(--primaryBackground);
-    }
-
-    &:disabled {
-      background-color: var(--accentText);
-      cursor: not-allowed;
+      background-color: var(--tertiaryAccentBackground);
     }
   }
 }
+
+// .nestedHeaderHeader {
+//   padding: 0 1em;
+// }
+// .nestedHeader {
+//   padding: 0.5em 1em;
+//   width: 100%;
+// }

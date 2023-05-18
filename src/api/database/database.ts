@@ -19,7 +19,6 @@ export const initializeDatabase = async () => {
   try {
     const initResult = await db.execute(db_init);
     const migrateResult = await db.execute(migrations);
-    console.log({ migrateResult, initResult });
     return { initResult, migrateResult };
   } catch (error) {
     console.error(error);
@@ -38,9 +37,7 @@ export const selectAllRows = async <T>(
   const db = await database;
   try {
     const query = `SELECT * FROM ${table} ${orderBy(sort)};`;
-    console.log("selectAllRows", { table, query });
     const result = await db.select(query);
-    console.log("selectAllRows", { result });
     return result as T;
   } catch (error) {
     console.error(error);
@@ -86,9 +83,7 @@ export const selectRowWhere = async <T>(
       ${orderBy(sort)}
       ;`;
 
-    console.log("selectRowWhere", { table, query });
     const result = await db.select(query);
-    console.log("selectRowWhere", { result });
     return result as T[];
   } catch (error) {
     console.error(error);
@@ -112,7 +107,6 @@ export const insertRow = async <T extends {}>(
       ON CONFLICT(${idKey}) DO UPDATE SET ${getUpdateValuesFromObject(data)}
       ;`;
 
-    console.log("insertRow", { data, table, query });
     const result = await db.execute(query);
     return result;
   } catch (error) {
@@ -132,7 +126,6 @@ export const insertRows = async <T extends {}>(
       VALUES ${getInsertValuesFromObjArr(data)}
       ;`;
 
-    console.log("insertRow", { table, query });
     const result = await db.execute(query);
     return result;
   } catch (error) {
@@ -143,7 +136,7 @@ export const insertRows = async <T extends {}>(
 export const updateRow = async (
   table: string,
   data: any,
-  id: number
+  id: string
 ): Promise<QueryResult | undefined> => {
   const db = await database;
   try {
@@ -155,12 +148,10 @@ export const updateRow = async (
     const query = `
       UPDATE ${table}
       SET ${getUpdateValuesFromObject(data)}
-      WHERE id = ${id}
+      WHERE id = ${saneSqlValue(id)}
       ;`;
 
-    console.log("updateRow", { table, query });
     const result = await db.execute(query);
-    console.log("updateRow", { result });
     return result;
   } catch (error) {
     console.error(error);
@@ -186,9 +177,7 @@ export const updateAllRows = async (
       SET ${getUpdateValuesFromObject(data)}
       ;`;
 
-    console.log("insertAllRow", { table, query });
     const result = await db.execute(query);
-    console.log("insertAllRow", { result });
     return result;
   } catch (error) {
     console.error(error);
@@ -204,12 +193,25 @@ export const deleteRow = async (
   try {
     const query = `
       DELETE FROM ${table}
-      WHERE ${whereColumn} = ${whereValue}
+      WHERE ${whereColumn} = ${saneSqlValue(whereValue)}
       ;`;
 
-    console.log("deleteRow", { table, query });
     const result = await db.execute(query);
-    console.log("insertAllRow", { result });
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const executeWithoutForeignKeyConstraint = async (
+  query: () => Promise<QueryResult | undefined>,
+  disableForeignKey?: boolean
+): Promise<QueryResult | undefined> => {
+  const db = await database;
+  try {
+    if (disableForeignKey) await db.execute("PRAGMA foreign_keys = off;");
+    const result = await query();
+    if (disableForeignKey) await db.execute("PRAGMA foreign_keys = on;");
     return result;
   } catch (error) {
     console.error(error);

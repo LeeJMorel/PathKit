@@ -1,157 +1,191 @@
-import { useEffect, useState, useMemo } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
-import monster from "../../assets/monster.png";
-import player from "../../assets/knight.png";
-import defaultImage from "../../assets/fighter.png";
-import store from "../../assets/store.png";
+import { useEffect, useState, useCallback } from "react";
 import styles from "./Form.module.scss";
 import { EntityType, PartialEntity } from "../../api/model";
-import { useEntities } from "../../hooks";
-import { defaultEntity } from "../../consts";
 import { Button } from "../buttons";
 import classNames from "classnames";
+import { Formik, Form, FormikProps } from "formik";
+import Tabs from "../tabs/tab";
+import {
+  General,
+  Equipment,
+  Actions,
+  Attacks,
+  Spells,
+  Features,
+} from "./entityFormChildren";
+import entityFormSchema from "../../consts/entityFormSchema";
+import { getPlayerMaxHp } from "../../utilities";
 
 export interface IEntityFormProps {
-  type?: EntityType;
-  entityData?: PartialEntity;
+  entityData: PartialEntity;
   onAddEntity: (entity: PartialEntity) => void;
   onClose?: () => void;
+  setFormDirty?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface IEntityFormChildrenProps {
+  index?: number;
+  formProps: FormikProps<PartialEntity>;
+  onRemove?: () => void;
 }
 
 const AddEntityForm: React.FC<IEntityFormProps> = ({
-  type: typeProp = EntityType.none,
-  entityData: entityDataProp,
+  entityData,
   onAddEntity,
-  onClose,
+  setFormDirty,
 }) => {
-  const { entityId } = useParams();
-  const [searchParams] = useSearchParams();
-  const { updateOrAddEntity, getEntityById } = useEntities();
-  const type = searchParams.get("type") || typeProp;
-  const entityData = useMemo(
-    () => entityDataProp || getEntityById(entityId),
-    [entityId, entityDataProp]
-  );
-  const [entity, setEntity] = useState<PartialEntity>(defaultEntity);
+  const [entity, setEntity] = useState<PartialEntity>(entityData);
+  const [dirty, setDirty] = useState(false);
 
   useEffect(() => {
-    setEntity((prev) => ({
-      ...prev,
-      ...entityData,
-    }));
+    if (typeof setFormDirty === "function") {
+      setFormDirty(dirty);
+    }
+  }, [dirty, setFormDirty]);
+
+  useEffect(() => {
+    setEntity(entityData);
   }, [entityData]);
 
-  const handleClose = () => {
-    onClose?.();
-  };
+  const tabs = (formProps: FormikProps<PartialEntity>) => [
+    {
+      id: "general",
+      title: "General",
+      content: <General formProps={formProps} />,
+    },
+    {
+      id: "equipment",
+      title: "Equipment",
+      content: <Equipment formProps={formProps} />,
+    },
+    {
+      id: "Actions",
+      title: "Actions",
+      content: <Actions formProps={formProps} />,
+    },
+    {
+      id: "Attacks",
+      title: "Attacks",
+      content: <Attacks formProps={formProps} />,
+    },
+    {
+      id: "Spells",
+      title: "Spells",
+      content: <Spells formProps={formProps} />,
+      disabled: true,
+    },
+    {
+      id: "Features",
+      title: "Features",
+      content: <Features formProps={formProps} />,
+    },
+  ];
 
-  const handleAddEntity = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const newEntity = await updateOrAddEntity(entity);
-    if (newEntity) {
-      onAddEntity(newEntity);
+  const hazardTabs = (formProps: FormikProps<PartialEntity>) => [
+    {
+      id: "general",
+      title: "General",
+      content: <General formProps={formProps} />,
+    },
+    {
+      id: "Actions",
+      title: "Actions",
+      content: <Actions formProps={formProps} />,
+    },
+  ];
+
+  const npcTabs = (formProps: FormikProps<PartialEntity>) => [
+    {
+      id: "general",
+      title: "General",
+      content: <General formProps={formProps} />,
+    },
+    {
+      id: "equipment",
+      title: "Equipment",
+      content: <Equipment formProps={formProps} />,
+    },
+    {
+      id: "Spells",
+      title: "Spells",
+      content: <Spells formProps={formProps} />,
+      disabled: true,
+    },
+    {
+      id: "Features",
+      title: "Features",
+      content: <Features formProps={formProps} />,
+    },
+  ];
+
+  const structureTabs = (formProps: FormikProps<PartialEntity>) => [
+    {
+      id: "general",
+      title: "General",
+      content: <General formProps={formProps} />,
+    },
+    {
+      id: "equipment",
+      title: "Equipment",
+      content: <Equipment formProps={formProps} />,
+    },
+  ];
+
+  const renderTabs = (props: FormikProps<PartialEntity>) => {
+    let tabsToRender;
+
+    if (entity.type === "NPC") {
+      tabsToRender = npcTabs(props);
+    } else if (entity.type === "Structure") {
+      tabsToRender = structureTabs(props);
+    } else if (entity.type === "Hazard") {
+      tabsToRender = hazardTabs(props);
+    } else {
+      tabsToRender = tabs(props);
     }
+
+    return <Tabs tabs={tabsToRender} className={styles.formTabs} />;
   };
-
-  const handleInputChange = (
-    e:
-      | React.ChangeEvent<HTMLSelectElement>
-      | React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, value } = e.target;
-
-    setEntity({
-      ...entity,
-      [name]: value,
-    });
-  };
-
-  // const handleHPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { value } = e.target;
-  //   setEntity({
-  //     ...entity,
-  //     hp: [Number(value), Number(value)],
-  //   });
-  // };
-
-  // let statsField;
-  // let hpField;
-
-  if (entity.type === "Monster" || entity.type === "Player") {
-    // statsField = (
-    //   <>
-    //     <div className={styles.formRow}>
-    //       <label htmlFor="stats" className={styles.formLabel}>
-    //         Stats:
-    //       </label>
-    //       <input
-    //         type="text"
-    //         name="stats"
-    //         value={entity.stats?.toString()}
-    //         onChange={handleInputChange}
-    //         className={styles.formInput}
-    //       />
-    //     </div>
-    //   </>
-    // );
-    //   hpField = (
-    //     <>
-    //       <div className={styles.formRow}>
-    //         <label htmlFor="hp" className={styles.formLabel}>
-    //           HP:
-    //         </label>
-    //         <input
-    //           type="text"
-    //           name="hp"
-    //           min={0}
-    //           value={entity.hp ? entity.hp[1] : ""}
-    //           onChange={handleHPChange}
-    //           className={styles.formInput}
-    //         />
-    //       </div>
-    //     </>
-    //   );
-  }
 
   return (
-    <form className={styles.formContainer} onSubmit={handleAddEntity}>
-      <div className={styles.formRow}>
-        <label htmlFor="image" className={styles.formLabel}>
-          Image:
-        </label>
-        <select
-          name="image"
-          onChange={handleInputChange}
-          className={styles.formSelect}
-          value={entity.image}
-        >
-          <option value={defaultImage}>Fighter</option>
-          <option value={monster}>Monster</option>
-          <option value={player}>Player</option>
-          <option value={store}>Store</option>
-        </select>
-      </div>
-      <div className={styles.formRow}>
-        <label htmlFor="name" className={styles.formLabel}>
-          Name:
-        </label>
-        <input
-          type="text"
-          name="name"
-          value={entity.name}
-          onChange={handleInputChange}
-          className={styles.formInput}
-        />
-      </div>
-      {/* {statsField}
-      {hpField} */}
-      <div className={classNames(styles.formRow, styles.actionRow)}>
-        <Button type="submit" variant="primary">
-          Save {entity.type}
-        </Button>
-        {onClose && <Button onClick={handleClose}>Cancel</Button>}
-      </div>
-    </form>
+    <Formik
+      initialValues={entity}
+      onSubmit={(values) => {
+        // same shape as initial values
+        //handleAddEntity
+        onAddEntity(values);
+      }}
+      validationSchema={entityFormSchema}
+    >
+      {(props) => {
+        setTimeout(() => {
+          // Form value side effects
+          if (!dirty) {
+            setDirty(props.dirty);
+          }
+          if (props.values.type === EntityType.Player) {
+            const newMaxHp = getPlayerMaxHp(props.values);
+            if (newMaxHp !== props.values.maxHp) {
+              props.setFieldValue("maxHp", getPlayerMaxHp(props.values));
+            }
+          }
+        }, 1000);
+
+        return (
+          <Form className={styles.formContainer}>
+            {renderTabs(props)}
+            <div className={classNames(styles.formRow, styles.actionRow)}>
+              <Button type="submit" variant="primary" disabled={!props.isValid}>
+                Save {entity.type}
+              </Button>
+            </div>
+            {/* <div>
+              <pre>{JSON.stringify(props.errors, null, 2)}</pre>
+            </div> */}
+          </Form>
+        );
+      }}
+    </Formik>
   );
 };
 

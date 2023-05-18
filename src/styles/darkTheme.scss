@@ -21,6 +21,8 @@ $darkTheme: (
   errorText: map-get($colorPalette, grayLight),
   linkText: map-get($colorPalette, purpleLight),
   close: map-get($colorPalette, redLight),
+  buttonHover: map-get($colorPalette, blackLight),
+  buttonHoverText: map-get($colorPalette, cream),
 );
 
 $theme: map-merge($fonts, $darkTheme);
