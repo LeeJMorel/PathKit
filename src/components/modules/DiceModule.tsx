@@ -40,7 +40,9 @@ function DiceModule() {
   return (
     <div className={styles.moduleContainer}>
       <div className={styles.moduleContent}>
+
         <Unity unityProvider={unityProvider} tabIndex={1} />
+
       </div>
     </div>
   );
