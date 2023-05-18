@@ -29,8 +29,6 @@ export default defineConfig({
     globals: true,
     // for access to the DOM
     environment: "jsdom",
-    // matching all *.test.ts(x) test files in /tests
-    testNamePattern: /tests\/.*\.test\..*/,
-    // globalSetup: 'tests/setup.ts',
+    testNamePattern: "./tests/*.test.tsx",
   },
 });
