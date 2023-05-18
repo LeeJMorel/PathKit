@@ -1,9 +1,9 @@
 on:
   pull_request:
     paths:
-      - "src-tauri/**"
+    - "src-tauri/**"
     branches:
-      - main
+    - main
 
 jobs:
   test_backend:
