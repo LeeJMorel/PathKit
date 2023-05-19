@@ -1,0 +1,120 @@
+@import "../../styles/variables.scss";
+
+.searchContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  .searchBoxContainer {
+    display: flex;
+    height: 100%;
+
+    .searchInputContainer {
+      display: flex;
+      position: relative;
+      // margin-right: 1em;
+      width: 100%;
+      align-items: center;
+
+      .searchClearButton,
+      .loader {
+        position: absolute;
+        right: 0;
+      }
+
+      .loader {
+        padding: 0.5em;
+      }
+    }
+
+    .searchIndexSelect {
+      background-color: var(--secondaryBackground);
+      color: var(--secondaryText);
+      width: 200px;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      font-size: 1em;
+    }
+  }
+
+  .searchInput {
+    background-color: var(--secondaryBackground);
+    color: var(--secondaryText);
+    justify-content: center;
+    display: flex;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    font-size: 1em;
+    padding: 1em 2em 1em 1em;
+    width: 100%;
+    height: 100%;
+    padding: $inputPadding;
+
+    &::placeholder {
+      color: var(--secondaryText);
+    }
+  }
+
+  :global(.ais-InfiniteHits),
+  .searchResults {
+    position: absolute;
+    box-sizing: inherit;
+    width: 100%;
+    max-height: calc(100vh - $headerHeight);
+    overflow-y: auto;
+    z-index: 1;
+    background-color: var(--secondaryBackground);
+    color: var(--secondaryText);
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12);
+    z-index: 999;
+    padding: 0.5em;
+    margin-top: 0.5em;
+  }
+
+  .searchResultsEmpty {
+    padding: 1em;
+    display: flex;
+    align-items: center;
+    color: var(--secondaryText);
+  }
+}
+.resultsList,
+:global(.ais-InfiniteHits-list) {
+  padding: 0.5em;
+  list-style: none;
+}
+.resultsListItem {
+  background-color: var(--primaryBackground);
+  color: var(--primaryText);
+  padding: $inputPadding;
+  display: flex;
+  // flex-direction: column;
+
+  .resultImage {
+    width: 3.5em;
+    height: 3.5em;
+    object-fit: cover;
+    margin-right: 0.5em;
+  }
+
+  .resultDetails {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &.clickable {
+    cursor: pointer;
+  }
+}
+
+.resultHighlight {
+  width: 100%;
+}
+.resultDescription {
+  border-top: 2px solid var(--primaryText);
+  padding-top: 0.5em;
+  margin-top: 0.5em;
+  font-size: 0.8em;
+}
