@@ -44,6 +44,10 @@ jobs:
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: npm install # Change this to npm, yarn or pnpm.
 
+      - name: "Create env file"
+        run: |
+          echo "${{ secrets.SEARCH }}" > .env
+
       - name: Release Drafter
         uses: release-drafter/release-drafter@v5.21.1
 
