@@ -23,6 +23,7 @@ export interface IModule {
   label: string;
   ModuleComponent: React.ElementType;
   collapsible: boolean;
+  noOverflow?: boolean;
 }
 
 // Create a mapping of module names to corresponding component references
@@ -39,12 +40,13 @@ const Modules: Record<Module, IModule> = {
     ModuleComponent: TutorialModule,
     collapsible: false,
   },
-   DiceModule: {
-     id: Module.DiceModule,
-     label: "Dice Roller",
-     ModuleComponent: DiceModule,
-     collapsible: false,
-   },
+  DiceModule: {
+    id: Module.DiceModule,
+    label: "Dice Roller",
+    ModuleComponent: DiceModule,
+    collapsible: false,
+    noOverflow: true,
+  },
   NotesModule: {
     id: Module.NotesModule,
     label: "Notes",

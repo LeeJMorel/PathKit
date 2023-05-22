@@ -112,9 +112,20 @@
 .resultHighlight {
   width: 100%;
 }
+.resultCreature {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.8em;
+}
 .resultDescription {
   border-top: 2px solid var(--primaryText);
   padding-top: 0.5em;
   margin-top: 0.5em;
   font-size: 0.8em;
+}
+
+.resultTitle {
+  display: flex;
+  justify-content: space-between;
 }

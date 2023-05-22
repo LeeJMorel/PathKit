@@ -11,7 +11,7 @@ import {
   createInfiniteHitsSessionStorageCache,
 } from "react-instantsearch-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useOnClickOutside } from "../../hooks";
+import { useBoolean, useOnClickOutside } from "../../hooks";
 import { Button } from "../buttons";
 import SearchBox from "./SearchBox";
 import styles from "./Search.module.scss";
@@ -90,33 +90,49 @@ const Search = () => {
   //   setSelectedIndex(value);
   // };
 
-  const Hit = ({ hit }: any) => (
-    <li
-      key={hit._id}
-      className={styles.resultsListItem}
-      // onClick={() => handleSelect(hit)}
-    >
-      {hit.img && (
-        // Only works on foundry images
-        <img
-          className={styles.resultImage}
-          src={`https://demo.foundryvtt.com/${hit.img}`}
-          alt={hit.type}
-        />
-      )}
-      <div className={styles.resultDetails}>
-        <Highlight
-          attribute="name"
-          className={styles.resultHighlight}
-          hit={hit}
-        />
-        <span className={styles.resultDescription}>
-          Creature type:{" "}
-          <Highlight hit={hit} attribute={"system.details.creatureType"} />
-        </span>
-      </div>
-    </li>
-  );
+  const Hit = ({ hit }: any) => {
+    const { value: show, toggle } = useBoolean(false);
+
+    return (
+      <li
+        key={hit._id}
+        className={styles.resultsListItem}
+        // onClick={() => handleSelect(hit)}
+      >
+        {hit.img && (
+          // Only works on foundry images
+          <img
+            className={styles.resultImage}
+            src={`https://demo.foundryvtt.com/${hit.img}`}
+            alt={hit.type}
+          />
+        )}
+        <div className={styles.resultDetails} onClick={toggle}>
+          <span className={styles.resultTitle}>
+            <Highlight
+              attribute="name"
+              className={styles.resultHighlight}
+              hit={hit}
+            />
+            <span className={styles.resultCreature}>
+              Creature type:{" "}
+              <Highlight hit={hit} attribute={"system.details.creatureType"} />
+            </span>
+          </span>
+          {show && (
+            <span className={styles.resultDescription}>
+              {/* <Highlight hit={hit} attribute={"system.details.publicNotes"} /> */}
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: hit.system.details.publicNotes,
+                }}
+              />
+            </span>
+          )}
+        </div>
+      </li>
+    );
+  };
 
   return (
     searchClient && (
