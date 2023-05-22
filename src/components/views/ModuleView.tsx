@@ -3,6 +3,7 @@ import { Modules, Module } from "../modules";
 import { usePreferencesStore } from "../../hooks";
 import styles from "./View.module.scss";
 import CollapsibleHeader from "../headers/CollapsibleHeader";
+import classNames from "classnames";
 
 function ModuleView() {
   const { preferences, setPreferences } = usePreferencesStore();
@@ -32,7 +33,10 @@ function ModuleView() {
             <CollapsibleHeader
               title={label}
               key={moduleName}
-              className={styles.moduleViewObject}
+              className={classNames(
+                styles.moduleViewObject,
+                module.noOverflow && styles.noOverflow
+              )}
               toggle={collapsible}
               defaultCollapsed={collapsedModules[moduleName as Module]}
               onCollapsed={(collapsed) =>
