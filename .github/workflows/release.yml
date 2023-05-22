@@ -44,10 +44,6 @@ jobs:
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: npm install # Change this to npm, yarn or pnpm.
 
-      - name: "Create env file"
-        run: |
-          echo "${{ secrets.SEARCH }}" > .env
-
       - name: Release Drafter
         uses: release-drafter/release-drafter@v5.21.1
 
@@ -56,6 +52,9 @@ jobs:
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_MEILI_HOST: ${{ secrets.TAURI_MEILI_HOST }}
+          TAURI_MEILI_API_KEY: ${{ secrets.TAURI_MEILI_API_KEY }}
+
         with:
           tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
           releaseName: "PathKit v__VERSION__" # tauri-action replaces \_\_VERSION\_\_ with the app version.
