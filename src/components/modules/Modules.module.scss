@@ -42,6 +42,18 @@
   width: 100%;
 }
 
+.moduleDiceContent {
+  padding: 1rem;
+  overflow: hidden; /* Add overflow property to enable scrollbar */
+  display: flex;
+  flex: 1;
+  justify-content: flex-start;
+  align-items: stretch;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
 .dcTable {
   width: 100%;
   border-collapse: collapse;

@@ -5,8 +5,8 @@ import classNames from "classnames";
 import { Button } from "../buttons";
 
 interface ICollapsibleHeaderProps
-  extends Omit<React.HTMLProps<HTMLDivElement>, "as"> {
-  title: string;
+  extends Omit<React.HTMLProps<HTMLDivElement>, "title" | "as"> {
+  title: React.ReactNode;
   toggle?: boolean;
   align?: "start" | "center" | "end";
   headingProps?: React.HTMLProps<HTMLHeadingElement>;
