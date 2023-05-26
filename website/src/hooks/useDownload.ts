@@ -10,13 +10,13 @@ export enum Platform {
 
 const downloadLinks: Record<Platform, string> = {
   [Platform.Windows]:
-    "https://github.com/LeeJMorel/PathKit/releases/download/v0.1.2-beta/PathKit_0.1.2_x64_en-US.msi",
+    "https://github.com/LeeJMorel/PathKit/releases/download/v1.0.0/PathKit_1.0.0_x64_en-US.msi",
   [Platform.MacOS]:
-    "https://github.com/LeeJMorel/PathKit/releases/download/v0.1.2-beta/PathKit_0.1.2_x64.dmg",
+    "https://github.com/LeeJMorel/PathKit/releases/download/v1.0.0/PathKit_1.0.0_x64.dmg",
   [Platform.Linux]:
-    "https://github.com/LeeJMorel/PathKit/releases/download/v0.1.2-beta/path-kit_0.1.2_amd64.deb",
+    "https://github.com/LeeJMorel/PathKit/releases/download/v1.0.0/path-kit_1.0.0_amd64.deb",
   [Platform.Tar]:
-    "https://github.com/LeeJMorel/PathKit/releases/download/v0.1.2-beta/PathKit_x64.app.tar.gz",
+    "https://github.com/LeeJMorel/PathKit/releases/download/v1.0.0/PathKit_x64.app.tar.gz",
   [Platform.Tutorial]:
     "https://github.com/LeeJMorel/PathKit/releases/download/tutorial/pathkit-campaign-PathKit.Tutorial.Demo.json",
 };

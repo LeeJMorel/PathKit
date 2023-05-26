@@ -1,6 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Ubuntu+Mono:wght@400;700&display=swap");
 
+@import "./styles/variables.scss";
+
 *,
 *:before,
 *:after {
@@ -121,22 +123,29 @@ ol {
     margin-bottom: 0.25em;
   }
 }
+em {
+  font-weight: 700;
+}
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  padding: $inputPadding;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  background: var(--primaryBackground);
+  color: var(--primaryText);
+  border: 1px solid transparent;
+  font-size: 1em;
+  font-weight: 400;
+  font-family: inherit;
+
+  &:hover,
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    border-color: var(--buttonHoverText);
+    color: var(--buttonHoverText);
+    background-color: var(--buttonHover);
+  }
 }

@@ -5,6 +5,7 @@ PathKit is a virtual GM (Game Master) screen for the tabletop role-playing game 
 ![Screenshot](docs/assets/WelcomeScreen.png)
 ## Project Demo Video
 [View an example gameplay usage of prototype](https://www.youtube.com/watch?v=01wgcb1VR4I)
+
 [Use the prototype demo](https://main--fantastic-pegasus-e6a1d9.netlify.app/)
 
 ## Alpha Release

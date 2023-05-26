@@ -1,7 +1,7 @@
 {
   "name": "pathkit",
   "private": true,
-  "version": "0.1.2",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -21,12 +21,12 @@
     "@meilisearch/instant-meilisearch": "^0.11.1",
     "@tauri-apps/api": "^1.2.0",
     "@testing-library/react": "^14.0.0",
-    "@testing-library/user-event": "14.4.3",
     "@uiw/react-md-editor": "^3.20.10",
     "classnames": "^2.3.2",
     "eslint-config-airbnb": "^19.0.4",
     "formik": "^2.2.9",
     "instantsearch.css": "^8.0.0",
+    "instantsearch.js": "^4.56.0",
     "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
     "lodash.merge": "^4.6.2",

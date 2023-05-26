@@ -52,6 +52,9 @@ jobs:
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_MEILI_HOST: ${{ secrets.TAURI_MEILI_HOST }}
+          TAURI_MEILI_API_KEY: ${{ secrets.TAURI_MEILI_API_KEY }}
+
         with:
           tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
           releaseName: "PathKit v__VERSION__" # tauri-action replaces \_\_VERSION\_\_ with the app version.

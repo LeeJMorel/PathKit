@@ -1,81 +1,72 @@
-import React, { useState } from "react";
+import {
+  InstantMeiliSearchInstance,
+  instantMeiliSearch,
+} from "@meilisearch/instant-meilisearch";
+import React, { useEffect, useRef, useState } from "react";
 import {
   InstantSearch,
+  connectStateResults,
   InfiniteHits,
-  Stats,
   Highlight,
-  connectSearchBox,
+  createInfiniteHitsSessionStorageCache,
 } from "react-instantsearch-dom";
-import "./Search.css";
-import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
-import data from "../../../data.ms/movies.json";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useBoolean, useOnClickOutside } from "../../hooks";
+import { Button } from "../buttons";
+import SearchBox from "./SearchBox";
+import styles from "./Search.module.scss";
 
-//stringify the data
-const moviesString = JSON.stringify({ data });
+const { TAURI_MEILI_HOST: host = "", TAURI_MEILI_API_KEY: apiKey = "" } =
+  import.meta.env;
 
-const searchClient = instantMeiliSearch("http://localhost:7700", moviesString);
-
-///This part is our search bar display
-interface CustomSearchBoxProps {
-  currentRefinement: string;
-  refine(value: string): void;
-  cssClasses: {
-    input: string;
-  };
-  translations: {
-    placeholder: string;
-  };
+let searchClient: InstantMeiliSearchInstance;
+if (host && apiKey) {
+  try {
+    searchClient = instantMeiliSearch(host, apiKey, {
+      primaryKey: "_id",
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-const CustomSearchBox = ({
-  currentRefinement,
-  refine,
-  cssClasses,
-  translations,
-}: CustomSearchBoxProps) => (
-  <div className="ais-SearchBox">
-    <input
-      className={cssClasses.input}
-      type="text"
-      placeholder={translations.placeholder}
-      value={currentRefinement}
-      onChange={(e) => refine(e.currentTarget.value)}
+interface LoadingIndicator {
+  isSearching?: boolean;
+  isSearchStalled?: boolean;
+  onClear: () => void;
+}
+
+const LoadingOrClear = ({
+  isSearching,
+  isSearchStalled,
+  onClear,
+}: LoadingIndicator) =>
+  isSearchStalled && isSearching ? (
+    <FontAwesomeIcon className={styles.loader} icon="spinner" spin />
+  ) : (
+    <Button
+      className={styles.searchClearButton}
+      onClick={onClear}
+      icon="close"
+      variant="text"
     />
-  </div>
-);
-
-const SearchBoxWithClasses = connectSearchBox(CustomSearchBox);
-//end of search bar
-
-type HitProps = {
-  hit: {
-    id: number;
-    title: string;
-    overview: string;
-    genres: string[];
-    poster: string;
-    release_date: number;
-  };
-};
-
-const SearchResult = ({ hit }: HitProps) => {
-  const truncatedOverview =
-    hit.overview.length > 240
-      ? hit.overview.substring(0, 240) + "..."
-      : hit.overview;
-
-  return (
-    <div className="search-result">
-      <div className="hit-name">
-        <Highlight attribute="title" hit={hit} />
-      </div>
-      <div className="hit-description">{truncatedOverview}</div>
-    </div>
   );
-};
+
+const ConnectedLoadingOrClear = connectStateResults(LoadingOrClear);
+
+const sessionStorageCache = createInfiniteHitsSessionStorageCache();
 
 const Search = () => {
   const [query, setQuery] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState("bestiary");
+  const [focused, setFocused] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    searchClient;
+  }, []);
+
+  useOnClickOutside(searchRef, () => setFocused(false));
 
   const handleSearchStateChange = (searchState: {
     query: React.SetStateAction<string>;
@@ -85,36 +76,100 @@ const Search = () => {
     }
   };
 
-  return (
-    <div className={"searchContainer"}>
-      <InstantSearch
-        indexName="movies"
-        searchClient={searchClient}
-        onSearchStateChange={handleSearchStateChange}
-        searchState={{ query }}
+  const handleClear = () => {
+    setQuery("");
+    setFocused(false);
+  };
+
+  // TODO show the selected item in the sheet. Requires new schema.
+  const handleSelect = (item: any) => {};
+
+  // Maybe allow changing indexes?
+  // const handleIndexChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const { value } = event.target;
+  //   setSelectedIndex(value);
+  // };
+
+  const Hit = ({ hit }: any) => {
+    const { value: show, toggle } = useBoolean(false);
+
+    return (
+      <li
+        key={hit._id}
+        className={styles.resultsListItem}
+        // onClick={() => handleSelect(hit)}
       >
-        <Stats />
-        <SearchBoxWithClasses
-          translations={{ placeholder: "Search PathFinder 2e..." }}
-          cssClasses={{ input: "input" }}
-        />
-        {query && (
-          <InfiniteHits
-            hitComponent={SearchResult}
-            cssClasses={{
-              root: "hitRoot",
-              emptyRoot: "hitEmptyRoot",
-              list: "hitList",
-              item: "hitItem",
-              loadPrevious: "hitLoadPrevious",
-              loadMore: "hitLoadMore",
-              disabledLoadPrevious: "hitDisabledLoadPrevious",
-              disabledLoadMore: "hitDisabledLoadMore",
-            }}
+        {hit.img && (
+          // Only works on foundry images
+          <img
+            className={styles.resultImage}
+            src={`https://demo.foundryvtt.com/${hit.img}`}
+            alt={hit.type}
           />
         )}
-      </InstantSearch>
-    </div>
+        <div className={styles.resultDetails} onClick={toggle}>
+          <span className={styles.resultTitle}>
+            <Highlight
+              attribute="name"
+              className={styles.resultHighlight}
+              hit={hit}
+            />
+            <span className={styles.resultCreature}>
+              Creature type:{" "}
+              <Highlight hit={hit} attribute={"system.details.creatureType"} />
+            </span>
+          </span>
+          {show && (
+            <span className={styles.resultDescription}>
+              {/* <Highlight hit={hit} attribute={"system.details.publicNotes"} /> */}
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: hit.system.details.publicNotes,
+                }}
+              />
+            </span>
+          )}
+        </div>
+      </li>
+    );
+  };
+
+  return (
+    searchClient && (
+      <div className={styles.searchContainer} ref={searchRef}>
+        <InstantSearch
+          indexName={selectedIndex}
+          searchClient={searchClient}
+          onSearchStateChange={handleSearchStateChange}
+          searchState={{ query }}
+        >
+          <div className={styles.searchBoxContainer}>
+            <div className={styles.searchInputContainer}>
+              <SearchBox
+                translations={{ placeholder: "Search PathFinder 2e..." }}
+                onFocus={() => setFocused(true)}
+              />
+
+              <ConnectedLoadingOrClear
+                onClear={handleClear}
+                isSearching={!!(query && focused)}
+              />
+            </div>
+            {/* <select
+              name="index"
+              value={selectedIndex}
+              onChange={handleIndexChange}
+              className={styles.searchIndexSelect}
+            >
+              <option value="bestiary">Bestiary</option>
+            </select> */}
+          </div>
+          {query && focused && (
+            <InfiniteHits hitComponent={Hit} cache={sessionStorageCache} />
+          )}
+        </InstantSearch>
+      </div>
+    )
   );
 };
 

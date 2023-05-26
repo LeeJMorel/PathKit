@@ -13,7 +13,7 @@ export enum Module {
   BinderModule = "BinderModule",
   DCModule = "DCModule",
   IncomeModule = "IncomeModule",
-  // DiceModule = "DiceModule",
+  DiceModule = "DiceModule",
   NotesModule = "NotesModule",
   ConditionModule = "ConditionModule",
 }
@@ -23,6 +23,7 @@ export interface IModule {
   label: string;
   ModuleComponent: React.ElementType;
   collapsible: boolean;
+  noOverflow?: boolean;
 }
 
 // Create a mapping of module names to corresponding component references
@@ -39,12 +40,13 @@ const Modules: Record<Module, IModule> = {
     ModuleComponent: TutorialModule,
     collapsible: false,
   },
-  // DiceModule: {
-  //   id: Module.DiceModule,
-  //   label: "Dice Roller",
-  //   ModuleComponent: DiceModule,
-  //   collapsible: false,
-  // },
+  DiceModule: {
+    id: Module.DiceModule,
+    label: "Dice Roller",
+    ModuleComponent: DiceModule,
+    collapsible: false,
+    noOverflow: true,
+  },
   NotesModule: {
     id: Module.NotesModule,
     label: "Notes",
@@ -83,7 +85,7 @@ export {
   DCModule,
   ConditionModule,
   IncomeModule,
-  // DiceModule,
+  DiceModule,
   NotesModule,
   BinderModule,
   Modules,
