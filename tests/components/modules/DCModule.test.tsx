@@ -13,10 +13,10 @@ describe("DCModule tests", () => {
         );
 
         expect(screen.getByText(/Difficulty/)).toBeDefined();
-        expect(screen.getByText(/10/)).toBeDefined();
+        expect(screen.getByText(/-10/)).toBeDefined();
         expect(screen.getByText(/Adjustment/)).toBeDefined();
         expect(screen.getByText(/Unique/)).toBeDefined();
-        expect(screen.getByText(/2/)).toBeDefined();
+        expect(screen.getByText(/-2/)).toBeDefined();
         expect(screen.getByText(/If the spell is uncommon/)).toBeDefined();
     });
 });
