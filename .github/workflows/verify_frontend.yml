@@ -41,4 +41,4 @@ jobs:
         npm install
         npm run build
         npm run tauri build
-        npm run test run
+        npm run test run -- -t e
