@@ -30,9 +30,16 @@ PathKit comes with the following major features:
 
 In addition to the major features, PathKit has the following stretch goals:
 
-1. **Apply Damage to Parties Based on Rolls:** PathKit includes a button that allows GMs to apply damage to parties based on rolls, providing a quick and convenient way to resolve combat and other situations.
-2. **Take Links from PathBuilder:** PathKit integrates with PathBuilder, a popular character building tool for Pathfinder 2e, allowing GMs to easily import player builds into their game session.
-3. **Tablet View:** PathKit is designed to be responsive and compatible with tablet devices, providing a swipeable interface for easy navigation between different portions of the screen.
+1. **Apply Damage to Parties Based on Rolls:** PathKit includes a button that allows GMs to apply damage to parties based on rolls, providing a quick and convenient way to resolve combat and other situations. *(available in future releases)*
+2. **Take Links from PathBuilder:** PathKit integrates with PathBuilder, a popular character building tool for Pathfinder 2e, allowing GMs to easily import player builds into their game session. *(currently included!)*
+3. **Tablet View:** PathKit is designed to be responsive and compatible with tablet devices, providing a swipeable interface for easy navigation between different portions of the screen. *(available in future releases)*
+
+## Additional Features
+
+Bonus features in PathKit include:
+
+1. **Tutorial Tips and Beginner Walkthrough Panels:** How-to modules are included in PathKit to make initial use of PathKit easier for new or veteran users.
+2. **Information Panels:** Information panels for Conditions, Income earned, and DC adjustment are included in PathKit as well. These are useful guides showing some of the standard information used in Pathfinder gameplay, which support activites such as in-game difficulty adjustments.
 
 ## Technology Stack
 
