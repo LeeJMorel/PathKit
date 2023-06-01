@@ -2,7 +2,7 @@
 
 ## Team Members
 
-- Luke Evans: UX Design
+- Luke Evans: UX Design. Github usernames: Puggernauts, LukeE100
 - Chris: Back-End Dev
 - Kevin: Tester, Back-End Dev, Game Dev
 - Jacob: Tester, Back-End Dev
@@ -23,6 +23,7 @@
 - Living Document: [Google Docs](https://docs.google.com/document/d/1WK1cAGtM_IcsL0fqFX05EE8GP4QyOnaMVphTQxTgCx4/edit?usp=sharing) - A collaborative document space for project communications
 - GitHub Repository: [PathKit](https://github.com/LeeJMorel/PathKit) - An all-in-one GM Screen application for running Pathfinder2e.
 - GitHub Documentation: [Wiki](https://github.com/LeeJMorel/PathKit/wiki) - Contains a User and Developer Guide to help you to navigate PathKit
+- (Most of the) Design Work: [Figma](https://www.figma.com/file/Tlx3EBiQ29H6v21i5AVvU3/PathKit?type=design&node-id=166-599&t=xIcGtTNoXVlPF9zW-0) - Contains prototype layout, components designs, icon work, color scheme work, sheet designs.
 
 ## Communication Channels/Tools and Policies
 
