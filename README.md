@@ -65,4 +65,4 @@ PathKit is released under the [MIT License](LICENSE), which allows for free use,
 
 ## Acknowledgements
 
-We want to thank our amazing professor for helping lead us through a complete production process and make our vision a reality! Thank you [Nigini](https://github.com/nigini)! We also want to thank our TA, Apollo, for all the work they put into reviewing our project to make it have more complete communication and well defined project goals.
+We want to thank our amazing professor for helping lead us through a complete production process and make our vision a reality! Thank you [Nigini](https://github.com/nigini)! We also want to thank our TA, [Apollo](https://github.com/ApolloZhu), for all the work they put into reviewing our project to make it have more complete communication and well defined project goals.
